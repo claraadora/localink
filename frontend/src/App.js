@@ -17,12 +17,12 @@ function App() {
         <Grid item container>
           <Grid item xs={0} sm={2} />
           <Grid item xs={12} sm={8}>
-            {/* <Switch>
-              <Route exact path="/logIn" component={LogInPage} />
-              <Route exact path="/signUp" component={SignUpPage} />
+            <Switch>
+              <Route exact path="/login" component={LogInPage} />
+              <Route exact path="/signup" component={SignUpPage} />
               <Route exact path="/search" component={SearchPage} />
               <Route exact path="/" component={LandingPage} />
-            </Switch> */}
+            </Switch>
           </Grid>
           <Grid item xs={0} sm={2} />
         </Grid>
