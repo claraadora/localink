@@ -61,6 +61,12 @@ const useStyles = makeStyles((theme) => ({
       width: "40ch",
     },
   },
+  toolbar: {
+    minHeight: 80,
+    alignItems: "flex-start",
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(2),
+  },
 }));
 
 export default function PrimarySearchAppBar() {
@@ -90,24 +96,30 @@ export default function PrimarySearchAppBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+        <Button color="inherit" href="/profile">
+          Manage My Account
+        </Button>
+      </MenuItem>
+      <MenuItem onClick={handleMenuClose}>Settings</MenuItem>
     </Menu>
   );
 
   return (
     <div className={classes.grow}>
       <AppBar position="static">
-        <Toolbar>
+        <Toolbar className={classes.toolbar}>
           <IconButton
             edge="start"
             className={classes.menuButton}
             color="inherit"
             aria-label="open drawer"
           ></IconButton>
-          <Typography className={classes.title} variant="h5" noWrap>
-            localink
-          </Typography>
+          <Button color="inherit" href="/">
+            <Typography className={classes.title} variant="h5" noWrap>
+              localink
+            </Typography>
+          </Button>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
@@ -122,6 +134,9 @@ export default function PrimarySearchAppBar() {
             />
           </div>
           <div className={classes.grow} />
+          <Button color="inherit" href="/signup">
+            Sell on localink
+          </Button>
           <Button color="inherit" href="/signup">
             Sign up
           </Button>
