@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -35,6 +35,24 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignUpPage() {
   const classes = useStyles();
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password1: "",
+    password2: "",
+  });
+  const { name, email, password1, password2 } = formData;
+  const onChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    if (password1 !== password2) {
+      console.log("Passwords do not match");
+    } else {
+      console.log(formData);
+    }
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -46,7 +64,19 @@ export default function SignUpPage() {
         <Typography component="h1" variant="h5">
           Sign Up
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form}>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="name"
+            label="Full Name"
+            name="name"
+            autoComplete="name"
+            onChange={onChange}
+            autoFocus
+          />
           <TextField
             variant="outlined"
             margin="normal"
@@ -56,6 +86,7 @@ export default function SignUpPage() {
             label="Email Address"
             name="email"
             autoComplete="email"
+            onChange={onChange}
             autoFocus
           />
           <TextField
@@ -63,11 +94,24 @@ export default function SignUpPage() {
             margin="normal"
             required
             fullWidth
-            name="password"
+            name="password1"
             label="Password"
             type="password"
             id="password"
             autoComplete="current-password"
+            onChange={onChange}
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            name="password2"
+            label="Confirm Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+            onChange={onChange}
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
