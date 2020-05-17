@@ -13,6 +13,8 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import { setAlert } from "../actions/alertActions";
+import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -43,6 +45,8 @@ export default function SignUpPage() {
     password2: "",
   });
   const { name, email, password1, password2 } = formData;
+  const dispatch = useDispatch();
+
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -50,6 +54,7 @@ export default function SignUpPage() {
     e.preventDefault();
     if (password1 !== password2) {
       console.log("Passwords do not match");
+      dispatch(setAlert("Passwords do not match", "danger"));
     } else {
       const newUser = {
         name,

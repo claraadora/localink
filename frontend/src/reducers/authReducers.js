@@ -1,4 +1,4 @@
-import { SIGNUP_SUCCESS, SIGNUP_FAIL } from "../constants/userConstants";
+import userConstants from "../constants/userConstants";
 
 const initialState = {
   token: localStorage.getItem("token"),
@@ -7,11 +7,11 @@ const initialState = {
   user: null,
 };
 
-export default function (state = initialState, action) {
+export const authReducers = (state = initialState, action) => {
   const { type, payload } = action;
 
   switch (type) {
-    case SIGNUP_SUCCESS:
+    case userConstants.SIGNUP_SUCCESS:
       localStorage.setItem("token", payload.token);
       return {
         ...state,
@@ -19,7 +19,7 @@ export default function (state = initialState, action) {
         isAuthenticated: true,
         loading: false,
       };
-    case SIGNUP_FAIL:
+    case userConstants.SIGNUP_FAILURE:
       localStorage.removeItem("token");
       return {
         ...state,
@@ -30,4 +30,6 @@ export default function (state = initialState, action) {
     default:
       return state;
   }
-}
+};
+
+export default authReducers;
