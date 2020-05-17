@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -45,12 +46,28 @@ export default function SignUpPage() {
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     if (password1 !== password2) {
       console.log("Passwords do not match");
     } else {
-      console.log(formData);
+      const newUser = {
+        name,
+        email,
+        password1,
+      };
+      try {
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        const body = JSON.stringify(newUser);
+        const res = await axios.post("api/users", body, config);
+        console.log(res.data); //should receive token
+      } catch (error) {
+        console.log(error.response.data);
+      }
     }
   };
 
@@ -64,7 +81,7 @@ export default function SignUpPage() {
         <Typography component="h1" variant="h5">
           Sign Up
         </Typography>
-        <form className={classes.form}>
+        <form className={classes.form} onSubmit={onSubmit}>
           <TextField
             variant="outlined"
             margin="normal"

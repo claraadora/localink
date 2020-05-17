@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -35,6 +35,18 @@ const useStyles = makeStyles((theme) => ({
 
 export default function LogInPage() {
   const classes = useStyles();
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const { email, password } = formData;
+  const onChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    console.log("SUCCESS");
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -46,7 +58,7 @@ export default function LogInPage() {
         <Typography component="h1" variant="h5">
           Log In
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} onSubmit={onSubmit}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -55,6 +67,7 @@ export default function LogInPage() {
             id="email"
             label="Email Address"
             name="email"
+            onChange={onChange}
             autoComplete="email"
             autoFocus
           />
@@ -67,6 +80,7 @@ export default function LogInPage() {
             label="Password"
             type="password"
             id="password"
+            onChange={onChange}
             autoComplete="current-password"
           />
           <FormControlLabel
