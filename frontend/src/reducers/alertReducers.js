@@ -2,7 +2,7 @@ import alertConstants from "../constants/alertConstants";
 
 const initialStates = [];
 
-export default function (state = initialStates, action) {
+export default function alert(state = initialStates, action) {
   const { type, payload } = action;
   switch (type) {
     case alertConstants.SET_ALERT:
