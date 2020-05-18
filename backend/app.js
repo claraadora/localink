@@ -7,20 +7,23 @@ var express = require("express"),
     LocalStrategy = require("passport-local"),
     passportLocalMongoose = require("passport-local-mongoose"),
     Customer = require("./models/customer"),
-    Business = require("./models/business"),
-    Message = require("./models/message"),
-    http = require('http').createServer(app);
-    var io = require("socket.io")(http);
+    Business = require("./models/business");
+    // Message = require("./models/message");
+    // http = require('http').createServer(app);
+    // var io = require("socket.io")(http);
 
 
 app.use(methodOverride("_method"));
 app.use(bodyParser.urlencoded({extended:true}));
+
+//middleware, it stores session identifier, secret authenticates the session 
 app.use(require("express-session")({
     secret: "secret",
     resave: false,
     saveUninitialized: false
 }));
-// app.use(express.static(__dirname));
+
+//app.use(express.static(__dirname));
 
 //specify view folder and parse the engine to HTML
 app.engine('html', require('ejs').renderFile);
@@ -33,9 +36,29 @@ mongoose.connect("mongodb://localhost/localink", { useNewUrlParser: true });
 //passport configuration
 app.use(passport.initialize());
 app.use(passport.session());
-passport.use(new LocalStrategy(Customer.authenticate()));
-passport.serializeUser(Customer.serializeUser());
-passport.deserializeUser(Customer.deserializeUser());
+passport.use("customer-local", new LocalStrategy(Customer.authenticate()));
+passport.use("business-local", new LocalStrategy(Business.authenticate()));
+passport.serializeUser(function(user, done) {
+    done(null, user.id);
+});
+passport.deserializeUser(function(id, done) {
+    Business.findById(id, function(error, user) {
+        if (error) {
+            done(error);
+        } 
+        if (user) {
+            done(null, user);
+        } else {
+            Customer.findById(id, function(error, user) {
+                if (error) {
+                    return done(error);
+                } else {
+                    done(null, user);
+                }
+            });
+        }
+    });
+});
 
 //passes currentUser into every html template
 app.use(function(req, res, next) {
@@ -44,39 +67,28 @@ app.use(function(req, res, next) {
 });
 
 //requiring routes
-var indexRoutes = require("./routes/index"),
-    customerRoutes = require("./routes/customer"),
-    businessRoutes= require("./routes/business");
-app.use(indexRoutes);
+var customerIndexRoutes = require("./routes/customer/index"),
+    customerRoutes = require("./routes/customer/customer"),
+    businessIndexRoutes = require("./routes/business/index"),
+    businessRoutes= require("./routes/business/business");
+app.use(customerIndexRoutes);
 app.use(customerRoutes);
+app.use(businessIndexRoutes);
 app.use(businessRoutes);
 
+// io.on("connection", (socket)=>{
+//     console.log("user connected");
+//     socket.on("disconnect", ()=>{
+//     console.log("Disconnected")
+// })
+// });
 
-// // io.on('connection', (socket) => {
-// //     socket.on('chat message', (msg) => {
-// //       console.log('message: ' + msg);
-// //     });
-// //   });
-
-io.on("connection", (socket)=>{
-    console.log("user connected");
-    socket.on("disconnect", ()=>{
-    console.log("Disconnected")
-})
-});
-
-// io.on('connection', function(socket){
-//     socket.on('chat message', function(msg){
-//       io.emit('chat message', msg);
-//     });
+// http.listen(3000, () => {
+//     console.log('listening on *:3000');
 //   });
 
-http.listen(3000, () => {
-    console.log('listening on *:3000');
-  });
-
-// app.listen(process.env.PORT || 3000, process.env.IP ,function() {
-// 	console.log("Server is listening on port 3000...")
-// });
+app.listen(process.env.PORT || 3000, process.env.IP ,function() {
+	console.log("Server is listening on port 3000...")
+});
 
 
