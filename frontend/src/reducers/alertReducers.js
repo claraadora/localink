@@ -7,7 +7,7 @@ export default function alert(state = initialStates, action) {
   switch (type) {
     case alertConstants.SET_ALERT:
       return [...state, payload];
-    case alertConstants.REMOVE_ALERT:
+    case alertConstants.CLEAR_ALERT:
       return state.filter((alert) => alert.id !== payload);
     default:
       return state;
