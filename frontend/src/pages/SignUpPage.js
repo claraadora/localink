@@ -14,6 +14,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { setAlert } from "../actions/alertActions";
+import { signup } from "../actions/userActions";
 import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
@@ -56,23 +57,7 @@ export default function SignUpPage() {
       console.log("Passwords do not match");
       dispatch(setAlert("Passwords do not match", "danger"));
     } else {
-      const newUser = {
-        name,
-        email,
-        password1,
-      };
-      try {
-        const config = {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        };
-        const body = JSON.stringify(newUser);
-        const res = await axios.post("api/users", body, config);
-        console.log(res.data); //should receive token
-      } catch (error) {
-        console.log(error.response.data);
-      }
+      dispatch(signup({ name, email, password1 }));
     }
   };
 
