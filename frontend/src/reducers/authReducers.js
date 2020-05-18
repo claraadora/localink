@@ -7,7 +7,7 @@ const initialState = {
   user: null,
 };
 
-export const authReducers = (state = initialState, action) => {
+export const auth = (state = initialState, action) => {
   const { type, payload } = action;
 
   switch (type) {
@@ -32,4 +32,4 @@ export const authReducers = (state = initialState, action) => {
   }
 };
 
-export default authReducers;
+export default auth;

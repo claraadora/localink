@@ -6,6 +6,7 @@ import SearchPage from "./pages/SearchPage";
 import ProfilePage from "./pages/ProfilePage";
 import CataloguePage from "./pages/CataloguePage";
 import NavBar from "./components/NavBar";
+import Alert from "./components/Alert";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Grid } from "@material-ui/core";
 
@@ -20,6 +21,7 @@ function App() {
         <Grid item container>
           <Grid item xs={0} sm={1} />
           <Grid item xs={12} sm={10}>
+            <Alert />
             <Switch>
               <Route exact path="/login" component={LogInPage} />
               <Route exact path="/signup" component={SignUpPage} />
