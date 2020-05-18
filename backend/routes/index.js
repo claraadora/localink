@@ -1,7 +1,10 @@
 var express = require("express");
+var app = express();
 var router  = express.Router();
 var passport = require("passport");
 var Customer = require("../models/customer");
+var Message = require("../models/message");
+var http = require("http").createServer(app);
 
 router.get("/", function(req, res) {
     res.render("customer/landing");
@@ -38,9 +41,21 @@ router.post("/login", passport.authenticate("local", {
 
 });
 
+router.get('/messages', (req, res) => {
+    Message.find({},(err, messages)=> {
+      res.render("message/index");
+    })
+});
 
-
-
-
+router.post('/messages', (req, res) => {
+    var message = new Message(req.body);
+    message.save((err) =>{
+      if(err)
+        sendStatus(500);
+      io.emit('message', req.body);
+      res.sendStatus(200);
+      console.log("sent");
+    })
+  });
 
 module.exports = router;
