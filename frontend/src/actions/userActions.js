@@ -1,20 +1,12 @@
-import { userConstants } from "../constants/userConstants";
-import { alertActions } from "./actions/alertActions";
+import userConstants from "../constants/userConstants";
+import { setAlert } from "../actions/alertActions";
 import { createBrowserHistory } from "history";
 import axios from "axios";
-
-export const userActions = {
-  login,
-  logout,
-  signin,
-  signup,
-  getAll,
-};
 
 const history = createBrowserHistory();
 
 //Encompasses request, success, and failure during logins.
-function login(username, password) {
+export const login = (username, password) => {
   return (dispatch) => {
     dispatch(requestLogin({ username }));
 
@@ -25,18 +17,18 @@ function login(username, password) {
       password,
     };
 
-    userService.post(apiEndpoint, payload).then(
-      (response) => {
-        localStorage.setItem("token", response.data.token);
-        localStorage.setItem("auth", response.data.auth);
-        dispatch(successLogin(response.data));
-        history.push("/");
-      },
-      (error) => {
-        dispatch(failureLogin(error));
-        dispatch(alertActions.error(error));
-      }
-    );
+    // userService.post(apiEndpoint, payload).then(
+    //   (response) => {
+    //     localStorage.setItem("token", response.data.token);
+    //     localStorage.setItem("auth", response.data.auth);
+    //     dispatch(successLogin(response.data));
+    //     history.push("/");
+    //   },
+    //   (error) => {
+    //     dispatch(failureLogin(error));
+    //     dispatch(alertActions.error(error));
+    //   }
+    // );
   };
 
   function requestLogin(user) {
@@ -52,10 +44,10 @@ function login(username, password) {
   function failureLogin(error) {
     return { type: userConstants.LOGIN_FAILURE, error };
   }
-}
+};
 
 //Defines the definite success of logout action
-function logout() {
+export const logout = () => {
   return (dispatch) => {
     localStorage.removeItem("auth");
     localStorage.removeItem("token");
@@ -69,7 +61,7 @@ function logout() {
       token: "",
     };
   }
-}
+};
 
 //Register user
 export const signup = ({ name, email, password }) => async (dispatch) => {
@@ -88,32 +80,17 @@ export const signup = ({ name, email, password }) => async (dispatch) => {
       payload: res.data,
     });
   } catch (error) {
+    const errors = error.response.data.errors;
+
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.message, "danger")));
+    }
     dispatch({
       type: userConstants.SIGNUP_FAILURE,
     });
   }
 };
 
-function getAll() {
-  return (dispatch) => {
-    dispatch(request());
-
-    userService.getAll().then(
-      (users) => dispatch(success(users)),
-      (error) => {
-        dispatch(failure(error));
-        dispatch(alertActions.error(error));
-      }
-    );
-  };
-
-  function request() {
-    return { type: userConstants.GETALL_REQUEST };
-  }
-  function success(users) {
-    return { type: userConstants.GETALL_SUCCESS, users };
-  }
-  function failure(error) {
-    return { type: userConstants.GETALL_FAILURE, error };
-  }
-}
+export const signin = ({ name, email, password }) => async (dispatch) => {
+  dispatch({ type: userConstants.SIGNIN_REQUEST });
+};
