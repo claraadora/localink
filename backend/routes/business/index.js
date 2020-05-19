@@ -16,15 +16,16 @@ router.get("/business/register", function(req, res) {
 
 router.post("/business/register", function(req, res) {
     Business.register(new Business({username: req.body.username,
-                                    email: req.body.email}), //register user
+                                    fullName: req.body.fullName}), //register user
     req.body.password, function(error, user) {
         if(error) {
             console.log("something went wrong");
             console.log(error);
             return res.render("business/register");
         } else { //if no error, log them in
-            //specify the local strategy to auntheticate requests, local can be twitter!!
+            //specify the local strategy to authenticate requests, local can be twitter!!
             passport.authenticate("business-local")(req, res, function() {
+                // session: true;
                 res.redirect("/business/home"); 
             })
         }
@@ -33,13 +34,13 @@ router.post("/business/register", function(req, res) {
 
 router.get("/business/login", function(req, res) {
     res.render("business/login");
-})
+});
 
 router.post("/business/login", passport.authenticate("business-local", {
     successRedirect: "/business/home",
     failureRedirect: "/business/login"
 }), function(req, res) {
-
 });
+
 
 module.exports = router;

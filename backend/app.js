@@ -39,7 +39,7 @@ app.use(passport.session());
 passport.use("customer-local", new LocalStrategy(Customer.authenticate()));
 passport.use("business-local", new LocalStrategy(Business.authenticate()));
 passport.serializeUser(function(user, done) {
-    done(null, user.id);
+    done(null, user._id);
 });
 passport.deserializeUser(function(id, done) {
     Business.findById(id, function(error, user) {
@@ -62,6 +62,7 @@ passport.deserializeUser(function(id, done) {
 
 //passes currentUser into every html template
 app.use(function(req, res, next) {
+    console.log("req.user: " + req.user);
     res.locals.currentUser = req.user;
     next();
 });
