@@ -16,7 +16,7 @@ router.get("/register", function(req, res) {
 
 router.post("/register", function(req, res) {
     Customer.register(new Customer({username: req.body.username, 
-                                    email: req.body.email}), //register user
+                                    fullName: req.body.fullName}), //register user
     req.body.password, function(error, user) {
         if(error) {
             console.log("something went wrong");
@@ -41,22 +41,5 @@ router.post("/login", passport.authenticate("customer-local", {
 }), function(req, res) {
 
 });
-
-// router.get('/messages', (req, res) => {
-//     Message.find({},(err, messages)=> {
-//       res.render("message/index");
-//     })
-// });
-
-// router.post('/messages', (req, res) => {
-//     var message = new Message(req.body);
-//     message.save((err) =>{
-//       if(err)
-//         sendStatus(500);
-//       io.emit('message', req.body);
-//       res.sendStatus(200);
-//       console.log("sent");
-//     })
-//   });
 
 module.exports = router;

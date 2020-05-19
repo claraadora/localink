@@ -2,8 +2,8 @@ var mongoose = require("mongoose");
 var passportLocalMongoose = require("passport-local-mongoose");
 
 var BusinessSchema = new mongoose.Schema({
-    username: String,
-    email: String,
+    username: String, //email
+    fullName: String,
     password: String
 })
 BusinessSchema.plugin(passportLocalMongoose);
