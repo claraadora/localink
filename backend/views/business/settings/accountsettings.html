@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Add page</title>
+    </head>
+    <body>
+        <h1>This is the account settings for business owners</h1>
+        <h2>Edit <%=business.shopName%>'s profile</h2>
+        <form action="/business/<%=business._id%>/AccountSettings?_method=PUT" method="POST">
+            <input type="text" name="username" placeholder="email" value="<%=business.username%>">
+            <input type="text" name="shopName" placeholder="shop name" value="<%=business.shopName%>">
+            <input type="password" name="password" placeholder="password" value="<%business.password%>">
+            <% if(business.shop) { %>
+                <input type="text" name="shop[address]" placeholder="business address" value="<%=business.shop.address%>">
+                <input type="text" name="shop[shopDescription]" placeholder="shop description" value="<%=business.shop.shopDescription%>">
+                <input type="text" name="shop[shopAvatar]" placeholder="shop profile image URL" value="<%=business.shop.shopAvatar%>">
+            <% } else { %>
+                <input type="text" name="shop[address]" placeholder="business address">
+                <input type="text" name="shop[shopDescription]" placeholder="shop description">
+                <input type="text" name="shop[shopAvatar]" placeholder="shop profile image URL">
+            <% } %>
+            <input type="submit">
+        </form>
+    </body>
+    </html>

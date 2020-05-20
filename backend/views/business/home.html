@@ -5,7 +5,18 @@
     </head>
     <body>
         <h1>This is the home page for business</h1>
-        <h4>Welcome <%=currentUser.fullName%>! we are glad to have you here</h4>
+        <h4>Welcome <%=business.shopName%>! we are glad to have you here</h4>
         <a href="/messages">Chat here</a>
+        <div>PRODUCTS:</div>
+        <div><a href="/business/<%=business._id%>/edit/products">Manage products</a></div>
+        <div><a href="/business/<%=business._id%>/new">Add products</a></div>
+        <div>MY ACCOUNT</div>
+        <div><a href="/business/<%=business._id%>/ShowProfile">Profile</a></div>
+        <div><a href="/business/<%=business._id%>/users">Users</a></div>
+        <div><a href="/business/<%=business._id%>/ManageUsers">Manage users</a></div>
+        <div><a href="/business/<%=business._id%>/EditAccountSettings">Account settings</a></div>
+        <div>MY ACCOUNT/CHAT SETTINGS</div>
+        <div><a href="/business/<%=business._id%>/CustomerSupport">Customer support</a></div>
+        <div><a href="/business/<%=business._id%>/AutoReply">Auto-reply</a></div>
     </body>
     </html>

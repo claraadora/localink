@@ -2,7 +2,7 @@ var express = require("express");
 var app = express();
 var router  = express.Router();
 var passport = require("passport");
-var Business = require("../../models/business");
+var Business = require("../../models/business/business");
 // var Message = require("../../models/message");
 // var http = require("http").createServer(app);
 
@@ -16,8 +16,8 @@ router.get("/business/register", function(req, res) {
 
 router.post("/business/register", function(req, res) {
     Business.register(new Business({username: req.body.username,
-                                    fullName: req.body.fullName}), //register user
-    req.body.password, function(error, user) {
+                                    shopName: req.body.shopName}), //register user
+    req.body.password, function(error, business) {
         if(error) {
             console.log("something went wrong");
             console.log(error);
@@ -41,6 +41,5 @@ router.post("/business/login", passport.authenticate("business-local", {
     failureRedirect: "/business/login"
 }), function(req, res) {
 });
-
 
 module.exports = router;

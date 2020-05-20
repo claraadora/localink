@@ -7,7 +7,7 @@ var express = require("express"),
     LocalStrategy = require("passport-local"),
     passportLocalMongoose = require("passport-local-mongoose"),
     Customer = require("./models/customer"),
-    Business = require("./models/business");
+    Business = require("./models/business/business");
     // Message = require("./models/message");
     // http = require('http').createServer(app);
     // var io = require("socket.io")(http);
@@ -32,6 +32,8 @@ app.set('view engine', 'html');
 //create and connect to localink database
 mongoose.set('useUnifiedTopology', true);
 mongoose.connect("mongodb://localhost/localink", { useNewUrlParser: true });
+mongoose.set('useCreateIndex', true);
+mongoose.set('useFindAndModify', false);
 
 //passport configuration
 app.use(passport.initialize());
