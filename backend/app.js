@@ -64,7 +64,6 @@ passport.deserializeUser(function(id, done) {
 
 //passes currentUser into every html template
 app.use(function(req, res, next) {
-    console.log("req.user: " + req.user);
     res.locals.currentUser = req.user;
     next();
 });

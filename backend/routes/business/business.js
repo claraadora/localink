@@ -17,7 +17,6 @@ router.get("/business/home", function(req, res) {
 });
 
 router.get("/business/:id/ShowProfile", function(req, res) {
-    console.log("id: " + req.params.id);
     Business.findById(req.params.id).populate("shop").exec(function(error, business) {
         if (error) {
             console.log("something went wrong " + error);
@@ -49,8 +48,14 @@ router.put("/business/:id/AccountSettings", function(req, res) {
                     } else {
                         business.username = req.body.username;
                         business.shopName = req.body.shopName;
-                        business.password = req.body.password;
-                        // business.save();
+                        business.setPassword(req.body.password, function(error) {
+                            if (error) {
+                                console.log("Password could not be saved. Please try again!")
+                            } else {
+                                business.save();
+                                console.log("saved password successfully");
+                            }
+                        });
                         res.redirect("/business/" + req.params.id + "/ShowProfile")
                     }
                 });
@@ -59,7 +64,14 @@ router.put("/business/:id/AccountSettings", function(req, res) {
                 shop.shopOwner = req.params.id;
                 shop.save();
                 business.shop = shop._id;
-                business.save();
+                business.setPassword(req.body.password, function(error) {
+                    if (error) {
+                        console.log("Password could not be saved. Please try again!")
+                    } else {
+                        business.save();
+                        console.log("saved password successfully");
+                    }
+                });
                 res.redirect("/business/" + req.params.id + "/ShowProfile");
             }
         }
