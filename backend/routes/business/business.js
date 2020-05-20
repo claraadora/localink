@@ -22,17 +22,13 @@ router.get("/business/:id/ShowProfile", function(req, res) {
         if (error) {
             console.log("something went wrong " + error);
         } else {
-            console.log(business);
-            console.log("business.shop -> check undefined: " + business.shop)
             res.render("business/settings/profile", {business: business});
         } 
     })
 });
 
 router.get("/business/:id/EditAccountSettings", function(req, res) {
-    console.log("in edit req.params: " + req.params + " and the id: " +req.params.id );
     Business.findById(req.params.id).populate("shop").exec(function(error, business) {
-        console.log("in edit business " + business);
         if (error) {
             console.log("something went wrong " + error);
         } else {
@@ -42,21 +38,14 @@ router.get("/business/:id/EditAccountSettings", function(req, res) {
 });
 
 router.put("/business/:id/AccountSettings", function(req, res) {
-    console.log("in acc settings: " + req.params.id);
     Business.findById(req.params.id, function (error, business) {
-        console.log("req.params " + req.params);
-        console.log("business " + business)
         if (error) {
-            console.log("1st) something went wrong " + error);
+            console.log("something went wrong " + error);
         } else {
             if (business.shop) {
                 Shop.findByIdAndUpdate(business.shop, req.body.shop, function(error, shop) {
-                    console.log("req.body: " + req.body);
-                    console.log("req.body.shop: " + req.body.shop);
-                    console.log("business shop " + business.shop);
-                    console.log("shop is " + shop)
                     if(error) {
-                        console.log("2nd) something went wrong " + error);
+                        console.log("something went wrong " + error);
                     } else {
                         business.username = req.body.username;
                         business.shopName = req.body.shopName;
@@ -69,10 +58,8 @@ router.put("/business/:id/AccountSettings", function(req, res) {
                 var shop = new Shop(req.body.shop);
                 shop.shopOwner = req.params.id;
                 shop.save();
-                console.log("shop: " + shop);
                 business.shop = shop._id;
                 business.save();
-                console.log("business: " + business);
                 res.redirect("/business/" + req.params.id + "/ShowProfile");
             }
         }
@@ -98,6 +85,7 @@ router.get("/business/:id/new", function(req, res) {
         }
     });
 });
+
 
 
 
