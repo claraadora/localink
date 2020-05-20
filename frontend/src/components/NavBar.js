@@ -15,15 +15,6 @@ const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
   },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    display: "none",
-    [theme.breakpoints.up("sm")]: {
-      display: "block",
-    },
-  },
   search: {
     position: "relative",
     borderRadius: theme.shape.borderRadius,
@@ -52,9 +43,9 @@ const useStyles = makeStyles((theme) => ({
     color: "inherit",
   },
   inputInput: {
-    padding: theme.spacing(1, 10, 2, 0),
+    padding: theme.spacing(3, 10, 2, 0),
     // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+    paddingLeft: `calc(1em + ${theme.spacing(8)}px)`,
     transition: theme.transitions.create("width"),
     width: "100%",
     [theme.breakpoints.up("md")]: {
@@ -116,9 +107,7 @@ export default function PrimarySearchAppBar() {
             aria-label="open drawer"
           ></IconButton>
           <Button color="inherit" href="/">
-            <Typography className={classes.title} variant="h5" noWrap>
-              localink
-            </Typography>
+            <Typography variant="h1">localink</Typography>
           </Button>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
