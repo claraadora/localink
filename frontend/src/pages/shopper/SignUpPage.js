@@ -14,8 +14,9 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { setAlert } from "../../actions/alertActions";
-import { signup } from "../../actions/userActions";
-import { useDispatch } from "react-redux";
+import { signup } from "../../actions/authActions";
+import { useDispatch, useSelector } from "react-redux";
+import { Redirect } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -54,20 +55,22 @@ export default function SignUpPage() {
   const onSubmit = async (e) => {
     e.preventDefault();
     if (password1 !== password2) {
-      console.log("Passwords do not match");
       dispatch(setAlert("Passwords do not match", "danger"));
     } else {
       dispatch(signup({ name, email, password1 }));
     }
   };
 
+  const isSignUpSuccess = useSelector((state) => state.isSignUpSuccess);
+
+  if (isSignUpSuccess) {
+    return <Redirect to="/dashboard" />;
+  }
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
         <Typography component="h1" variant="h5">
           Sign Up
         </Typography>

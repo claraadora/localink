@@ -11,7 +11,10 @@ import Box from "@material-ui/core/Box";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../../actions/authActions";
 import Container from "@material-ui/core/Container";
+import { Redirect } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -40,13 +43,20 @@ export default function LogInPage() {
     password: "",
   });
   const { email, password } = formData;
+  const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    console.log("SUCCESS");
+    dispatch(login(email, password));
   };
+
+  if (isAuthenticated) {
+    return <Redirect to="/dashboard" />;
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -68,6 +78,7 @@ export default function LogInPage() {
             label="Email Address"
             name="email"
             onChange={onChange}
+            value={email}
             autoComplete="email"
             autoFocus
           />
@@ -81,6 +92,7 @@ export default function LogInPage() {
             type="password"
             id="password"
             onChange={onChange}
+            value={password}
             autoComplete="current-password"
           />
           <FormControlLabel

@@ -6,17 +6,17 @@ import SellerNavBar from "./SellerNavBar";
 import { useSelector } from "react-redux";
 
 const NavBar = () => {
-  const isLogged = useSelector((state) => state.isLogged);
+  const isLoggedIn = useSelector((state) => state.isLoggedIn);
   const isShopper = useSelector((state) => state.isShopper);
 
   if (isShopper) {
-    if (isLogged) {
+    if (isLoggedIn) {
       return <LoggedShopperNavBar />;
     } else {
       return <ShopperNavBar />;
     }
   } else {
-    if (isLogged) {
+    if (isLoggedIn) {
       return <LoggedSellerNavBar />;
     } else {
       return <SellerNavBar />;

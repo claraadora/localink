@@ -1,4 +1,4 @@
-import userConstants from "../constants/userConstants";
+import authConstants from "../constants/authConstants";
 
 const initialState = {
   token: localStorage.getItem("token"),
@@ -11,7 +11,15 @@ export const auth = (state = initialState, action) => {
   const { type, payload } = action;
 
   switch (type) {
-    case userConstants.SIGNUP_SUCCESS:
+    case authConstants.USER_LOADED:
+      return {
+        ...state,
+        isAuthenticated: true,
+        loading: false,
+        user: payload,
+      };
+    case authConstants.SIGNUP_SUCCESS:
+    case authConstants.LOGIN_SUCCESS:
       localStorage.setItem("token", payload.token);
       return {
         ...state,
@@ -19,7 +27,9 @@ export const auth = (state = initialState, action) => {
         isAuthenticated: true,
         loading: false,
       };
-    case userConstants.SIGNUP_FAILURE:
+    case authConstants.AUTH_ERROR:
+    case authConstants.SIGNUP_FAILURE:
+    case authConstants.LOGIN_FAILURE:
       localStorage.removeItem("token");
       return {
         ...state,

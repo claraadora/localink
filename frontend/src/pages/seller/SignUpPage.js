@@ -14,7 +14,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { setAlert } from "../../actions/alertActions";
-import { signup } from "../../actions/userActions";
+import { signup } from "../../actions/authActions";
 import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
@@ -65,9 +65,6 @@ export default function SignUpPage() {
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
         <Typography component="h1" variant="h5">
           Sign Up
         </Typography>
@@ -82,6 +79,7 @@ export default function SignUpPage() {
             name="name"
             autoComplete="name"
             onChange={onChange}
+            value={name}
             autoFocus
           />
           <TextField
@@ -94,6 +92,7 @@ export default function SignUpPage() {
             name="email"
             autoComplete="email"
             onChange={onChange}
+            value={email}
             autoFocus
           />
           <TextField
@@ -106,6 +105,7 @@ export default function SignUpPage() {
             type="password"
             id="password"
             autoComplete="current-password"
+            value={password1}
             onChange={onChange}
           />
           <TextField
@@ -118,6 +118,7 @@ export default function SignUpPage() {
             type="password"
             id="password"
             autoComplete="current-password"
+            value={password2}
             onChange={onChange}
           />
           <FormControlLabel
