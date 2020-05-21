@@ -72,11 +72,16 @@ app.use(function(req, res, next) {
 var customerIndexRoutes = require("./routes/customer/index"),
     customerRoutes = require("./routes/customer/customer"),
     businessIndexRoutes = require("./routes/business/index"),
-    businessRoutes= require("./routes/business/business");
+    businessRoutes= require("./routes/business/business"),
+    shopRoutes = require("./routes/business/shop"),
+    productRoutes = require("./routes/business/product");
+    // reviewRoutes = requrie("./routes/business/review")
 app.use(customerIndexRoutes);
 app.use(customerRoutes);
 app.use(businessIndexRoutes);
 app.use(businessRoutes);
+app.use(shopRoutes);
+app.use(productRoutes);
 
 // io.on("connection", (socket)=>{
 //     console.log("user connected");
