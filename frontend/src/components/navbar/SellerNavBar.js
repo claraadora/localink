@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       backgroundColor: fade(theme.palette.common.white, 0.25),
     },
+    marginTop: 10,
     marginRight: theme.spacing(2),
     marginLeft: 0,
     width: "100%",
@@ -43,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     color: "inherit",
   },
   inputInput: {
-    padding: theme.spacing(3, 10, 2, 0),
+    padding: theme.spacing(2, 1, 1, 1),
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(8)}px)`,
     transition: theme.transitions.create("width"),
@@ -51,16 +52,17 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("md")]: {
       width: "40ch",
     },
+    fontSize: 13,
   },
   toolbar: {
-    minHeight: 80,
+    minHeight: 40,
     alignItems: "flex-start",
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(2),
+    paddingTop: theme.spacing(0),
+    paddingBottom: theme.spacing(1),
   },
 }));
 
-export default function PrimarySearchAppBar() {
+export default function SellerNavBar() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -106,15 +108,15 @@ export default function PrimarySearchAppBar() {
             color="inherit"
             aria-label="open drawer"
           ></IconButton>
-          <Button color="inherit" href="/">
-            <Typography variant="h1">localink</Typography>
+          <Button color="inherit" href="/" backgroundColor="transparent">
+            <Typography variant="navBar">localink for sellers</Typography>
           </Button>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
             <InputBase
-              placeholder="Search…"
+              placeholder="Searching..."
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,
@@ -123,25 +125,15 @@ export default function PrimarySearchAppBar() {
             />
           </div>
           <div className={classes.grow} />
-          <Button color="inherit" href="/signup">
-            Sell on localink
+          <Button color="inherit" href="/">
+            shop on localink
           </Button>
-          <Button color="inherit" href="/signup">
+          <Button color="inherit" href="/seller/signup">
             Sign up
           </Button>
-          <Button color="inherit" href="/login">
+          <Button color="inherit" href="/seller/login">
             Log in
           </Button>
-          <IconButton
-            edge="end"
-            aria-label="account of current user"
-            aria-controls={menuId}
-            aria-haspopup="true"
-            onClick={handleProfileMenuOpen}
-            color="inherit"
-          >
-            <AccountCircle />
-          </IconButton>
         </Toolbar>
       </AppBar>
       {renderMenu}

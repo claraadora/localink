@@ -1,7 +1,8 @@
 import React from "react";
-import ProductCard from "../components/ProductCard";
+import ProductCard from "../../components/ProductCard";
 import { Grid } from "@material-ui/core";
-import productList from "../sample/productList.json";
+import productList from "../../sample/productList.json";
+import NavBar from "../../components/navbar/NavBar";
 
 const CataloguePage = () => {
   const makeProductCard = (product) => {

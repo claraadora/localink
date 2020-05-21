@@ -3,13 +3,13 @@ import lightGreen from "@material-ui/core/colors/lightGreen";
 import yellow from "@material-ui/core/colors/yellow";
 import grey from "@material-ui/core/colors/grey";
 
-export const theme = createMuiTheme({
+export const themeSeller = createMuiTheme({
   palette: {
-    primary: {
+    secondary: {
       main: lightGreen[300],
     },
-    secondary: {
-      main: yellow[300],
+    primary: {
+      main: yellow[500],
     },
   },
   typography: {
@@ -19,21 +19,21 @@ export const theme = createMuiTheme({
     fontWeight: 400,
     h1: {
       fontFamily: '"Metropolis", sans-serif',
-      fontWeight: 400,
+      fontWeight: 100,
       fontSize: "2.125rem",
-      letterSpacing: 2,
+      letterSpacing: 0,
     },
     h6: {
       fontFamily: '"Metropolis", sans-serif',
       fontWeight: 500,
       fontSize: "0.9375rem",
     },
-    subtitle: {
+    subtitle1: {
       fontFamily: '"Metropolis", sans-serif',
       fontWeight: "normal",
       fontSize: "0.6875rem",
     },
-    body: {
+    body1: {
       fontFamily: '"Metropolis", sans-serif',
       fontWeight: "normal",
       fontSize: "0.8125rem",
@@ -47,7 +47,7 @@ export const theme = createMuiTheme({
       fontSize: "1.3rem",
       letterSpacing: 1,
       textTransform: "none",
-      color: grey[100],
+      color: yellow[100],
     },
     navBar: {
       fontFamily: '"Metropolis", sans-serif',
@@ -55,7 +55,7 @@ export const theme = createMuiTheme({
       fontSize: "1.1rem",
       letterSpacing: 1,
       textTransform: "none",
-      color: grey[100],
+      color: "white",
     },
   },
 });
