@@ -8,7 +8,7 @@
         <% shop.products.forEach(function(product) { %>
             <ul>
                 <li><%=product.name%></li>
-                <li><a href="/business/<%=shop.shopOwner%>>/shop/<%=shop._id%>>/product/<%=product._id%>/edit-product">Edit product</a></li>
+                <li><a href="/business/<%=shop.shopOwner%>>/shop/<%=shop._id%>/product/<%=product._id%>/edit-product">Edit product</a></li>
                 <li><img src="<%=product.image%>"></li>
                 <li><%=product.description%></li>
                 <li><%=product.price%></li>

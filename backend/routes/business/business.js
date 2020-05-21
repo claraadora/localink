@@ -17,10 +17,7 @@ router.get("/business/home", function(req, res) {
 });
 
 router.get("/business/:id/show-profile", function(req, res) {
-    console.log("second");
-    console.log(req.params.id);
     Business.findById(req.params.id).populate("shop").exec(function(error, business) {
-        console.log(business);
         if (error) {
             console.log("something went wrong " + error);
         } else {
@@ -40,7 +37,6 @@ router.get("/business/:id/edit-account-settings", function(req, res) {
 });
 
 router.put("/business/:id/account-settings", function(req, res) {
-    console.log("first");
     Business.findById(req.params.id, function (error, business) {
         if (error) {
             console.log("something went wrong " + error);
@@ -50,7 +46,6 @@ router.put("/business/:id/account-settings", function(req, res) {
                     if(error) {
                         console.log("something went wrong " + error);
                     } else {
-                        console.log("pw is " + req.body.password);
                         business.username = req.body.username;
                         business.shopName = req.body.shopName;
                         business.setPassword(req.body.password, function(error) {
@@ -95,12 +90,24 @@ router.put("/business/:id/account-settings", function(req, res) {
 
 //shop not set up
 router.get("/business/:id/manage-products", function(req, res) {
-    res.render("business/settings/accountsettings");
+    Business.findById(req.params.id, function(error, business) {
+        if(error) {
+            console.log(error);
+        } else {
+            res.render("business/settings/accountsettings", {business: business});
+        }
+    })
 });
 
 //shop not set up
 router.get("/business/:id/new-product", function(req,res) {
-    res.render("business/settings/accountsettings");
+    Business.findById(req.params.id, function(error, business) {
+        if(error) {
+            console.log(error);
+        } else {
+            res.render("business/settings/accountsettings", {business: business});
+        }
+    })
 });
 
 module.exports = router;

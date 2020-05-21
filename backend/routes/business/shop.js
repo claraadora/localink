@@ -28,8 +28,9 @@ router.post("/business/:id/shop/:shop_id", function(req, res) {
                 if(error) {
                     console.log(error);
                 } else {
-                    product.shop = req.params.id;
-                    //product.save();
+                    product.shop = req.params.shop_id;
+                    product.save();
+                    console.log("new prod created: " + product);
                     shop.products.push(product);
                     shop.save();
                     console.log(shop);
@@ -46,6 +47,7 @@ router.get("/business/:id/shop/:shop_id/manage-products", function(req, res) {
         if (error) {
             console.log(error);
         } else {
+            console.log("shop here is " + shop);
             res.render("business/settings/manageproducts", {shop: shop});
         }
     });
