@@ -4,7 +4,14 @@
         <title>Edit page</title>
     </head>
     <body>
-        <h1>This is the manage products page for business- edit and delete</h1>
-        <div><a href=""></a></div>
+        <h1>This is the edit product page for business</h1>
+        <h2>Edit product of <%=shop_name%></h2>
+        <form action="/business/<%=business._id%>/shop/<%=shop_id%>" method="POST">
+            <input type="text" name="product[name]" placeholder="name" value="<%product.name =%>">
+            <input type="text" name="product[image]" placeholder="image URL" value="<%product.image =%>">
+            <input type="text" name="product[description]" placeholder="description" value="<%product.description=%>">
+            <input type="number" name="product[price]" placeholder="price" value="<% product.price=%>">
+            <input type="submit">
+        </form>
     </body>
     </html>

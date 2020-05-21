@@ -6,7 +6,7 @@
     <body>
         <h1>This is the account settings for business owners</h1>
         <h2>Edit <%=business.shopName%>'s profile</h2>
-        <form action="/business/<%=business._id%>/AccountSettings?_method=PUT" method="POST">
+        <form action="/business/<%=business._id%>/account-settings?_method=PUT" method="POST">
             <input type="text" name="username" placeholder="email" value="<%=business.username%>">
             <input type="text" name="shopName" placeholder="shop name" value="<%=business.shopName%>">
             <input type="password" name="password" placeholder="password" value="<%business.password%>">

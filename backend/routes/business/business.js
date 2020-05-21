@@ -16,8 +16,11 @@ router.get("/business/home", function(req, res) {
     })
 });
 
-router.get("/business/:id/ShowProfile", function(req, res) {
+router.get("/business/:id/show-profile", function(req, res) {
+    console.log("second");
+    console.log(req.params.id);
     Business.findById(req.params.id).populate("shop").exec(function(error, business) {
+        console.log(business);
         if (error) {
             console.log("something went wrong " + error);
         } else {
@@ -26,7 +29,7 @@ router.get("/business/:id/ShowProfile", function(req, res) {
     })
 });
 
-router.get("/business/:id/EditAccountSettings", function(req, res) {
+router.get("/business/:id/edit-account-settings", function(req, res) {
     Business.findById(req.params.id).populate("shop").exec(function(error, business) {
         if (error) {
             console.log("something went wrong " + error);
@@ -36,7 +39,8 @@ router.get("/business/:id/EditAccountSettings", function(req, res) {
     });
 });
 
-router.put("/business/:id/AccountSettings", function(req, res) {
+router.put("/business/:id/account-settings", function(req, res) {
+    console.log("first");
     Business.findById(req.params.id, function (error, business) {
         if (error) {
             console.log("something went wrong " + error);
@@ -46,17 +50,23 @@ router.put("/business/:id/AccountSettings", function(req, res) {
                     if(error) {
                         console.log("something went wrong " + error);
                     } else {
+                        console.log("pw is " + req.body.password);
                         business.username = req.body.username;
                         business.shopName = req.body.shopName;
                         business.setPassword(req.body.password, function(error) {
                             if (error) {
                                 console.log("Password could not be saved. Please try again!")
                             } else {
-                                business.save();
-                                console.log("saved password successfully");
+                                business.save(function(error) {
+                                    if(error) {
+                                        console.log(error);
+                                    } else {
+                                        console.log("saved password successfully");
+                                    }
+                                });
                             }
+                            res.redirect("/business/" + req.params.id + "/show-profile");
                         });
-                        res.redirect("/business/" + req.params.id + "/ShowProfile")
                     }
                 });
             } else { //first time editing account settings: CREATE
@@ -68,44 +78,29 @@ router.put("/business/:id/AccountSettings", function(req, res) {
                     if (error) {
                         console.log("Password could not be saved. Please try again!")
                     } else {
-                        business.save();
-                        console.log("saved password successfully");
+                        business.save(function(error) {
+                            if (error) {
+                                console.log(error);
+                            } else {
+                                console.log("saved password successfully");
+                            }
+                        });
                     }
+                    res.redirect("/business/" + req.params.id + "/show-profile");
                 });
-                res.redirect("/business/" + req.params.id + "/ShowProfile");
             }
         }
     })
 });
 
-router.post("/business/:id/profile", function(req, res) {
-    Business.findByIdAndUpdate(req.params.id, function(error, business) {
-        if (error) {
-            console.log("something went wrong " + error);
-        } else {
-            res.redirect("/business/" + business._id + "")
-        }
-    })
-})
-
-router.get("/business/:id/new", function(req, res) {
-    Business.findById(req.params.id, function(error, business) {
-        if(error) {
-            console.log("something went wrong " + error);
-        } else {
-            res.render("business/settings/new", {business: business});
-        }
-    });
+//shop not set up
+router.get("/business/:id/manage-products", function(req, res) {
+    res.render("business/settings/accountsettings");
 });
 
-
-
-
-
-
-
-
-
-
+//shop not set up
+router.get("/business/:id/new-product", function(req,res) {
+    res.render("business/settings/accountsettings");
+});
 
 module.exports = router;

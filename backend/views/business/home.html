@@ -8,15 +8,20 @@
         <h4>Welcome <%=business.shopName%>! we are glad to have you here</h4>
         <a href="/messages">Chat here</a>
         <div>PRODUCTS:</div>
-        <div><a href="/business/<%=business._id%>/edit/products">Manage products</a></div>
-        <div><a href="/business/<%=business._id%>/new">Add products</a></div>
+        <% if(business.shop) { %>
+            <div><a href="/business/<%=business._id%>/shop/<%=business.shop._id%>/manage-products">Manage products</a></div>
+            <div><a href="/business/<%=business._id%>/shop/<%=business.shop._id%>/new-product">Add products</a></div>
+        <% } else { %>
+            <div><a href="/business/<%=business._id%>/manage-products">Manage products</a></div>
+            <div><a href="/business/<%=business._id%>/new-product">Add products</a></div>
+        <% } %>
         <div>MY ACCOUNT</div>
-        <div><a href="/business/<%=business._id%>/ShowProfile">Profile</a></div>
+        <div><a href="/business/<%=business._id%>/show-profile">Profile</a></div>
         <div><a href="/business/<%=business._id%>/users">Users</a></div>
-        <div><a href="/business/<%=business._id%>/ManageUsers">Manage users</a></div>
-        <div><a href="/business/<%=business._id%>/EditAccountSettings">Account settings</a></div>
+        <div><a href="/business/<%=business._id%>/manage-users">Manage users</a></div>
+        <div><a href="/business/<%=business._id%>/edit-account-settings">Account settings</a></div>
         <div>MY ACCOUNT/CHAT SETTINGS</div>
-        <div><a href="/business/<%=business._id%>/CustomerSupport">Customer support</a></div>
-        <div><a href="/business/<%=business._id%>/AutoReply">Auto-reply</a></div>
+        <div><a href="/business/<%=business._id%>/customer-support">Customer support</a></div>
+        <div><a href="/business/<%=business._id%>/auto-reply">Auto-reply</a></div>
     </body>
     </html>

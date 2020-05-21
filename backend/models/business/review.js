@@ -1,5 +1,5 @@
 var mongoose = require("mongoose");
-var passportLocalMongoose = require("passport-local-mongoose");
+//var passportLocalMongoose = require("passport-local-mongoose");
 
 var ReviewSchema = new mongoose.Schema({
     author: {
@@ -18,6 +18,6 @@ var ReviewSchema = new mongoose.Schema({
     image: String,
     rating: Number,
 })
-StoreSchema.plugin(passportLocalMongoose);
+//StoreSchema.plugin(passportLocalMongoose);
 var Store = mongoose.model("Store", StoreSchema);
 module.exports = Store;
