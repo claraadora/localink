@@ -61,9 +61,9 @@ export default function SignUpPage() {
     }
   };
 
-  const isSignUpSuccess = useSelector((state) => state.isSignUpSuccess);
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
-  if (isSignUpSuccess) {
+  if (isAuthenticated) {
     return <Redirect to="/dashboard" />;
   }
 

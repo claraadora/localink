@@ -43,6 +43,7 @@ export const login = (email, password) => async (dispatch) => {
 
     dispatch(loadUser());
   } catch (err) {
+    console.log(err);
     const errors = err.response.data.errors;
 
     if (errors) {
@@ -56,20 +57,8 @@ export const login = (email, password) => async (dispatch) => {
 };
 
 //Defines the definite success of logout action
-export const logout = () => {
-  return (dispatch) => {
-    localStorage.removeItem("auth");
-    localStorage.removeItem("token");
-    dispatch(successLogout());
-    history.push("/");
-  };
-  function successLogout() {
-    return {
-      type: authConstants.LOGOUT,
-      auth: false,
-      token: "",
-    };
-  }
+export const logout = () => (dispatch) => {
+  dispatch({ type: authConstants.LOGOUT });
 };
 
 //Register user

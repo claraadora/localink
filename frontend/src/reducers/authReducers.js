@@ -30,6 +30,7 @@ export const auth = (state = initialState, action) => {
     case authConstants.AUTH_ERROR:
     case authConstants.SIGNUP_FAILURE:
     case authConstants.LOGIN_FAILURE:
+    case authConstants.LOGOUT:
       localStorage.removeItem("token");
       return {
         ...state,

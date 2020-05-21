@@ -15,7 +15,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { setAlert } from "../../actions/alertActions";
 import { signup } from "../../actions/authActions";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { Redirect } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -47,6 +48,7 @@ export default function SignUpPage() {
   });
   const { name, email, password1, password2 } = formData;
   const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -60,6 +62,10 @@ export default function SignUpPage() {
       dispatch(signup({ name, email, password1 }));
     }
   };
+
+  if (isAuthenticated) {
+    return <Redirect to="/dashboard" />;
+  }
 
   return (
     <Container component="main" maxWidth="xs">
