@@ -16,7 +16,11 @@ module.exports = function (req, res, next) {
       if (error) {
         return res.status(401).json({ msg: 'Token is not valid' });
       } else {
-        req.user = decoded.business;
+        if (decoded.business) {
+          req.user = decoded.business;
+        } else {
+          req.user = decoded.shopper;
+        }
         next();
       }
     });

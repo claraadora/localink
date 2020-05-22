@@ -10,9 +10,13 @@ app.use(express.json());
 
 app.get('/', (req, res) => res.send('API running'));
 
-//Define routes
+//Define routes for businesses
 app.use('/business', require('./routes/api/business/index'));
 app.use('/business/auth', require('./routes/api/business/auth'));
+
+//Define routes for shoppers
+app.use('/', require('./routes/api/shopper/index'));
+app.use('/auth', require('./routes/api/shopper/auth'));
 
 const PORT = process.env.PORT || 5000;
 
