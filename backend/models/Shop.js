@@ -5,14 +5,14 @@ const ShopSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Business'
   },
-  name: {
-    type: String,
-    required: true
-  },
+  // name: {
+  //   type: String,
+  //   required: true
+  // },
   avatar: {
     type: String
   },
-  shopDescription: {
+  description: {
     type: String
   },
   address: {
@@ -28,13 +28,13 @@ const ShopSchema = new mongoose.Schema({
   products: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'product'
+      ref: 'Product'
     }
   ],
   reviews: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'review'
+      ref: 'Review'
     }
   ]
 });

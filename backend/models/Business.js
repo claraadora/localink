@@ -13,6 +13,10 @@ const BusinessSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  // owner: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: 'Owner'
+  // },
   shop: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Shop'

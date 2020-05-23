@@ -3,15 +3,15 @@ const mongoose = require('mongoose');
 const ReviewSchema = new mongoose.Schema({
   author: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'customer'
+    ref: 'Customer'
   },
-  store: {
+  shop: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'store'
+    ref: 'Shop'
   },
   product: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'product'
+    ref: 'Product'
   },
   description: {
     type: String,

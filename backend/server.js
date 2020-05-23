@@ -13,6 +13,7 @@ app.get('/', (req, res) => res.send('API running'));
 //Define routes for businesses
 app.use('/business', require('./routes/api/business/index'));
 app.use('/business/auth', require('./routes/api/business/auth'));
+app.use('/business/profile', require('./routes/api/business/profile'));
 
 //Define routes for shoppers
 app.use('/', require('./routes/api/shopper/index'));
