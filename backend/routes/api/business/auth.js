@@ -11,10 +11,13 @@ const Business = require('../../../models/Business');
 // @route    GET business/auth
 // @desc     Get user by token (load user for frontend)
 // @access   Private
-// @return   User token
+// @return   User
 router.get('/', auth, async (req, res) => {
   try {
-    const business = await Business.findById(req.user.id);
+    const business = await Business.findById(req.user.id)
+      .populate('shop')
+      .populate('shop.products')
+      .exec();
     res.json(business);
   } catch (err) {
     console.error(err.message);

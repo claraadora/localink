@@ -15,4 +15,4 @@ const ShopperSchema = new mongoose.Schema({
   }
 });
 
-module.exports = Shopper = mongoose.model('Shopper', ShopperSchema);
+module.exports = Shopper = mongoose.model('shopper', ShopperSchema);
