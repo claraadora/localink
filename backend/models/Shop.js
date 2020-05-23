@@ -5,10 +5,6 @@ const ShopSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Business'
   },
-  // name: {
-  //   type: String,
-  //   required: true
-  // },
   avatar: {
     type: String
   },
@@ -25,13 +21,13 @@ const ShopSchema = new mongoose.Schema({
   ratings: {
     type: Number
   },
-  products: [
+  product: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Product'
     }
   ],
-  reviews: [
+  review: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Review'
@@ -39,4 +35,4 @@ const ShopSchema = new mongoose.Schema({
   ]
 });
 
-module.exports = Shop = mongoose.model('Shop', ShopSchema);
+module.exports = Shop = mongoose.model('shop', ShopSchema);

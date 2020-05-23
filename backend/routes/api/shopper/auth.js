@@ -11,7 +11,7 @@ const Shopper = require('../../../models/Shopper');
 // @route    GET /auth
 // @desc     Get user by token (load user for frontend)
 // @access   Private
-// @return   User token
+// @return   User
 router.get('/', auth, async (req, res) => {
   try {
     const shopper = await Shopper.findById(req.user.id);
