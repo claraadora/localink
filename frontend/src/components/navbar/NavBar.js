@@ -19,7 +19,7 @@ const NavBar = () => {
     if (isAuthenticated) {
       return <LoggedSellerNavBar />;
     } else {
-      return <SellerNavBar />;
+      return <LoggedSellerNavBar />;
     }
   }
 };

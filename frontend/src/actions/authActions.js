@@ -34,7 +34,7 @@ export const login = (email, password) => async (dispatch) => {
   const body = JSON.stringify({ email, password });
 
   try {
-    const res = await axios.post("/business/login", body, config);
+    const res = await axios.post("/business/login", body, config); // api/auth
 
     dispatch({
       type: authConstants.LOGIN_SUCCESS,
@@ -71,7 +71,7 @@ export const signup = ({ name, email, password }) => async (dispatch) => {
   const body = JSON.stringify({ name, email, password });
 
   try {
-    const res = await axios.post("/business/register", body, config);
+    const res = await axios.post("/business/signup", body, config); // api/users
 
     dispatch({
       type: authConstants.SIGNUP_SUCCESS,
