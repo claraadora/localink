@@ -16,17 +16,17 @@ export default function App({ isShopper }) {
   useEffect(() => {
     store.dispatch(loadUser());
   });
-  if (!isShopper) {
-    return (
-      <ThemeProvider theme={theme}>
-        <AppShopper />
-      </ThemeProvider>
-    );
-  } else {
-    return (
-      <ThemeProvider theme={themeSeller}>
-        <AppSeller />
-      </ThemeProvider>
-    );
-  }
+  // if (!isShopper) {
+  //   return (
+  //     <ThemeProvider theme={theme}>
+  //       <AppShopper />
+  //     </ThemeProvider>
+  //   );
+  // } else {
+  return (
+    <ThemeProvider theme={themeSeller}>
+      <AppSeller />
+    </ThemeProvider>
+  );
+  // }
 }

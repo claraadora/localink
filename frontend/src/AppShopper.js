@@ -6,7 +6,6 @@ import ShopperSignUpPage from "./pages/shopper/SignUpPage";
 import ShopperSearchPage from "./pages/shopper/SearchPage";
 import ShopperProfilePage from "./pages/shopper/ProfilePage";
 import ShopperCataloguePage from "./pages/shopper/CataloguePage";
-import ShopperDashboardPage from "./pages/shopper/DashboardPage";
 import NavBar from "./components/navbar/NavBar";
 import Alert from "./components/Alert";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
@@ -32,11 +31,6 @@ function AppShopper() {
               <Route exact path="/profile" component={ShopperProfilePage} />
               <Route exact path="/catalogue" component={ShopperCataloguePage} />
               <Route exact path="/" component={ShopperLandingPage} />
-              <PrivateRoute
-                exact
-                path="/dashboard"
-                component={ShopperDashboardPage}
-              />
             </Switch>
           </Grid>
           <Grid item xs={0} sm={1} />

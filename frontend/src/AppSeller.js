@@ -3,6 +3,7 @@ import SellerLandingPage from "./pages/seller/LandingPage";
 import SellerLogInPage from "./pages/seller/LogInPage";
 import SellerSignUpPage from "./pages/seller/SignUpPage";
 import SellerProfilePage from "./pages/seller/ProfilePage";
+import SellerDashboardPage from "./pages/seller/DashboardPage";
 import NavBar from "./components/navbar/NavBar";
 import Alert from "./components/Alert";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
@@ -34,10 +35,10 @@ function AppSeller() {
                 component={SellerProfilePage}
               />
               <Route exact path="/business/" component={SellerLandingPage} />
-              <PrivateRoute
+              <Route
                 exact
                 path="/business/dashboard"
-                component={SellerLandingPage}
+                component={SellerDashboardPage}
               />
             </Switch>
           </Grid>

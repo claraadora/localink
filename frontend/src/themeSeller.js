@@ -2,6 +2,7 @@ import { createMuiTheme } from "@material-ui/core/styles";
 import lightGreen from "@material-ui/core/colors/lightGreen";
 import yellow from "@material-ui/core/colors/yellow";
 import grey from "@material-ui/core/colors/grey";
+import lightBlue from "@material-ui/core/colors/lightBlue";
 
 export const themeSeller = createMuiTheme({
   palette: {
@@ -9,7 +10,7 @@ export const themeSeller = createMuiTheme({
       main: lightGreen[300],
     },
     primary: {
-      main: yellow[500],
+      main: lightBlue[200],
     },
   },
   typography: {
