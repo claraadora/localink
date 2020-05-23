@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
   button: {
     backgroundColor: "white",
     variant: "contained",
-    width: 180,
+    width: 199,
   },
 }));
 
@@ -66,9 +66,9 @@ export default function ProductPopover() {
           onMouseLeave: handlePopoverLeave,
         }}
       >
-        <Button href="/business/products/manage">Manage Products</Button>
+        <Button href="business/product/manage">Manage Products</Button>
         <br />
-        <Button href="/business/products/add">Add Products</Button>
+        <Button href="business/product/add">Add Products</Button>
       </Popover>
     </div>
   );

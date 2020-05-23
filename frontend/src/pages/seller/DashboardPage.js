@@ -17,6 +17,8 @@ import Link from "@material-ui/core/Link";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import NotificationsIcon from "@material-ui/icons/Notifications";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import ManageProductPage from "./ManageProductPage";
 
 const drawerWidth = 200;
 
@@ -90,7 +92,13 @@ export default function Dashboard() {
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
-          <Box pt={4}></Box>
+          <Switch>
+            <Route
+              exact
+              path="/business/product/manage"
+              component={ManageProductPage}
+            />
+          </Switch>
         </Container>
       </main>
     </div>

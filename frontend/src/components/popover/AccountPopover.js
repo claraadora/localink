@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
   button: {
     backgroundColor: "white",
     variant: "contained",
-    width: 180,
+    width: 199,
   },
 }));
 
