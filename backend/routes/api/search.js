@@ -50,7 +50,8 @@ router.post(
               $project: {
                 _id: 1,
                 name: 1,
-                description: 1
+                description: 1,
+                shop: 1
               }
             }
           ])
