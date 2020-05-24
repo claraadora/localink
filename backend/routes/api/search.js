@@ -35,7 +35,7 @@ router.post(
               $search: {
                 text: {
                   query: req.body.search,
-                  path: 'name',
+                  path: ['name', 'description'],
                   fuzzy: {
                     maxEdits: 1,
                     maxExpansions: 50
@@ -86,7 +86,7 @@ module.exports = router;
 //         "description": {
 //           "type": "string",
 //           "analyzer": "lucene.standard"
-//         },
+//         }
 //       }
 //     }
 //   }
