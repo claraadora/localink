@@ -9,6 +9,7 @@ import Alert from "./components/Alert";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Grid } from "@material-ui/core";
 import PrivateRoute from "./routing/PrivateRoute";
+import ProductTable from "./components/table/ProductTable";
 
 function AppSeller() {
   return (
@@ -39,6 +40,11 @@ function AppSeller() {
                 exact
                 path="/business/dashboard"
                 component={SellerDashboardPage}
+              />
+              <Route
+                exact
+                path="/business/product/manage"
+                component={ProductTable}
               />
             </Switch>
           </Grid>
