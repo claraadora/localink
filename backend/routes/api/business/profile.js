@@ -76,7 +76,13 @@ router.post(
       profile.shop = shop.id;
       await profile.save();
 
-      await Business.populate(profile, { path: 'shop', model: 'Shop' });
+      //await Business.populate(profile, { path: 'shop', model: 'Shop' });
+      await profile
+        .populate({
+          path: 'shop',
+          populate: { path: 'products', model: 'Product' }
+        })
+        .execPopulate();
 
       res.json(profile);
     } catch (err) {

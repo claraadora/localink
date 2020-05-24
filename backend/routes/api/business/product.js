@@ -40,11 +40,11 @@ router.post(
 
       await newProduct.save();
 
-      shop.product.unshift(newProduct);
+      shop.products.unshift(newProduct);
 
       await shop.save();
 
-      shop = await shop.populate('product', ['name', 'description']);
+      shop = await shop.populate('products').execPopulate();
 
       res.json(shop);
     } catch (err) {
