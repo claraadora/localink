@@ -6,12 +6,23 @@ import SellerProfilePage from "./pages/seller/ProfilePage";
 import SellerDashboardPage from "./pages/seller/DashboardPage";
 import NavBar from "./components/navbar/NavBar";
 import Alert from "./components/Alert";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+} from "react-router-dom";
 import { Grid } from "@material-ui/core";
 import PrivateRoute from "./routing/PrivateRoute";
 import ProductTable from "./components/table/ProductTable";
+import { useSelector } from "react-redux";
 
 function AppSeller() {
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
+  if (isAuthenticated) {
+    return <Redirect to="/business/dashboard" />;
+  }
   return (
     <Router>
       <Grid container direction="column">
