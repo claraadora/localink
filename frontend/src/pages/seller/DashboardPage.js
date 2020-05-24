@@ -18,7 +18,8 @@ import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import ManageProductPage from "./ManageProductPage";
+import ProductTable from "../../components/table/ProductTable";
+import ProductAddForm from "../../components/form/ProductAddForm";
 
 const drawerWidth = 200;
 
@@ -92,13 +93,20 @@ export default function Dashboard() {
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
-          <Switch>
-            <Route
-              exact
-              path="/business/product/manage"
-              component={ManageProductPage}
-            />
-          </Switch>
+          <Router>
+            <Switch>
+              <Route
+                exact
+                path="/business/product/manage"
+                component={ProductTable}
+              />
+              <Route
+                exact
+                path="/business/product/add"
+                component={ProductAddForm}
+              />
+            </Switch>
+          </Router>
         </Container>
       </main>
     </div>

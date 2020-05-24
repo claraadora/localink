@@ -3,6 +3,7 @@ import Popover from "@material-ui/core/Popover";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
+import { BrowserRouter as Router } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -67,13 +68,15 @@ export default function AccountPopover() {
           onMouseLeave: handlePopoverLeave,
         }}
       >
-        <Button containerElement={<Link to="/business/account/profile" />}>
-          Store Profile
-        </Button>
-        <br />
-        <Button containerElement={<Link to="/business/account/settings" />}>
-          Account Settings
-        </Button>
+        <Router>
+          <Button component={Link} to="/business/account/profile">
+            Store Profile
+          </Button>
+          <br />
+          <Button component={Link} to="/business/account/settings">
+            Account Settings
+          </Button>
+        </Router>
       </Popover>
     </div>
   );
