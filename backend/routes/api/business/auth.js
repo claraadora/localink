@@ -14,10 +14,12 @@ const Business = require('../../../models/Business');
 // @return   User
 router.get('/', auth, async (req, res) => {
   try {
-    const business = await Business.findById(req.user.id)
-      .populate('shop')
-      .populate('shop.products')
-      .exec();
+    const business = await Business.findById(req.user.id).populate({
+      path: 'shop',
+      populate: { path: 'products', model: 'Product' }
+    });
+    // .populate('shop.products')
+    // .exec();
     res.json(business);
   } catch (err) {
     console.error(err.message);

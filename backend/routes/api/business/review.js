@@ -5,10 +5,10 @@ const auth = require('../../../middleware/auth');
 
 const Business = require('../../../models/Business');
 const Shop = require('../../../models/Shop');
-const Product = require('../../../models/Product');
+const Review = require('../../../models/Review');
 
-// @route    POST business/product
-// @desc     Create a product
+// @route    POST business/review
+// @desc     Create a review
 // @access   Private
 router.post(
   '/',
@@ -40,11 +40,11 @@ router.post(
 
       await newProduct.save();
 
-      shop.products.unshift(newProduct);
+      shop.product.unshift(newProduct);
 
       await shop.save();
 
-      shop = await shop.populate('products').execPopulate();
+      shop = await shop.populate('product', ['name', 'description']);
 
       res.json(shop);
     } catch (err) {

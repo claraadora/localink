@@ -21,13 +21,13 @@ const ShopSchema = new mongoose.Schema({
   ratings: {
     type: Number
   },
-  product: [
+  products: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Product'
     }
   ],
-  review: [
+  reviews: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Review'
@@ -35,4 +35,4 @@ const ShopSchema = new mongoose.Schema({
   ]
 });
 
-module.exports = Shop = mongoose.model('shop', ShopSchema);
+module.exports = Shop = mongoose.model('Shop', ShopSchema);
