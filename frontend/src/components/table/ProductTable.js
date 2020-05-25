@@ -22,18 +22,6 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import { useSelector } from "react-redux";
 
-function createData(name, description, price) {
-  return { name, description, price };
-}
-
-const productList = useSelector((state) => state.profile.products);
-
-const rows = () => {
-  productList.map((product) =>
-    createData(product.name, product.description, product.price)
-  );
-};
-
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -222,6 +210,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+function createData(name, description, price) {
+  return { name, description, price };
+}
+
 export default function ProductTable() {
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
@@ -230,6 +222,16 @@ export default function ProductTable() {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+  const productList = useSelector((state) => state.profile.products);
+
+  const rows = [];
+
+  const addData = () => {
+    productList.map((product) =>
+      rows.push(createData(product.name, product.description, product.price))
+    );
+  };
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
