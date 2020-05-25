@@ -20,6 +20,9 @@ app.use('/business/product', require('./routes/api/business/product'));
 app.use('/', require('./routes/api/shopper/index'));
 app.use('/auth', require('./routes/api/shopper/auth'));
 
+//Define route for searching
+app.use('/search', require('./routes/api/search'));
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

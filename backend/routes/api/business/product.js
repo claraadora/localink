@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
 const auth = require('../../../middleware/auth');
+const checkObjectId = require('../../../middleware/checkObjectId');
 
 const Business = require('../../../models/Business');
 const Shop = require('../../../models/Shop');
@@ -78,14 +79,9 @@ router.post('/:product_id', auth, async (req, res) => {
       { $set: productFields },
       { new: true }
     );
-
-    console.log(req.params.product_id);
-    console.log(productFields);
-    console.log(await Product.findById(req.params.product_id));
-
-    //await Business.populate(profile, { path: 'shop', model: 'Shop' });
-
-    res.json(product);
+    let shop = await Shop.findOne({ _id: product.shop });
+    shop = await shop.populate('products').execPopulate();
+    res.json(shop);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
@@ -104,5 +100,37 @@ router.get('/', async (req, res) => {
     res.status(500).send('Server Error');
   }
 });
+
+// @route    DELETE business/product/:product_id
+// @desc     Delete a product
+// @access   Private
+router.delete(
+  '/:product_id',
+  [auth, checkObjectId('product_id')],
+  async (req, res) => {
+    try {
+      const product = await Product.findById(req.params.product_id);
+
+      if (!product) {
+        return res.status(401).json({ msg: 'Product not found' });
+      }
+
+      const shop = await Shop.findById(product.shop);
+
+      // Check user
+      if (shop.owner.toString() !== req.user.id) {
+        return res.status(401).json({ msg: 'User not authorized' });
+      }
+
+      await product.remove();
+      shop = await shop.populate('products').execPopulate();
+      res.json(shop);
+    } catch (err) {
+      console.error(err.message);
+
+      res.status(500).send('Server Error');
+    }
+  }
+);
 
 module.exports = router;
