@@ -12,7 +12,13 @@ const ShopperSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true
-  }
+  },
+  reviews: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Review'
+    }
+  ]
 });
 
 module.exports = Shopper = mongoose.model('Shopper', ShopperSchema);

@@ -80,7 +80,7 @@ router.post(
       await profile
         .populate({
           path: 'shop',
-          populate: { path: 'products', model: 'Product' }
+          populate: { path: 'products', model: 'Product' } //no products
         })
         .execPopulate();
 
@@ -92,14 +92,47 @@ router.post(
   }
 );
 
-// @route    POST business/profile/account-settings;
-// @desc     Update email and password (account settings)
+// @route    POST business/profile/account-settings-email;
+// @desc     Update email (account settings)
 // @access   Private
 router.post(
-  '/account-settings',
+  '/account-settings-email',
+  [auth, check('email', 'Please include a valid email').isEmail()],
+  async (req, res) => {
+    const errors = validationResult(req); //converts errors into error object
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { email } = req.body;
+
+    try {
+      let business = await Business.findOne({ _id: req.user.id });
+
+      if (!business) {
+        return res
+          .status(400)
+          .json({ errors: [{ msg: 'Invalid Credentials' }] });
+      }
+
+      business.email = email;
+      await business.save();
+
+      res.json(business);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server error');
+    }
+  }
+);
+
+// @route    POST business/profile/account-settings-password;
+// @desc     Update password (account settings)
+// @access   Private
+router.post(
+  '/account-settings-password',
   [
     auth,
-    check('email', 'Please include a valid email').isEmail(),
     check('oldPassword', 'Please enter your existing password').isLength({
       min: 6
     }),
@@ -114,7 +147,7 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { email, oldPassword, newPassword } = req.body;
+    const { oldPassword, newPassword } = req.body;
 
     try {
       let business = await Business.findOne({ _id: req.user.id });
@@ -137,8 +170,6 @@ router.post(
       const salt = await bcrypt.genSalt(10);
 
       business.password = await bcrypt.hash(newPassword, salt);
-
-      business.email = email;
 
       await business.save();
 
