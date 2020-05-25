@@ -17,7 +17,7 @@ router.get('/me', auth, async (req, res) => {
   try {
     const profile = await Business.findOne({
       _id: req.user.id
-    }).populate('shop', ['avatar', 'description', 'address']);
+    });
 
     if (!profile) {
       return res.status(400).json({ msg: 'There is no profile for this user' });
@@ -73,18 +73,7 @@ router.post(
         { new: true, upsert: true }
       );
 
-      profile.shop = shop.id;
-      await profile.save();
-
-      //await Business.populate(profile, { path: 'shop', model: 'Shop' });
-      await profile
-        .populate({
-          path: 'shop',
-          populate: { path: 'products', model: 'Product' } //no products
-        })
-        .execPopulate();
-
-      res.json(profile);
+      res.json(shop);
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server Error');

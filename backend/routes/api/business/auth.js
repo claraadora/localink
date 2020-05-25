@@ -14,13 +14,7 @@ const Business = require('../../../models/Business');
 // @return   User
 router.get('/', auth, async (req, res) => {
   try {
-    const business = await Business.findById(req.user.id).populate({
-      path: 'shop',
-      populate: [
-        { path: 'products', model: 'Product' },
-        { path: 'reviews', model: 'Review' }
-      ]
-    });
+    const business = await await Business.findById(req.user.id);
     res.json(business);
   } catch (err) {
     console.error(err.message);
