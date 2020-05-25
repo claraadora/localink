@@ -6,6 +6,8 @@ import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import { makeStyles } from "@material-ui/core/styles";
+import { useDispatch } from "react-redux";
+import { addProduct } from "../../actions/profileActions";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -42,9 +44,12 @@ export default function ProductForm() {
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
+  const dispatch = useDispatch();
+
   const onSubmit = async (e) => {
     e.preventDefault();
-    console.log("SUCCESS");
+    // eslint-disable-next-line no-restricted-globals
+    dispatch(addProduct(formData, history));
   };
 
   return (
