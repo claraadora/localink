@@ -6,6 +6,8 @@ import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import { makeStyles } from "@material-ui/core/styles";
+import { useDispatch } from "react-redux";
+import { addProduct } from "../../actions/profileActions";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -42,9 +44,12 @@ export default function ProductForm() {
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
+  const dispatch = useDispatch();
+
   const onSubmit = async (e) => {
     e.preventDefault();
-    console.log("SUCCESS");
+    // eslint-disable-next-line no-restricted-globals
+    dispatch(addProduct(formData, history));
   };
 
   return (
@@ -65,6 +70,7 @@ export default function ProductForm() {
           margin="normal"
           required
           autoFocus
+          value={name}
         />
         <TextField
           required
@@ -76,6 +82,7 @@ export default function ProductForm() {
           autoComplete="image"
           variant="outlined"
           margin="normal"
+          value={image}
           required
           fullWidth
           autoFocus
@@ -91,6 +98,7 @@ export default function ProductForm() {
           autoComplete="description"
           variant="outlined"
           margin="normal"
+          value={description}
           required
           fullWidth
           autoFocus
@@ -105,6 +113,7 @@ export default function ProductForm() {
           autoComplete="price"
           variant="outlined"
           margin="normal"
+          value={price}
           required
           fullWidth
           autoFocus
@@ -115,6 +124,7 @@ export default function ProductForm() {
           variant="contained"
           color="primary"
           className={classes.submit}
+          onSubmit={onSubmit}
         >
           Add Product
         </Button>
