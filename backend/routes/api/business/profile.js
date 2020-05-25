@@ -80,7 +80,7 @@ router.post(
       await profile
         .populate({
           path: 'shop',
-          populate: { path: 'products', model: 'Product' }
+          populate: { path: 'products', model: 'Product' } //no products
         })
         .execPopulate();
 

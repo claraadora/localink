@@ -19,6 +19,7 @@ app.use('/business/product', require('./routes/api/business/product'));
 //Define routes for shoppers
 app.use('/', require('./routes/api/shopper/index'));
 app.use('/auth', require('./routes/api/shopper/auth'));
+app.use('/review', require('./routes/api/review'));
 
 //Define route for searching
 app.use('/search', require('./routes/api/search'));

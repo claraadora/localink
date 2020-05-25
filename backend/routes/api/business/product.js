@@ -45,9 +45,11 @@ router.post(
 
       await shop.save();
 
-      shop = await shop.populate('products').execPopulate();
-
-      res.json(shop);
+      //to send updated shop:
+      // shop = await shop.populate('products').execPopulate();
+      // res.json(shop);
+      /////
+      res.json(newProduct);
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server Error');
@@ -79,22 +81,29 @@ router.post('/:product_id', auth, async (req, res) => {
       { $set: productFields },
       { new: true }
     );
-    let shop = await Shop.findOne({ _id: product.shop });
-    shop = await shop.populate('products').execPopulate();
-    res.json(shop);
+    // to send updated shop:
+    // let shop = await Shop.findOne({ _id: product.shop });
+    // shop = await shop.populate('products').execPopulate();
+    // res.json(shop);
+    ////////
+    res.json(product);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
   }
 });
 
-// @route    GET business/products
-// @desc     Get all products
-// @access   Public
-router.get('/', async (req, res) => {
+// @route    GET business/product/:business_id
+// @desc     Get all products of a business
+// @access   Private
+router.get('/:business_id', auth, async (req, res) => {
   try {
-    const products = await Product.find().populate('name'); //populate name and avatar fields in user
-    res.json(products);
+    const business = await Business.findById(req.params.business_id);
+    const shop = await Shop.findById(business.shop).populate({
+      path: 'products',
+      model: 'Product'
+    });
+    res.json(shop);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
