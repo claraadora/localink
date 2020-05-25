@@ -74,7 +74,7 @@ export default function AccountSettings() {
           <ChangeEmailForm />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          Item Two
+          <ChangePasswordForm />
         </TabPanel>
         <TabPanel value={value} index={2}>
           Item Three
