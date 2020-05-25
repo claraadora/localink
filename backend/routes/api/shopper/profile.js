@@ -10,14 +10,45 @@ const { check, validationResult } = require('express-validator');
 const Shopper = require('../../../models/Shopper');
 const Shop = require('../../../models/Shop');
 
-// @route    POST /profile/account-settings;
-// @desc     Update email and password (account settings)
+// @route    POST /profile/account-settings-email;
+// @desc     Update email (account settings)
 // @access   Private
 router.post(
-  '/account-settings',
+  '/account-settings-email',
+  [auth, check('email', 'Please include a valid email').isEmail()],
+  async (req, res) => {
+    const errors = validationResult(req); //converts errors into error object
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { email } = req.body;
+
+    try {
+      let shopper = await Shopper.findOne({ _id: req.user.id });
+
+      if (!shopper) {
+        return res
+          .status(400)
+          .json({ errors: [{ msg: 'Invalid Credentials' }] });
+      }
+
+      shopper.email = email;
+      await shopper.save();
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server error');
+    }
+  }
+);
+
+// @route    POST /profile/account-settings-password;
+// @desc     Update password (account settings)
+// @access   Private
+router.post(
+  '/account-settings-password',
   [
     auth,
-    check('email', 'Please include a valid email').isEmail(),
     check('oldPassword', 'Please enter your existing password').isLength({
       min: 6
     }),
@@ -32,7 +63,7 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { email, oldPassword, newPassword } = req.body;
+    const { oldPassword, newPassword } = req.body;
 
     try {
       let shopper = await Shopper.findOne({ _id: req.user.id });
@@ -54,9 +85,7 @@ router.post(
 
       const salt = await bcrypt.genSalt(10);
 
-      business.password = await bcrypt.hash(newPassword, salt);
-
-      shopper.email = email;
+      shopper.password = await bcrypt.hash(newPassword, salt);
 
       await shopper.save();
 
@@ -82,5 +111,4 @@ router.post(
     }
   }
 );
-
 module.exports = router;
