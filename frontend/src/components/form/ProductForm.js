@@ -1,103 +1,124 @@
-import React from "react";
+import React, { useState } from "react";
+import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
+import { makeStyles } from "@material-ui/core/styles";
 
-export default function ProfileForm() {
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    marginTop: theme.spacing(10),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    marginLeft: theme.spacing(30),
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: "100%", // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+}));
+
+export default function ProductForm() {
+  const classes = useStyles();
+
+  const [formData, setFormData] = useState({
+    name: "",
+    image: "",
+    description: "",
+    price: "",
+  });
+  const { name, image, description, price } = formData;
+
+  const onChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    console.log("SUCCESS");
+  };
+
   return (
-    <React.Fragment>
+    <div className={classes.paper}>
       <Typography variant="h6" gutterBottom>
-        Shipping address
+        Add Product
       </Typography>
-      <Grid container spacing={3}>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            id="firstName"
-            name="firstName"
-            label="First name"
-            fullWidth
-            autoComplete="given-name"
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            id="lastName"
-            name="lastName"
-            label="Last name"
-            fullWidth
-            autoComplete="family-name"
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            required
-            id="address1"
-            name="address1"
-            label="Address line 1"
-            fullWidth
-            autoComplete="shipping address-line1"
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            id="address2"
-            name="address2"
-            label="Address line 2"
-            fullWidth
-            autoComplete="shipping address-line2"
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            id="city"
-            name="city"
-            label="City"
-            fullWidth
-            autoComplete="shipping address-level2"
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            id="state"
-            name="state"
-            label="State/Province/Region"
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            id="zip"
-            name="zip"
-            label="Zip / Postal code"
-            fullWidth
-            autoComplete="shipping postal-code"
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            id="country"
-            name="country"
-            label="Country"
-            fullWidth
-            autoComplete="shipping country"
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <FormControlLabel
-            control={
-              <Checkbox color="secondary" name="saveAddress" value="yes" />
-            }
-            label="Use this address for payment details"
-          />
-        </Grid>
-      </Grid>
-    </React.Fragment>
+      <form className={classes.form} onSubmit={onSubmit}>
+        <TextField
+          required
+          id="name"
+          name="name"
+          label="Name of product"
+          fullWidth
+          onChange={onChange}
+          autoComplete="name"
+          variant="outlined"
+          margin="normal"
+          required
+          autoFocus
+        />
+        <TextField
+          required
+          id="image"
+          name="image"
+          label="Image"
+          fullWidth
+          onChange={onChange}
+          autoComplete="image"
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          autoFocus
+        />
+
+        <TextField
+          required
+          id="description"
+          name="description"
+          label="Product Description"
+          fullWidth
+          onChange={onChange}
+          autoComplete="description"
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          autoFocus
+        />
+
+        <TextField
+          id="price"
+          name="price"
+          label="Price"
+          fullWidth
+          onChange={onChange}
+          autoComplete="price"
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          autoFocus
+        />
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          color="primary"
+          className={classes.submit}
+        >
+          Add Product
+        </Button>
+      </form>
+    </div>
   );
 }
