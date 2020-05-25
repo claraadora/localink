@@ -1,4 +1,5 @@
 import authConstants from "../constants/authConstants";
+import profileConstants from "../constants/profileConstants";
 import { setAlert } from "../actions/alertActions";
 import { createBrowserHistory } from "history";
 import axios from "axios";
@@ -59,6 +60,7 @@ export const login = (email, password) => async (dispatch) => {
 //Defines the definite success of logout action
 export const logout = () => (dispatch) => {
   dispatch({ type: authConstants.LOGOUT });
+  dispatch({ type: profileConstants.CLEAR_PROFILE });
 };
 
 //Register user

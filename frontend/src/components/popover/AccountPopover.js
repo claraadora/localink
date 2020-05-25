@@ -3,8 +3,8 @@ import Popover from "@material-ui/core/Popover";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import { BrowserRouter as Router } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { Link as RouterLink, BrowserRouter as Router } from "react-router-dom";
+import { MenuItem, MenuList } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   popover: {
@@ -21,6 +21,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const LinkBehavior = React.forwardRef((props, ref) => (
+  <RouterLink ref={ref} to="/getting-started/installation/" {...props} />
+));
+
 export default function AccountPopover() {
   const classes = useStyles();
   const popoverAnchor = useRef(null);
@@ -36,7 +40,7 @@ export default function AccountPopover() {
 
   return (
     <div>
-      <Button
+      <Typography
         ref={popoverAnchor}
         aria-owns="mouse-over-popover"
         aria-haspopup="true"
@@ -44,8 +48,8 @@ export default function AccountPopover() {
         onMouseEnter={handlePopoverEnter}
         onMouseLeave={handlePopoverLeave}
       >
-        <Typography>Account</Typography>
-      </Button>
+        Account
+      </Typography>
       <Popover
         id="mouse-over-popover"
         className={classes.popover}
@@ -69,13 +73,14 @@ export default function AccountPopover() {
         }}
       >
         <Router>
-          <Button component={Link} to="/business/account/profile">
-            Store Profile
-          </Button>
-          <br />
-          <Button component={Link} to="/business/account/settings">
-            Account Settings
-          </Button>
+          <MenuList>
+            <MenuItem component={RouterLink} to="/business/account/profile">
+              Store Profile
+            </MenuItem>
+            <MenuItem component={RouterLink} to="/business/account/settings">
+              Account Settings
+            </MenuItem>
+          </MenuList>
         </Router>
       </Popover>
     </div>
