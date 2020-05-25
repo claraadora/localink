@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import { createProfile, getCurrentProfile } from "../../actions/profileActions";
 import { useSelector, useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
 
 const initialState = {
   shopName: "",
@@ -14,10 +17,22 @@ const initialState = {
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(10),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    marginLeft: theme.spacing(30),
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: "100%", // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
   },
 }));
 
@@ -42,13 +57,7 @@ const ProfileForm = () => {
     }
   }, [loading]);
 
-  const {
-    shopName,
-    shopDescription,
-    email,
-    profilePic,
-    businessAddress,
-  } = formData;
+  const { shopName, shopDescription, profilePic, businessAddress } = formData;
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -61,52 +70,74 @@ const ProfileForm = () => {
 
   return (
     <div className={classes.paper}>
-      <h1 className="large text-primary">Edit Your Profile</h1>
-      <p className="lead">
-        <i className="fas fa-user" /> Add some changes to your profile
-      </p>
-      <small>* = required field</small>
-      <form className="form" onSubmit={onSubmit}>
-        <div className="form-group">
-          <input
-            type="text"
-            placeholder="Shop Name"
-            name="shopName"
-            value={shopName}
-            onChange={onChange}
-          />
-          <small className="form-text">
-            Could be your own company or one you work for
-          </small>
-        </div>
-        <div className="form-group">
-          <input
-            type="text"
-            placeholder="Shop Description"
-            name="shopDescription"
-            value={shopDescription}
-            onChange={onChange}
-          />
-          <small className="form-text">
-            Could be your own or a company website
-          </small>
-        </div>
-        <div className="form-group">
-          <input
-            type="text"
-            placeholder="Email address"
-            name="email"
-            value={email}
-            onChange={onChange}
-          />
-          <small className="form-text">
-            City & state suggested (eg. Boston, MA)
-          </small>
-        </div>
-        <input type="submit" className="btn btn-primary my-1" />
+      <Typography variant="h6" gutterBottom>
+        Profile
+      </Typography>
+      <form className={classes.form} onSubmit={onSubmit}>
+        <TextField
+          required
+          id="shopName"
+          name="shopName"
+          label="Shop Name"
+          fullWidth
+          onChange={onChange}
+          autoComplete="shopName"
+          variant="outlined"
+          margin="normal"
+          required
+          autoFocus
+        />
+        <TextField
+          required
+          id="shopDescription"
+          name="shopDescription"
+          label="Shop Description"
+          fullWidth
+          onChange={onChange}
+          autoComplete="shopDescription"
+          variant="outlined"
+          margin="normal"
+          required
+          autoFocus
+        />
+        <TextField
+          required
+          id="profilePic"
+          name="profilePic"
+          label="Profile Picture"
+          fullWidth
+          onChange={onChange}
+          autoComplete="profilePic"
+          variant="outlined"
+          margin="normal"
+          required
+          autoFocus
+        />
+        <TextField
+          required
+          id="businessAddress"
+          name="businessAddress"
+          label="Business Address"
+          fullWidth
+          onChange={onChange}
+          autoComplete="businessAddress"
+          variant="outlined"
+          margin="normal"
+          required
+          autoFocus
+        />
         <Link className="btn btn-light my-1" to="/dashboard">
           Go Back
         </Link>
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          color="primary"
+          className={classes.submit}
+        >
+          Update Profile
+        </Button>
       </form>
     </div>
   );
