@@ -11,8 +11,8 @@ const initialState = {
   shopName: "",
   shopDescription: "",
   email: "",
-  profilePic: null,
-  businessAddress: null,
+  profilePic: "",
+  businessAddress: "",
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -79,6 +79,7 @@ const ProfileForm = () => {
           id="shopName"
           name="shopName"
           label="Shop Name"
+          value={shopName}
           fullWidth
           onChange={onChange}
           autoComplete="shopName"
@@ -94,6 +95,7 @@ const ProfileForm = () => {
           label="Shop Description"
           fullWidth
           onChange={onChange}
+          value={shopDescription}
           autoComplete="shopDescription"
           variant="outlined"
           margin="normal"
@@ -107,6 +109,7 @@ const ProfileForm = () => {
           label="Profile Picture"
           fullWidth
           onChange={onChange}
+          value={profilePic}
           autoComplete="profilePic"
           variant="outlined"
           margin="normal"
@@ -120,6 +123,7 @@ const ProfileForm = () => {
           label="Business Address"
           fullWidth
           onChange={onChange}
+          value={businessAddress}
           autoComplete="businessAddress"
           variant="outlined"
           margin="normal"

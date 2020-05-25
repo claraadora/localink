@@ -70,6 +70,7 @@ export default function ProductForm() {
           margin="normal"
           required
           autoFocus
+          value={name}
         />
         <TextField
           required
@@ -81,6 +82,7 @@ export default function ProductForm() {
           autoComplete="image"
           variant="outlined"
           margin="normal"
+          value={image}
           required
           fullWidth
           autoFocus
@@ -96,6 +98,7 @@ export default function ProductForm() {
           autoComplete="description"
           variant="outlined"
           margin="normal"
+          value={description}
           required
           fullWidth
           autoFocus
@@ -110,6 +113,7 @@ export default function ProductForm() {
           autoComplete="price"
           variant="outlined"
           margin="normal"
+          value={price}
           required
           fullWidth
           autoFocus
@@ -120,6 +124,7 @@ export default function ProductForm() {
           variant="contained"
           color="primary"
           className={classes.submit}
+          onSubmit={onSubmit}
         >
           Add Product
         </Button>
