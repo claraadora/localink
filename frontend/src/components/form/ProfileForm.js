@@ -42,13 +42,7 @@ const ProfileForm = () => {
     }
   }, [loading]);
 
-  const {
-    shopName,
-    shopDescription,
-    email,
-    profilePic,
-    businessAddress,
-  } = formData;
+  const { shopName, shopDescription, profilePic, businessAddress } = formData;
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -89,18 +83,6 @@ const ProfileForm = () => {
           />
           <small className="form-text">
             Could be your own or a company website
-          </small>
-        </div>
-        <div className="form-group">
-          <input
-            type="text"
-            placeholder="Email address"
-            name="email"
-            value={email}
-            onChange={onChange}
-          />
-          <small className="form-text">
-            City & state suggested (eg. Boston, MA)
           </small>
         </div>
         <input type="submit" className="btn btn-primary my-1" />

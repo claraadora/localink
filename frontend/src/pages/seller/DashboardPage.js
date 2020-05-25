@@ -5,7 +5,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import ProductTable from "../../components/table/ProductTable";
-import ProductAddForm from "../../components/form/ProductAddForm";
+import ProductForm from "../../components/form/ProductForm";
 import ProfileForm from "../../components/form/ProfileForm";
 
 const drawerWidth = 200;

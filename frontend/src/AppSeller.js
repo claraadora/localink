@@ -14,7 +14,9 @@ import {
 import { Grid } from "@material-ui/core";
 import PrivateRoute from "./routing/PrivateRoute";
 import ProductTable from "./components/table/ProductTable";
+import ProductForm from "./components/form/ProductForm";
 import ProfileForm from "./components/form/ProfileForm";
+import AccountSettings from "./components/tabs/AccountSettings";
 import { useSelector } from "react-redux";
 
 function AppSeller() {
@@ -56,6 +58,16 @@ function AppSeller() {
                 exact
                 path="/business/account/profile"
                 component={ProfileForm}
+              />
+              <Route
+                exact
+                path="/business/account/settings"
+                component={AccountSettings}
+              />
+              <Route
+                exact
+                path="/business/product/add"
+                component={ProductForm}
               />
             </Switch>
           </Router>
