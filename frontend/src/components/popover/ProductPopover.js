@@ -3,7 +3,8 @@ import Popover from "@material-ui/core/Popover";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import { Link, BrowserRouter as Router } from "react-router-dom";
+import { Link as RouterLink, BrowserRouter as Router } from "react-router-dom";
+import { MenuList, MenuItem } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   popover: {
@@ -35,7 +36,7 @@ export default function ProductPopover() {
 
   return (
     <div>
-      <Button
+      <Typography
         ref={popoverAnchor}
         aria-owns="mouse-over-popover"
         aria-haspopup="true"
@@ -44,7 +45,7 @@ export default function ProductPopover() {
         onMouseLeave={handlePopoverLeave}
       >
         <Typography>Products</Typography>
-      </Button>
+      </Typography>
       <Popover
         id="mouse-over-popover"
         className={classes.popover}
@@ -68,13 +69,14 @@ export default function ProductPopover() {
         }}
       >
         <Router>
-          <Button component={Link} to="/business/product/manage">
-            Manage Products
-          </Button>
-          <br />
-          <Button component={Link} to="/business/product/add">
-            Add Product
-          </Button>
+          <MenuList>
+            <MenuItem component={RouterLink} to="/business/product/manage">
+              Manage Products
+            </MenuItem>
+            <MenuItem component={RouterLink} to="/business/product/add">
+              Add Product
+            </MenuItem>
+          </MenuList>
         </Router>
       </Popover>
     </div>

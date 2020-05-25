@@ -219,7 +219,10 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 100,
   },
   paper: {
-    padding: theme.spacing(2),
+    marginTop: theme.spacing(8),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   table: {
     width: 300,
@@ -299,8 +302,9 @@ export default function ProductTable() {
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
+  console.log("this is rendered");
   return (
-    <div className={classes.root}>
+    <div className={classes.paper}>
       <Paper className={classes.paper}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>

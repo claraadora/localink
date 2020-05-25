@@ -19,6 +19,8 @@ import ProductMenu from "../menu/ProductMenu";
 import ProductPopover from "../popover/ProductPopover";
 import AccountPopover from "../popover/AccountPopover";
 import lightBlue from "@material-ui/core/colors/lightBlue";
+import MenuList from "@material-ui/core/MenuList";
+import MenuItem from "@material-ui/core/MenuItem";
 
 const drawerWidth = 200;
 
@@ -91,10 +93,15 @@ export default function ClippedDrawer() {
       >
         <Toolbar />
         <div className={classes.drawerContainer}>
-          <List>
-            <ProductPopover />
-            <AccountPopover />
-          </List>
+          <MenuList>
+            <MenuItem>
+              <ProductPopover />
+            </MenuItem>
+            <MenuItem>
+              <AccountPopover />
+            </MenuItem>
+          </MenuList>
+          <MenuItem></MenuItem>
         </div>
       </Drawer>
     </div>
