@@ -46,6 +46,11 @@ router.post(
 
       shop.reviews.unshift(newReview);
 
+      const numOfReviews = shop.reviews.length;
+      const currentShopRating = shop.ratings ? shop.ratings : 0;
+      const newRating = (currentShopRating + newReview.rating) / numOfReviews;
+      shop.ratings = newRating;
+
       await shop.save();
 
       shop = await shop.populate('reviews').execPopulate();
