@@ -4,7 +4,7 @@ import profileConstants from "../constants/profileConstants";
 
 export const getCurrentProfile = () => async (dispatch) => {
   try {
-    const res = await axios.get("/api/profile/me");
+    const res = await axios.get("/business/profile/me");
 
     dispatch({
       type: profileConstants.GET_PROFILE,
@@ -31,7 +31,7 @@ export const createProfile = (formData, history, edit = false) => async (
       },
     };
 
-    const res = await axios.post("api/profile", formData, config);
+    const res = await axios.post("/business/profile", formData, config);
 
     dispatch({
       type: profileConstants.GET_PROFILE,
@@ -68,7 +68,7 @@ export const addProduct = (formData, history) => async (dispatch) => {
       },
     };
 
-    const res = await axios.post("api/profile/product", formData, config);
+    const res = await axios.post("/business/product", formData, config);
 
     dispatch({
       type: profileConstants.UPDATE_PROFILE,
@@ -102,7 +102,7 @@ export const deleteProduct = (id) => async (dispatch) => {
       },
     };
 
-    const res = await axios.delete(`api/profile/product/${id}`, config);
+    const res = await axios.delete(`/business/product/${id}`, config);
 
     dispatch({
       type: profileConstants.UPDATE_PROFILE,
@@ -126,3 +126,23 @@ export const deleteProduct = (id) => async (dispatch) => {
     });
   }
 };
+
+/* edit product
+post to /business/product/id
+*/
+
+/* change email 
+post to /business/profile/account-settings-email
+*/
+
+/* change password 
+post to /business/profile/account-settings-password
+*/
+
+/* create reviews
+post /review
+*/
+
+/* search
+post /search
+*/

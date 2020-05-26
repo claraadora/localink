@@ -1,5 +1,5 @@
 {
-  "name": "a",
+  "name": "client",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -53,5 +53,6 @@
   "devDependencies": {
     "redux-devtools": "^3.5.0",
     "redux-devtools-extension": "^2.13.8"
-  }
+  },
+  "proxy": "http://localhost:3000"
 }
