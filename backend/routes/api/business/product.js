@@ -28,8 +28,17 @@ router.post(
     }
 
     try {
-      const profile = await Business.findById(req.user.id);
-      let shop = await Shop.findById(profile.shop);
+      //const profile = await Business.findById(req.user.id);
+      // let shop = await Shop.findById(profile.shop);
+      let shop = await Shop.findOne({
+        owner: req.user.id
+      });
+
+      if (!shop) {
+        console.log(
+          'shop not found, please create shop first before adding products'
+        );
+      }
 
       const newProduct = new Product({
         shop: shop.id,
@@ -45,11 +54,8 @@ router.post(
 
       await shop.save();
 
-      //to send updated shop:
-      // shop = await shop.populate('products').execPopulate();
-      // res.json(shop);
-      /////
-      res.json(newProduct);
+      shop = await shop.populate('products').execPopulate();
+      res.json(shop);
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server Error');
@@ -81,29 +87,28 @@ router.post('/:product_id', auth, async (req, res) => {
       { $set: productFields },
       { new: true }
     );
-    // to send updated shop:
-    // let shop = await Shop.findOne({ _id: product.shop });
-    // shop = await shop.populate('products').execPopulate();
-    // res.json(shop);
-    ////////
-    res.json(product);
+
+    let shop = await Shop.findOne({ _id: product.shop });
+    shop = await shop.populate('products').execPopulate();
+    res.json(shop);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
   }
 });
 
-// @route    GET business/product/:business_id
+// @route    GET business/product
 // @desc     Get all products of a business
 // @access   Private
-router.get('/:business_id', auth, async (req, res) => {
+// @return   Array of products
+router.get('/', auth, async (req, res) => {
   try {
-    const business = await Business.findById(req.params.business_id);
-    const shop = await Shop.findById(business.shop).populate({
+    //const business = await Business.findById(req.params.business_id);
+    const shop = await Shop.findOne({ owner: req.user.id }).populate({
       path: 'products',
       model: 'Product'
     });
-    res.json(shop);
+    res.json(shop.products);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
@@ -124,7 +129,7 @@ router.delete(
         return res.status(401).json({ msg: 'Product not found' });
       }
 
-      const shop = await Shop.findById(product.shop);
+      let shop = await Shop.findById(product.shop);
 
       // Check user
       if (shop.owner.toString() !== req.user.id) {

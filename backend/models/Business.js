@@ -12,11 +12,11 @@ const BusinessSchema = new mongoose.Schema({
   shopName: {
     type: String,
     required: true
-  },
-  shop: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Shop'
   }
+  // shop: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: 'Shop'
+  // }
 });
 
 module.exports = Business = mongoose.model('Business', BusinessSchema);

@@ -12,7 +12,7 @@ const Review = require('../../models/Review');
 // @route    POST /review
 // @desc     Create a review
 // @access   Private
-// @user     Shopper
+// @user     Shopper -> middleware to check that user is not business
 router.post(
   '/',
   [
@@ -46,14 +46,15 @@ router.post(
 
       shop.reviews.unshift(newReview);
 
+      const numOfReviews = shop.reviews.length;
+      const currentShopRating = shop.ratings ? shop.ratings : 0;
+      const newRating = (currentShopRating + newReview.rating) / numOfReviews;
+      shop.ratings = newRating;
+
       await shop.save();
 
-      //   to send updated shop:
-      //   shop = await shop.populate('reviews').execPopulate();
-      //   res.json(shop);
-      /////////
-
-      res.json(newReview);
+      shop = await shop.populate('reviews').execPopulate();
+      res.json(shop);
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server Error');
@@ -61,18 +62,20 @@ router.post(
   }
 );
 
-// @route    GET /review/business/:business_id
+// @route    GET /review/business
 // @desc     Get all reviews of a business
 // @access   Private
+// @return   Array of reviews
 // @user     Business
-router.get('/business/:business_id', auth, async (req, res) => {
+router.get('/business', auth, async (req, res) => {
   try {
-    const business = await Business.findById(req.params.business_id);
-    const shop = await Shop.findById(business.shop).populate({
+    const shop = await Shop.findOne({
+      owner: req.user.id
+    }).populate({
       path: 'reviews',
       model: 'Review'
     });
-    res.json(shop);
+    res.json(shop.reviews);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
