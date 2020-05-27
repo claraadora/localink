@@ -7,7 +7,7 @@ import { ThemeProvider } from "@material-ui/core/styles";
 import { loadUser } from "./actions/authActions";
 import store from "./store";
 import setAuthToken from "./utils/setAuthToken";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -20,10 +20,13 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <ThemeProvider theme={theme}>
+      <Switch>
         <Route path="/business" component={AppSeller} />
-        <Route path="/" component={AppShopper} />
-      </ThemeProvider>
+
+        <ThemeProvider theme={theme}>
+          <Route component={AppShopper} />
+        </ThemeProvider>
+      </Switch>
     </BrowserRouter>
   );
 }

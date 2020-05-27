@@ -10,6 +10,7 @@ import Menu from "@material-ui/core/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import Button from "@material-ui/core/Button";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
