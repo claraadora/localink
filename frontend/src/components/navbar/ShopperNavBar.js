@@ -64,40 +64,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ShopperNavBar() {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const isMenuOpen = Boolean(anchorEl);
-
-  const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
-
-  const menuId = "primary-search-account-menu";
-
-  //Profile dropdown
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>
-        <Button color="inherit" href="/profile">
-          Manage My Account
-        </Button>
-      </MenuItem>
-      <MenuItem onClick={handleMenuClose}>Settings</MenuItem>
-    </Menu>
-  );
-
   return (
     <div className={classes.grow}>
       <AppBar position="static">
@@ -136,7 +102,6 @@ export default function ShopperNavBar() {
           </Button>
         </Toolbar>
       </AppBar>
-      {renderMenu}
     </div>
   );
 }
