@@ -67,12 +67,6 @@ export default function ShopperNavBar() {
     <div className={classes.grow}>
       <AppBar position="static">
         <Toolbar className={classes.toolbar}>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="open drawer"
-          ></IconButton>
           <Button color="inherit" href="/">
             <Typography variant="h1">localink</Typography>
           </Button>

@@ -25,11 +25,10 @@ import { ThemeProvider } from "@material-ui/core/styles";
 function AppSeller() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
-  if (isAuthenticated) {
-    return <Redirect to="/business/dashboard" />;
-  }
+  // if (isAuthenticated) {
+  //   return <Redirect to="/business/dashboard" />;
+  // }
 
-  console.log("rendering appseller");
   return (
     <ThemeProvider theme={themeSeller}>
       <Grid container direction="column">
