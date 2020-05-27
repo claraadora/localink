@@ -64,13 +64,15 @@ export const logout = () => (dispatch) => {
 };
 
 //Register user
-export const signup = ({ name, email, password }) => async (dispatch) => {
+export const signup = ({ shopName, email, password }) => async (dispatch) => {
   const config = {
     headers: {
       "Content-Type": "application/json",
     },
   };
-  const body = JSON.stringify({ name, email, password });
+  const body = JSON.stringify({ shopName, email, password });
+  console.log("here" + body);
+  console.log(shopName);
 
   try {
     const res = await axios.post("/business", body, config); // api/users
@@ -81,8 +83,8 @@ export const signup = ({ name, email, password }) => async (dispatch) => {
     });
 
     dispatch(loadUser());
-  } catch (error) {
-    const errors = error.response.data.errors;
+  } catch (err) {
+    const errors = err.response.data.errors;
 
     if (errors) {
       errors.forEach((error) => dispatch(setAlert(error.message, "danger")));
