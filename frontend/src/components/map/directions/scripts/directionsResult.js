@@ -1,18 +1,19 @@
 function initMap() {
-  //   var startPoints = ['los angeles, ca', 'san bernardino, ca', 'barstow, ca'];
-  //   var endPoints = ['san bernardino, ca', 'barstow, ca', 'winona, az'];
-  var startPoints = ['los angeles, ca'];
-  var endPoints = ['san bernardino'];
+  const startPoints = ['los angeles, ca', 'san bernardino, ca', 'barstow, ca'];
+  const endPoints = ['san bernardino, ca', 'barstow, ca', 'winona, az'];
+  //   const startPoints = ['los angeles, ca'];
+  //   const endPoints = ['san bernardino'];
+  const colors = ['#ff99ff', '#99c2ff', '#ff8080', '#ff8c1a'];
 
-  var directionsService = new google.maps.DirectionsService();
-  var map = new google.maps.Map(document.getElementById('map'), {
+  const directionsService = new google.maps.DirectionsService();
+  const map = new google.maps.Map(document.getElementById('map'), {
     zoom: 7,
     center: { lat: 41.85, lng: -87.65 }
   });
 
-  var i;
+  let i;
   for (i = 0; i < startPoints.length; i++) {
-    var directionsRenderer = new google.maps.DirectionsRenderer({
+    const directionsRenderer = new google.maps.DirectionsRenderer({
       map: map
     });
     calculateAndDisplayRoute(directionsService, directionsRenderer, i);
@@ -34,15 +35,25 @@ function initMap() {
       {
         origin: { query: startPoints[i] },
         destination: { query: endPoints[i] },
-        travelMode: 'TRANSIT',
+        travelMode: 'DRIVING',
         provideRouteAlternatives: true
       },
       function (response, status) {
         if (status === 'OK') {
-          var directionsDisplay = new google.maps.DirectionsRenderer({
-            map: map
-          });
-          directionsRenderer.setDirections(response);
+          for (let i = 0; i < response.routes.length; i++) {
+            new google.maps.DirectionsRenderer({
+              polylineOptions: {
+                strokeColor: colors[i % (colors.length - 1)]
+              },
+              map: map,
+              directions: response,
+              routeIndex: i
+            });
+          }
+          //   var directionsDisplay = new google.maps.DirectionsRenderer({
+          //     map: map
+          //   });
+          //   directionsRenderer.setDirections(response);
         } else {
           window.alert('Directions request failed due to ' + status);
         }

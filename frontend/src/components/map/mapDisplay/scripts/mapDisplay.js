@@ -1,5 +1,5 @@
 function initMap() {
-  var locations = [
+  const locations = [
     [
       'Bondi Beach<br>\
     801 S Hope St A, Los Angeles, CA 90017<br>\
@@ -43,16 +43,16 @@ function initMap() {
   ];
 
   //   var center = { lat: 1.3521, lng: 103.8198 };
-  var center = { lat: -33.92, lng: 151.25 };
+  const center = { lat: -33.92, lng: 151.25 };
 
-  var map = new google.maps.Map(document.getElementById('map'), {
+  const map = new google.maps.Map(document.getElementById('map'), {
     center: center,
     zoom: 10 //12
   });
 
-  var infowindow = new google.maps.InfoWindow({});
+  const infowindow = new google.maps.InfoWindow({});
 
-  var marker, i;
+  let marker, i;
 
   for (i = 0; i < locations.length; i++) {
     marker = new google.maps.Marker({
