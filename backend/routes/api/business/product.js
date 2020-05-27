@@ -42,9 +42,9 @@ router.post(
 
       const newProduct = new Product({
         shop: shop.id,
-        name: req.body.name,
+        shopName: req.body.shopName,
         image: req.body.image,
-        description: req.body.description,
+        shopDescription: req.body.shopDescription,
         price: req.body.price
       });
 
@@ -71,12 +71,12 @@ router.post('/:product_id', auth, async (req, res) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-  const { name, image, description, price } = req.body;
+  const { shopName, image, shopDescription, price } = req.body;
 
   const productFields = {
-    name,
+    shopName,
     image,
-    description,
+    shopDescription,
     price
   };
 
