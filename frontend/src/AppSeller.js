@@ -1,35 +1,35 @@
-import React from "react";
-import SellerLandingPage from "./pages/seller/LandingPage";
-import SellerLogInPage from "./pages/seller/LogInPage";
-import SellerSignUpPage from "./pages/seller/SignUpPage";
-import SellerDashboardPage from "./pages/seller/DashboardPage";
-import NavBar from "./components/navbar/NavBar";
-import Alert from "./components/Alert";
+import React from 'react';
+import SellerLandingPage from './pages/seller/LandingPage';
+import SellerLogInPage from './pages/seller/LogInPage';
+import SellerSignUpPage from './pages/seller/SignUpPage';
+import SellerDashboardPage from './pages/seller/DashboardPage';
+import NavBar from './components/navbar/NavBar';
+import Alert from './components/Alert';
 import {
   BrowserRouter as Router,
   Route,
   Switch,
-  Redirect,
-} from "react-router-dom";
-import { Grid } from "@material-ui/core";
-import PrivateRoute from "./routing/PrivateRoute";
-import ProductTable from "./components/table/ProductTable";
-import ProductForm from "./components/form/ProductForm";
-import ProfileForm from "./components/form/ProfileForm";
-import AccountSettings from "./components/tabs/AccountSettings";
-import { useSelector } from "react-redux";
+  Redirect
+} from 'react-router-dom';
+import { Grid } from '@material-ui/core';
+import PrivateRoute from './routing/PrivateRoute';
+import ProductTable from './components/table/ProductTable';
+import ProductForm from './components/form/ProductForm';
+import ProfileForm from './components/form/ProfileForm';
+import AccountSettings from './components/tabs/AccountSettings';
+import { useSelector } from 'react-redux';
 
 function AppSeller() {
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
 
   if (isAuthenticated) {
-    return <Redirect to="/business/dashboard" />;
+    return <Redirect to='/business/dashboard' />;
   }
   return (
-    <Grid container direction="column">
-      <Grid item>
+    <Grid container direction='column'>
+      {/* <Grid item>
         <NavBar isShopper={false} />
-      </Grid>
+      </Grid> */}
       <Grid item xs={8}></Grid>
       <Grid item container>
         <Grid item xs={0} sm={1} />
@@ -37,36 +37,36 @@ function AppSeller() {
           <Alert />
           <Router>
             <Switch>
-              <Route exact path="/business/login" component={SellerLogInPage} />
+              <Route exact path='/business/login' component={SellerLogInPage} />
               <Route
                 exact
-                path="/business/signup"
+                path='/business/signup'
                 component={SellerSignUpPage}
               />
-              <Route exact path="/business/" component={SellerLandingPage} />
+              <Route exact path='/business/' component={SellerLandingPage} />
               <Route
                 exact
-                path="/business/dashboard"
+                path='/business/dashboard'
                 component={SellerDashboardPage}
               />
               <Route
                 exact
-                path="/business/product/manage"
+                path='/business/product/manage'
                 component={ProductTable}
               />
               <Route
                 exact
-                path="/business/account/profile"
+                path='/business/account/profile'
                 component={ProfileForm}
               />
               <Route
                 exact
-                path="/business/account/settings"
+                path='/business/account/settings'
                 component={AccountSettings}
               />
               <Route
                 exact
-                path="/business/product/add"
+                path='/business/product/add'
                 component={ProductForm}
               />
             </Switch>
