@@ -3,7 +3,6 @@ import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import ProductTable from "../../components/table/ProductTable";
 import ProductForm from "../../components/form/ProductForm";
 import ProfileForm from "../../components/form/ProfileForm";

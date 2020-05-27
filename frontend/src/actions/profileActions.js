@@ -139,10 +139,12 @@ post to /business/profile/account-settings-email
 post to /business/profile/account-settings-password
 */
 
-/* create reviews
+/* create reviews 
 post /review
 */
 
-/* search
+/* search --> i need to pass query
 post /search
 */
+
+//mongodb+srv://<username>:<password>@cluster0-fs9b0.mongodb.net/test?retryWrites=true&w=majority

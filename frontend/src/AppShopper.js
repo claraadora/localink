@@ -8,35 +8,31 @@ import ShopperProfilePage from "./pages/shopper/ProfilePage";
 import ShopperCataloguePage from "./pages/shopper/CataloguePage";
 import NavBar from "./components/navbar/NavBar";
 import Alert from "./components/Alert";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { Grid } from "@material-ui/core";
 import PrivateRoute from "./routing/PrivateRoute";
 
 function AppShopper() {
   return (
-    <Router>
-      <Grid container direction="column">
-        <Grid item>
-          <NavBar />
-        </Grid>
-        <Grid item xs={8}></Grid>
-        <Grid item container>
-          <Grid item xs={0} sm={1} />
-          <Grid item xs={12} sm={10}>
-            <Alert />
-            <Switch>
-              <Route exact path="/login" component={ShopperLogInPage} />
-              <Route exact path="/signup" component={ShopperSignUpPage} />
-              <Route exact path="/search" component={ShopperSearchPage} />
-              <Route exact path="/profile" component={ShopperProfilePage} />
-              <Route exact path="/catalogue" component={ShopperCataloguePage} />
-              <Route exact path="/" component={ShopperLandingPage} />
-            </Switch>
-          </Grid>
-          <Grid item xs={0} sm={1} />
-        </Grid>
+    <Grid container direction="column">
+      <Grid item>
+        <NavBar />
       </Grid>
-    </Router>
+      <Grid item xs={8}></Grid>
+      <Grid item container>
+        <Grid item xs={0} sm={1} />
+        <Grid item xs={12} sm={10}>
+          <Alert />
+          <Route exact path="/login" component={ShopperLogInPage} />
+          <Route exact path="/signup" component={ShopperSignUpPage} />
+          <Route exact path="/search" component={ShopperSearchPage} />
+          <Route exact path="/profile" component={ShopperProfilePage} />
+          <Route exact path="/catalogue" component={ShopperCataloguePage} />
+          <Route exact path="/" component={ShopperLandingPage} />
+        </Grid>
+        <Grid item xs={0} sm={1} />
+      </Grid>
+    </Grid>
   );
 }
 
