@@ -1,3 +1,6 @@
+//send post request with "search": [user input]
+//get back JSON object {shop: product}, lets call this searchResult
+
 function initMap() {
   const locations = [
     [
@@ -67,6 +70,16 @@ function initMap() {
         return function () {
           infowindow.setContent(locations[i][0]); //set store info here
           infowindow.open(map, marker);
+        };
+      })(marker, i)
+    );
+
+    google.maps.event.addListener(
+      marker,
+      'mouseout',
+      (function (marker, i) {
+        return function () {
+          infowindow.close();
         };
       })(marker, i)
     );
