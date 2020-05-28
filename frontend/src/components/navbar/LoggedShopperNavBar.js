@@ -11,6 +11,8 @@ import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
+import { logout } from "../../actions/authActions";
+import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -65,38 +67,17 @@ const useStyles = makeStyles((theme) => ({
 export default function SellerNavBar() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const dispatch = useDispatch();
 
-  const isMenuOpen = Boolean(anchorEl);
-
-  const handleProfileMenuOpen = (event) => {
+  const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleMenuClose = () => {
+  const handleClose = () => {
     setAnchorEl(null);
   };
-
   const menuId = "primary-search-account-menu";
-
-  //Profile dropdown
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>
-        <Button color="inherit" href="/profile" disableRipple={true}>
-          Manage My Account
-        </Button>
-      </MenuItem>
-      <MenuItem onClick={handleMenuClose}>Settings</MenuItem>
-    </Menu>
-  );
 
   return (
     <div className={classes.grow}>
@@ -119,7 +100,12 @@ export default function SellerNavBar() {
             />
           </div>
           <div className={classes.grow} />
-          <Button color="inherit" component={Link} to="/business">
+          <Button
+            color="inherit"
+            component={Link}
+            to="/business"
+            onClick={logout}
+          >
             sell on localink
           </Button>
           <IconButton
@@ -127,10 +113,38 @@ export default function SellerNavBar() {
             className={classes.menuButton}
             color="inherit"
             aria-label="open drawer"
-            onClick={renderMenu}
+            onClick={handleMenu}
           >
             <AccountCircle />
           </IconButton>
+          <Menu
+            id="menu-appbar"
+            anchorEl={anchorEl}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            keepMounted
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            open={open}
+            onClose={handleClose}
+          >
+            <MenuItem onClick={handleClose}>
+              <Button
+                color="inherit"
+                component={Link}
+                to="/"
+                disableRipple={true}
+                onClick={dispatch(logout())}
+              >
+                Log out
+              </Button>
+            </MenuItem>
+            <MenuItem onClick={handleClose}>My account</MenuItem>
+          </Menu>
         </Toolbar>
       </AppBar>
     </div>
