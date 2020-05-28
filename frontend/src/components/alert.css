@@ -19,10 +19,10 @@
   color: #333;
 }
 .alert-danger {
-  background: red;
+  background: #d50000;
   color: #fff;
 }
 .alert-success {
-  background: var(--success-color);
+  background: #64dd17;
   color: #fff;
 }

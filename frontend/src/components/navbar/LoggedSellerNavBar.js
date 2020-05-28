@@ -2,15 +2,13 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import AppBar from "@material-ui/core/AppBar";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import Toolbar from "@material-ui/core/Toolbar";
 import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import { Link as RouterLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import ProductMenu from "../menu/ProductMenu";
 import ProductPopover from "../popover/ProductPopover";
@@ -18,14 +16,21 @@ import AccountPopover from "../popover/AccountPopover";
 import lightBlue from "@material-ui/core/colors/lightBlue";
 import MenuList from "@material-ui/core/MenuList";
 import MenuItem from "@material-ui/core/MenuItem";
+import AccountCircle from "@material-ui/icons/AccountCircle";
+import IconButton from "@material-ui/core/IconButton";
+import Menu from "@material-ui/core/Menu";
 
 const drawerWidth = 200;
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
+  grow: {
+    flexGrow: 1,
   },
-  appBar: {
+  toolbar: {
+    minHeight: 40,
+    alignItems: "flex-start",
+    paddingTop: theme.spacing(0),
+    paddingBottom: theme.spacing(1),
     zIndex: theme.zIndex.drawer + 1,
   },
   drawer: {
@@ -53,7 +58,7 @@ function ListItemLink(props) {
   const renderLink = React.useMemo(
     () =>
       React.forwardRef((itemProps, ref) => (
-        <RouterLink to={to} ref={ref} {...itemProps} />
+        <Link to={to} ref={ref} {...itemProps} />
       )),
     [to]
   );
@@ -70,37 +75,64 @@ function ListItemLink(props) {
 
 export default function ClippedDrawer() {
   const classes = useStyles();
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const isMenuOpen = Boolean(anchorEl);
+
+  const handleProfileMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const menuId = "primary-search-account-menu";
+
+  //Profile dropdown
+  const renderMenu = (
+    <Menu
+      anchorEl={anchorEl}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      id={menuId}
+      keepMounted
+      transformOrigin={{ vertical: "top", horizontal: "right" }}
+      open={isMenuOpen}
+      onClose={handleMenuClose}
+    >
+      <MenuItem onClick={handleMenuClose}>
+        <Button color="inherit" href="/profile" disableRipple={true}>
+          Manage My Account
+        </Button>
+      </MenuItem>
+      <MenuItem onClick={handleMenuClose}>Settings</MenuItem>
+    </Menu>
+  );
 
   return (
-    <div className={classes.root}>
-      <CssBaseline />
-      <AppBar position="fixed" className={classes.appBar}>
-        <Toolbar>
-          <Typography variant="h6" noWrap>
-            Localink
-          </Typography>
+    <div className={classes.grow}>
+      <AppBar position="fixed">
+        <Toolbar className={classes.toolbar}>
+          <Button
+            color="inherit"
+            component={Link}
+            to="/business"
+            backgroundColor="transparent"
+          >
+            <Typography variant="navBar">localink for sellers</Typography>
+          </Button>
+          <div className={classes.grow} />
+          <IconButton
+            edge="start"
+            className={classes.menuButton}
+            color="inherit"
+            aria-label="open drawer"
+            onClick={renderMenu}
+          >
+            <AccountCircle />
+          </IconButton>
         </Toolbar>
       </AppBar>
-      <Drawer
-        className={classes.drawer}
-        variant="permanent"
-        classes={{
-          paper: classes.drawerPaper,
-        }}
-      >
-        <Toolbar />
-        <div className={classes.drawerContainer}>
-          <MenuList>
-            <MenuItem>
-              <ProductPopover />
-            </MenuItem>
-            <MenuItem>
-              <AccountPopover />
-            </MenuItem>
-          </MenuList>
-          <MenuItem></MenuItem>
-        </div>
-      </Drawer>
     </div>
   );
 }

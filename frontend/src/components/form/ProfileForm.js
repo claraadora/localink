@@ -17,11 +17,9 @@ const initialState = {
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(10),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    marginLeft: theme.spacing(30),
   },
   avatar: {
     margin: theme.spacing(1),

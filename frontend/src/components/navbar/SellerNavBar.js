@@ -30,12 +30,6 @@ export default function LoggedSellerNavBar() {
     <div className={classes.grow}>
       <AppBar position="static">
         <Toolbar className={classes.toolbar}>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="open drawer"
-          ></IconButton>
           <Button
             color="inherit"
             component={Link}
