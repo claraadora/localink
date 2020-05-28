@@ -3,8 +3,6 @@ function initMap() {
   //   const endPoints = ['san bernardino, ca', 'barstow, ca', 'winona, az'];
   const startPoints = ['los angeles, ca', 'san bernardino, ca'];
   const endPoints = ['san bernardino, ca', 'barstow, ca'];
-  //STASSSSHHHHHHEDDDDD
-  //STASH
 
   const colors = ['#ff99ff', '#99c2ff', '#ff8080', '#ff8c1a'];
 
