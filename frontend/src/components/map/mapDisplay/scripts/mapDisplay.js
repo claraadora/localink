@@ -1,4 +1,8 @@
+//send post request with "search": [user input]
+//get back JSON object {search, shopAndProduct}, lets call this searchResult
+
 function initMap() {
+  //const locations = infoWindowData(searchResult.shopAndProduct);
   const locations = [
     [
       'Bondi Beach<br>\
@@ -70,5 +74,51 @@ function initMap() {
         };
       })(marker, i)
     );
+
+    google.maps.event.addListener(
+      marker,
+      'mouseout',
+      (function (marker, i) {
+        return function () {
+          infowindow.close();
+        };
+      })(marker, i)
+    );
   }
+}
+
+function toLatLng(address) {
+  const geocoder = new google.maps.Geocoder();
+  const latLngObj; 
+  geocoder.geocode({ address: address, region: 'SG' }, function (
+    results,
+    status
+  ) {
+    if (status == google.maps.GeocoderStatus.OK) {
+      latLngObj = results[0].geometry.location;
+    } else {
+      alert('Geocode was not successful for the following reason: ' + status);
+    }
+    return latLngObj;
+  });
+}
+
+function infoWindowData(shopAndProduct) {
+  const locations = [];
+  shopAndProduct.forEach(obj => {
+    const address = obj.shop.address;
+    //const shopName 
+    const product = obj.product.name;
+    const price = obj.product.price;
+    const latLng = toLatLng(address);
+    const data = [
+      product + '<br>' 
+      + price + '<br>' 
+      + address + '<br>' 
+      + latLng.lat() + '<br>' 
+      + latLng.lng()
+    ];
+    locations.unshift(data);
+  });
+  return locations;
 }

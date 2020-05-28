@@ -18,17 +18,6 @@ function initMap() {
     calculateAndDisplayRoute(directionsService, i);
   }
 
-  // var onChangeHandler = function () {
-  //   calculateAndDisplayRoute(directionsService, directionsRenderer);
-  // };
-  //     document
-  //       .getElementById('start')
-  //       .addEventListener('change', onChangeHandler);
-  //     document
-  //       .getElementById('end')
-  //       .addEventListener('change', onChangeHandler);
-  //   }
-
   function calculateAndDisplayRoute(directionsService, i) {
     directionsService.route(
       //create DirectionsRequest object
@@ -44,15 +33,12 @@ function initMap() {
           routeData.push(routes);
           for (let i = 0; i < response.routes.length; i++) {
             routeData[start].push({
-              // response is a set of directions between the
-              // two points along roads.
-              //The distance is the distance you would have to drive.
               distance: response.routes[i].legs[0].distance,
               duration: response.routes[i].legs[0].duration,
               fare: response.routes[i].fare,
               end_address: response.routes[i].legs[0].end_address,
               start_address: response.routes[i].legs[0].start_address,
-              routeIndex: start
+              routeIndex: i
             });
 
             const polyline = createPolyline(start, i);
@@ -78,11 +64,11 @@ function initMap() {
       //   path: response.routes[i].overview_path,
       strokeColor: colors[i % (colors.length - 1)],
       strokeWeight: 5,
-      zIndex: 1
-      //   tag: {
-      //     index: start,
-      //     nestedIndex: i
-      //   }
+      zIndex: 1,
+      tag: {
+        index: start,
+        nestedIndex: i
+      }
     });
 
     polyline.setMap(map);
@@ -111,14 +97,16 @@ function initMap() {
   }
 
   function formatRouteData(data) {
-    const fare = data.fare ? data.fare : 'cannot be calculated';
+    console.log(data);
+    const fare = data.fare ? data.fare.text : 'not available';
     return (
       'distance: ' +
       data.distance.text +
       '<br> duration: ' +
       data.duration.text +
       '<br> fare: ' +
-      fare
+      fare +
+      '<br> <a href="">Select</a>'
     );
   }
 
