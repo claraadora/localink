@@ -52,9 +52,12 @@ router.post(
                 _id: 1,
                 name: 1,
                 description: 1,
-                shop: 1
+                shop: 1,
+                price: 1,
+                score: { $meta: 'textScore' }
               }
-            }
+            },
+            { $sort: { score: { $meta: 'textScore' } } }
           ])
           .each(async function (error, product) {
             if (product) {
