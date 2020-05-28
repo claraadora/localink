@@ -5,6 +5,7 @@ const URI = config.get('mongoURI');
 const MongoClient = require('mongodb').MongoClient;
 const { check, validationResult } = require('express-validator');
 const auth = require('../../middleware/auth');
+var search;
 
 // @route    POST /search
 // @desc     Get search results
@@ -19,7 +20,7 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-
+    search = req.body.search;
     // Problem: if (!MongoClient.isConnected())
     MongoClient.connect(
       URI,
@@ -55,17 +56,36 @@ router.post(
               }
             }
           ])
-          .each(function (error, product) {
+          .each(async function (error, product) {
             if (product) {
               products.unshift(product);
             } else {
-              res.status(200).json(products);
+              const obj = await addShopObj(products);
+              res.status(200).json(obj);
             }
           });
       }
     );
   }
 );
+
+async function addShopObj(productArr) {
+  const obj = {
+    search: search,
+    shopAndProduct: []
+  };
+  await Promise.all(
+    productArr.map(async product => {
+      const shop = await Shop.findById(product.shop);
+      const pair = {
+        shop: shop,
+        product: product
+      };
+      obj.shopAndProduct.unshift(pair);
+    })
+  );
+  return obj;
+}
 
 module.exports = router;
 
