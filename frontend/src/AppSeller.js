@@ -35,8 +35,8 @@ function AppSeller() {
         {isAuthenticated ? <LoggedSellerNavBar /> : <SellerNavBar />}
         <Grid item xs={8}></Grid>
         <Grid item container>
-          <Grid item xs={0} sm={1} />
-          <Grid item xs={12} sm={10}>
+          <Grid item xs={2} sm={2} />
+          <Grid item xs={9} sm={9}>
             <Alert />
             {/* <Router>
             <Switch> */}
@@ -67,7 +67,7 @@ function AppSeller() {
             {/* </Switch>
           </Router> */}
           </Grid>
-          <Grid item xs={0} sm={1} />
+          <Grid item xs={1} sm={1} />
         </Grid>
       </Grid>
     </ThemeProvider>

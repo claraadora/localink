@@ -195,7 +195,8 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
   table: {
-    width: 300,
+    width: 800,
+    height: 500,
   },
   visuallyHidden: {
     border: 0,
