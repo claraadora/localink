@@ -38,15 +38,6 @@ function initMap() {
       function (response, status) {
         if (status === 'OK') {
           for (let i = 0; i < response.routes.length; i++) {
-            const polyline = createPolyline(i);
-
-            new google.maps.DirectionsRenderer({
-              polylineOptions: polyline,
-              map: map,
-              directions: response,
-              routeIndex: i
-            });
-
             routeData.push({
               distance: response.routes[i].legs[0].distance,
               duration: response.routes[i].legs[0].duration,
@@ -55,7 +46,18 @@ function initMap() {
               start_address: response.routes[i].legs[0].start_address,
               routeIndex: i
             });
+
+            const polyline = createPolyline(i);
+
+            new google.maps.DirectionsRenderer({
+              polylineOptions: polyline,
+              map: map,
+              directions: response,
+              routeIndex: i
+            });
           }
+
+          console.log(routeData[i]);
         } else {
           window.alert('Directions request failed due to ' + status);
         }
@@ -68,19 +70,20 @@ function initMap() {
       strokeColor: colors[i % (colors.length - 1)],
       strokeWeight: 5,
       zIndex: 1
-    }); //maybe need to save and set map of polyline
+    });
 
     polyline.setMap(map);
 
     const infowindow = new google.maps.InfoWindow({});
+    infowindow.setContent(formatRouteData(routeData[i]));
+    console.log(formatRouteData(routeData[i]));
 
-    google.maps.event.addListener(polyline, 'mouseover', function () {
+    google.maps.event.addListener(polyline, 'mouseover', function (event) {
       polyline.setOptions({
         strokeWeight: 8,
         zIndex: 2
       });
-      infowindow.setContent('hello');
-      //infowindow.setPosition(midLatLng);
+      infowindow.setPosition(event.latLng);
       infowindow.open(map);
     });
 
@@ -93,5 +96,22 @@ function initMap() {
     });
 
     return polyline;
+  }
+
+  function formatRouteData(data) {
+    console.log(data);
+    const fare = data.fare ? data.fare : 'cannot be calculated';
+    return (
+      'distance: ' +
+      data.distance.text +
+      '<br> duration: ' +
+      data.duration.text +
+      '<br> fare: ' +
+      fare
+      //   '<br> start address: ' +
+      //   data.start_address +
+      //   '<br> end address: ' +
+      //   data.end_address
+    );
   }
 }
