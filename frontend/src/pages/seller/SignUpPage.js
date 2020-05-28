@@ -81,7 +81,7 @@ export default function SignUpPage() {
             required
             fullWidth
             id="shopName"
-            label="Full Name"
+            label="Shop Name"
             name="shopName"
             autoComplete="shopName"
             onChange={onChange}

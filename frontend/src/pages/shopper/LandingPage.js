@@ -4,6 +4,7 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   heroContent: {
@@ -57,7 +58,9 @@ function LandingPage() {
         </Grid>
       </Grid>
       <Grid item md={12} />
-      <Button className={classes.startButton}>Start searching now!</Button>
+      <Button className={classes.startButton} component={Link} to="/search">
+        Start searching now!
+      </Button>
     </Grid>
   );
 }

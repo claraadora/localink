@@ -9,6 +9,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import Button from "@material-ui/core/Button";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -42,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
     color: "inherit",
   },
   inputInput: {
-    padding: theme.spacing(3, 10, 2, 0),
+    padding: theme.spacing(1, 10, 2, 0),
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(8)}px)`,
     transition: theme.transitions.create("width"),
@@ -55,59 +56,19 @@ const useStyles = makeStyles((theme) => ({
   toolbar: {
     minHeight: 40,
     alignItems: "flex-start",
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(2),
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(0),
   },
 }));
 
 export default function ShopperNavBar() {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const isMenuOpen = Boolean(anchorEl);
-
-  const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
-
-  const menuId = "primary-search-account-menu";
-
-  //Profile dropdown
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>
-        <Button color="inherit" href="/profile">
-          Manage My Account
-        </Button>
-      </MenuItem>
-      <MenuItem onClick={handleMenuClose}>Settings</MenuItem>
-    </Menu>
-  );
-
   return (
     <div className={classes.grow}>
       <AppBar position="static">
         <Toolbar className={classes.toolbar}>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="open drawer"
-          ></IconButton>
           <Button color="inherit" href="/">
-            <Typography variant="h1">localink for sellers</Typography>
+            <Typography variant="h1">localink</Typography>
           </Button>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
@@ -123,18 +84,17 @@ export default function ShopperNavBar() {
             />
           </div>
           <div className={classes.grow} />
-          <Button color="inherit" href="/seller/">
-            Sell on localink
+          <Button color="inherit" component={Link} to="/business">
+            sell on localink
           </Button>
-          <Button color="inherit" href="/signup">
+          <Button color="inherit" component={Link} to="/signup">
             Sign up
           </Button>
-          <Button color="inherit" href="/login">
+          <Button color="inherit" component={Link} to="/login">
             Log in
           </Button>
         </Toolbar>
       </AppBar>
-      {renderMenu}
     </div>
   );
 }
