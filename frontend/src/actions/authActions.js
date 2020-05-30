@@ -94,3 +94,75 @@ export const logout = () => (dispatch) => {
   dispatch({ type: authConstants.LOGOUT });
   dispatch({ type: profileConstants.CLEAR_PROFILE });
 };
+
+export const changePassword = ({ oldPassword, newPassword }) => async (
+  dispatch
+) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  const body = JSON.stringify({ oldPassword, newPassword });
+  try {
+    const res = await axios.post(
+      "/business/profile/account-settings-password",
+      body,
+      config
+    );
+
+    dispatch({
+      type: authConstants.CHANGE_PASSWORD_SUCCESS,
+      payload: res.data,
+    });
+
+    dispatch({
+      type: authConstants.USER_LOADED,
+      payload: res.data,
+    });
+  } catch (err) {
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
+    }
+    dispatch({
+      type: authConstants.CHANGE_PASSWORD_FAILURE,
+    });
+  }
+};
+
+export const changeEmail = ({ email }) => async (dispatch) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  const body = JSON.stringify({ email });
+  try {
+    const res = await axios.post(
+      "/business/profile/account-settings-email",
+      body,
+      config
+    );
+
+    dispatch({
+      type: authConstants.CHANGE_EMAIL_SUCCESS,
+      payload: res.data,
+    });
+
+    dispatch({
+      type: authConstants.USER_LOADED,
+      payload: res.data,
+    });
+  } catch (err) {
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
+    }
+    dispatch({
+      type: authConstants.CHANGE_EMAIL_FAILURE,
+    });
+  }
+};

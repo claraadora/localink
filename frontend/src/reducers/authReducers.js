@@ -20,6 +20,8 @@ export const auth = (state = initialState, action) => {
       };
     case authConstants.SIGNUP_SUCCESS:
     case authConstants.LOGIN_SUCCESS:
+    case authConstants.CHANGE_PASSWORD_SUCCESS:
+    case authConstants.CHANGE_EMAIL_SUCCESS:
       localStorage.setItem("token", payload.token);
       return {
         ...state,
@@ -36,6 +38,13 @@ export const auth = (state = initialState, action) => {
         ...state,
         token: null,
         isAuthenticated: false,
+        loading: false,
+      };
+    case authConstants.CHANGE_EMAIL_FAILURE:
+    case authConstants.CHANGE_PASSWORD_FAILURE:
+      return {
+        ...state,
+        error: payload,
         loading: false,
       };
     default:
