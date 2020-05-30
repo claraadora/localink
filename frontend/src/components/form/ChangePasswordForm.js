@@ -10,10 +10,12 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import { changePassword } from "../../actions/authActions";
+import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(10),
+    marginTop: theme.spacing(4),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -23,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: "100%", // Fix IE 11 issue.
+    width: "70%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -34,15 +36,18 @@ const useStyles = makeStyles((theme) => ({
 export default function ChangePasswordForm() {
   const classes = useStyles();
   const [formData, setFormData] = useState({
-    email: "",
+    oldPassword: "",
+    newPassword: "",
+    newPassword2: "",
   });
-  const { email } = formData;
+  const { oldPassword, newPassword, newPassword2 } = formData;
+  const dispatch = useDispatch();
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    console.log("SUCCESS");
+    dispatch(changePassword({ oldPassword, newPassword }));
   };
 
   return (
@@ -59,6 +64,7 @@ export default function ChangePasswordForm() {
           onChange={onChange}
           autoComplete="email"
           autoFocus
+          value={oldPassword}
         />
         <TextField
           variant="outlined"
@@ -67,9 +73,10 @@ export default function ChangePasswordForm() {
           fullWidth
           id="email"
           label="New password"
-          name="password1"
+          name="newPassword"
           onChange={onChange}
-          autoComplete="email"
+          autoComplete="newPassword"
+          value={newPassword}
           autoFocus
         />
         <TextField
@@ -79,9 +86,9 @@ export default function ChangePasswordForm() {
           fullWidth
           id="email"
           label="Confirm new password"
-          name="password2"
+          name="newPassword2"
           onChange={onChange}
-          autoComplete="email"
+          autoComplete="newPassword2"
           autoFocus
         />
         <Button

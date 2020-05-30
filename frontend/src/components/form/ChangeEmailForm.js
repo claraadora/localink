@@ -10,6 +10,8 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import { changeEmail } from "../../actions/authActions";
+import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -39,10 +41,11 @@ export default function ChangeEmailForm() {
   const { email } = formData;
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  const dispatch = useDispatch();
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    console.log("SUCCESS");
+    dispatch(changeEmail({ email }));
   };
 
   return (
@@ -59,6 +62,7 @@ export default function ChangeEmailForm() {
           onChange={onChange}
           autoComplete="email"
           autoFocus
+          value={email}
         />
         <Button
           type="submit"

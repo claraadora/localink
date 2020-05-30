@@ -124,7 +124,7 @@ export const changePassword = ({ oldPassword, newPassword }) => async (
     const errors = err.response.data.errors;
 
     if (errors) {
-      errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
+      errors.forEach((error) => dispatch(setAlert(error.msg, "error")));
     }
     dispatch({
       type: authConstants.CHANGE_PASSWORD_FAILURE,
@@ -159,7 +159,7 @@ export const changeEmail = ({ email }) => async (dispatch) => {
     const errors = err.response.data.errors;
 
     if (errors) {
-      errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
+      errors.forEach((error) => dispatch(setAlert(error.msg, "error")));
     }
     dispatch({
       type: authConstants.CHANGE_EMAIL_FAILURE,
