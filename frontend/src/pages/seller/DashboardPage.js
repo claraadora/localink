@@ -22,12 +22,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Dashboard() {
   const classes = useStyles();
-  const name = useSelector((state) => state.auth.user.shopName);
-  console.log(name);
 
   return (
     <div className={classes.paper}>
-      <h1>Welcome, {name}</h1>
+      <h1>Welcome</h1>
     </div>
   );
 }
