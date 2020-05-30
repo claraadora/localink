@@ -49,7 +49,7 @@ export const createProfile = (formData, history, edit = false) => async (
     const errors = err.response.data.errors;
 
     if (errors) {
-      errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
+      errors.forEach((error) => dispatch(setAlert(error.msg, "error")));
     }
 
     dispatch({
@@ -70,7 +70,7 @@ export const addProduct = (formData, history) => async (dispatch) => {
       },
     };
 
-    const res = await axios.post("/business/product", formData, config);
+    const res = await axios.post(`/business/product`, formData, config);
 
     dispatch({
       type: profileConstants.UPDATE_PROFILE,
@@ -83,7 +83,7 @@ export const addProduct = (formData, history) => async (dispatch) => {
     const errors = err.response.data.errors;
 
     if (errors) {
-      errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
+      errors.forEach((error) => dispatch(setAlert(error.msg, "error")));
     }
 
     dispatch({
@@ -116,7 +116,7 @@ export const deleteProduct = (id) => async (dispatch) => {
     const errors = err.response.data.errors;
 
     if (errors) {
-      errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
+      errors.forEach((error) => dispatch(setAlert(error.msg, "error")));
     }
 
     dispatch({

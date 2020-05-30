@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: "100%", // Fix IE 11 issue.
+    width: "70%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -98,6 +98,9 @@ export default function ProductForm() {
           margin="normal"
           value={description}
           required
+          multiline
+          rows={3}
+          maxRows={5}
           fullWidth
           autoFocus
         />
