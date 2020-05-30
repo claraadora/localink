@@ -22,7 +22,6 @@ import Menu from "@material-ui/core/Menu";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import { logout } from "../../actions/authActions";
 import { useDispatch } from "react-redux";
-import LocalinkDrawer from "../drawer/Drawer";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import StarBorder from "@material-ui/icons/StarBorder";
@@ -56,12 +55,85 @@ const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
   },
+  nested: {
+    paddingLeft: theme.spacing(4),
+  },
+  list: {
+    width: "100%",
+    padding: 0,
+    backgroundColor: theme.palette.background.paper,
+  },
 }));
+
+const drawerItems = {
+  list: [
+    {
+      name: "account",
+      label: "My Account",
+      items: [
+        {
+          name: "profile",
+          label: "Profile",
+          link: "/business/account/profile",
+        },
+        {
+          name: "accountSettings",
+          label: "Account Settings",
+          link: "/business/account/settings",
+        },
+      ],
+    },
+    {
+      name: "product",
+      label: "Products",
+      items: [
+        {
+          name: "manageProduct",
+          label: "Manage Products",
+          link: "/business/product/manage",
+        },
+        {
+          name: "addProduct",
+          label: "Add Product",
+          link: "/business/product/add",
+        },
+      ],
+    },
+    {
+      name: "review",
+      label: "Reviews",
+      items: [
+        {
+          name: "viewReviews",
+          label: "View Reviews",
+          link: "/business/reviews",
+        },
+      ],
+    },
+    {
+      name: "chat",
+      label: "Chat",
+      items: [
+        {
+          name: "viewChat",
+          label: "View Chat",
+          link: "/business/chat",
+        },
+      ],
+    },
+  ],
+};
 
 export default function LoggedSellerNavBar() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
-  const [openCollapse, setOpenCollapse] = useState(false);
+  const [openCollapse, setOpenCollapse] = useState({
+    account: false,
+    product: false,
+    review: false,
+    chat: false,
+  });
+  const json = drawerItems;
   const open = Boolean(anchorEl);
   const dispatch = useDispatch();
 
@@ -73,8 +145,8 @@ export default function LoggedSellerNavBar() {
     setAnchorEl(null);
   };
 
-  function handleOpenState() {
-    setOpenCollapse(!openCollapse);
+  function handleCollapse(name) {
+    setOpenCollapse({ ...openCollapse, ...{ [name]: !openCollapse[name] } });
   }
 
   const menuId = "primary-search-account-menu";
@@ -97,7 +169,7 @@ export default function LoggedSellerNavBar() {
             className={classes.menuButton}
             color="inherit"
             aria-label="open drawer"
-            onClick={handleMenu}
+            onClick={() => handleMenu}
           >
             <AccountCircle />
           </IconButton>
@@ -140,28 +212,41 @@ export default function LoggedSellerNavBar() {
       >
         <Toolbar />
         <div className={classes.drawerContainer}>
-          <List component="nav" aria-labelledby="nested-list-subheader">
-            <ListItem button>
-              <ListItemText primary="Profile" />
-            </ListItem>
-            <ListItem button>
-              <ListItemText primary="Account" />
-            </ListItem>
-            <ListItem button onClick={handleOpenState}>
-              <ListItemText primary="Reviews" />
-              {openCollapse ? <ExpandLess /> : <ExpandMore />}
-            </ListItem>
-            <Collapse in={openCollapse} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding>
-                <ListItem button className={classes.nested}>
-                  <ListItemIcon>
-                    <StarBorder />
-                  </ListItemIcon>
-                  <ListItemText primary="Starred" />
+          {drawerItems.list.map((mainItem) => {
+            return (
+              <List className={classes.list}>
+                <ListItem button onClick={() => handleCollapse(mainItem.name)}>
+                  <ListItemText primary={mainItem.label} />
+                  {openCollapse[mainItem.name] ? (
+                    <ExpandLess />
+                  ) : (
+                    <ExpandMore />
+                  )}
                 </ListItem>
+                <Collapse
+                  component="li"
+                  in={openCollapse[mainItem.name]}
+                  timeout="out"
+                  unmountOnExit
+                >
+                  <List disablePadding>
+                    {mainItem.items.map((subItem) => {
+                      return (
+                        <ListItem
+                          button
+                          component={Link}
+                          to={subItem.link}
+                          className={classes.nested}
+                        >
+                          <ListItemText primary={subItem.label} />
+                        </ListItem>
+                      );
+                    })}
+                  </List>
+                </Collapse>
               </List>
-            </Collapse>
-          </List>
+            );
+          })}
         </div>
       </Drawer>
     </div>

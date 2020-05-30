@@ -33,7 +33,7 @@ function AppSeller() {
     <ThemeProvider theme={themeSeller}>
       <Grid container direction="column" spacing={4}>
         <Grid item>
-          {isAuthenticated ? <LoggedSellerNavBar /> : <SellerNavBar />}
+          {isAuthenticated ? <LoggedSellerNavBar /> : <LoggedSellerNavBar />}
         </Grid>
         <Grid item container direction="row" spacing={3}>
           <Grid item>
