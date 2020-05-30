@@ -6,6 +6,7 @@ const MongoClient = require('mongodb').MongoClient;
 const { check, validationResult } = require('express-validator');
 const auth = require('../../middleware/auth');
 var search;
+const rankSearchBy = [];
 
 // @route    POST /search
 // @desc     Get search results
@@ -21,6 +22,14 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
     search = req.body.search;
+    const rank = req.body.rank;
+    if (rank === 'price') {
+      //ascending
+      rankSearchBy[0] = { $sort: { price: 1 } };
+    } else if (rank === 'distance') {
+      rankSearchBy[0] = { $sort: { distance: 1 } };
+    }
+    rankSearchBy[0] = req.body.rank;
     // Problem: if (!MongoClient.isConnected())
     MongoClient.connect(
       URI,
@@ -52,9 +61,12 @@ router.post(
                 _id: 1,
                 name: 1,
                 description: 1,
-                shop: 1
+                shop: 1,
+                price: 1,
+                score: { $meta: 'textScore' }
               }
-            }
+            },
+            { $sort: { score: { $meta: 'textScore' } } }
           ])
           .each(async function (error, product) {
             if (product) {
@@ -85,6 +97,10 @@ async function addShopObj(productArr) {
     })
   );
   return obj;
+}
+
+function isPrice() {
+  return rankSearchBy === 'price';
 }
 
 module.exports = router;

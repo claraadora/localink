@@ -13,17 +13,37 @@ const Shop = require('../../../models/Shop');
 // @route    GET business/profile/me
 // @desc     Get current users profile
 // @access   Private
+// router.get('/me', auth, async (req, res) => {
+//   try {
+//     const profile = await Business.findOne({
+//       _id: req.user.id
+//     });
+
+//     if (!profile) {
+//       return res.status(400).json({ msg: 'There is no profile for this user' });
+//     }
+
+//     res.json(profile);
+//   } catch (err) {
+//     console.error(err.message);
+//     res.status(500).send('Server Error');
+//   }
+// });
+
+// @route    GET business/profile/me
+// @desc     Get current users shop (not profile)
+// @access   Private
 router.get('/me', auth, async (req, res) => {
   try {
-    const profile = await Business.findOne({
-      _id: req.user.id
+    const shop = await Shop.findOne({
+      owner: req.user.id
     });
 
-    if (!profile) {
-      return res.status(400).json({ msg: 'There is no profile for this user' });
+    if (!shop) {
+      return res.status(400).json({ msg: 'There is no shop for this user' });
     }
 
-    res.json(profile);
+    res.json(shop);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
