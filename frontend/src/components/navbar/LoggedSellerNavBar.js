@@ -6,15 +6,9 @@ import Toolbar from "@material-ui/core/Toolbar";
 import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
-import ProductMenu from "../menu/ProductMenu";
-import ProductPopover from "../popover/ProductPopover";
-import AccountPopover from "../popover/AccountPopover";
-import lightBlue from "@material-ui/core/colors/lightBlue";
-import MenuList from "@material-ui/core/MenuList";
 import MenuItem from "@material-ui/core/MenuItem";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import IconButton from "@material-ui/core/IconButton";
@@ -27,7 +21,7 @@ import ExpandMore from "@material-ui/icons/ExpandMore";
 import StarBorder from "@material-ui/icons/StarBorder";
 import Collapse from "@material-ui/core/Collapse";
 
-const drawerWidth = 240;
+const drawerWidth = 200;
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -158,7 +152,7 @@ export default function LoggedSellerNavBar() {
           <Button
             color="inherit"
             component={Link}
-            to="/business"
+            to="/business/dashboard"
             backgroundColor="transparent"
           >
             <Typography variant="navBar">localink for sellers</Typography>
@@ -169,7 +163,7 @@ export default function LoggedSellerNavBar() {
             className={classes.menuButton}
             color="inherit"
             aria-label="open drawer"
-            onClick={() => handleMenu}
+            onClick={handleMenu}
           >
             <AccountCircle />
           </IconButton>

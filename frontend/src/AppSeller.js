@@ -31,17 +31,19 @@ function AppSeller() {
 
   return (
     <ThemeProvider theme={themeSeller}>
-      <Grid container direction="column" spacing={4}>
+      <Grid container direction="column" spacing={5}>
         <Grid item>
-          {isAuthenticated ? <LoggedSellerNavBar /> : <LoggedSellerNavBar />}
+          {isAuthenticated ? <LoggedSellerNavBar /> : <SellerNavBar />}
         </Grid>
-        <Grid item container direction="row" spacing={3}>
+        <Grid item />
+        <Grid item container direction="row" spacing={5}>
+          <Grid item xs={10} />
           <Grid item>
             <Alert />
           </Grid>
           <Grid item container>
-            <Grid item xs={2} sm={2} />
-            <Grid item xs={9} sm={9}>
+            <Grid item xs={3} sm={2} />
+            <Grid item xs={8} sm={9}>
               <Route exact path="/business/login" component={SellerLogInPage} />
               <Route
                 exact

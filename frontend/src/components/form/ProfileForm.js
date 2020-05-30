@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: "100%", // Fix IE 11 issue.
+    width: "70%",
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -97,6 +97,9 @@ const ProfileForm = () => {
           autoComplete="shopDescription"
           variant="outlined"
           margin="normal"
+          multiline
+          rows={3}
+          rowsMax={6}
           required
           autoFocus
         />

@@ -1,6 +1,8 @@
+import React from "react";
 import axios from "axios";
 import { setAlert } from "./alertActions";
 import profileConstants from "../constants/profileConstants";
+import { Redirect } from "react-router-dom";
 
 export const getCurrentProfile = () => async (dispatch) => {
   try {
@@ -38,10 +40,10 @@ export const createProfile = (formData, history, edit = false) => async (
       payload: res.data,
     });
 
-    dispatch(setAlert(edit ? "Profile Updated" : "Profile Created"), "success");
+    dispatch(setAlert(edit ? "Profile Updated" : "Profile Created", "success"));
 
     if (!edit) {
-      history.push("/dashboard");
+      return <Redirect to="/business/dashboard" />;
     }
   } catch (err) {
     const errors = err.response.data.errors;
@@ -76,7 +78,7 @@ export const addProduct = (formData, history) => async (dispatch) => {
     });
 
     dispatch(setAlert("Product Added", "success"));
-    history.push("/dashboard");
+    return <Redirect to="business/dashboard" />;
   } catch (err) {
     const errors = err.response.data.errors;
 

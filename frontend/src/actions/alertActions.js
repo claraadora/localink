@@ -11,7 +11,7 @@ export const setAlert = (message, alertType) => (dispatch) => {
       id,
     },
   });
-
+  console.log("alert type = " + alertType);
   setTimeout(
     () =>
       dispatch({
