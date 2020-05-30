@@ -100,12 +100,7 @@ export default function SellerNavBar() {
             />
           </div>
           <div className={classes.grow} />
-          <Button
-            color="inherit"
-            component={Link}
-            to="/business"
-            onClick={logout}
-          >
+          <Button color="inherit" component={Link} to="/business">
             sell on localink
           </Button>
           <IconButton
@@ -138,7 +133,7 @@ export default function SellerNavBar() {
                 component={Link}
                 to="/"
                 disableRipple={true}
-                onClick={dispatch(logout())}
+                onClick={() => dispatch(logout())}
               >
                 Log out
               </Button>

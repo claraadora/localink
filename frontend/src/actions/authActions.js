@@ -25,7 +25,7 @@ export const loadUser = () => async (dispatch) => {
   }
 };
 //Encompasses request, success, and failure during logins.
-export const login = (email, password) => async (dispatch) => {
+export const login = ({ email, password }) => async (dispatch) => {
   const config = {
     headers: {
       "Content-Type": "application.json",
@@ -33,6 +33,7 @@ export const login = (email, password) => async (dispatch) => {
   };
 
   const body = JSON.stringify({ email, password });
+  console.log("body" + body);
 
   try {
     const res = await axios.post("/business/auth", body, config); // api/auth
@@ -55,12 +56,6 @@ export const login = (email, password) => async (dispatch) => {
       type: authConstants.LOGIN_FAILURE,
     });
   }
-};
-
-//Defines the definite success of logout action
-export const logout = () => (dispatch) => {
-  dispatch({ type: authConstants.LOGOUT });
-  dispatch({ type: profileConstants.CLEAR_PROFILE });
 };
 
 //Register user
@@ -87,10 +82,16 @@ export const signup = ({ shopName, email, password }) => async (dispatch) => {
     const errors = err.response.data.errors;
 
     if (errors) {
-      errors.forEach((error) => dispatch(setAlert(error.message, "danger")));
+      errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
     }
     dispatch({
       type: authConstants.SIGNUP_FAILURE,
     });
   }
+};
+
+//Defines the definite success of logout action
+export const logout = () => (dispatch) => {
+  dispatch({ type: authConstants.LOGOUT });
+  dispatch({ type: profileConstants.CLEAR_PROFILE });
 };

@@ -35,42 +35,48 @@ function AppSeller() {
         <Grid item>
           {isAuthenticated ? <LoggedSellerNavBar /> : <SellerNavBar />}
         </Grid>
-        <Grid item>
-          <Alert />
-        </Grid>
-        <Grid item container>
-          <Grid item xs={2} sm={2} />
-          <Grid item xs={9} sm={9}>
-            <Route exact path="/business/login" component={SellerLogInPage} />
-            <Route
-              exact
-              path=" s/business/signup"
-              component={SellerSignUpPage}
-            />
-            <Route exact path="/business/" component={SellerLandingPage} />
-            <Route
-              exact
-              path="/business/dashboard"
-              component={SellerDashboardPage}
-            />
-            <Route
-              exact
-              path="/business/product/manage"
-              component={ProductTable}
-            />
-            <Route
-              exact
-              path="/business/account/profile"
-              component={ProfileForm}
-            />
-            <Route
-              exact
-              path="/business/account/settings"
-              component={AccountSettings}
-            />
-            <Route exact path="/business/product/add" component={ProductForm} />
+        <Grid item container direction="row" spacing={3}>
+          <Grid item>
+            <Alert />
           </Grid>
-          <Grid item xs={1} sm={1} />
+          <Grid item container>
+            <Grid item xs={2} sm={2} />
+            <Grid item xs={9} sm={9}>
+              <Route exact path="/business/login" component={SellerLogInPage} />
+              <Route
+                exact
+                path="/business/signup"
+                component={SellerSignUpPage}
+              />
+              <Route exact path="/business/" component={SellerLandingPage} />
+              <Route
+                exact
+                path="/business/dashboard"
+                component={SellerDashboardPage}
+              />
+              <Route
+                exact
+                path="/business/product/manage"
+                component={ProductTable}
+              />
+              <Route
+                exact
+                path="/business/account/profile"
+                component={ProfileForm}
+              />
+              <Route
+                exact
+                path="/business/account/settings"
+                component={AccountSettings}
+              />
+              <Route
+                exact
+                path="/business/product/add"
+                component={ProductForm}
+              />
+            </Grid>
+            <Grid item xs={1} sm={1} />
+          </Grid>
         </Grid>
       </Grid>
     </ThemeProvider>

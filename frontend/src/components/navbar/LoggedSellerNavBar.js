@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import AppBar from "@material-ui/core/AppBar";
@@ -19,19 +19,29 @@ import MenuItem from "@material-ui/core/MenuItem";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import IconButton from "@material-ui/core/IconButton";
 import Menu from "@material-ui/core/Menu";
+import ListSubheader from "@material-ui/core/ListSubheader";
+import { logout } from "../../actions/authActions";
+import { useDispatch } from "react-redux";
+import LocalinkDrawer from "../drawer/Drawer";
+import ExpandLess from "@material-ui/icons/ExpandLess";
+import ExpandMore from "@material-ui/icons/ExpandMore";
+import StarBorder from "@material-ui/icons/StarBorder";
+import Collapse from "@material-ui/core/Collapse";
 
-const drawerWidth = 200;
+const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
+  },
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1,
   },
   toolbar: {
     minHeight: 40,
     alignItems: "flex-start",
     paddingTop: theme.spacing(0),
     paddingBottom: theme.spacing(1),
-    zIndex: theme.zIndex.drawer + 1,
   },
   drawer: {
     width: drawerWidth,
@@ -43,76 +53,36 @@ const useStyles = makeStyles((theme) => ({
   drawerContainer: {
     overflow: "auto",
   },
-  content: {
+  grow: {
     flexGrow: 1,
-    padding: theme.spacing(3),
-  },
-  list: {
-    bgColorHover: lightBlue[300],
   },
 }));
 
-function ListItemLink(props) {
-  const { icon, primary, to } = props;
-
-  const renderLink = React.useMemo(
-    () =>
-      React.forwardRef((itemProps, ref) => (
-        <Link to={to} ref={ref} {...itemProps} />
-      )),
-    [to]
-  );
-
-  return (
-    <li>
-      <ListItem button component={renderLink}>
-        {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
-        <ListItemText primary={primary} />
-      </ListItem>
-    </li>
-  );
-}
-
-export default function ClippedDrawer() {
+export default function LoggedSellerNavBar() {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [openCollapse, setOpenCollapse] = useState(false);
+  const open = Boolean(anchorEl);
+  const dispatch = useDispatch();
 
-  const isMenuOpen = Boolean(anchorEl);
-
-  const handleProfileMenuOpen = (event) => {
+  const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleMenuClose = () => {
+  const handleClose = () => {
     setAnchorEl(null);
   };
 
-  const menuId = "primary-search-account-menu";
+  function handleOpenState() {
+    setOpenCollapse(!openCollapse);
+  }
 
-  //Profile dropdown
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>
-        <Button color="inherit" href="/profile" disableRipple={true}>
-          Manage My Account
-        </Button>
-      </MenuItem>
-      <MenuItem onClick={handleMenuClose}>Settings</MenuItem>
-    </Menu>
-  );
+  const menuId = "primary-search-account-menu";
 
   return (
     <div className={classes.grow}>
-      <AppBar position="fixed">
-        <Toolbar className={classes.toolbar}>
+      <AppBar position="fixed" className={classes.appBar}>
+        <Toolbar>
           <Button
             color="inherit"
             component={Link}
@@ -127,12 +97,73 @@ export default function ClippedDrawer() {
             className={classes.menuButton}
             color="inherit"
             aria-label="open drawer"
-            onClick={renderMenu}
+            onClick={handleMenu}
           >
             <AccountCircle />
           </IconButton>
+          <Menu
+            id="menu-appbar"
+            anchorEl={anchorEl}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            keepMounted
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            open={open}
+            onClose={handleClose}
+          >
+            <MenuItem onClick={handleClose}>
+              <Button
+                color="inherit"
+                component={Link}
+                to="/business"
+                disableRipple={true}
+                onClick={() => dispatch(logout())}
+              >
+                Log out
+              </Button>
+            </MenuItem>
+            <MenuItem onClick={handleClose}>My account</MenuItem>
+          </Menu>
         </Toolbar>
       </AppBar>
+      <Drawer
+        className={classes.drawer}
+        variant="permanent"
+        classes={{
+          paper: classes.drawerPaper,
+        }}
+      >
+        <Toolbar />
+        <div className={classes.drawerContainer}>
+          <List component="nav" aria-labelledby="nested-list-subheader">
+            <ListItem button>
+              <ListItemText primary="Profile" />
+            </ListItem>
+            <ListItem button>
+              <ListItemText primary="Account" />
+            </ListItem>
+            <ListItem button onClick={handleOpenState}>
+              <ListItemText primary="Reviews" />
+              {openCollapse ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+            <Collapse in={openCollapse} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                <ListItem button className={classes.nested}>
+                  <ListItemIcon>
+                    <StarBorder />
+                  </ListItemIcon>
+                  <ListItemText primary="Starred" />
+                </ListItem>
+              </List>
+            </Collapse>
+          </List>
+        </div>
+      </Drawer>
     </div>
   );
 }
