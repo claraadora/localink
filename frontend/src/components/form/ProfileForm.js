@@ -9,10 +9,9 @@ import Button from "@material-ui/core/Button";
 
 const initialState = {
   shopName: "",
-  shopDescription: "",
-  email: "",
-  profilePic: "",
-  businessAddress: "",
+  description: "",
+  avatar: "",
+  address: "",
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -47,21 +46,25 @@ const ProfileForm = () => {
 
     if (!loading && profile) {
       const profileData = { ...initialState };
+      //set name
+
       for (const key in profile) {
         if (key in profileData) profileData[key] = profile[key];
+        console.log("profile dataaaaa " + profileData);
       }
       setFormData(profileData);
       console.log("profile form");
     }
-  }, [loading]);
+  }, [loading, getCurrentProfile, profile]);
 
-  const { shopName, shopDescription, profilePic, businessAddress } = formData;
+  const { shopName, description, avatar, address } = formData;
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const onSubmit = (e) => {
     e.preventDefault();
+    console.log(formData);
     // eslint-disable-next-line no-restricted-globals
     dispatch(createProfile(formData, history, profile ? true : false));
   };
@@ -88,13 +91,13 @@ const ProfileForm = () => {
         />
         <TextField
           required
-          id="shopDescription"
-          name="shopDescription"
+          id="description"
+          name="description"
           label="Shop Description"
           fullWidth
           onChange={onChange}
-          value={shopDescription}
-          autoComplete="shopDescription"
+          value={description}
+          autoComplete="description"
           variant="outlined"
           margin="normal"
           multiline
@@ -105,13 +108,13 @@ const ProfileForm = () => {
         />
         <TextField
           required
-          id="profilePic"
-          name="profilePic"
+          id="avatar"
+          name="avatar"
           label="Profile Picture"
           fullWidth
           onChange={onChange}
-          value={profilePic}
-          autoComplete="profilePic"
+          value={avatar}
+          autoComplete="avatar"
           variant="outlined"
           margin="normal"
           required
@@ -119,13 +122,13 @@ const ProfileForm = () => {
         />
         <TextField
           required
-          id="businessAddress"
-          name="businessAddress"
+          id="address"
+          name="address"
           label="Business Address"
           fullWidth
           onChange={onChange}
-          value={businessAddress}
-          autoComplete="businessAddress"
+          value={address}
+          autoComplete="address"
           variant="outlined"
           margin="normal"
           required
