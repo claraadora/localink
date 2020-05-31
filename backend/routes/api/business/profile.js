@@ -5,6 +5,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const { check, validationResult } = require('express-validator');
+const getDistance = require('../distance');
 // const normalize = require('normalize-url');
 
 const Business = require('../../../models/Business');
@@ -70,6 +71,9 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
     const { shopName, avatar, description, address } = req.body;
+
+    //const distance = getDistance('122C jalan pari burong', '21 lower kent ridge road');
+
     const profileFields = {
       shopName
     };

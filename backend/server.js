@@ -43,6 +43,33 @@ app.use('/search', require('./routes/api/search'));
 
 // })
 
+// const getLocation = require('./routes/api/geolocation');
+// getLocation();
+
+const request = require('request');
+
+const URI =
+  'https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBjucyjCeaC5ddig7Hd_RyzPrqWiBIwXhM';
+
+const JSONbody = {
+  homeMobileCountryCode: 525
+};
+
+request(
+  {
+    url: URI,
+    method: 'POST',
+    json: true, // <--Very important!!!
+    body: JSONbody
+  },
+  function (error, response, body) {
+    console.log(response.body.location.lat);
+  }
+);
+
+const getDist = require('./routes/api/distance');
+console.log(getDist('telok blangah blk 44', '21 lower kent ridge road'));
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

@@ -27,6 +27,9 @@ const ReviewSchema = new mongoose.Schema({
   date: {
     type: Date,
     default: Date.now
+  },
+  reply: {
+    type: String
   }
 });
 
