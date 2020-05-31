@@ -43,6 +43,8 @@ router.get('/me', auth, async (req, res) => {
       return res.status(400).json({ msg: 'There is no shop for this user' });
     }
 
+    await shop.populate({ path: 'products', model: 'Product' }).execPopulate();
+
     res.json(shop);
   } catch (err) {
     console.error(err.message);
@@ -68,7 +70,6 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
     const { shopName, avatar, description, address } = req.body;
-
     const profileFields = {
       shopName
     };
