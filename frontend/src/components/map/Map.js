@@ -1,6 +1,10 @@
-import React from "react";
-import { GoogleMap, withScriptjs, withGoogleMap } from "react-google-maps";
-import SearchPage from "../../pages/shopper/SearchPage";
+import React, { useState } from "react";
+import {
+  GoogleMap,
+  withScriptjs,
+  withGoogleMap,
+  Marker,
+} from "react-google-maps";
 
 const Map = () => {
   return (
@@ -14,6 +18,7 @@ const Map = () => {
 const WrappedMap = withScriptjs(withGoogleMap(Map));
 
 export default function LocalinkMap() {
+  const [selectedShop, setSelectedShop] = useState(null);
   return (
     <div style={{ width: "100vw", weight: "100vh" }}>
       <WrappedMap

@@ -14,7 +14,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { setAlert } from "../../actions/alertActions";
-import { signup } from "../../actions/authActions";
+import { signup } from "../../actions/shopper/authActions";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 
@@ -43,10 +43,10 @@ export default function SignUpPage() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    password1: "",
+    password: "",
     password2: "",
   });
-  const { name, email, password1, password2 } = formData;
+  const { name, email, password, password2 } = formData;
   const dispatch = useDispatch();
 
   const onChange = (e) =>
@@ -54,10 +54,10 @@ export default function SignUpPage() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (password1 !== password2) {
+    if (password !== password2) {
       dispatch(setAlert("Passwords do not match", "danger"));
     } else {
-      dispatch(signup({ name, email, password1 }));
+      dispatch(signup({ name, email, password }));
     }
   };
 
@@ -104,7 +104,7 @@ export default function SignUpPage() {
             margin="normal"
             required
             fullWidth
-            name="password1"
+            name="password"
             label="Password"
             type="password"
             id="password"

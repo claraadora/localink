@@ -1,6 +1,9 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { createProfile, getCurrentProfile } from "../../actions/profileActions";
+import {
+  createProfile,
+  getCurrentProfile,
+} from "../../actions/seller/profileActions";
 import { useSelector, useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
