@@ -5,6 +5,7 @@ import { theme } from "./theme";
 import { themeSeller } from "./themeSeller";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { loadUser } from "./actions/authActions";
+import { getCurrentProfile } from "./actions/profileActions";
 import store from "./store";
 import setAuthToken from "./utils/setAuthToken";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
@@ -16,6 +17,7 @@ if (localStorage.token) {
 export default function App() {
   useEffect(() => {
     store.dispatch(loadUser());
+    store.dispatch(getCurrentProfile());
   });
 
   return (

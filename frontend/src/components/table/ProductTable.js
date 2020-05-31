@@ -20,7 +20,8 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import DeleteIcon from "@material-ui/icons/Delete";
 import FilterListIcon from "@material-ui/icons/FilterList";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { getCurrentProfile } from "../../actions/profileActions";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -61,7 +62,7 @@ const headCells = [
     disablePadding: false,
     label: "Description",
   },
-  { id: "price", numeric: false, disablePadding: false, label: "" },
+  { id: "price", numeric: false, disablePadding: false, label: "Price" },
 ];
 
 function EnhancedTableHead(props) {
@@ -223,20 +224,28 @@ export default function ProductTable() {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
   const [rows, setRows] = useState([]);
-  const productList = useSelector((state) => state.profile.profile.products);
-  console.log("product list " + productList);
+  const profile = useSelector((state) => state.profile.profile);
+  const loading = useSelector((state) => state.profile.loading);
+  const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   const updatedRows = productList.map(list =>)
-  // })
+  useEffect(() => {
+    if (!profile) dispatch(getCurrentProfile());
 
-  const addData = () => {
-    productList.map((product) =>
-      rows.push(createData(product.name, product.description, product.price))
-    );
-  };
+    if (!loading && profile) {
+      const updatedRows = [];
+      profile.products.map((product) =>
+        updatedRows.push({
+          name: product.name,
+          description: product.description,
+          price: product.price,
+        })
+      );
+      setRows(updatedRows);
+    }
+  }, [loading, getCurrentProfile, profile]);
+
+  console.log("rows = " + rows);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -343,7 +352,6 @@ export default function ProductTable() {
                       >
                         {row.name}
                       </TableCell>
-                      <TableCell align="right">{row.name}</TableCell>
                       <TableCell align="right">{row.description}</TableCell>
                       <TableCell align="right">{row.price}</TableCell>
                     </TableRow>
