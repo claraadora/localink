@@ -35,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
 
 const ProfileForm = () => {
   const profile = useSelector((state) => state.profile.profile);
+  const user = useSelector((state) => state.auth.user);
   const loading = useSelector((state) => state.profile.loading);
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -50,8 +51,8 @@ const ProfileForm = () => {
         if (key in profileData) profileData[key] = profile[key];
         console.log("profile dataaaaa " + profileData);
       }
+      profileData[shopName] = user.shopName;
       setFormData(profileData);
-      console.log("profile form");
     }
   }, [loading, getCurrentProfile, profile]);
 

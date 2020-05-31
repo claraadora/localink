@@ -100,7 +100,7 @@ const drawerItems = {
         {
           name: "viewReviews",
           label: "View Reviews",
-          link: "/business/reviews",
+          link: "/business/review",
         },
       ],
     },
