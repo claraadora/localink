@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import { lighten, makeStyles } from "@material-ui/core/styles";
@@ -224,9 +224,13 @@ export default function ProductTable() {
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-  const productList = useSelector((state) => state.profile.products);
+  const [rows, setRows] = useState([]);
+  const productList = useSelector((state) => state.profile.profile.products);
+  console.log("product list " + productList);
 
-  const rows = [];
+  // useEffect(() => {
+  //   const updatedRows = productList.map(list =>)
+  // })
 
   const addData = () => {
     productList.map((product) =>
