@@ -5,7 +5,7 @@ const ShopSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Business'
   },
-  name: {
+  shopName: {
     type: String
   },
   avatar: {

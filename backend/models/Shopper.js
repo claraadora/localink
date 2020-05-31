@@ -18,6 +18,17 @@ const ShopperSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Review'
     }
+  ],
+  inbox: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Chatlist'
+  },
+  transactionHistory: [
+    //products
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Product'
+    }
   ]
 });
 

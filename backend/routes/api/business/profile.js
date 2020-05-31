@@ -74,6 +74,7 @@ router.post(
     };
 
     const shopFields = {
+      shopName,
       avatar,
       description,
       address
