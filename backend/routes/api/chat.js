@@ -1,7 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/chat', (req, res) => {
+// @route    GET /chat
+// @desc
+// @access
+// @return
+router.get('/', (req, res) => {
   res.send({ response: 'Server is up and running.' }).status(200);
 });
 

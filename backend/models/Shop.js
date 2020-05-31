@@ -5,6 +5,9 @@ const ShopSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Business'
   },
+  name: {
+    type: String
+  },
   avatar: {
     type: String
   },

@@ -1,6 +1,11 @@
 const express = require('express');
 const connectDB = require('./config/db');
+// const socketio = require('socket.io');
+// const http = require('http');
+
 const app = express();
+// const server = http.createServer(app);
+// const io = socketio(server);
 
 //Connect Database
 connectDB();
@@ -24,6 +29,19 @@ app.use('/review', require('./routes/api/review'));
 
 //Define route for searching
 app.use('/search', require('./routes/api/search'));
+
+// //Define route for chat
+// app.use('/chat', require('./routes/api/chat'));
+
+// //Chat
+// io.on('connection', (socket) => {
+//     console.log("We have a new connection!");
+
+//     socket.on('disconnect', () => {
+//         console.log("User has left");
+//     })
+
+// })
 
 const PORT = process.env.PORT || 5000;
 
