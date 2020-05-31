@@ -93,7 +93,7 @@ function EnhancedTableHead(props) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? "right" : "left"}
+            align="center"
             padding={headCell.disablePadding ? "none" : "default"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
@@ -349,11 +349,12 @@ export default function ProductTable() {
                         id={labelId}
                         scope="row"
                         padding="none"
+                        align="center"
                       >
                         {row.name}
                       </TableCell>
-                      <TableCell align="right">{row.description}</TableCell>
-                      <TableCell align="right">{row.price}</TableCell>
+                      <TableCell align="center">{row.description}</TableCell>
+                      <TableCell align="center">{row.price}</TableCell>
                     </TableRow>
                   );
                 })}
