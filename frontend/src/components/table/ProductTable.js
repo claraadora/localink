@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import { lighten, makeStyles } from "@material-ui/core/styles";
@@ -20,7 +20,8 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import DeleteIcon from "@material-ui/icons/Delete";
 import FilterListIcon from "@material-ui/icons/FilterList";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { getCurrentProfile } from "../../actions/profileActions";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -61,7 +62,7 @@ const headCells = [
     disablePadding: false,
     label: "Description",
   },
-  { id: "price", numeric: false, disablePadding: false, label: "" },
+  { id: "price", numeric: false, disablePadding: false, label: "Price" },
 ];
 
 function EnhancedTableHead(props) {
@@ -92,7 +93,7 @@ function EnhancedTableHead(props) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? "right" : "left"}
+            align="center"
             padding={headCell.disablePadding ? "none" : "default"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
@@ -223,16 +224,28 @@ export default function ProductTable() {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rows, setRows] = useState([]);
+  const profile = useSelector((state) => state.profile.profile);
+  const loading = useSelector((state) => state.profile.loading);
+  const dispatch = useDispatch();
 
-  const productList = useSelector((state) => state.profile.products);
+  useEffect(() => {
+    if (!profile) dispatch(getCurrentProfile());
 
-  const rows = [];
+    if (!loading && profile) {
+      const updatedRows = [];
+      profile.products.map((product) =>
+        updatedRows.push({
+          name: product.name,
+          description: product.description,
+          price: product.price,
+        })
+      );
+      setRows(updatedRows);
+    }
+  }, [loading, getCurrentProfile, profile]);
 
-  const addData = () => {
-    productList.map((product) =>
-      rows.push(createData(product.name, product.description, product.price))
-    );
-  };
+  console.log("rows = " + rows);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -336,12 +349,12 @@ export default function ProductTable() {
                         id={labelId}
                         scope="row"
                         padding="none"
+                        align="center"
                       >
                         {row.name}
                       </TableCell>
-                      <TableCell align="right">{row.name}</TableCell>
-                      <TableCell align="right">{row.description}</TableCell>
-                      <TableCell align="right">{row.price}</TableCell>
+                      <TableCell align="center">{row.description}</TableCell>
+                      <TableCell align="center">{row.price}</TableCell>
                     </TableRow>
                   );
                 })}

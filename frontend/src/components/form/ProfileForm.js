@@ -46,8 +46,6 @@ const ProfileForm = () => {
 
     if (!loading && profile) {
       const profileData = { ...initialState };
-      //set name
-
       for (const key in profile) {
         if (key in profileData) profileData[key] = profile[key];
         console.log("profile dataaaaa " + profileData);

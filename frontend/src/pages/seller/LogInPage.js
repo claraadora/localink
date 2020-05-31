@@ -14,6 +14,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { login } from "../../actions/authActions";
 import { useDispatch } from "react-redux";
+import { Redirect } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -44,11 +46,16 @@ export default function LogInPage() {
   const dispatch = useDispatch();
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   const onSubmit = async (e) => {
     e.preventDefault();
     dispatch(login({ email, password }));
   };
+
+  if (isAuthenticated) {
+    return <Redirect to="/business/dashboard" />;
+  }
 
   return (
     <Container component="main" maxWidth="xs">
