@@ -15,6 +15,6 @@ request(
     body: JSONbody
   },
   function (error, response, body) {
-    return response.location;
+    return response.body.location;
   }
 );

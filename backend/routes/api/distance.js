@@ -31,3 +31,7 @@ module.exports = function getDistance(start, end) {
   const distanceMatrix = JSON.parse(GetJSON(URI));
   return distanceMatrix.rows[0].elements[0].distance.value;
 };
+
+//How to use
+// const getDist = require('./routes/api/distance');
+// console.log(getDist('telok blangah blk 44', '21 lower kent ridge road'));
