@@ -1,8 +1,9 @@
 import React from "react";
 import Typography from "@material-ui/core/Typography";
+import LocalinkMap from "../../components/map/Map";
 
 function SearchPage() {
-  return <Typography variant="h1">MAP</Typography>;
+  return <LocalinkMap />;
 }
 
 export default SearchPage;

@@ -21,6 +21,7 @@ import AccountSettings from "./components/tabs/AccountSettings";
 import { useSelector } from "react-redux";
 import { themeSeller } from "./themeSeller";
 import { ThemeProvider } from "@material-ui/core/styles";
+import ReviewTable from "./components/table/ReviewTable";
 
 function AppSeller() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -76,6 +77,7 @@ function AppSeller() {
                 path="/business/product/add"
                 component={ProductForm}
               />
+              <Route exact path="/business/review" component={ReviewTable} />
             </Grid>
             <Grid item xs={1} sm={1} />
           </Grid>

@@ -12,7 +12,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../../actions/authActions";
+import { login } from "../../actions/shopper/authActions";
 import Container from "@material-ui/core/Container";
 import { Redirect } from "react-router-dom";
 

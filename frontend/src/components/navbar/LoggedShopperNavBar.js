@@ -11,7 +11,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
-import { logout } from "../../actions/authActions";
+import { logout } from "../../actions/seller/authActions";
 import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({

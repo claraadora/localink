@@ -51,18 +51,19 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: "name",
+    id: "product",
     numeric: false,
     disablePadding: true,
-    label: "Name of Product",
+    label: "Product",
   },
   {
-    id: "description",
+    id: "review",
     numeric: false,
     disablePadding: false,
-    label: "Description",
+    label: "Review",
   },
-  { id: "price", numeric: false, disablePadding: false, label: "Price" },
+  { id: "rating", numeric: true, disablePadding: false, label: "Rating" },
+  { id: "image", numeric: true, disablePadding: false, label: "Image" },
 ];
 
 function EnhancedTableHead(props) {
@@ -216,7 +217,7 @@ function createData(name, description, price) {
   return { name, description, price };
 }
 
-export default function ProductTable() {
+export default function ReviewTable() {
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("price");
@@ -234,11 +235,12 @@ export default function ProductTable() {
 
     if (!loading && profile) {
       const updatedRows = [];
-      profile.products.map((product) =>
+      profile.reviews.map((review) =>
         updatedRows.push({
-          name: product.name,
-          description: product.description,
-          price: product.price,
+          name: review.product,
+          description: review.description,
+          rating: review.rating,
+          image: review.image,
         })
       );
       setRows(updatedRows);
@@ -354,7 +356,8 @@ export default function ProductTable() {
                         {row.name}
                       </TableCell>
                       <TableCell align="center">{row.description}</TableCell>
-                      <TableCell align="center">{row.price}</TableCell>
+                      <TableCell align="center">{row.rating}</TableCell>
+                      <TableCell align="center">{row.image}</TableCell>
                     </TableRow>
                   );
                 })}

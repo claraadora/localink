@@ -7,7 +7,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch } from "react-redux";
-import { addProduct } from "../../actions/profileActions";
+import { addProduct } from "../../actions/seller/profileActions";
 
 const useStyles = makeStyles((theme) => ({
   paper: {

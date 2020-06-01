@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
-import { setAlert } from "./alertActions";
-import profileConstants from "../constants/profileConstants";
+import { setAlert } from "../alertActions";
+import profileConstants from "../../constants/profileConstants";
 import { Redirect } from "react-router-dom";
 
 export const getCurrentProfile = () => async (dispatch) => {
