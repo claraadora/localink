@@ -44,7 +44,13 @@ router.get('/me', auth, async (req, res) => {
       return res.status(400).json({ msg: 'There is no shop for this user' });
     }
 
-    await shop.populate({ path: 'products', model: 'Product' }).execPopulate();
+    // await shop.populate[
+    //   ({ path: 'reviews', model: 'Review' },
+    //   { path: 'products', model: 'Product' })
+    // ];
+
+    await shop.populate({ path: 'reviews', model: 'Review' }).execPopulate();
+    //await shop.populate({ path: 'products', model: 'Product' }).execPopulate();
 
     res.json(shop);
   } catch (err) {
