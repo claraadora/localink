@@ -1,4 +1,4 @@
-//send post request with "search": [user input]
+//send post request with "search": [user input] /search
 //get back JSON object {search, shopAndProduct}, lets call this searchResult
 const searchResult = {
   search: 'gaming',
