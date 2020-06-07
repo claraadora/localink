@@ -39,9 +39,11 @@ const sendPasswordResetEmail = async (req, res) => {
       if (error) {
         console.log(error);
         res.status(500).json('Error sending email');
+      } else {
+        //   console.log(info);
+        console.log(`**Email sent**`, info.response);
+        res.status(250).json('Email sent successfully');
       }
-      //   console.log(info);
-      console.log(`**Email sent**`, info.response);
     });
   };
   sendEmail();
@@ -51,16 +53,16 @@ const receivedNewPassword = async (req, res) => {
   const { userId, token } = req.params;
   const { password } = req.body;
 
-  const business = await Business.findById(userId);
-  if (!business) {
-    res.status(404).json('No user with that id');
-  }
-
   try {
-    const salt = await bcrypt.getSalt(10);
+    const business = await Business.findById(userId);
+    if (!business) {
+      res.status(404).json('No user with that id');
+    }
+
+    const salt = await bcrypt.genSalt(10);
     const newPasswordHash = await bcrypt.hash(password, salt);
     await Business.findByIdAndUpdate(userId, { password: newPasswordHash });
-    res.status(202), json('Password change successful');
+    res.status(202).json('Password change successful');
   } catch (error) {
     res.status(500).json(error);
   }
