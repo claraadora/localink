@@ -22,7 +22,6 @@ const usePasswordHashToMakeToken = ({ password, _id, createdAt }) => {
 };
 
 const sendPasswordResetEmail = async (req, res) => {
-  console.log('in function');
   const { email } = req.params;
   let business = null;
   try {

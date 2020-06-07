@@ -14,8 +14,8 @@ const getPasswordResetURL = (user, token) => {
 
 const resetPasswordTemplate = (user, url) => {
   const from = 'Localink' + '<' + process.env.SENDER_EMAIL_LOGIN + '>';
-  //const to = user.email;
-  const to = process.env.RECEIVER_EMAIL_LOGIN;
+  const to = user.email;
+  //const to = process.env.RECEIVER_EMAIL_LOGIN;
   const subject = 'Localink Password Reset';
   const html = `
     <p>Hey ${user.shopName || user.email},</p>
