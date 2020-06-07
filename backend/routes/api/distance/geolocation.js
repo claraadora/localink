@@ -1,20 +1,24 @@
-const request = require('request');
+const got = require('got');
+const reverseGeocode = require('./reverseGeocode');
 
 const URI =
-  'https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBjucyjCeaC5ddig7Hd_RyzPrqWiBIwXhM';
+  'https://www.googleapis.com/geolocation/v1/geolocate?key=' +
+  process.env.GM_API_KEY;
 
-const JSONbody = {
-  homeMobileCountryCode: 525
+const getCurrLocation = async () => {
+  const { body } = await got.post(URI, {
+    json: {
+      homeMobileCountryCode: 525
+    },
+    responseType: 'json'
+  });
+  const location = body.location;
+  const formatted_address = await reverseGeocode(location.lat, location.lng);
+  return formatted_address;
 };
 
-request(
-  {
-    url: URI,
-    method: 'POST',
-    json: true,
-    body: JSONbody
-  },
-  function (error, response, body) {
-    return response.body.location;
-  }
-);
+module.exports = getCurrLocation;
+
+//HOW TO USE
+// const getCurrentLoc = require('./routes/api/distance/geolocation');
+// console.log('currloc ' + await getCurrentLoc());

@@ -1,11 +1,7 @@
 const express = require('express');
 const connectDB = require('./config/db');
-// const socketio = require('socket.io');
-// const http = require('http');
 
 const app = express();
-// const server = http.createServer(app);
-// const io = socketio(server);
 
 //Connect Database
 connectDB();
@@ -36,6 +32,12 @@ app.use('/search', require('./routes/api/shopper/search'));
 
 //Define route for forgot password
 app.use('/business/reset_password', require('./routes/api/email/email.router'));
+
+//Define route to get distance to shop
+app.use('', require('./routes/api/distance/distance.router'));
+
+const getCurrentLoc = require('./routes/api/distance/geolocation');
+getCurrentLoc();
 
 const PORT = process.env.PORT || 5000;
 
