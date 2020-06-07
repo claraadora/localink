@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
-const auth = require('../../middleware/auth');
-const checkObjectId = require('../../middleware/checkObjectId');
+const auth = require('../../../middleware/auth');
+const checkObjectId = require('../../../middleware/checkObjectId');
 
-const Shop = require('../../models/Shop');
-const Shopper = require('../../models/Shopper');
-const Product = require('../../models/Product');
-const Review = require('../../models/Review');
+const Shop = require('../../../models/Shop');
+const Shopper = require('../../../models/Shopper');
+const Product = require('../../../models/Product');
+const Review = require('../../../models/Review');
 
 // @route    POST /review
 // @desc     Create a review

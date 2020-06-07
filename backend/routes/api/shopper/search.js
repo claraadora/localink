@@ -4,7 +4,7 @@ const config = require('config');
 const URI = config.get('mongoURI');
 const MongoClient = require('mongodb').MongoClient;
 const { check, validationResult } = require('express-validator');
-const auth = require('../../middleware/auth');
+const auth = require('../../../middleware/auth');
 var search;
 const rankSearchBy = [];
 

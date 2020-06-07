@@ -10,6 +10,10 @@ const app = express();
 //Connect Database
 connectDB();
 
+//load environment variables
+const dotenv = require('dotenv');
+dotenv.config();
+
 // Init Middleware
 app.use(express.json());
 
@@ -25,23 +29,13 @@ app.use('/business/product', require('./routes/api/business/product'));
 app.use('/', require('./routes/api/shopper/index'));
 app.use('/auth', require('./routes/api/shopper/auth'));
 app.use('/profile', require('./routes/api/shopper/profile'));
-app.use('/review', require('./routes/api/review'));
+app.use('/review', require('./routes/api/shopper/review'));
 
 //Define route for searching
-app.use('/search', require('./routes/api/search'));
+app.use('/search', require('./routes/api/shopper/search'));
 
-// //Define route for chat
-// app.use('/chat', require('./routes/api/chat'));
-
-// //Chat
-// io.on('connection', (socket) => {
-//     console.log("We have a new connection!");
-
-//     socket.on('disconnect', () => {
-//         console.log("User has left");
-//     })
-
-// })
+//Define route for forgot password
+app.use('/business/reset_password', require('./routes/api/email/email.router'));
 
 const PORT = process.env.PORT || 5000;
 

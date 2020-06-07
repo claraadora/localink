@@ -9,6 +9,10 @@ const BusinessSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
   shopName: {
     type: String,
     required: true
