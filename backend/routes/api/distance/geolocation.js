@@ -3,7 +3,7 @@ const reverseGeocode = require('./reverseGeocode');
 
 const URI =
   'https://www.googleapis.com/geolocation/v1/geolocate?key=' +
-  process.env.GM_API_KEY;
+  process.env.GOOGLE_MAPS_API_KEY;
 
 const getCurrLocation = async () => {
   const { body } = await got.post(URI, {
@@ -18,7 +18,3 @@ const getCurrLocation = async () => {
 };
 
 module.exports = getCurrLocation;
-
-//HOW TO USE
-// const getCurrentLoc = require('./routes/api/distance/geolocation');
-// console.log('currloc ' + await getCurrentLoc());

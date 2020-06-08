@@ -1,10 +1,8 @@
 const got = require('got');
 
 const frontURI = 'https://maps.googleapis.com/maps/api/distancematrix/json?';
-// origins=122C+Jalan+Pari+Burong&
-// destinations=21+Lower+kent+ridge+road&
 const specificities = 'region=sg';
-const APIkey = 'key=' + process.env.GM_API_KEY;
+const APIkey = 'key=' + process.env.GOOGLE_MAPS_API_KEY;
 
 function convertSpaceToPlus(string) {
   let stringArr = string.split(' ');
