@@ -209,9 +209,8 @@ function createKey(location) {
 }
 
 const libraries = ["places"];
-const mapContainerStyle = {
-  width: "100vw",
-  height: "100vh",
+const mapContainerStyles = {
+  height: "100%",
 };
 const center = {
   lat: 1.3521,
@@ -236,17 +235,15 @@ export default function Map() {
   };
 
   return (
-    <div>
-      <GoogleMap
-        mapContainerStyle={mapContainerStyle}
-        zoom={12}
-        center={center}
-        options={options}
-      >
-        {shopAndProduct.map((product) => {
-          return <Marker position={product.shop.latLng} />;
-        })}
-      </GoogleMap>
-    </div>
+    <GoogleMap
+      mapContainerStyle={mapContainerStyles}
+      zoom={12}
+      center={center}
+      options={options}
+    >
+      {shopAndProduct.map((product) => {
+        return <Marker position={product.shop.latLng} />;
+      })}
+    </GoogleMap>
   );
 }
