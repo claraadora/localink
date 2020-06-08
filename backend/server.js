@@ -36,11 +36,8 @@ app.use('/business/reset_password', require('./routes/api/email/email.router'));
 //Define route to get distance to shop
 app.use('', require('./routes/api/distance/distance.router'));
 
-// const getCurrentLoc = require('./routes/api/distance/geolocation');
-// getCurrentLoc();
-
-// const getDist = require('./routes/api/distance/distance');
-// getDist('bedok mall', '21 kent ridge road').then(dist => console.log(dist));
+const geolocation = require('./routes/api/distance/geolocation');
+geolocation();
 
 const PORT = process.env.PORT || 5000;
 

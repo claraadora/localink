@@ -18,6 +18,14 @@ const ShopSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  latLng: {
+    lat: {
+      type: Number
+    },
+    lng: {
+      type: Number
+    }
+  },
   distance: {
     type: Number
   },

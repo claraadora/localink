@@ -17,8 +17,13 @@ const ShopperSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  location: {
-    type: String
+  latLng: {
+    lat: {
+      type: Number
+    },
+    lng: {
+      type: Number
+    }
   },
   reviews: [
     {
