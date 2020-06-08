@@ -2,11 +2,7 @@ const got = require('got');
 
 const frontURI = 'https://maps.googleapis.com/maps/api/distancematrix/json?';
 const specificities = 'region=sg';
-<<<<<<< HEAD
 const APIkey = 'key=' + process.env.GOOGLE_MAPS_API_KEY;
-=======
-const APIkey = 'key=' + process.env.GM_API_KEY;
->>>>>>> 6155f825c1e4f63a04c431633a738ff1d02f945a
 
 function convertSpaceToPlus(string) {
   let stringArr = string.split(' ');
