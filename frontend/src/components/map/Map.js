@@ -18,6 +18,7 @@ import {
   ComboboxOption,
 } from "@reach/combobox";
 import "@reach/combobox/styles.css";
+import { makeStyles } from "@material-ui/styles";
 
 //JSON data
 const searchResult = {
@@ -208,6 +209,13 @@ function createKey(location) {
   return location.lat + location.lng;
 }
 
+const useStyles = makeStyles((theme) => ({
+  infoWindow: {
+    width: "30px",
+    height: "40px",
+  },
+}));
+
 const libraries = ["places"];
 const mapContainerStyles = {
   height: "100%",
@@ -226,13 +234,14 @@ export default function Map() {
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries,
   });
-
-  if (loadError) return "Error loading maps";
-  if (!isLoaded) return "Loading Maps...";
+  const [selected, setSelected] = useState(null);
 
   const onLoad = (marker) => {
     console.log("marker: ", marker);
   };
+  const classes = useStyles();
+  if (loadError) return "Error loading maps";
+  if (!isLoaded) return "Loading Maps...";
 
   return (
     <GoogleMap
@@ -242,8 +251,31 @@ export default function Map() {
       options={options}
     >
       {shopAndProduct.map((product) => {
-        return <Marker position={product.shop.latLng} />;
+        return (
+          <Marker
+            key={createKey(product.shop.latLng)}
+            position={product.shop.latLng}
+            onClick={() => {
+              setSelected(product);
+            }}
+          />
+        );
       })}
+      {selected ? (
+        <InfoWindow
+          position={selected.shop.latLng}
+          onCloseClick={() => {
+            setSelected(null);
+          }}
+          className={classes.infoWindow}
+        >
+          <div>
+            <h4>{selected.product.name}</h4>
+            <h4>{"$ " + selected.product.price}</h4>
+            <h4>{selected.shop.address}</h4>
+          </div>
+        </InfoWindow>
+      ) : null}
     </GoogleMap>
   );
 }

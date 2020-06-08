@@ -4,22 +4,6 @@ import LocalinkMap from "../../components/map/Map";
 
 function SearchPage() {
   return (
-    // <Grid container spacing={8}>
-    //   <Grid item sm={7}>
-    //     Some content here
-    //   </Grid>
-    //   <Grid item sm={5}>
-    //     <Grid container spacing={8}>
-    //       <Grid
-    //         item
-    //         sm={12}
-    //         style={{ position: "relative", height: "50vh", width: "50vw" }}
-    //       >
-    //         <LocalinkMap />
-    //       </Grid>
-    //     </Grid>
-    //   </Grid>
-    // </Grid>
     <Grid container direction="column" spacing={4}>
       <Grid item>
         <Typography>Hello</Typography>
