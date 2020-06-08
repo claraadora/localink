@@ -1,8 +1,14 @@
 function initMap() {
-  //   const startPoints = ['los angeles, ca', 'san bernardino, ca', 'barstow, ca'];
-  //   const endPoints = ['san bernardino, ca', 'barstow, ca', 'winona, az'];
-  const startPoints = ['los angeles, ca', 'san bernardino, ca'];
-  const endPoints = ['san bernardino, ca', 'barstow, ca'];
+  // const startPoints = ['los angeles, ca', 'san bernardino, ca', 'barstow, ca'];
+  // const endPoints = ['san bernardino, ca', 'barstow, ca', 'winona, az'];
+  const startPoints = [
+    'Ubi avenue 2',
+    '629 Aljunied Rd, #04-02A, Singapore 389838'
+  ];
+  const endPoints = [
+    '629 Aljunied Rd, #04-02A, Singapore 389838',
+    'Sri Manmatha Karuneshvarar temple'
+  ];
 
   const colors = ['#ff99ff', '#99c2ff', '#ff8080', '#ff8c1a'];
 
@@ -106,11 +112,16 @@ function initMap() {
       data.duration.text +
       '<br> fare: ' +
       fare +
+      '<br> start: ' +
+      data.start_address +
+      '<br> end: ' +
+      data.end_address +
       '<br> <a href="">Select</a>'
     );
   }
 
   function setTextDirections(polyline, directionsRenderer) {
+    console.log('std');
     google.maps.event.addListener(polyline, 'click', function () {
       //clear previous panel
       document.getElementById('right-panel').innerHTML = '';

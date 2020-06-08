@@ -1,14 +1,14 @@
 const express = require('express');
 const connectDB = require('./config/db');
-// const socketio = require('socket.io');
-// const http = require('http');
 
 const app = express();
-// const server = http.createServer(app);
-// const io = socketio(server);
 
 //Connect Database
 connectDB();
+
+//load environment variables
+const dotenv = require('dotenv');
+dotenv.config();
 
 // Init Middleware
 app.use(express.json());
@@ -25,50 +25,19 @@ app.use('/business/product', require('./routes/api/business/product'));
 app.use('/', require('./routes/api/shopper/index'));
 app.use('/auth', require('./routes/api/shopper/auth'));
 app.use('/profile', require('./routes/api/shopper/profile'));
-app.use('/review', require('./routes/api/review'));
+app.use('/review', require('./routes/api/shopper/review'));
 
 //Define route for searching
-app.use('/search', require('./routes/api/search'));
+app.use('/search', require('./routes/api/shopper/search'));
 
-// //Define route for chat
-// app.use('/chat', require('./routes/api/chat'));
+//Define route for forgot password
+app.use('/business/reset_password', require('./routes/api/email/email.router'));
 
-// //Chat
-// io.on('connection', (socket) => {
-//     console.log("We have a new connection!");
+//Define route to get distance to shop
+app.use('', require('./routes/api/distance/distance.router'));
 
-//     socket.on('disconnect', () => {
-//         console.log("User has left");
-//     })
-
-// })
-
-// const getLocation = require('./routes/api/geolocation');
-// getLocation();
-
-const request = require('request');
-
-const URI =
-  'https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBjucyjCeaC5ddig7Hd_RyzPrqWiBIwXhM';
-
-const JSONbody = {
-  homeMobileCountryCode: 525
-};
-
-request(
-  {
-    url: URI,
-    method: 'POST',
-    json: true, // <--Very important!!!
-    body: JSONbody
-  },
-  function (error, response, body) {
-    console.log(response.body.location.lat);
-  }
-);
-
-const getDist = require('./routes/api/distance');
-console.log(getDist('telok blangah blk 44', '21 lower kent ridge road'));
+const geolocation = require('./routes/api/distance/geolocation');
+geolocation();
 
 const PORT = process.env.PORT || 5000;
 

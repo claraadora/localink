@@ -13,6 +13,18 @@ const ShopperSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  latLng: {
+    lat: {
+      type: Number
+    },
+    lng: {
+      type: Number
+    }
+  },
   reviews: [
     {
       type: mongoose.Schema.Types.ObjectId,
