@@ -4,6 +4,7 @@ const auth = require('../../../middleware/auth');
 
 const getCurrentLocation = require('./geolocation');
 const geocode = require('./geocode');
+const getDistance = require('../distance/distance');
 
 // @route    POST start-location
 // @desc     Get the start location, update shopper's location
@@ -23,13 +24,29 @@ router.post('/start-location', auth, async (req, res) => {
       { latLng: location },
       { new: true }
     );
-    console.log(shopper);
     console.log('Successfully updated location of shopper');
+
+    const allShops = await Shop.find();
+    allShops.forEach(async shop => {
+      if (shop.latLng.lat && shop.latLng.lng) {
+        //remove in future
+        shop.distance = await getDistance(location, shop.latLng);
+        console.log(shop.distance);
+        shop.save();
+      }
+    });
+    console.log('Successfully updated distance to shops');
+
     res.status(200).send('Got location successfully');
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
   }
 });
+
+async function distanceToShop(address) {
+  console.log('add' + address);
+  return await getDistance(shopper.latLng, await geocode(address));
+}
 
 module.exports = router;
