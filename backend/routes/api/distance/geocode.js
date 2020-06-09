@@ -12,7 +12,7 @@ module.exports = async function geocode(addr) {
     const latLng = results[0].geometry.location;
     return latLng;
   } catch (error) {
-    console.log(error.response.body);
+    console.log(error);
   }
 };
 
@@ -20,7 +20,9 @@ function convertSpaceToPlus(string) {
   let stringArr = string.split(' ');
   let finalString = '';
   for (let i = 0; i < stringArr.length - 1; i++) {
-    finalString = finalString + stringArr[i] + '+';
+    if (stringArr[i].charAt(0) != '#') {
+      finalString = finalString + stringArr[i] + '+';
+    }
   }
   finalString += stringArr[stringArr.length - 1];
   return finalString;

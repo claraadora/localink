@@ -5,8 +5,10 @@ const URI = config.get('mongoURI');
 const MongoClient = require('mongodb').MongoClient;
 const { check, validationResult } = require('express-validator');
 const auth = require('../../../middleware/auth');
-var search;
-const rankSearchBy = [];
+const getDistance = require('../distance/distance');
+const geocode = require('../distance/geocode');
+
+let shopper = null;
 
 // @route    POST /search
 // @desc     Get search results
@@ -21,6 +23,11 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
+    shopper = await Shopper.findById(req.user.id);
+    const coordinates = {
+      type: 'Point',
+      coordinates: [shopper.latLng.lat, shopper.latLng.lng]
+    };
     MongoClient.connect(
       URI,
       {
