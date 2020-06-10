@@ -1,7 +1,11 @@
 import React from "react";
 import { Droppable } from "react-beautiful-dnd";
-import { Paper } from "@material-ui/core";
+import { Paper, Typography } from "@material-ui/core";
 
-export default function Cart() {
-  return <Paper></Paper>;
-}
+export const Cart = () => {
+  return (
+    <Paper>
+      <Typography variant="h1">ITINERARY</Typography>
+    </Paper>
+  );
+};

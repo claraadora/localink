@@ -1,7 +1,7 @@
 import React from "react";
 import { FixedSizeList as List } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
-import { LocationCard } from "../card/LocationCard";
+import { ItemCard } from "../card/ItemCard";
 import "./styles.css";
 
 const Row = ({ index, style }) => <div style={style}>Row {index}</div>;
@@ -16,7 +16,9 @@ export const LocationList = () => (
         itemSize={35}
         width={width}
       >
-        {Row}
+        {({ index, style }) => {
+          return <ItemCard />;
+        }}
       </List>
     )}
   </AutoSizer>
