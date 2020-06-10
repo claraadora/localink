@@ -15,10 +15,16 @@ export const loadSearch = (search) => async (dispatch) => {
     const res = await axios.post("/search", body, config);
 
     dispatch({
-      type: searchConstants.SEARCH_SUCCESS,
+      type: searchConstants.SEARCH_REQUEST,
       payload: res.data,
     });
   } catch (err) {
+    console.log(err);
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, "error")));
+    }
     dispatch({
       type: searchConstants.SEARCH_ERROR,
       payload: {
