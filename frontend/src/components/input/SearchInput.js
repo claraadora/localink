@@ -26,18 +26,18 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const SearchInput = () => {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [search, setSearch] = useState("");
   const classes = useStyles();
   const dispatch = useDispatch();
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log(`searching for ${searchQuery}`);
-    dispatch(loadSearch(searchQuery));
+    console.log(`searching for ${search}`);
+    dispatch(loadSearch(search));
   };
 
   const onChange = (e) => {
-    setSearchQuery(e.target.value);
+    setSearch(e.target.value);
   };
   return (
     <Paper
