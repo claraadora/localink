@@ -4,7 +4,6 @@ const config = require('config');
 const URI = config.get('mongoURI');
 const MongoClient = require('mongodb').MongoClient;
 const { check, validationResult } = require('express-validator');
-const auth = require('../../../middleware/auth');
 
 let products = [];
 
@@ -14,7 +13,7 @@ let products = [];
 // @return   Array of products
 router.post(
   '/',
-  [auth, check('search', 'Search bar cannot be empty').not().isEmpty()],
+  check('search', 'Search bar cannot be empty').not().isEmpty(),
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
