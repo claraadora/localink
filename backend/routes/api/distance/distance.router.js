@@ -31,7 +31,6 @@ router.post('/start-location', auth, async (req, res) => {
       if (shop.latLng.lat && shop.latLng.lng) {
         //remove in future
         shop.distance = await getDistance(location, shop.latLng);
-        console.log(shop.distance);
         shop.save();
       }
     });
@@ -43,10 +42,5 @@ router.post('/start-location', auth, async (req, res) => {
     res.status(500).send('Server Error');
   }
 });
-
-async function distanceToShop(address) {
-  console.log('add' + address);
-  return await getDistance(shopper.latLng, await geocode(address));
-}
 
 module.exports = router;
