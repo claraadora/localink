@@ -7,6 +7,7 @@ const { check, validationResult } = require('express-validator');
 // const normalize = require('normalize-url');
 
 const Business = require('../../../models/Business');
+const User = require('../../../models/User');
 
 // @route    POST /business
 // @desc     Register user
@@ -16,6 +17,7 @@ router.post(
   '/',
   [
     check('shopName', 'Shop name is required').not().isEmpty(),
+    check('name', 'Name is required').not().isEmpty(),
     check('email', 'Please include a valid email').isEmail(),
     check(
       'password',
@@ -28,7 +30,7 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { shopName, email, password } = req.body;
+    const { shopName, name, email, password } = req.body;
 
     try {
       let business = await Business.findOne({ email });
@@ -39,20 +41,30 @@ router.post(
       }
 
       business = new Business({
-        shopName,
-        email,
-        password
+        shopName
       });
 
       const salt = await bcrypt.genSalt(10);
 
-      business.password = await bcrypt.hash(password, salt);
+      const pw = await bcrypt.hash(password, salt);
+
+      const user = new User({
+        name,
+        email,
+        password: pw,
+        role: 'owner'
+      });
+
+      await user.save();
+
+      business.users.push(user);
 
       await business.save();
 
       const payload = {
         business: {
-          id: business.id
+          id: business.id,
+          user_id: user.id
         }
       };
 

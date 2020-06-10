@@ -5,6 +5,7 @@ const auth = require('../../../middleware/auth');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const { check, validationResult } = require('express-validator');
+const mongoose = require('mongoose');
 
 const Business = require('../../../models/Business');
 
@@ -14,7 +15,10 @@ const Business = require('../../../models/Business');
 // @return   User
 router.get('/', auth, async (req, res) => {
   try {
-    const business = await await Business.findById(req.user.id);
+    const business = await Business.findById(req.user.id).populate({
+      path: 'users',
+      model: 'User'
+    });
     res.json(business);
   } catch (err) {
     console.error(err.message);
@@ -41,15 +45,18 @@ router.post(
     const { email, password } = req.body;
 
     try {
-      let business = await Business.findOne({ email });
+      const user = await User.findOne({ email });
+      const business = await Business.findOne({
+        users: mongoose.Types.ObjectId(user.id)
+      });
 
-      if (!business) {
+      if (!user) {
         return res
           .status(400)
           .json({ errors: [{ msg: 'Invalid Credentials' }] });
       }
 
-      const isMatch = await bcrypt.compare(password, business.password);
+      const isMatch = await bcrypt.compare(password, user.password);
 
       if (!isMatch) {
         return res
@@ -59,7 +66,8 @@ router.post(
 
       const payload = {
         business: {
-          id: business.id
+          id: business.id,
+          user_id: user.id
         }
       };
 
