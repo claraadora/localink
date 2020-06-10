@@ -9,6 +9,7 @@ const { check, validationResult } = require('express-validator');
 
 const Business = require('../../../models/Business');
 const Shop = require('../../../models/Shop');
+const geocode = require('../distance/geocode');
 
 // @route    GET business/profile/me
 // @desc     Get current users profile
@@ -75,7 +76,13 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    const { shopName, avatar, description, address } = req.body;
+    const { shopName, avatar, description, address, distance } = req.body;
+
+    const coordinates = await geocode(address);
+    const latLng = {
+      lat: coordinates.lat,
+      lng: coordinates.lng
+    };
 
     const profileFields = {
       shopName
@@ -85,7 +92,9 @@ router.post(
       shopName,
       avatar,
       description,
-      address
+      address,
+      latLng,
+      distance
     };
 
     try {

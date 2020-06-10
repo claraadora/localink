@@ -4,9 +4,8 @@ const config = require('config');
 const URI = config.get('mongoURI');
 const MongoClient = require('mongodb').MongoClient;
 const { check, validationResult } = require('express-validator');
-const auth = require('../../../middleware/auth');
-var search;
-const rankSearchBy = [];
+
+let products = [];
 
 // @route    POST /search
 // @desc     Get search results
@@ -14,9 +13,8 @@ const rankSearchBy = [];
 // @return   Array of products
 router.post(
   '/',
-  [auth, check('search', 'Search bar cannot be empty').not().isEmpty()],
+  check('search', 'Search bar cannot be empty').not().isEmpty(),
   async (req, res) => {
-    let products = [];
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -29,8 +27,7 @@ router.post(
       (error, client) => {
         console.log('MongoDB client connected... Searching...');
         const db = client.db('test');
-        const rank = req.body.rank;
-        const sortBy = sort(rank);
+        // const sortBy = sort(rank);
         db.collection('products')
           .aggregate([
             {
@@ -65,7 +62,7 @@ router.post(
               }
             }
           ])
-          .sort(sortBy)
+          .sort({ score: 1 })
           .each(async function (error, product) {
             if (product) {
               products.unshift(product);
@@ -78,17 +75,17 @@ router.post(
   }
 );
 
-function sort(rank) {
-  if (rank == 'price') {
-    return { price: -1 };
-  } else if (rank == 'distance') {
-    return { distance: 1 };
-  } else if (rank == 'rating') {
-    return { 'shop_docs.0.ratings': 1 };
-  } else {
-    return { score: 1 };
-  }
-}
+// function sort(rank) {
+//   if (rank == 'price') {
+//     return { price: -1 };
+//   } else if (rank == 'shop_docs.0.distance') {
+//     return { distance: 1 };
+//   } else if (rank == 'rating') {
+//     return { 'shop_docs.0.ratings': 1 };
+//   } else {
+//     return { score: 1 };
+//   }
+// }
 
 module.exports = router;
 

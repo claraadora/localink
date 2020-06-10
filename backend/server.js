@@ -20,6 +20,7 @@ app.use('/business', require('./routes/api/business/index'));
 app.use('/business/auth', require('./routes/api/business/auth'));
 app.use('/business/profile', require('./routes/api/business/profile'));
 app.use('/business/product', require('./routes/api/business/product'));
+app.use('/business/user', require('./routes/api/business/user'));
 
 //Define routes for shoppers
 app.use('/', require('./routes/api/shopper/index'));
@@ -35,9 +36,6 @@ app.use('/business/reset_password', require('./routes/api/email/email.router'));
 
 //Define route to get distance to shop
 app.use('', require('./routes/api/distance/distance.router'));
-
-const geolocation = require('./routes/api/distance/geolocation');
-geolocation();
 
 const PORT = process.env.PORT || 5000;
 
