@@ -3,6 +3,7 @@ import { Typography, Grid } from "@material-ui/core";
 import LocalinkMap from "../../components/map/Map";
 import { LocationList } from "../../components/list/LocationList";
 import { Cart } from "../../components/cart/Cart";
+import { ItineraryList } from "../../components/list/ItineraryList";
 
 function SearchPage() {
   return (
@@ -16,7 +17,7 @@ function SearchPage() {
         </Grid>
       </Grid>
       <Grid item>
-        <Cart />
+        <ItineraryList />
       </Grid>
     </Grid>
   );
