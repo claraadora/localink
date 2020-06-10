@@ -8,25 +8,21 @@ import {
   Typography,
 } from "@material-ui/core";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
-    minWidth: 275,
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
+    backgroundColor: theme.palette.primary.light,
   },
   title: {
     fontSize: 14,
+    color: theme.palette.secondary,
   },
   pos: {
     marginBottom: 12,
   },
-});
-export const ItemCard = ({ index, style }) => {
+}));
+
+export const ItemCard = () => {
   const classes = useStyles();
-  const bull = <span className={classes.bullet}>•</span>;
 
   return (
     <Card className={classes.root}>
@@ -39,7 +35,7 @@ export const ItemCard = ({ index, style }) => {
           Word of the Day
         </Typography>
         <Typography variant="h5" component="h2">
-          be{bull}nev{bull}o{bull}lent
+          benevolent
         </Typography>
         <Typography className={classes.pos} color="textSecondary">
           adjective
