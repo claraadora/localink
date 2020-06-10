@@ -4,9 +4,14 @@ import { setAlert } from "../alertActions";
 import searchConstants from "../../constants/searchConstants";
 import { Redirect } from "react-router-dom";
 
-export const loadSearch = () => async (dispatch) => {
+export const loadSearch = (searchQuery) => async (dispatch) => {
   try {
-    const res = await axios.get("/search");
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const res = await axios.post("/search", searchQuery, config);
 
     dispatch({
       type: searchConstants.SEARCH_SUCCESS,

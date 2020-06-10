@@ -1,64 +1,60 @@
 import React, { useState } from "react";
 import SearchIcon from "@material-ui/icons/Search";
-import InputBase from "@material-ui/core/InputBase";
+import { InputBase, IconButton, Paper } from "@material-ui/core";
 import { fade, makeStyles } from "@material-ui/core/styles";
+import { useDispatch } from "react-redux";
+import { loadSearch } from "../../actions/shopper/searchActions";
 
 const useStyles = makeStyles((theme) => ({
-  search: {
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
-    },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(3),
-      width: "auto",
-    },
-  },
-  searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
+  root: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
-  },
-  inputRoot: {
-    color: "inherit",
-  },
-  inputInput: {
-    padding: theme.spacing(1, 10, 2, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(8)}px)`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: "40ch",
+    width: 400,
+    backgroundColor: fade(theme.palette.common.white, 0.35),
+    "&:hover": {
+      backgroundColor: fade(theme.palette.common.white, 0.4),
     },
-    fontSize: 13,
+  },
+  iconButton: {
+    padding: 10,
+  },
+  input: {
+    marginLeft: theme.spacing(3),
+    flex: 1,
+    fontSize: 15,
   },
 }));
 
 export const SearchInput = () => {
+  const [searchQuery, setSearchQuery] = useState("");
   const classes = useStyles();
+  const dispatch = useDispatch();
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    console.log(`searching for ${searchQuery}`);
+    dispatch(loadSearch(searchQuery));
+  };
+
+  const onChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
   return (
-    <div className={classes.search}>
-      <div className={classes.searchIcon}>
-        <SearchIcon />
-      </div>
+    <Paper
+      elevation={0}
+      component="form"
+      className={classes.root}
+      onSubmit={onSubmit}
+    >
       <InputBase
-        placeholder="Searching..."
-        classes={{
-          root: classes.inputRoot,
-          input: classes.inputInput,
-        }}
+        placeholder="Search at localink..."
+        className={classes.input}
         inputProps={{ "aria-label": "search" }}
+        onChange={onChange}
       />
-    </div>
+      <IconButton type="submit" className={classes.iconButton}>
+        <SearchIcon />
+      </IconButton>
+    </Paper>
   );
 };
