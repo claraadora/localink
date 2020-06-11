@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const { check, validationResult } = require('express-validator');
-const auth = require('../../../middleware/auth');
+const checkBusinessOwner = require('../../../middleware/checkBusinessOwner');
 
 // const normalize = require('normalize-url');
 
@@ -18,7 +18,7 @@ const User = require('../../../models/User');
 router.post(
   '/',
   [
-    auth,
+    checkBusinessOwner,
     [
       check('role', 'Role is required').not().isEmpty(),
       check('name', 'Name is required').not().isEmpty(),
@@ -55,7 +55,8 @@ router.post(
         name,
         email,
         password: pw,
-        role
+        role,
+        activated: true
       });
 
       await user.save();
@@ -89,9 +90,9 @@ router.post(
 );
 
 // @route    DELETE business/user/:user_id
-// @desc     Deactivate user
+// @desc     Delete user
 // @access   Private
-router.delete('/:user_id', auth, async (req, res) => {
+router.delete('/:user_id', checkBusinessOwner, async (req, res) => {
   try {
     const business = await Business.findById(req.user.id);
 
@@ -110,28 +111,26 @@ router.delete('/:user_id', auth, async (req, res) => {
   }
 });
 
-//edit user
 // @route    POST /business/user/:user_id
-// @desc     Add user to existing business
+// @desc     Edit user of existing business
 // @access   Public
 // @return   User token
 router.post(
   '/:user_id',
   [
-    auth,
+    checkBusinessOwner,
     [
       check('role', 'Role is required').not().isEmpty(),
-      check('name', 'Name is required').not().isEmpty(),
-      check('email', 'Please include a valid email').isEmail()
+      check('name', 'Name is required').not().isEmpty()
+      // check('email', 'Please include a valid email').isEmail()
     ]
   ],
   async (req, res) => {
     try {
-      const { role, name, email } = req.body;
+      const { role, name } = req.body;
       const userFields = {
         role,
-        name,
-        email
+        name
       };
       const user = await User.findOneAndUpdate(
         { _id: req.params.user_id },
@@ -142,10 +141,26 @@ router.post(
       res.status(200).json(user);
     } catch (error) {
       console.error(err.message);
-
       res.status(500).send('Server Error');
     }
   }
 );
+
+//activate and deactivate user
+// @route    POST /business/user/:user_id
+// @desc     Edit user of existing business
+// @access   Public
+// @return   User token
+router.get('/:user_id', checkBusinessOwner, async (req, res) => {
+  try {
+    const user = await User.findById(req.params.user_id);
+    user.activated = !user.activated;
+    user.save();
+    res.status(200).json('successfully changed user activation status');
+  } catch (error) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
 
 module.exports = router;

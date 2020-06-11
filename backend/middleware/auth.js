@@ -12,12 +12,20 @@ module.exports = function (req, res, next) {
 
   // Verify token
   try {
-    jwt.verify(token, config.get('jwtSecret'), (error, decoded) => {
+    jwt.verify(token, config.get('jwtSecret'), async (error, decoded) => {
       if (error) {
         return res.status(401).json({ msg: 'Token is not valid' });
       } else {
         if (decoded.business) {
-          req.user = decoded.business;
+          const user_id = decoded.business.user_id;
+          const user = await User.findById(user_id);
+          if (user.activated) {
+            req.user = decoded.business;
+          } else {
+            res
+              .status(401)
+              .json({ msg: 'authorization denied, account not activated' });
+          }
         } else {
           req.user = decoded.shopper;
         }

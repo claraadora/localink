@@ -52,7 +52,8 @@ router.post(
         name,
         email,
         password: pw,
-        role: 'owner'
+        role: 'owner',
+        activated: true
       });
 
       await user.save();
