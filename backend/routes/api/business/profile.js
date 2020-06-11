@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../../../middleware/auth');
+const checkBusinessOwner = require('../../../middleware/CheckBusinessOwner');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
@@ -10,26 +11,6 @@ const { check, validationResult } = require('express-validator');
 const Business = require('../../../models/Business');
 const Shop = require('../../../models/Shop');
 const geocode = require('../distance/geocode');
-
-// @route    GET business/profile/me
-// @desc     Get current users profile
-// @access   Private
-// router.get('/me', auth, async (req, res) => {
-//   try {
-//     const profile = await Business.findOne({
-//       _id: req.user.id
-//     });
-
-//     if (!profile) {
-//       return res.status(400).json({ msg: 'There is no profile for this user' });
-//     }
-
-//     res.json(profile);
-//   } catch (err) {
-//     console.error(err.message);
-//     res.status(500).send('Server Error');
-//   }
-// });
 
 // @route    GET business/profile/me
 // @desc     Get current users shop (not profile)
@@ -44,11 +25,6 @@ router.get('/me', auth, async (req, res) => {
       return res.status(400).json({ msg: 'There is no shop for this user' });
     }
 
-    // await shop.populate[
-    //   ({ path: 'reviews', model: 'Review' },
-    //   { path: 'products', model: 'Product' })
-    // ];
-
     await shop.populate({ path: 'reviews', model: 'Review' }).execPopulate();
     await shop.populate({ path: 'products', model: 'Product' }).execPopulate();
 
@@ -61,11 +37,11 @@ router.get('/me', auth, async (req, res) => {
 
 // @route    POST business/profile;
 // @desc     Create or update user profile
-// @access   Private
+// @access   Private, only owner
 router.post(
   '/',
   [
-    auth,
+    checkBusinessOwner,
     [
       check('shopName', 'Shop name is required'),
       check('address', 'Address is required')
