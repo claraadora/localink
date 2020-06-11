@@ -228,7 +228,7 @@ const options = {
   disableDefaultUI: true,
   zoomControl: true,
 };
-
+// const directionsService = new window.google.maps.DirectionsService();
 export default function Map() {
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,

@@ -1,15 +1,17 @@
 import { createMuiTheme } from "@material-ui/core/styles";
-import lightGreen from "@material-ui/core/colors/lightGreen";
-import yellow from "@material-ui/core/colors/yellow";
-import grey from "@material-ui/core/colors/grey";
+import { lightGreen, yellow, grey, lightBlue } from "@material-ui/core/colors";
 
 export const theme = createMuiTheme({
   palette: {
     primary: {
       main: lightGreen[300],
+      light: lightGreen[50],
     },
     secondary: {
       main: yellow[300],
+    },
+    additional: {
+      main: lightBlue[100],
     },
   },
   typography: {
