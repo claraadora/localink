@@ -27,7 +27,6 @@ router.post(
       (error, client) => {
         console.log('MongoDB client connected... Searching...');
         const db = client.db('test');
-        // const sortBy = sort(rank);
         db.collection('products')
           .aggregate([
             {
