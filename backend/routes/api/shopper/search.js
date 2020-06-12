@@ -115,25 +115,3 @@ module.exports = router;
 //       }
 //     }
 //   }
-
-// {
-//     "mappings": {
-//       "dynamic": false,
-//       "fields": {
-//         "name": {
-//           "type": "string",
-//           "analyzer": "lucene.standard",
-//           "multi": {
-//             "keywordAnalyzer": {
-//               "type": "string",
-//               "analyzer": "lucene.keyword"
-//             }
-//           }
-//         },
-//         "description": {
-//           "type": "string",
-//           "analyzer": "lucene.standard"
-//         }
-//       }
-//     }
-//   }
