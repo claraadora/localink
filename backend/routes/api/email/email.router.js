@@ -4,17 +4,23 @@ const {
   sendPasswordResetEmail,
   receivedNewPassword
 } = require('./email.controller');
+const checkBusinessOwner = require('../../../middleware/CheckBusinessOwner');
+const resetPasswordAuth = require('../../../middleware/ResetPasswordAuth');
 
 // @route    POST business/reset_password/:email
 // @desc     Get email from frontend
-// @access   Private
+// @access   Private, only owner
 // @return
-router.post('/:email', sendPasswordResetEmail);
+router.post('/:email', checkBusinessOwner, sendPasswordResetEmail);
 
 // @route    POST business/reset_password/receive_new_password/:userId/:token
 // @desc     Change password
-// @access   Private
+// @access   Private, only owner
 // @return
-router.post('/receive_new_password/:userId/:token', receivedNewPassword);
+router.post(
+  '/receive_new_password/:user_id/:token',
+  resetPasswordAuth,
+  receivedNewPassword
+);
 
 module.exports = router;

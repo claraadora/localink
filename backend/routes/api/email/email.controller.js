@@ -6,13 +6,16 @@ const {
   resetPasswordTemplate
 } = require('./email');
 
+const mongoose = require('mongoose');
 const Business = require('../../../models/Business');
+const User = require('../../../models/User');
 
-const usePasswordHashToMakeToken = ({ password, _id, createdAt }) => {
-  const secret = password + '-' + createdAt;
+const usePasswordHashToMakeToken = (business, user) => {
+  const secret = user.password + '-' + business.createdAt;
   const payload = {
     business: {
-      id: _id
+      id: business.id,
+      user_id: user.id
     }
   };
   const token = jwt.sign(payload, secret, {
@@ -23,15 +26,19 @@ const usePasswordHashToMakeToken = ({ password, _id, createdAt }) => {
 
 const sendPasswordResetEmail = async (req, res) => {
   const { email } = req.params;
+  let user = null;
   let business = null;
   try {
-    business = await Business.findOne({ email });
+    user = await User.findOne({ email });
+    business = await Business.findOne({
+      users: mongoose.Types.ObjectId(user.id)
+    });
   } catch (error) {
     res.status(404).json('No user with that email');
   }
-  const token = usePasswordHashToMakeToken(business);
-  const url = getPasswordResetURL(business, token);
-  const emailTemplate = resetPasswordTemplate(business, url);
+  const token = usePasswordHashToMakeToken(business, user);
+  const url = getPasswordResetURL(user, token);
+  const emailTemplate = resetPasswordTemplate(business, user, url);
 
   const sendEmail = () => {
     transported.sendMail(emailTemplate, (error, info) => {
@@ -49,18 +56,18 @@ const sendPasswordResetEmail = async (req, res) => {
 };
 
 const receivedNewPassword = async (req, res) => {
-  const { userId, token } = req.params;
+  const { user_id, token } = req.params;
   const { password } = req.body;
 
   try {
-    const business = await Business.findById(userId);
-    if (!business) {
+    const user = await User.findById(user_id);
+    if (!user) {
       res.status(404).json('No user with that id');
     }
 
     const salt = await bcrypt.genSalt(10);
     const newPasswordHash = await bcrypt.hash(password, salt);
-    await Business.findByIdAndUpdate(userId, { password: newPasswordHash });
+    await User.findByIdAndUpdate(user_id, { password: newPasswordHash });
     res.status(202).json('Password change successful');
   } catch (error) {
     res.status(500).json(error);
