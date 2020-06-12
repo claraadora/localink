@@ -46,15 +46,16 @@ router.post(
 
     try {
       const user = await User.findOne({ email });
-      const business = await Business.findOne({
-        users: mongoose.Types.ObjectId(user.id)
-      });
 
       if (!user) {
         return res
           .status(400)
           .json({ errors: [{ msg: 'Invalid Credentials' }] });
       }
+
+      const business = await Business.findOne({
+        users: mongoose.Types.ObjectId(user.id)
+      });
 
       const isMatch = await bcrypt.compare(password, user.password);
 
