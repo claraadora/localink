@@ -10,6 +10,7 @@ const { check, validationResult } = require('express-validator');
 
 const Business = require('../../../models/Business');
 const Shop = require('../../../models/Shop');
+const User = require('../../../models/User');
 const geocode = require('../distance/geocode');
 
 // @route    GET business/profile/me
@@ -79,7 +80,7 @@ router.post(
         { _id: req.user.id },
         { $set: profileFields },
         { new: true, upsert: true }
-      ).select('-password');
+      );
 
       let shop = await Shop.findOneAndUpdate(
         { owner: profile.id },
@@ -100,7 +101,10 @@ router.post(
 // @access   Private
 router.post(
   '/account-settings-email',
-  [auth, check('email', 'Please include a valid email').isEmail()],
+  [
+    checkBusinessOwner,
+    check('email', 'Please include a valid email').isEmail()
+  ],
   async (req, res) => {
     const errors = validationResult(req); //converts errors into error object
     if (!errors.isEmpty()) {
@@ -110,18 +114,12 @@ router.post(
     const { email } = req.body;
 
     try {
-      let business = await Business.findOne({ _id: req.user.id });
+      const user = await User.findById(req.user.user_id);
 
-      if (!business) {
-        return res
-          .status(400)
-          .json({ errors: [{ msg: 'Invalid Credentials' }] });
-      }
+      user.email = email;
+      await user.save();
 
-      business.email = email;
-      await business.save();
-
-      res.json(business);
+      res.json(user);
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server error');
@@ -135,7 +133,7 @@ router.post(
 router.post(
   '/account-settings-password',
   [
-    auth,
+    checkBusinessOwner,
     check('oldPassword', 'Please enter your existing password').isLength({
       min: 6
     }),
@@ -153,16 +151,9 @@ router.post(
     const { oldPassword, newPassword } = req.body;
 
     try {
-      let business = await Business.findOne({ _id: req.user.id });
+      const user = await User.findById(req.user.user_id);
 
-      if (!business) {
-        console.log('here');
-        return res
-          .status(400)
-          .json({ errors: [{ msg: 'Invalid Credentials' }] });
-      }
-
-      const isMatch = await bcrypt.compare(oldPassword, business.password);
+      const isMatch = await bcrypt.compare(oldPassword, user.password);
 
       if (!isMatch) {
         return res
@@ -172,13 +163,14 @@ router.post(
 
       const salt = await bcrypt.genSalt(10);
 
-      business.password = await bcrypt.hash(newPassword, salt);
+      user.password = await bcrypt.hash(newPassword, salt);
 
-      await business.save();
+      await user.save();
 
       const payload = {
         business: {
-          id: business.id
+          id: req.user.id,
+          user_id: user.id
         }
       };
 
