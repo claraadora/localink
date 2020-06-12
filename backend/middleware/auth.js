@@ -23,7 +23,7 @@ module.exports = function (req, res, next) {
             req.user = decoded.business;
           } else {
             res
-              .status(401)
+              .status(403)
               .json({ msg: 'authorization denied, account not activated' });
           }
         } else {

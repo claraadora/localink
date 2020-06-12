@@ -24,7 +24,7 @@ module.exports = function (req, res, next) {
           next();
         } else {
           res
-            .status(401)
+            .status(403)
             .json({ msg: 'authorization denied, only owner has access' });
         }
       }
