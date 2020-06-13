@@ -1,6 +1,8 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Card, Button, Typography, Grid } from "@material-ui/core";
+import { addToItinerary } from "../../actions/shopper/itineraryActions";
+import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,8 +24,8 @@ function trimString(word, maxLength) {
 export const ItemCard = (props) => {
   const classes = useStyles();
   const data = props.content;
-  console.log(props.style);
-  console.log(data);
+  const dispatch = useDispatch();
+
   return (
     <Card
       className={classes.root}
@@ -44,7 +46,9 @@ export const ItemCard = (props) => {
             <Typography variant="body2">{data.shop_docs[0].address}</Typography>
           </Grid>
           <Grid item>
-            <Button size="small">Add to Itinerary</Button>
+            <Button size="small" onClick={() => dispatch(addToItinerary(data))}>
+              Add to Itinerary
+            </Button>
           </Grid>
         </Grid>
         <Grid item xs={2}>
