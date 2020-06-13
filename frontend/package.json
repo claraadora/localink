@@ -7,6 +7,7 @@
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.54",
     "@material-ui/styles": "^4.9.14",
+    "@mui-treasury/styles": "^1.7.1",
     "@reach/combobox": "^0.10.3",
     "@react-google-maps/api": "^1.9.5",
     "@testing-library/jest-dom": "^4.2.4",

@@ -1,5 +1,12 @@
 import { createMuiTheme } from "@material-ui/core/styles";
-import { lightGreen, yellow, grey, lightBlue } from "@material-ui/core/colors";
+import {
+  lightGreen,
+  yellow,
+  grey,
+  lightBlue,
+  blue,
+  green,
+} from "@material-ui/core/colors";
 
 export const theme = createMuiTheme({
   palette: {
@@ -9,9 +16,15 @@ export const theme = createMuiTheme({
     },
     secondary: {
       main: yellow[300],
+      light: yellow[100],
     },
     additional: {
-      main: lightBlue[100],
+      main: lightBlue[200],
+      light: lightBlue[100],
+      dark: lightBlue[300],
+    },
+    select: {
+      main: green[100],
     },
   },
   typography: {
@@ -57,6 +70,14 @@ export const theme = createMuiTheme({
       fontSize: "1.1rem",
       letterSpacing: 1,
       textTransform: "none",
+      color: "white",
+    },
+    select: {
+      fontFamily: '"Metropolis", sans-serif',
+      fontWeight: "bold",
+      fontSize: "0.8125rem",
+      lineHeight: 1.38,
+      letterSpacing: "normal",
       color: "white",
     },
   },
