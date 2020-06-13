@@ -38,7 +38,7 @@ router.post(
         });
       }
 
-      const { name, image, description, price, stock } = req.body;
+      const { name, image, description, price, stock, isService } = req.body;
 
       const newProduct = new Product({
         shop: shop.id,
@@ -46,7 +46,8 @@ router.post(
         image,
         description,
         price,
-        stock
+        stock,
+        isService
       });
 
       await newProduct.save();
@@ -75,14 +76,15 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    const { name, image, description, price, stock } = req.body;
+    const { name, image, description, price, stock, isService } = req.body;
 
     const productFields = {
       name,
       image,
       description,
       price,
-      stock
+      stock,
+      isService
     };
 
     try {
