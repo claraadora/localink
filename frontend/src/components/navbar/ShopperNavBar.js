@@ -1,11 +1,9 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
+import { AppBar, Toolbar, Typography, Button, Grid } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { SearchInput } from "../input/SearchInput";
+import { OptionSelect } from "../select/OptionSelect";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -13,34 +11,58 @@ const useStyles = makeStyles((theme) => ({
   },
   toolbar: {
     minHeight: 40,
-    alignItems: "flex-start",
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(0),
   },
 }));
 
 export default function ShopperNavBar({ isSearchPage }) {
   const classes = useStyles();
   return (
-    <div className={classes.grow}>
-      <AppBar position="static">
-        <Toolbar className={classes.toolbar}>
-          <Button color="inherit" href="/">
-            <Typography variant="h1">localink</Typography>
-          </Button>
-          {isSearchPage ? <SearchInput /> : null}
-          <div className={classes.grow} />
-          <Button color="inherit" component={Link} to="/business">
-            sell on localink
-          </Button>
-          <Button color="inherit" component={Link} to="/signup">
-            Sign up
-          </Button>
-          <Button color="inherit" component={Link} to="/login">
-            Log in
-          </Button>
-        </Toolbar>
-      </AppBar>
-    </div>
+    <AppBar position="static">
+      <Toolbar>
+        <Grid container direction="row" spacing={4}>
+          <Grid item>
+            <Button color="inherit" href="/">
+              <Typography variant="h1">localink</Typography>
+            </Button>
+          </Grid>
+          {isSearchPage ? (
+            <>
+              <Grid item>
+                <SearchInput />
+              </Grid>
+              <Grid item>
+                <Grid
+                  container
+                  direction="row"
+                  alignItems="center"
+                  justify="center"
+                  spacing={2}
+                >
+                  <Grid item>Sort by: </Grid>
+                  <Grid item>
+                    <OptionSelect />
+                  </Grid>
+                </Grid>
+              </Grid>
+            </>
+          ) : null}
+          <Grid item>
+            <Button color="inherit" component={Link} to="/business">
+              sell on localink
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button color="inherit" component={Link} to="/signup">
+              Sign up
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button color="inherit" component={Link} to="/login">
+              Log in
+            </Button>
+          </Grid>
+        </Grid>
+      </Toolbar>
+    </AppBar>
   );
 }
