@@ -1,26 +1,49 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FixedSizeList as List } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { ItemCard } from "../card/ItemCard";
 import { useSelector } from "react-redux";
 
 export const LocationList = () => {
-  const searchResult = useSelector((state) => state.search.search);
-  return (
-    <AutoSizer>
-      {({ height, width }) => (
-        <List
-          className="List"
-          height={height}
-          itemCount={1000}
-          itemSize={120}
-          width={width}
-        >
-          {({ index, style }) => {
-            return <ItemCard style={style} />;
-          }}
-        </List>
-      )}
-    </AutoSizer>
-  );
+  const productArray = useSelector((state) => state.search.productArray);
+  const loading = useSelector((state) => state.search.loading);
+
+  const [searchResult, setSearchResult] = useState(null);
+
+  useEffect(() => {
+    if (!loading && productArray) {
+      setSearchResult(productArray);
+    }
+  }, [loading, productArray]);
+  console.log("search" + typeof searchResult);
+  console.log("search" + searchResult);
+
+  if (searchResult == null) {
+    return null;
+  } else {
+    return (
+      <>
+        {console.log("WTS")}
+        {searchResult == undefined ? null : (
+          <AutoSizer>
+            {({ height, width }) => (
+              <List
+                className="List"
+                height={height}
+                itemCount={1000}
+                itemSize={120}
+                width={width}
+              >
+                {({ index, style }) => {
+                  return (
+                    <ItemCard style={style} content={searchResult[index]} />
+                  );
+                }}
+              </List>
+            )}
+          </AutoSizer>
+        )}
+      </>
+    );
+  }
 };
