@@ -14,6 +14,18 @@ const ShopSchema = new mongoose.Schema({
   description: {
     type: String
   },
+  promotions: {
+    type: String
+  },
+  openingHours: {
+    type: String
+  },
+  contactDetails: {
+    type: String
+  },
+  delivery: {
+    type: String
+  },
   address: {
     type: String,
     required: true
