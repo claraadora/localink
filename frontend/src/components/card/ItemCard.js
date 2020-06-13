@@ -15,6 +15,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+function trimString(word, maxLength) {
+  return word <= maxLength ? word : word.substring(0, maxLength - 3) + "...";
+}
+
 export const ItemCard = (props) => {
   const classes = useStyles();
   const data = props.content;
@@ -29,7 +33,7 @@ export const ItemCard = (props) => {
         <Grid item xs={1} />
         <Grid item xs={9} container direction="column" justify="center">
           <Grid item>
-            <Typography variant="h5">{data.name}</Typography>
+            <Typography variant="h6">{trimString(data.name, 30)}</Typography>
           </Grid>
           <Grid item>
             <Typography variant="body2">
@@ -45,7 +49,7 @@ export const ItemCard = (props) => {
         </Grid>
         <Grid item xs={2}>
           <Typography variant="body2" component="p">
-            $5
+            {data.price}
           </Typography>
         </Grid>
       </Grid>
