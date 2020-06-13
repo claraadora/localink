@@ -29,6 +29,7 @@ module.exports = function (req, res, next) {
         } else {
           req.user = decoded.shopper;
         }
+        req.userType = decoded;
         next();
       }
     });

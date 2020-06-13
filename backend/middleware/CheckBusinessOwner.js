@@ -17,6 +17,7 @@ module.exports = function (req, res, next) {
         return res.status(401).json({ msg: 'Token is not valid' });
       } else {
         req.user = decoded.business;
+        req.userType = decoded;
         const user_id = decoded.business.user_id;
         const user = await User.findById(user_id);
         const role = user.role;

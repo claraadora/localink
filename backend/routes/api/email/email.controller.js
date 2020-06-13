@@ -11,10 +11,10 @@ const Business = require('../../../models/Business');
 const User = require('../../../models/User');
 const Shopper = require('../../../models/Shopper');
 
-const usePasswordHashToMakeToken = (user, businessUser) => {
+const usePasswordHashToMakeToken = (user, specificUser) => {
   let password = null;
   let payload = null;
-  if (user === businessUser) {
+  if (user === specificUser) {
     password = user.password;
     payload = {
       shopper: {
@@ -22,11 +22,11 @@ const usePasswordHashToMakeToken = (user, businessUser) => {
       }
     };
   } else {
-    password = businessUser.password;
+    password = specificUser.password;
     payload = {
       business: {
         id: user.id,
-        user_id: user.id
+        user_id: specificUser.id
       }
     };
   }
@@ -41,31 +41,36 @@ const usePasswordHashToMakeToken = (user, businessUser) => {
 const sendPasswordResetEmail = async (req, res) => {
   const { email } = req.params;
   let user = null;
-  let businessUser = null;
+  let specificUser = null;
 
   try {
-    businessUser = await User.findOne({ email });
-
-    if (!businessUser) {
+    if (req.userType.shopper) {
       const shopper = await Shopper.findOne({ email });
 
       if (!shopper) {
         res.status(401).json({ msg: 'Cannot find user with that email' });
-      } else {
-        user = shopper;
-        businessUser = shopper;
       }
-    } else {
+      user = shopper;
+      specificUser = shopper;
+    } else if (req.userType.business) {
+      specificUser = await User.findOne({ email });
+
+      if (!specificUser) {
+        res.status(401).json({ msg: 'Cannot find user with that email' });
+      }
+
       user = await Business.findOne({
-        users: mongoose.Types.ObjectId(businessUser.id)
+        users: mongoose.Types.ObjectId(specificUser.id)
       });
+    } else {
+      res.status(401).json('Token not valid');
     }
   } catch (error) {
     res.status(404).json('No user with that email');
   }
-  const token = usePasswordHashToMakeToken(user, businessUser);
-  const url = getPasswordResetURL(businessUser, token);
-  const emailTemplate = resetPasswordTemplate(user, businessUser, url);
+  const token = usePasswordHashToMakeToken(user, specificUser);
+  const url = getPasswordResetURL(specificUser, token);
+  const emailTemplate = resetPasswordTemplate(user, specificUser, url);
 
   const sendEmail = () => {
     transported.sendMail(emailTemplate, (error, info) => {
@@ -86,26 +91,26 @@ const receivedNewPassword = async (req, res) => {
   const { user_id, token } = req.params;
   const { password } = req.body;
 
-  let businessUser = null;
+  let specificUser = null;
   let user = null;
   let collection = null;
 
   try {
-    businessUser = await User.findById(user_id);
+    specificUser = await User.findById(user_id);
 
-    if (!businessUser) {
+    if (!specificUser) {
       const shopper = await Shopper.findById(user_id);
 
       if (!shopper) {
         res.status(401).json({ msg: 'Cannot find user with that email' });
       } else {
         user = shopper;
-        businessUser = shopper;
+        specificUser = shopper;
         collection = Shopper;
       }
     } else {
       user = await Business.findOne({
-        users: mongoose.Types.ObjectId(businessUser.id)
+        users: mongoose.Types.ObjectId(specificUser.id)
       });
       collection = User;
     }
