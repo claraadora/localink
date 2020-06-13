@@ -5,6 +5,10 @@ const ProductSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Shop'
   },
+  isService: {
+    type: Boolean,
+    required: true
+  },
   name: {
     type: String,
     required: true
