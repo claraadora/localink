@@ -28,24 +28,25 @@ router.post(
     }
 
     try {
-      //const profile = await Business.findById(req.user.id);
-      // let shop = await Shop.findById(profile.shop);
       let shop = await Shop.findOne({
         owner: req.user.id
       });
 
       if (!shop) {
-        console.log(
-          'shop not found, please create shop first before adding products'
-        );
+        return res.status(403).json({
+          msg: 'shop not found, please create shop first before adding products'
+        });
       }
+
+      const { name, image, description, price, stock } = req.body;
 
       const newProduct = new Product({
         shop: shop.id,
-        name: req.body.name,
-        image: req.body.image,
-        description: req.body.description,
-        price: req.body.price
+        name,
+        image,
+        description,
+        price,
+        stock
       });
 
       await newProduct.save();
@@ -74,13 +75,14 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    const { name, image, description, price } = req.body;
+    const { name, image, description, price, stock } = req.body;
 
     const productFields = {
       name,
       image,
       description,
-      price
+      price,
+      stock
     };
 
     try {
