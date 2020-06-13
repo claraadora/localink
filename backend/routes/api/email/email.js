@@ -12,13 +12,19 @@ const getPasswordResetURL = (user, token) => {
   return 'http://localhost:5000/password/reset/' + user._id + '/' + token;
 };
 
-const resetPasswordTemplate = (business, user, url) => {
+const resetPasswordTemplate = (user, businessUser, url) => {
   const from = 'Localink' + '<' + process.env.SENDER_EMAIL_LOGIN + '>';
   //const to = user.email;
   const to = process.env.RECEIVER_EMAIL_LOGIN;
   const subject = 'Localink Password Reset';
+  let recipient = null;
+  if (user === businessUser) {
+    recipient = user.name;
+  } else {
+    recipient = user.shopName;
+  }
   const html = `
-    <p>Hey ${business.shopName || user.email},</p>
+    <p>Hey ${recipient || businessUser.email},</p>
     <p>We heard that you lost your Localink password. Sorry about that!</p>
     <p>But don’t worry! You can use the following link to reset your password:</p>
     <a href=${url}>${url}</a>

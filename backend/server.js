@@ -33,7 +33,11 @@ app.use('/review', require('./routes/api/shopper/review'));
 app.use('/search', require('./routes/api/shopper/search'));
 
 //Define route for forgot password
-app.use('/business/reset_password', require('./routes/api/email/email.router'));
+app.use(
+  '/business/reset_password',
+  require('./routes/api/email/business.email.router')
+);
+app.use('/reset_password', require('./routes/api/email/shopper.email.router'));
 
 //Define route to get distance to shop
 app.use('', require('./routes/api/distance/distance.router'));
