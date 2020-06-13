@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
-const auth = require('../../../middleware/auth');
+const authBusiness = require('../../../middleware/authBusiness');
 const checkObjectId = require('../../../middleware/checkObjectId');
 
 const Business = require('../../../models/Business');
@@ -14,7 +14,7 @@ const Product = require('../../../models/Product');
 router.post(
   '/',
   [
-    auth,
+    authBusiness,
     [
       check('name', 'Name is required').not().isEmpty(),
       check('image', 'Image is required').not().isEmpty(),
@@ -66,42 +66,46 @@ router.post(
 // @route    POST business/product/:product_id;
 // @desc     Update product
 // @access   Private
-router.post('/:product_id', auth, async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+router.post(
+  '/:product_id',
+  [checkObjectId('product_id'), authBusiness],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    const { name, image, description, price } = req.body;
+
+    const productFields = {
+      name,
+      image,
+      description,
+      price
+    };
+
+    try {
+      // Using upsert option (creates new doc if no match is found):
+      let product = await Product.findOneAndUpdate(
+        { _id: req.params.product_id },
+        { $set: productFields },
+        { new: true }
+      );
+
+      let shop = await Shop.findOne({ _id: product.shop });
+      shop = await shop.populate('products').execPopulate();
+      res.json(shop);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
   }
-  const { name, image, description, price } = req.body;
-
-  const productFields = {
-    name,
-    image,
-    description,
-    price
-  };
-
-  try {
-    // Using upsert option (creates new doc if no match is found):
-    let product = await Product.findOneAndUpdate(
-      { _id: req.params.product_id },
-      { $set: productFields },
-      { new: true }
-    );
-
-    let shop = await Shop.findOne({ _id: product.shop });
-    shop = await shop.populate('products').execPopulate();
-    res.json(shop);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
-  }
-});
+);
 
 // @route    GET business/product
 // @desc     Get all products of a business
 // @access   Private
 // @return   Array of products
-router.get('/', auth, async (req, res) => {
+router.get('/', authBusiness, async (req, res) => {
   try {
     //const business = await Business.findById(req.params.business_id);
     const shop = await Shop.findOne({ owner: req.user.id }).populate({
@@ -120,7 +124,7 @@ router.get('/', auth, async (req, res) => {
 // @access   Private
 router.delete(
   '/:product_id',
-  [auth, checkObjectId('product_id')],
+  [authBusiness, checkObjectId('product_id')],
   async (req, res) => {
     try {
       const product = await Product.findById(req.params.product_id);

@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 const { check, validationResult } = require('express-validator');
 const checkBusinessOwner = require('../../../middleware/checkBusinessOwner');
+const checkObjectId = require('../../../middleware/CheckObjectId');
 
 // const normalize = require('normalize-url');
 
@@ -92,24 +93,28 @@ router.post(
 // @route    DELETE business/user/:user_id
 // @desc     Delete user
 // @access   Private
-router.delete('/:user_id', checkBusinessOwner, async (req, res) => {
-  try {
-    const business = await Business.findById(req.user.id);
+router.delete(
+  '/:user_id',
+  [checkBusinessOwner, checkObjectId('user_id')],
+  async (req, res) => {
+    try {
+      const business = await Business.findById(req.user.id);
 
-    business.users.filter(user => {
-      return user.toString() != req.params.user_id;
-    });
-    business.save();
+      business.users.filter(user => {
+        return user.toString() != req.params.user_id;
+      });
+      business.save();
 
-    await User.findByIdAndDelete(req.params.user_id);
+      await User.findByIdAndDelete(req.params.user_id);
 
-    res.status(200).json('Deactivated user successfully');
-  } catch (err) {
-    console.error(err.message);
+      res.status(200).json('Deactivated user successfully');
+    } catch (err) {
+      console.error(err.message);
 
-    res.status(500).send('Server Error');
+      res.status(500).send('Server Error');
+    }
   }
-});
+);
 
 // @route    POST /business/user/:user_id
 // @desc     Edit user of existing business
@@ -119,9 +124,10 @@ router.post(
   '/:user_id',
   [
     checkBusinessOwner,
+    checkObjectId('user_id'),
     [
-      check('role', 'Role is required').not().isEmpty(),
-      check('name', 'Name is required').not().isEmpty()
+      (check('role', 'Role is required').not().isEmpty(),
+      check('name', 'Name is required').not().isEmpty())
       // check('email', 'Please include a valid email').isEmail()
     ]
   ],
@@ -151,16 +157,20 @@ router.post(
 // @desc     Edit user of existing business
 // @access   Public
 // @return   User token
-router.get('/:user_id', checkBusinessOwner, async (req, res) => {
-  try {
-    const user = await User.findById(req.params.user_id);
-    user.activated = !user.activated;
-    user.save();
-    res.status(200).json('successfully changed user activation status');
-  } catch (error) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
+router.get(
+  '/:user_id',
+  [checkBusinessOwner, checkObjectId('user_id')],
+  async (req, res) => {
+    try {
+      const user = await User.findById(req.params.user_id);
+      user.activated = !user.activated;
+      user.save();
+      res.status(200).json('successfully changed user activation status');
+    } catch (error) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
   }
-});
+);
 
 module.exports = router;

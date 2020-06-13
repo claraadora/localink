@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../../../middleware/auth');
+const authShopper = require('../../../middleware/authShopper');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
@@ -15,7 +15,7 @@ const Shop = require('../../../models/Shop');
 // @access   Private
 router.post(
   '/account-settings-email',
-  [auth, check('email', 'Please include a valid email').isEmail()],
+  [authShopper, check('email', 'Please include a valid email').isEmail()],
   async (req, res) => {
     const errors = validationResult(req); //converts errors into error object
     if (!errors.isEmpty()) {
@@ -48,7 +48,7 @@ router.post(
 router.post(
   '/account-settings-password',
   [
-    auth,
+    authShopper,
     check('oldPassword', 'Please enter your existing password').isLength({
       min: 6
     }),

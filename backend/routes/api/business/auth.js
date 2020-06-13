@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
-const auth = require('../../../middleware/auth');
+const authBusiness = require('../../../middleware/authBusiness');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const { check, validationResult } = require('express-validator');
@@ -13,7 +13,7 @@ const Business = require('../../../models/Business');
 // @desc     Get user by token (load user for frontend)
 // @access   Private
 // @return   User
-router.get('/', auth, async (req, res) => {
+router.get('/', authBusiness, async (req, res) => {
   try {
     const business = await Business.findById(req.user.id).populate({
       path: 'users',

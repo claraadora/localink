@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
-const auth = require('../../../middleware/auth');
-const checkObjectId = require('../../../middleware/checkObjectId');
+const authShopper = require('../../../middleware/authShopper');
 
 const Shop = require('../../../models/Shop');
 const Shopper = require('../../../models/Shopper');
@@ -16,7 +15,7 @@ const Review = require('../../../models/Review');
 router.post(
   '/',
   [
-    auth,
+    authShopper,
     [
       check('description', 'description is required').not().isEmpty(),
       check('rating', 'rating is required').not().isEmpty()
@@ -67,7 +66,7 @@ router.post(
 // @access   Private
 // @return   Array of reviews
 // @user     Business
-router.get('/business', auth, async (req, res) => {
+router.get('/business', authShopper, async (req, res) => {
   try {
     const shop = await Shop.findOne({
       owner: req.user.id
