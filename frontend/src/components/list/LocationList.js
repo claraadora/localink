@@ -10,11 +10,11 @@ export const LocationList = () => (
         className="List"
         height={height}
         itemCount={1000}
-        itemSize={35}
+        itemSize={120}
         width={width}
       >
         {({ index, style }) => {
-          return <ItemCard />;
+          return <ItemCard style={style} />;
         }}
       </List>
     )}

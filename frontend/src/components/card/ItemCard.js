@@ -6,6 +6,7 @@ import {
   CardContent,
   Button,
   Typography,
+  Grid,
 } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -21,34 +22,47 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const ItemCard = () => {
+export const ItemCard = (props) => {
   const classes = useStyles();
+  console.log(props.style);
 
   return (
-    <Card className={classes.root}>
-      <CardContent>
-        <Typography
-          className={classes.title}
-          color="textSecondary"
-          gutterBottom
-        >
-          Word of the Day
-        </Typography>
-        <Typography variant="h5" component="h2">
-          benevolent
-        </Typography>
-        <Typography className={classes.pos} color="textSecondary">
-          adjective
-        </Typography>
-        <Typography variant="body2" component="p">
-          well meaning and kindly.
-          <br />
-          {'"a benevolent smile"'}
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Button size="small">Learn More</Button>
-      </CardActions>
+    <Card
+      className={classes.root}
+      style={{ ...props.style, padding: "10px 10px 10px 20px" }}
+    >
+      <Grid
+        container
+        direction="row"
+        alignItems="center"
+        justify="space-around"
+      >
+        <Grid item xs={10} container direction="column">
+          <Grid item>
+            <Typography variant="h5" component="h2">
+              product name
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Typography variant="body2" component="p">
+              shop name
+            </Typography>
+          </Grid>
+          <Grid>
+            <Typography variant="body2" component="p">
+              shop address
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Button size="small">Add to Itinerary</Button>
+          </Grid>
+        </Grid>
+        <Grid item xs={2}>
+          <Typography variant="body2" component="p">
+            $5
+          </Typography>
+        </Grid>
+      </Grid>
     </Card>
   );
 };
