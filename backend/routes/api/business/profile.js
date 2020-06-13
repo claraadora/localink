@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../../../middleware/auth');
+const authBusiness = require('../../../middleware/authBusiness');
 const checkBusinessOwner = require('../../../middleware/CheckBusinessOwner');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -16,7 +16,7 @@ const geocode = require('../distance/geocode');
 // @route    GET business/profile/me
 // @desc     Get current users shop (not profile)
 // @access   Private
-router.get('/me', auth, async (req, res) => {
+router.get('/me', authBusiness, async (req, res) => {
   try {
     const shop = await Shop.findOne({
       owner: req.user.id

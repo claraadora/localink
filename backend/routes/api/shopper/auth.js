@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
-const auth = require('../../../middleware/auth');
+const authShopper = require('../../../middleware/authShopper');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const { check, validationResult } = require('express-validator');
@@ -12,7 +12,7 @@ const Shopper = require('../../../models/Shopper');
 // @desc     Get user by token (load user for frontend)
 // @access   Private
 // @return   User
-router.get('/', auth, async (req, res) => {
+router.get('/', authShopper, async (req, res) => {
   try {
     const shopper = await Shopper.findById(req.user.id);
     res.json(shopper);
