@@ -1,13 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  Card,
-  CardActions,
-  CardContent,
-  Button,
-  Typography,
-  Grid,
-} from "@material-ui/core";
+import { Card, Button, Typography, Grid } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,29 +22,19 @@ export const ItemCard = (props) => {
   return (
     <Card
       className={classes.root}
-      style={{ ...props.style, padding: "10px 10px 10px 20px" }}
+      style={{ ...props.style, padding: "10px 0px 2px 0px" }}
     >
-      <Grid
-        container
-        direction="row"
-        alignItems="center"
-        justify="space-around"
-      >
-        <Grid item xs={10} container direction="column">
+      <Grid container direction="row" alignItems="center">
+        <Grid item xs={1} />
+        <Grid item xs={9} container direction="column" justify="center">
           <Grid item>
-            <Typography variant="h5" component="h2">
-              product name
-            </Typography>
+            <Typography variant="h5">product name</Typography>
           </Grid>
           <Grid item>
-            <Typography variant="body2" component="p">
-              shop name
-            </Typography>
+            <Typography variant="body2">shop name</Typography>
           </Grid>
-          <Grid>
-            <Typography variant="body2" component="p">
-              shop address
-            </Typography>
+          <Grid item>
+            <Typography variant="body2">shop address</Typography>
           </Grid>
           <Grid item>
             <Button size="small">Add to Itinerary</Button>
