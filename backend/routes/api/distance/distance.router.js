@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../../../middleware/auth');
+const authShopper = require('../../../middleware/authShopper');
 
 const getCurrentLocation = require('./geolocation');
 const geocode = require('./geocode');
@@ -10,7 +10,7 @@ const getDistance = require('../distance/distance');
 // @desc     Get the start location, update shopper's location
 // @access   Private
 // @return   User
-router.post('/start-location', auth, async (req, res) => {
+router.post('/start-location', authShopper, async (req, res) => {
   const { currentLocation, startLocation } = req.body;
   let location = null;
   if (currentLocation == 'true') {

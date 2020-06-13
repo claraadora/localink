@@ -53,7 +53,17 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    const { shopName, avatar, description, address, distance } = req.body;
+    const {
+      shopName,
+      avatar,
+      description,
+      address,
+      distance,
+      promotions,
+      openingHours,
+      contactDetails,
+      delivery
+    } = req.body;
 
     const coordinates = await geocode(address);
     const latLng = {
@@ -69,6 +79,10 @@ router.post(
       shopName,
       avatar,
       description,
+      promotions,
+      openingHours,
+      contactDetails,
+      delivery,
       address,
       latLng,
       distance
