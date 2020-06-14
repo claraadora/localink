@@ -1,16 +1,10 @@
-import React, { Component } from "react";
-import ReactDOM from "react-dom";
+import React, { useState, useEffect } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import AutoSizer from "react-virtualized-auto-sizer";
+import { useSelector, useDispatch } from "react-redux";
+import { reorderItinerary } from "../../actions/shopper/itineraryActions";
 
-// fake data generator
-const getItems = (count) =>
-  Array.from({ length: count }, (v, k) => k).map((k) => ({
-    id: `item-${k}`,
-    content: `item ${k}`,
-  }));
-
-// a little function to help us with reordering the result
+const grid = 20;
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
@@ -18,8 +12,6 @@ const reorder = (list, startIndex, endIndex) => {
 
   return result;
 };
-
-const grid = 8;
 
 const getItemStyle = (isDragging, draggableStyle) => ({
   // some basic styles to make the items look a bit nicer
@@ -41,70 +33,71 @@ const getListStyle = (isDraggingOver) => ({
   overflow: "auto",
 });
 
-export class ItineraryList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      items: getItems(6),
-    };
-    this.onDragEnd = this.onDragEnd.bind(this);
-  }
+export const ItineraryList = () => {
+  const itineraryItems = useSelector((state) => state.itinerary.itineraryArray);
+  const loading = useSelector((state) => state.itinerary.loading);
+  const [itinerary, setItinerary] = useState(null);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (loading && itinerary) {
+      setItinerary(itineraryItems);
+    }
+  }, [itineraryItems]);
 
-  onDragEnd(result) {
-    // dropped outside the list
+  const onDragEnd = (result) => {
     if (!result.destination) {
       return;
     }
 
     const items = reorder(
-      this.state.items,
+      itineraryItems,
       result.source.index,
       result.destination.index
     );
 
-    this.setState({
-      items,
-    });
+    dispatch(reorderItinerary(items));
+    setItinerary(items);
+  };
+
+  if (itineraryItems == null) {
+    return null;
   }
 
-  // Normally you would want to split things out into separate components.
-  // But in this example everything is just done in one place for simplicity
-  render() {
-    return (
-      // {<AutoSizer>
-      //   {({ height, width }) => }
-      <DragDropContext onDragEnd={this.onDragEnd}>
-        <Droppable droppableId="droppable" direction="horizontal">
-          {(provided, snapshot) => (
-            <div
-              ref={provided.innerRef}
-              style={getListStyle(snapshot.isDraggingOver)}
-              {...provided.droppableProps}
-            >
-              {this.state.items.map((item, index) => (
-                <Draggable key={item.id} draggableId={item.id} index={index}>
-                  {(provided, snapshot) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      style={getItemStyle(
-                        snapshot.isDragging,
-                        provided.draggableProps.style
-                      )}
-                    >
-                      {item.content}
-                    </div>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
-      //   )}
-      // </AutoSizer>
-    );
-  }
-}
+  return (
+    // {<AutoSizer>
+    //   {({ height, width }) => }
+    <DragDropContext onDragEnd={onDragEnd}>
+      <Droppable droppableId="droppable" direction="horizontal">
+        {(provided, snapshot) => (
+          <div
+            ref={provided.innerRef}
+            style={getListStyle(snapshot.isDraggingOver)}
+            {...provided.droppableProps}
+          >
+            {itineraryItems.map((item, index) => (
+              <Draggable key={item.name} draggableId={item.name} index={index}>
+                {(provided, snapshot) => (
+                  <div
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    style={getItemStyle(
+                      snapshot.isDragging,
+                      provided.draggableProps.style
+                    )}
+                  >
+                    {console.log("name" + item.name)}
+                    {item.name}
+                  </div>
+                )}
+              </Draggable>
+            ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+    </DragDropContext>
+    //   )}
+    // </AutoSizer>
+  );
+};

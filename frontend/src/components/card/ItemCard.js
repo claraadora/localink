@@ -46,6 +46,7 @@ export const ItemCard = (props) => {
             <Typography variant="body2">{data.shop_docs[0].address}</Typography>
           </Grid>
           <Grid item>
+            {console.log("data" + data)}
             <Button size="small" onClick={() => dispatch(addToItinerary(data))}>
               Add to Itinerary
             </Button>
