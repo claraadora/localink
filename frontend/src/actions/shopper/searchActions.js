@@ -15,6 +15,10 @@ export const loadSearch = (search) => async (dispatch) => {
     const res = await axios.post("/search", body, config);
 
     dispatch({
+      type: searchConstants.CLEAR_SEARCH,
+    });
+
+    dispatch({
       type: searchConstants.SEARCH_REQUEST,
       payload: res.data,
     });
@@ -33,4 +37,10 @@ export const loadSearch = (search) => async (dispatch) => {
       },
     });
   }
+};
+
+export const clearSearch = () => (dispatch) => {
+  dispatch({
+    type: searchConstants.CLEAR_SEARCH,
+  });
 };
