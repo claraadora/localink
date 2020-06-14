@@ -6,15 +6,13 @@ const MongoClient = require('mongodb').MongoClient;
 const { check, validationResult } = require('express-validator');
 const authShopper = require('../../../middleware/authShopper');
 
-let products = [];
-
 // @route    POST /search
 // @desc     Get search results
 // @access   Private
 // @return   Array of products
 router.post(
   '/',
-  [authShopper, check('search', 'Search bar cannot be empty').not().isEmpty()],
+  check('search', 'Search bar cannot be empty').not().isEmpty(),
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -27,19 +25,55 @@ router.post(
       },
       (error, client) => {
         console.log('MongoDB client connected... Searching...');
+        const products = [];
         const db = client.db('test');
+        const { search, service } = req.body;
         db.collection('products')
           .aggregate([
             {
               $search: {
+                // compound: {
+                //   should: [
+                //     {
+                //       text: {
+                //         query: search,
+                //         path: 'name',
+                //         fuzzy: {
+                //           maxEdits: 1,
+                //           maxExpansions: 50
+                //         },
+                //         score: { boost: { value: 2 } }
+                //       }
+                //     },
+                //     {
+                //       text: {
+                //         query: search,
+                //         path: 'description',
+                //         fuzzy: {
+                //           maxEdits: 1,
+                //           maxExpansions: 50
+                //         }
+                //       }
+                //     }
+                //   ]
                 text: {
-                  query: req.body.search,
+                  query: search,
                   path: ['name', 'description'],
                   fuzzy: {
                     maxEdits: 1,
                     maxExpansions: 50
                   }
+                  // range: {
+                  //   path: 'name',
+                  //   score: { boost: { value: 2 } }
+                  // }
+                  // score: { boost: { value: 2 } }
                 }
+              }
+            },
+            {
+              $match: {
+                isService: service
               }
             },
             {
@@ -57,6 +91,8 @@ router.post(
                 description: 1,
                 price: 1,
                 image: 1,
+                isService: 1,
+                stock: 1,
                 shop_docs: 1,
                 score: { $meta: 'searchScore' }
               }
