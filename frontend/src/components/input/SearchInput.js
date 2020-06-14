@@ -33,7 +33,7 @@ export const SearchInput = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     console.log(`searching for ${search}`);
-    dispatch(loadSearch(search));
+    dispatch(loadSearch(search, false));
   };
 
   const onChange = (e) => {

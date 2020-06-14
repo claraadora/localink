@@ -19,9 +19,6 @@ function SearchPage() {
         </Grid>
       </Grid>
       <Grid item>
-        <Button onClick={() => dispatch(clearSearch())}>Clear</Button>
-      </Grid>
-      <Grid item>
         <ItineraryList />
       </Grid>
     </Grid>
