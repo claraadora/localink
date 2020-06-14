@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import AutoSizer from "react-virtualized-auto-sizer";
 import { useSelector, useDispatch } from "react-redux";
 import { reorderItinerary } from "../../actions/shopper/itineraryActions";
+import { ItineraryCard } from "../card/ItineraryCard";
+import { AutoSizer, List } from "react-virtualized";
+import { Paper, Grid } from "@material-ui/core";
 
-const grid = 20;
+const grid = 8;
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
@@ -18,19 +20,14 @@ const getItemStyle = (isDragging, draggableStyle) => ({
   userSelect: "none",
   padding: grid * 2,
   margin: `0 ${grid}px 0 0`,
-
-  // change background colour if dragging
-  background: isDragging ? "lightgreen" : "grey",
-
-  // styles we need to apply on draggables
   ...draggableStyle,
 });
 
 const getListStyle = (isDraggingOver) => ({
   background: isDraggingOver ? "lightblue" : "lightgrey",
   display: "flex",
-  padding: grid,
   overflow: "auto",
+  width: "100vw",
 });
 
 export const ItineraryList = () => {
@@ -58,14 +55,7 @@ export const ItineraryList = () => {
     dispatch(reorderItinerary(items));
     setItinerary(items);
   };
-
-  if (itineraryItems == null) {
-    return null;
-  }
-
   return (
-    // {<AutoSizer>
-    //   {({ height, width }) => }
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId="droppable" direction="horizontal">
         {(provided, snapshot) => (
@@ -86,8 +76,7 @@ export const ItineraryList = () => {
                       provided.draggableProps.style
                     )}
                   >
-                    {console.log("name" + item.name)}
-                    {item.name}
+                    <ItineraryCard content={item} />
                   </div>
                 )}
               </Draggable>
@@ -97,7 +86,5 @@ export const ItineraryList = () => {
         )}
       </Droppable>
     </DragDropContext>
-    //   )}
-    // </AutoSizer>
   );
 };
