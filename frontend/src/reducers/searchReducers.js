@@ -8,11 +8,12 @@ const initialState = {
 
 export default function (state = initialState, action) {
   const { type, payload } = action;
+  console.log("payload" + payload);
 
   switch (type) {
     case searchConstants.SEARCH_REQUEST:
       return {
-        ...state,
+        error: {},
         loading: false,
         productArray: payload,
       };
@@ -22,6 +23,12 @@ export default function (state = initialState, action) {
         loading: false,
         productArray: [],
         error: payload,
+      };
+    case searchConstants.CLEAR_SEARCH:
+      return {
+        error: {},
+        productArray: [],
+        loading: false,
       };
     default:
       return state;
