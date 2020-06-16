@@ -60,13 +60,15 @@ export const login = ({ email, password }) => async (dispatch) => {
 };
 
 //Register user
-export const signup = ({ name, email, password }) => async (dispatch) => {
+export const signup = ({ name, shopName, email, password }) => async (
+  dispatch
+) => {
   const config = {
     headers: {
       "Content-Type": "application/json",
     },
   };
-  const body = JSON.stringify({ name, email, password });
+  const body = JSON.stringify({ name, shopName, email, password });
   try {
     const res = await axios.post("", body, config); // api/users
 

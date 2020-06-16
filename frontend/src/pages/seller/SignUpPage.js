@@ -41,12 +41,13 @@ const useStyles = makeStyles((theme) => ({
 export default function SignUpPage() {
   const classes = useStyles();
   const [formData, setFormData] = useState({
+    name: "",
     shopName: "",
     email: "",
     password: "",
     password2: "",
   });
-  const { shopName, email, password, password2 } = formData;
+  const { name, shopName, email, password, password2 } = formData;
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
@@ -59,7 +60,7 @@ export default function SignUpPage() {
       console.log("Passwords do not match");
       dispatch(setAlert("Passwords do not match", "danger"));
     } else {
-      dispatch(signup({ shopName, email, password }));
+      dispatch(signup({ name, shopName, email, password }));
     }
   };
 
@@ -75,6 +76,19 @@ export default function SignUpPage() {
           Sign Up
         </Typography>
         <form className={classes.form} onSubmit={onSubmit}>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="name"
+            label="Full Name"
+            name="name"
+            autoComplete="Full Name"
+            onChange={onChange}
+            value={name}
+            autoFocus
+          />
           <TextField
             variant="outlined"
             margin="normal"
