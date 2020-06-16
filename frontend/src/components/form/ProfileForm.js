@@ -1,5 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import {
   createProfile,
   getCurrentProfile,
@@ -9,6 +8,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import { borderedTextFieldStylesHook } from "@mui-treasury/styles/textField/bordered";
 
 const initialState = {
   shopName: "",
@@ -42,6 +42,8 @@ const ProfileForm = () => {
   const loading = useSelector((state) => state.profile.loading);
   const dispatch = useDispatch();
   const classes = useStyles();
+  const inputBaseStyles = borderedTextFieldStylesHook.useInputBase();
+  const inputLabelStyles = borderedTextFieldStylesHook.useInputLabel();
 
   const [formData, setFormData] = useState(initialState);
 
@@ -73,7 +75,7 @@ const ProfileForm = () => {
 
   return (
     <div className={classes.paper}>
-      <Typography variant="h6" gutterBottom>
+      <Typography variant="h5" gutterBottom>
         Profile
       </Typography>
       <form className={classes.form} onSubmit={onSubmit}>
@@ -81,64 +83,60 @@ const ProfileForm = () => {
           required
           id="shopName"
           name="shopName"
-          label="Shop Name"
+          label={"Shop Name"}
           value={shopName}
           fullWidth
           onChange={onChange}
           autoComplete="shopName"
-          variant="outlined"
-          margin="normal"
-          required
-          autoFocus
+          margin={"normal"}
+          InputLabelProps={{ shrink: true, classes: inputLabelStyles }}
+          InputProps={{ classes: inputBaseStyles, disableUnderline: true }}
         />
         <TextField
           required
           id="description"
           name="description"
-          label="Shop Description"
+          label={"Shop Description"}
           fullWidth
           onChange={onChange}
           value={description}
           autoComplete="description"
-          variant="outlined"
-          margin="normal"
+          margin={"normal"}
+          InputLabelProps={{ shrink: true, classes: inputLabelStyles }}
+          InputProps={{ classes: inputBaseStyles, disableUnderline: true }}
           multiline
           rows={3}
           rowsMax={6}
-          required
-          autoFocus
         />
         <TextField
           required
           id="avatar"
           name="avatar"
-          label="Profile Picture"
+          label={"Profile Picture"}
+          accept="image/png, image/jpeg"
+          type="file"
           fullWidth
           onChange={onChange}
           value={avatar}
           autoComplete="avatar"
-          variant="outlined"
-          margin="normal"
-          required
-          autoFocus
+          helperText="Upload .jpeg or .png file"
+          margin={"normal"}
+          InputLabelProps={{ shrink: true, classes: inputLabelStyles }}
+          InputProps={{ classes: inputBaseStyles, disableUnderline: true }}
         />
         <TextField
           required
           id="address"
           name="address"
-          label="Business Address"
+          label={"Business Address"}
           fullWidth
           onChange={onChange}
           value={address}
           autoComplete="address"
-          variant="outlined"
-          margin="normal"
-          required
-          autoFocus
+          margin={"normal"}
+          InputLabelProps={{ shrink: true, classes: inputLabelStyles }}
+          InputProps={{ classes: inputBaseStyles, disableUnderline: true }}
         />
-        <Link className="btn btn-light my-1" to="/dashboard">
-          Go Back
-        </Link>
         <Button
           type="submit"
           fullWidth
