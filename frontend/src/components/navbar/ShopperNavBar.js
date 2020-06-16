@@ -45,7 +45,9 @@ export default function ShopperNavBar({ isSearchPage }) {
                 </Grid>
               </Grid>
             </>
-          ) : null}
+          ) : (
+            <Grid item xs={6} />
+          )}
           <Grid item>
             <Button color="inherit" component={Link} to="/business">
               sell on localink

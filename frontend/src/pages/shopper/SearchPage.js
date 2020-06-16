@@ -19,10 +19,11 @@ const useStyles = makeStyles({
   },
   locationList: {
     position: "fixed",
-    top: "75px",
-    right: "10px",
-    height: "700px",
-    width: "25%",
+    top: "90px",
+    right: "15px",
+    height: "660px",
+    width: "22%",
+    zIndex: 100,
   },
   itineraryList: {
     position: "fixed",
