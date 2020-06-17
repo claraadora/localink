@@ -2,7 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { AppBar, Toolbar, Typography, Button, Grid } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import { SearchInput } from "../input/SearchInput";
+import SearchInput from "../input/SearchInput";
 import { OptionSelect } from "../select/OptionSelect";
 
 const useStyles = makeStyles((theme) => ({
