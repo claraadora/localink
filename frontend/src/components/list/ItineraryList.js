@@ -3,8 +3,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { useSelector, useDispatch } from "react-redux";
 import { reorderItinerary } from "../../actions/shopper/itineraryActions";
 import { ItineraryCard } from "../card/ItineraryCard";
-import { AutoSizer, List } from "react-virtualized";
-import { Paper, Grid } from "@material-ui/core";
+import { lightBlue, lightGreen } from "@material-ui/core/colors";
 
 const grid = 8;
 const reorder = (list, startIndex, endIndex) => {
@@ -24,10 +23,10 @@ const getItemStyle = (isDragging, draggableStyle) => ({
 });
 
 const getListStyle = (isDraggingOver) => ({
-  background: isDraggingOver ? "lightblue" : "lightgrey",
+  background: isDraggingOver ? lightGreen[100] : lightBlue[50],
   display: "flex",
   overflow: "auto",
-  width: "100vw",
+  width: "100%",
 });
 
 export const ItineraryList = () => {

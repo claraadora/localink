@@ -4,14 +4,14 @@ import { setAlert } from "../alertActions";
 import searchConstants from "../../constants/searchConstants";
 import { Redirect } from "react-router-dom";
 
-export const loadSearch = (search) => async (dispatch) => {
+export const loadSearch = (search, service) => async (dispatch) => {
   try {
     const config = {
       headers: {
         "Content-Type": "application/json",
       },
     };
-    const body = JSON.stringify({ search });
+    const body = JSON.stringify({ search, service });
     const res = await axios.post("/search", body, config);
 
     dispatch({

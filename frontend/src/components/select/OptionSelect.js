@@ -11,7 +11,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 const useStyles = makeStyles((theme) => ({
   select: {
-    minWidth: 150,
+    width: 140,
     background: theme.palette.select.main,
     color: "black",
     fontWeight: 200,
@@ -38,11 +38,14 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     borderRadius: 12,
     marginTop: 8,
+    zIndex: 1,
+    position: "absolute",
   },
   list: {
     paddingTop: 0,
     paddingBottom: 0,
     background: "white",
+    zIndex: 1,
     "& li": {
       fontWeight: 200,
       paddingTop: 12,

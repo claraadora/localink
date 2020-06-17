@@ -4,6 +4,7 @@ import { InputBase, IconButton, Paper } from "@material-ui/core";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import { useDispatch } from "react-redux";
 import { loadSearch } from "../../actions/shopper/searchActions";
+import { Redirect, useLocation } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,11 +30,14 @@ export const SearchInput = () => {
   const [search, setSearch] = useState("");
   const classes = useStyles();
   const dispatch = useDispatch();
+  let location = useLocation();
 
   const onSubmit = (e) => {
     e.preventDefault();
     console.log(`searching for ${search}`);
-    dispatch(loadSearch(search));
+    dispatch(loadSearch(search, false));
+    console.log(location.pathname);
+    return <Redirect to="/search/" />;
   };
 
   const onChange = (e) => {
@@ -58,3 +62,5 @@ export const SearchInput = () => {
     </Paper>
   );
 };
+
+export default withRouter(SearchInput);

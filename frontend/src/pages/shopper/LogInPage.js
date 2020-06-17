@@ -51,7 +51,7 @@ export default function LogInPage() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    dispatch(login(email, password));
+    dispatch(login({ email, password }));
   };
 
   if (isAuthenticated) {

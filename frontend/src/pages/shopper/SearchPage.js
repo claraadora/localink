@@ -1,30 +1,54 @@
 import React from "react";
-import { Typography, Grid, Button } from "@material-ui/core";
+import { Typography, Grid, Button, makeStyles } from "@material-ui/core";
 import LocalinkMap from "../../components/map/Map";
 import { LocationList } from "../../components/list/LocationList";
 import { Cart } from "../../components/cart/Cart";
 import { ItineraryList } from "../../components/list/ItineraryList";
 import { useDispatch } from "react-redux";
 import { clearSearch } from "../../actions/shopper/searchActions";
+
+const useStyles = makeStyles({
+  root: {
+    height: "92vh",
+    width: "calc(100vw-10px)",
+  },
+  map: {
+    height: "100%",
+    width: "100%",
+    zIndex: 0,
+  },
+  locationList: {
+    position: "fixed",
+    top: "90px",
+    right: "15px",
+    height: "660px",
+    width: "22%",
+    zIndex: 100,
+  },
+  itineraryList: {
+    position: "fixed",
+    bottom: "15px",
+    left: "30px",
+    width: "94%",
+    height: "120px",
+  },
+});
+
 function SearchPage() {
   const dispatch = useDispatch();
+  const classes = useStyles();
   return (
-    <Grid container direction="column">
-      <Grid item container direction="row">
-        <Grid item sm={9} style={{ position: "relative", height: "70vh" }}>
-          <LocalinkMap />
-        </Grid>
-        <Grid item sm={3}>
-          <LocationList />
-        </Grid>
-      </Grid>
-      <Grid item>
-        <Button onClick={() => dispatch(clearSearch())}>Clear</Button>
-      </Grid>
-      <Grid item>
+    <div className={classes.root}>
+      <div className={classes.map}>
+        <LocalinkMap />
+      </div>
+      <div className={classes.locationList}>
+        <LocationList />
+      </div>
+      <div className={classes.itineraryList}>
         <ItineraryList />
-      </Grid>
-    </Grid>
+      </div>
+    </div>
   );
 }
 

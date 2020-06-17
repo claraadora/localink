@@ -100,9 +100,6 @@ export default function SellerNavBar() {
             />
           </div>
           <div className={classes.grow} />
-          <Button color="inherit" component={Link} to="/business">
-            sell on localink
-          </Button>
           <IconButton
             edge="start"
             className={classes.menuButton}

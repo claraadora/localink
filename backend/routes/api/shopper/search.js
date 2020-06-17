@@ -1,18 +1,18 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const config = require('config');
-const URI = config.get('mongoURI');
-const MongoClient = require('mongodb').MongoClient;
-const { check, validationResult } = require('express-validator');
-const authShopper = require('../../../middleware/authShopper');
+const config = require("config");
+const URI = config.get("mongoURI");
+const MongoClient = require("mongodb").MongoClient;
+const { check, validationResult } = require("express-validator");
+const authShopper = require("../../../middleware/authShopper");
 
 // @route    POST /search
 // @desc     Get search results
 // @access   Private
 // @return   Array of products
 router.post(
-  '/',
-  check('search', 'Search bar cannot be empty').not().isEmpty(),
+  "/",
+  check("search", "Search bar cannot be empty").not().isEmpty(),
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -21,14 +21,14 @@ router.post(
     MongoClient.connect(
       URI,
       {
-        useUnifiedTopology: true
+        useUnifiedTopology: true,
       },
       (error, client) => {
-        console.log('MongoDB client connected... Searching...');
+        console.log("MongoDB client connected... Searching...");
         const products = [];
-        const db = client.db('test');
+        const db = client.db("test");
         const { search, service } = req.body;
-        db.collection('products')
+        db.collection("products")
           .aggregate([
             {
               $search: {
@@ -58,31 +58,31 @@ router.post(
                 //   ]
                 text: {
                   query: search,
-                  path: ['name', 'description'],
+                  path: ["name", "description"],
                   fuzzy: {
                     maxEdits: 1,
-                    maxExpansions: 50
-                  }
+                    maxExpansions: 50,
+                  },
                   // range: {
                   //   path: 'name',
                   //   score: { boost: { value: 2 } }
                   // }
                   // score: { boost: { value: 2 } }
-                }
-              }
+                },
+              },
             },
             {
               $match: {
-                isService: service
-              }
+                isService: service,
+              },
             },
             {
               $lookup: {
-                from: 'shops',
-                localField: 'shop',
-                foreignField: '_id',
-                as: 'shop_docs'
-              }
+                from: "shops",
+                localField: "shop",
+                foreignField: "_id",
+                as: "shop_docs",
+              },
             },
             {
               $project: {
@@ -94,9 +94,9 @@ router.post(
                 isService: 1,
                 stock: 1,
                 shop_docs: 1,
-                score: { $meta: 'searchScore' }
-              }
-            }
+                score: { $meta: "searchScore" },
+              },
+            },
           ])
           .sort({ score: 1 })
           .each(async function (error, product) {

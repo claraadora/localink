@@ -60,13 +60,15 @@ export const login = ({ email, password }) => async (dispatch) => {
 };
 
 //Register user
-export const signup = ({ shopName, email, password }) => async (dispatch) => {
+export const signup = ({ name, shopName, email, password }) => async (
+  dispatch
+) => {
   const config = {
     headers: {
       "Content-Type": "application/json",
     },
   };
-  const body = JSON.stringify({ shopName, email, password });
+  const body = JSON.stringify({ name, shopName, email, password });
   console.log("here" + body);
   console.log(shopName);
 
