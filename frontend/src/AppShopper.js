@@ -23,11 +23,8 @@ function AppShopper() {
   return (
     <ThemeProvider theme={theme}>
       <Grid container direction="column">
-        {isAuthenticated ? (
-          <LoggedShopperNavBar />
-        ) : (
-          <ShopperNavBar isSearchPage={location.pathname == "/search"} />
-        )}
+        <ShopperNavBar isSearchPage={location.pathname == "/search"} />
+
         <Grid item xs={8}></Grid>
         <Grid item xs={12} sm={12}>
           <Alert />

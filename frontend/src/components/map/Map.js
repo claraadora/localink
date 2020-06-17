@@ -3,20 +3,9 @@ import {
   GoogleMap,
   useLoadScript,
   Marker,
-  InfoWindow,
+  DirectionsService,
+  DirectionsRenderer,
 } from "@react-google-maps/api";
-import { formatRelative } from "date-fns";
-import usePlacesAutocomplete, {
-  getGeocode,
-  getLatLng,
-} from "use-places-autocomplete";
-import {
-  Combobox,
-  ComboboxInput,
-  ComboboxPopover,
-  ComboboxList,
-  ComboboxOption,
-} from "@reach/combobox";
 import "@reach/combobox/styles.css";
 import { makeStyles } from "@material-ui/styles";
 import { useSelector } from "react-redux";
@@ -54,6 +43,19 @@ export default function Map() {
   const loading = useSelector((state) => state.search.loading);
   const [searchResult, setSearchResult] = useState(null);
 
+  // Directions Renderer
+  const [response, setResponse] = useState(null);
+  const [origin, setOrigin] = useState({ lat: 1.30655, lng: 103.773523 });
+  const [waypoints, setWaypoints] = useState([
+    { location: { lat: 1.31655, lng: 103.773523 }, stopover: true },
+    { location: { lat: 1.32655, lng: 103.773523 }, stopover: true },
+  ]);
+  const [destination, setDestination] = useState({
+    lat: 1.308086,
+    lng: 103.773538,
+  });
+  const [travelMode, setTravelMode] = useState("DRIVING");
+
   useEffect(() => {
     if (!loading && productArray) {
       console.log("Search result is " + productArray);
@@ -61,15 +63,24 @@ export default function Map() {
     }
   }, [loading, productArray]);
 
-  const onLoad = (marker) => {
-    console.log("marker: ", marker);
-  };
-  const classes = useStyles();
   if (loadError) return "Error loading maps";
   if (!isLoaded) return "Loading Maps...";
 
+  const directionsCallback = (response) => {
+    console.log(response);
+
+    if (response !== null) {
+      if (response.status === "OK") {
+        setResponse(response);
+      } else {
+        console.log("response: ", response);
+      }
+    }
+  };
+
   return (
     <GoogleMap
+      id="direction-example"
       mapContainerStyle={mapContainerStyles}
       zoom={12}
       center={center}
@@ -85,6 +96,25 @@ export default function Map() {
               />
             );
           })}
+      {destination !== "" && origin !== "" && (
+        <DirectionsService
+          options={{
+            destination: destination,
+            origin: origin,
+            waypoints: waypoints,
+            travelMode: travelMode,
+          }}
+          callback={directionsCallback}
+        />
+      )}
+
+      {response !== null && (
+        <DirectionsRenderer
+          options={{
+            directions: response,
+          }}
+        />
+      )}
     </GoogleMap>
   );
 }
