@@ -91,7 +91,7 @@ export default function SellerNavBar() {
               <SearchIcon />
             </div>
             <InputBase
-              placeholder="Searching..."
+              placeholder="SEARCHING..."
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,
