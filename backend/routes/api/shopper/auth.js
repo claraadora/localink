@@ -5,8 +5,10 @@ const authShopper = require('../../../middleware/authShopper');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const { check, validationResult } = require('express-validator');
+const { OAuth2Client } = require('google-auth-library');
 
 const Shopper = require('../../../models/Shopper');
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 // @route    GET /auth
 // @desc     Get user by token (load user for frontend)
@@ -78,5 +80,60 @@ router.post(
     }
   }
 );
+
+// @route    GET /google
+// @desc     Sign up or login with google
+// @access   Private
+// @return   token
+router.post('/google', async (req, res) => {
+  const { tokenId } = req.body;
+  try {
+    const response = await client.verifyIdToken({
+      idToken: tokenId,
+      audience: process.env.GOOGLE_CLIENT_ID
+    });
+    const { email_verified, name, email } = response.payload;
+
+    if (email_verified) {
+      let shopper = await Shopper.findOne({ email });
+
+      if (!shopper) {
+        let password = email + process.env.GOOGLE_SECRET;
+        const salt = await bcrypt.genSalt(10);
+        password = await bcrypt.hash(password, salt);
+
+        shopper = new Shopper({
+          name,
+          email,
+          password
+        });
+
+        await shopper.save();
+      }
+
+      const payload = {
+        shopper: {
+          id: shopper.id
+        }
+      };
+
+      jwt.sign(
+        payload,
+        config.get('jwtSecret'),
+        { expiresIn: '5 days' },
+        (err, token) => {
+          if (err) throw err;
+          res.json({ token });
+        }
+      );
+    } else {
+      console.log('error logging in with google');
+      res.status(500).send('error logging in with google');
+    }
+  } catch (error) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+});
 
 module.exports = router;
