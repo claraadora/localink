@@ -1,11 +1,8 @@
 import React from "react";
-import { Typography, Grid, Button, makeStyles } from "@material-ui/core";
 import LocalinkMap from "../../components/map/Map";
 import { LocationList } from "../../components/list/LocationList";
-import { Cart } from "../../components/cart/Cart";
 import { ItineraryList } from "../../components/list/ItineraryList";
-import { useDispatch } from "react-redux";
-import { clearSearch } from "../../actions/shopper/searchActions";
+import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
   root: {
@@ -35,8 +32,8 @@ const useStyles = makeStyles({
 });
 
 function SearchPage() {
-  const dispatch = useDispatch();
   const classes = useStyles();
+
   return (
     <div className={classes.root}>
       <div className={classes.map}>
