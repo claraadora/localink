@@ -55,7 +55,7 @@ export default function LogInPage() {
   };
 
   if (isAuthenticated) {
-    return <Redirect to="/dashboard" />;
+    return <Redirect to="/search" />;
   }
 
   return (
