@@ -22,23 +22,18 @@ app.use('/business/profile', require('./routes/api/business/profile'));
 app.use('/business/product', require('./routes/api/business/product'));
 app.use('/business/user', require('./routes/api/business/user'));
 app.use('/business/review-reply', require('./routes/api/business/reviewReply'));
+app.use(
+  '/business/reset_password',
+  require('./routes/api/email/business.email.router')
+);
 
 //Define routes for shoppers
 app.use('/', require('./routes/api/shopper/index'));
 app.use('/auth', require('./routes/api/shopper/auth'));
 app.use('/profile', require('./routes/api/shopper/profile'));
 app.use('/review', require('./routes/api/shopper/review'));
-
-//Define route for searching
 app.use('/search', require('./routes/api/shopper/search'));
-
-//Define route for forgot password
-app.use(
-  '/business/reset_password',
-  require('./routes/api/email/business.email.router')
-);
 app.use('/reset_password', require('./routes/api/email/shopper.email.router'));
-
 //Define route to get distance to shop
 app.use('', require('./routes/api/distance/distance.router'));
 

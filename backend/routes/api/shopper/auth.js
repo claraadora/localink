@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 const { check, validationResult } = require('express-validator');
 const { OAuth2Client } = require('google-auth-library');
+const got = require('got');
 
 const Shopper = require('../../../models/Shopper');
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
@@ -81,11 +82,11 @@ router.post(
   }
 );
 
-// @route    GET /google
+// @route    GET /auth/google-login
 // @desc     Sign up or login with google
 // @access   Private
 // @return   token
-router.post('/google', async (req, res) => {
+router.post('/google-login', async (req, res) => {
   const { tokenId } = req.body;
   try {
     const response = await client.verifyIdToken({
@@ -135,5 +136,57 @@ router.post('/google', async (req, res) => {
     res.status(500).send('Server error');
   }
 });
+
+// @route    GET /auth/facebook-login
+// @desc     Sign up or login with facebook
+// @access   Private
+// @return   token
+router.post('/facebook-login', async (req, res) => {
+  const { userID, accessToken } = req.body;
+});
+  const urlGraphFacebook = 'https://graph.facebook.com/v2.11/${userID}/?fields=id,name,email&access_token=${acessToken}'
+  fetch (urlGraphFacebook, {
+    method: 'GET'
+  })
+  .then(response => response.json())
+  .then(response => {
+    const { email, name } = response;
+    try {
+      let shopper = await Shopper.findOne({email});
+      if (!shopper) {
+        let password = email + process.env.FACEBOOK_SECRET;
+        const salt = await bcrypt.genSalt(10);
+        password = await bcrypt.hash(password, salt);
+
+        shopper = new Shopper({
+          name,
+          email,
+          password
+        });
+
+        await shopper.save();
+      }
+
+      const payload = {
+        shopper: {
+          id: shopper.id
+        }
+      };
+
+      jwt.sign(
+        payload,
+        config.get('jwtSecret'),
+        { expiresIn: '5 days' },
+        (err, token) => {
+          if (err) throw err;
+          res.json({ token });
+        }
+      );
+
+    } catch (error) {
+      console.error(err.message);
+      res.status(500).send('Server error');
+    }
+  });
 
 module.exports = router;
