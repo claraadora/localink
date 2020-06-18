@@ -6,6 +6,7 @@ import {
   FormControl,
   makeStyles,
   Typography,
+  Button,
 } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
@@ -62,6 +63,10 @@ const useStyles = makeStyles((theme) => ({
       background: theme.palette.additional.dark,
     },
   },
+  button: {
+    backgroundColor: "transparent",
+    padding: 0,
+  },
 }));
 export const OptionSelect = () => {
   const [val, setVal] = useState(1);
@@ -102,16 +107,24 @@ export const OptionSelect = () => {
         onChange={handleChange}
       >
         <MenuItem value={0}>
-          <Typography>Popularity</Typography>
+          <Button className={classes.button} disableRipple>
+            <Typography>Popularity</Typography>
+          </Button>
         </MenuItem>
         <MenuItem value={1}>
-          <Typography>Distance</Typography>
+          <Button className={classes.button} disableRipple>
+            <Typography>Distance</Typography>
+          </Button>
         </MenuItem>
         <MenuItem value={2}>
-          <Typography>Price Low to High</Typography>
+          <Button className={classes.button} disableRipple>
+            <Typography>Price Low to High</Typography>
+          </Button>
         </MenuItem>
         <MenuItem value={3}>
-          <Typography>Price High to Low</Typography>
+          <Button className={classes.button} disableRipple>
+            <Typography>Price High to Low</Typography>
+          </Button>
         </MenuItem>
       </Select>
     </FormControl>
