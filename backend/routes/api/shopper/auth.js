@@ -7,7 +7,6 @@ const config = require('config');
 const { check, validationResult } = require('express-validator');
 const { OAuth2Client } = require('google-auth-library');
 const got = require('got');
-const fetch = require('node-fetch');
 
 const Shopper = require('../../../models/Shopper');
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
@@ -97,37 +96,8 @@ router.post('/google-login', async (req, res) => {
     const { email_verified, name, email } = response.payload;
 
     if (email_verified) {
-      let shopper = await Shopper.findOne({ email });
-
-      if (!shopper) {
-        let password = email + process.env.GOOGLE_SECRET;
-        const salt = await bcrypt.genSalt(10);
-        password = await bcrypt.hash(password, salt);
-
-        shopper = new Shopper({
-          name,
-          email,
-          password
-        });
-
-        await shopper.save();
-      }
-
-      const payload = {
-        shopper: {
-          id: shopper.id
-        }
-      };
-
-      jwt.sign(
-        payload,
-        config.get('jwtSecret'),
-        { expiresIn: '5 days' },
-        (err, token) => {
-          if (err) throw err;
-          res.json({ token });
-        }
-      );
+      const token = await loginOrSignUp(name, email, process.env.GOOGLE_SECRET);
+      res.json(token);
     } else {
       console.log('error logging in with google');
       res.status(500).send('error logging in with google');
@@ -149,47 +119,48 @@ router.post('/facebook-login', async (req, res) => {
     'https://graph.facebook.com/v2.11/${userID}/?fields=id,name,email&access_token=${acessToken}';
   let response = await got(urlGraphFacebook);
   response = response.json();
-  // fetch (urlGraphFacebook, {
-  //   method: 'GET'
-  // })
-  // .then(response => response.json())
-  // .then(response => {
+
   const { email, name } = response;
   try {
-    let shopper = await Shopper.findOne({ email });
-    if (!shopper) {
-      let password = email + process.env.FACEBOOK_SECRET;
-      const salt = await bcrypt.genSalt(10);
-      password = await bcrypt.hash(password, salt);
-
-      shopper = new Shopper({
-        name,
-        email,
-        password
-      });
-
-      await shopper.save();
-    }
-
-    const payload = {
-      shopper: {
-        id: shopper.id
-      }
-    };
-
-    jwt.sign(
-      payload,
-      config.get('jwtSecret'),
-      { expiresIn: '5 days' },
-      (err, token) => {
-        if (err) throw err;
-        res.json({ token });
-      }
-    );
+    const token = await loginOrSignUp(name, email, process.env.FACEBOOK_SECRET);
+    res.json(token);
   } catch (error) {
     console.error(err.message);
     res.status(500).send('Server error');
   }
 });
+
+async function loginOrSignUp(name, email, secret) {
+  let shopper = await Shopper.findOne({ email });
+  if (!shopper) {
+    let password = email + secret;
+    const salt = await bcrypt.genSalt(10);
+    password = await bcrypt.hash(password, salt);
+
+    shopper = new Shopper({
+      name,
+      email,
+      password
+    });
+
+    await shopper.save();
+  }
+
+  const payload = {
+    shopper: {
+      id: shopper.id
+    }
+  };
+
+  jwt.sign(
+    payload,
+    config.get('jwtSecret'),
+    { expiresIn: '5 days' },
+    (err, token) => {
+      if (err) throw err;
+      return token;
+    }
+  );
+}
 
 module.exports = router;
