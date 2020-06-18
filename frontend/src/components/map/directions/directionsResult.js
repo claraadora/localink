@@ -1,6 +1,4 @@
 function initMap() {
-  // const startPoints = ['los angeles, ca', 'san bernardino, ca', 'barstow, ca'];
-  // const endPoints = ['san bernardino, ca', 'barstow, ca', 'winona, az'];
   const startPoints = [
     'Ubi avenue 2',
     '629 Aljunied Rd, #04-02A, Singapore 389838'
@@ -10,6 +8,7 @@ function initMap() {
     'Sri Manmatha Karuneshvarar temple'
   ];
 
+  const markerLabels = ['A', 'B', 'C', 'D', 'E'];
   const colors = ['#ff99ff', '#99c2ff', '#ff8080', '#ff8c1a'];
 
   const directionsService = new google.maps.DirectionsService();
@@ -19,6 +18,7 @@ function initMap() {
   });
   let routeData = []; //nested array contains multiple routes between 2 locations
   let start = 0; //keep track of nested array
+  let position = null; //start and end position of a route
 
   for (let i = 0; i < startPoints.length; i++) {
     calculateAndDisplayRoute(directionsService, i);
@@ -49,20 +49,40 @@ function initMap() {
 
             const polyline = createPolyline(start, i);
             console.log(response);
+
             const directionsRenderer = new google.maps.DirectionsRenderer({
               polylineOptions: polyline,
+              suppressMarkers: true,
               map: map,
               directions: response,
               routeIndex: i
             });
+
+            position = response.routes[0].legs[0];
+
             setTextDirections(polyline, directionsRenderer);
           }
+
+          if (start === 0) {
+            createMarker(position.start_location, start);
+          }
+
           start++;
+
+          createMarker(position.end_location, start);
         } else {
           window.alert('Directions request failed due to ' + status);
         }
       }
     );
+  }
+
+  function createMarker(latLng, i) {
+    new google.maps.Marker({
+      position: latLng,
+      map: map,
+      label: markerLabels[i]
+    });
   }
 
   function createPolyline(start, i) {
