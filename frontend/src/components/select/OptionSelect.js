@@ -8,6 +8,8 @@ import {
   Typography,
   Button,
 } from "@material-ui/core";
+import { useSelector, useDispatch } from "react-redux";
+import { reorderSearch } from "../../actions/shopper/searchActions";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 const useStyles = makeStyles((theme) => ({
@@ -66,14 +68,21 @@ const useStyles = makeStyles((theme) => ({
   button: {
     backgroundColor: "transparent",
     padding: 0,
+    disableRipple: true,
   },
 }));
 export const OptionSelect = () => {
   const [val, setVal] = useState(1);
+  const productArray = useSelector((state) => state.search.productArray);
   const classes = useStyles();
+  const dispatch = useDispatch();
 
   const handleChange = (event) => {
     setVal(event.target.value);
+  };
+
+  const handleSort = (sortBy, order) => {
+    return dispatch(reorderSearch(sortBy, order, productArray));
   };
 
   const iconComponent = (props) => {
@@ -107,22 +116,37 @@ export const OptionSelect = () => {
         onChange={handleChange}
       >
         <MenuItem value={0}>
-          <Button className={classes.button} disableRipple>
-            <Typography>Popularity</Typography>
+          <Button
+            id="Ratings"
+            className={classes.button}
+            onClick={() => handleSort("ratings", "ascending")}
+          >
+            <Typography>Ratings</Typography>
           </Button>
         </MenuItem>
         <MenuItem value={1}>
-          <Button className={classes.button} disableRipple>
+          <Button
+            id="Distance"
+            className={classes.button}
+            onClick={() => handleSort("distance", "ascending")}
+          >
             <Typography>Distance</Typography>
           </Button>
         </MenuItem>
         <MenuItem value={2}>
-          <Button className={classes.button} disableRipple>
+          <Button
+            id="PriceLH"
+            className={classes.button}
+            onClick={() => handleSort("price", "ascending")}
+          >
             <Typography>Price Low to High</Typography>
           </Button>
         </MenuItem>
         <MenuItem value={3}>
-          <Button className={classes.button} disableRipple>
+          <Button
+            className={classes.button}
+            onClick={() => handleSort("price", "descending")}
+          >
             <Typography>Price High to Low</Typography>
           </Button>
         </MenuItem>

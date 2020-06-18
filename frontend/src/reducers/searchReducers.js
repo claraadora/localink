@@ -12,6 +12,7 @@ export default function (state = initialState, action) {
 
   switch (type) {
     case searchConstants.SEARCH_REQUEST:
+    case searchConstants.REORDER_SEARCH:
       return {
         error: {},
         loading: false,

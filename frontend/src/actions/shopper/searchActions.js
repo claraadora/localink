@@ -1,6 +1,7 @@
 import axios from "axios";
 import { setAlert } from "../alertActions";
 import searchConstants from "../../constants/searchConstants";
+import { dynamicSort } from "../../utils/sort";
 
 export const loadSearch = (search, service) => async (dispatch) => {
   try {
@@ -35,6 +36,16 @@ export const loadSearch = (search, service) => async (dispatch) => {
       },
     });
   }
+};
+
+export const reorderSearch = (sortBy, order, items) => (dispatch) => {
+  const sortedSearch = items.sort(dynamicSort(sortBy, order));
+  console.log(sortedSearch);
+  console.log("sorting");
+  dispatch({
+    type: searchConstants.REORDER_SEARCH,
+    payload: sortedSearch,
+  });
 };
 
 export const clearSearch = () => (dispatch) => {
