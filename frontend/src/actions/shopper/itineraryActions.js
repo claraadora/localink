@@ -1,3 +1,4 @@
+import React from "react";
 import { itineraryConstants } from "../../constants/itineraryConstants";
 
 export const addToItinerary = (item) => (dispatch) => {

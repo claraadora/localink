@@ -1,8 +1,21 @@
-function dynamicSort(property, order) {
+export const dynamicSort = (property, order) => {
   let sort_order = 1;
   if (order === "descending") {
     sort_order = -1;
   }
+
+  const getProperty = (property, elem) => {
+    if (property === "distance") {
+      return elem.shop_docs[0].distance;
+    } else if (property === "price") {
+      return elem.price;
+    } else if (property === "ratings") {
+      return elem.shop_docs[0].ratings;
+    } else {
+      return null;
+    }
+  };
+
   return function (e1, e2) {
     const property1 = getProperty(property, e1);
     const property2 = getProperty(property, e2);
@@ -14,16 +27,4 @@ function dynamicSort(property, order) {
       return 0 * sort_order;
     }
   };
-}
-
-function getProperty(property, elem) {
-  if (property === "distance") {
-    return elem.shop_docs[0].distance;
-  } else if (property === "price") {
-    return elem.price;
-  } else if (property === "ratings") {
-    return elem.shop_docs[0].ratings;
-  } else {
-    return null;
-  }
-}
+};

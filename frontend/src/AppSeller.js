@@ -6,7 +6,7 @@ import SellerDashboardPage from "./pages/seller/DashboardPage";
 import LoggedSellerNavBar from "./components/navbar/LoggedSellerNavBar";
 import SellerNavBar from "./components/navbar/SellerNavBar";
 import Alert from "./components/Alert";
-import { Route } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 import { Grid } from "@material-ui/core";
 import ProductTable from "./components/table/ProductTable";
 import ProductForm from "./components/form/ProductForm";
@@ -20,9 +20,9 @@ import ReviewTable from "./components/table/ReviewTable";
 function AppSeller() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
-  // if (isAuthenticated) {
-  //   return <Redirect to="/business/dashboard" />;
-  // }
+  if (isAuthenticated) {
+    return <Redirect to="/business/dashboard" />;
+  }
 
   return (
     <ThemeProvider theme={themeSeller}>
