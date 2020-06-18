@@ -6,7 +6,6 @@ import {
   FormControl,
   makeStyles,
   Typography,
-  Button,
 } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 import { reorderSearch } from "../../actions/shopper/searchActions";
@@ -67,6 +66,8 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     backgroundColor: "transparent",
+    display: "block",
+    fullWidth: true,
     padding: 0,
     disableRipple: true,
   },
@@ -115,40 +116,17 @@ export const OptionSelect = () => {
         value={val}
         onChange={handleChange}
       >
-        <MenuItem value={0}>
-          <Button
-            id="Ratings"
-            className={classes.button}
-            onClick={() => handleSort("ratings", "ascending")}
-          >
-            <Typography>Ratings</Typography>
-          </Button>
+        <MenuItem value={0} onClick={() => handleSort("ratings", "ascending")}>
+          <Typography>Ratings</Typography>
         </MenuItem>
-        <MenuItem value={1}>
-          <Button
-            id="Distance"
-            className={classes.button}
-            onClick={() => handleSort("distance", "ascending")}
-          >
-            <Typography>Distance</Typography>
-          </Button>
+        <MenuItem value={1} onClick={() => handleSort("distance", "ascending")}>
+          <Typography>Distance</Typography>
         </MenuItem>
-        <MenuItem value={2}>
-          <Button
-            id="PriceLH"
-            className={classes.button}
-            onClick={() => handleSort("price", "ascending")}
-          >
-            <Typography>Price Low to High</Typography>
-          </Button>
+        <MenuItem value={2} onClick={() => handleSort("price", "ascending")}>
+          <Typography>Price Low to High</Typography>
         </MenuItem>
-        <MenuItem value={3}>
-          <Button
-            className={classes.button}
-            onClick={() => handleSort("price", "descending")}
-          >
-            <Typography>Price High to Low</Typography>
-          </Button>
+        <MenuItem value={3} onClick={() => handleSort("price", "descending")}>
+          <Typography>Price High to Low</Typography>
         </MenuItem>
       </Select>
     </FormControl>

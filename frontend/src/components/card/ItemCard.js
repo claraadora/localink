@@ -2,7 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Card, Button, Typography, Grid } from "@material-ui/core";
 import { addToItinerary } from "../../actions/shopper/itineraryActions";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,6 +25,7 @@ export const ItemCard = (props) => {
   const classes = useStyles();
   const data = props.content;
   const dispatch = useDispatch();
+  const sortedBy = useSelector((state) => state.search.sortedBy);
 
   return (
     <Card
@@ -54,7 +55,11 @@ export const ItemCard = (props) => {
         </Grid>
         <Grid item xs={2}>
           <Typography variant="body2" component="p">
-            {data.price}
+            {sortedBy === "price"
+              ? `$${data.price}`
+              : sortedBy === "ratings"
+              ? Math.round(data.shop_docs[0].ratings * 10) / 10
+              : `${data.shop_docs[0].distance}km`}
           </Typography>
         </Grid>
       </Grid>

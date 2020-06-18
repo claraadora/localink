@@ -46,7 +46,7 @@ export const ItineraryCard = (props) => {
         </Grid>
         <Grid item xs={2}>
           <Typography variant="body2" component="p">
-            {data.price}
+            ${data.price}
           </Typography>
         </Grid>
         <Grid item xs={1} />
