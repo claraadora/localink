@@ -6,14 +6,8 @@ import SellerDashboardPage from "./pages/seller/DashboardPage";
 import LoggedSellerNavBar from "./components/navbar/LoggedSellerNavBar";
 import SellerNavBar from "./components/navbar/SellerNavBar";
 import Alert from "./components/Alert";
-import {
-  Route,
-  Switch,
-  Redirect,
-  BrowserRouter as Router,
-} from "react-router-dom";
+import { Route } from "react-router-dom";
 import { Grid } from "@material-ui/core";
-import PrivateRoute from "./routing/PrivateRoute";
 import ProductTable from "./components/table/ProductTable";
 import ProductForm from "./components/form/ProductForm";
 import ProfileForm from "./components/form/ProfileForm";

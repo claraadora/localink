@@ -1,7 +1,6 @@
 import authConstants from "../../constants/authConstants";
 import profileConstants from "../../constants/profileConstants";
 import { setAlert } from "../alertActions";
-import { createBrowserHistory } from "history";
 import axios from "axios";
 import setAuthToken from "../../utils/setAuthToken";
 

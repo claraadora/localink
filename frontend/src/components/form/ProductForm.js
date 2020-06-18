@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
-import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch } from "react-redux";
 import { addProduct } from "../../actions/seller/profileActions";
@@ -66,7 +63,6 @@ export default function ProductForm() {
           autoComplete="name"
           variant="outlined"
           margin="normal"
-          required
           autoFocus
           value={name}
         />
@@ -81,8 +77,6 @@ export default function ProductForm() {
           variant="outlined"
           margin="normal"
           value={image}
-          required
-          fullWidth
           autoFocus
         />
 
@@ -97,11 +91,9 @@ export default function ProductForm() {
           variant="outlined"
           margin="normal"
           value={description}
-          required
           multiline
           rows={3}
           maxRows={5}
-          fullWidth
           autoFocus
         />
 
@@ -116,7 +108,6 @@ export default function ProductForm() {
           margin="normal"
           value={price}
           required
-          fullWidth
           autoFocus
         />
         <Button

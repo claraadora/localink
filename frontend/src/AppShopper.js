@@ -5,26 +5,21 @@ import ShopperSignUpPage from "./pages/shopper/SignUpPage";
 import ShopperSearchPage from "./pages/shopper/SearchPage";
 import ShopperProfilePage from "./pages/shopper/ProfilePage";
 import ShopperCataloguePage from "./pages/shopper/CataloguePage";
-import LoggedShopperNavBar from "./components/navbar/LoggedShopperNavBar";
 import ShopperNavBar from "./components/navbar/ShopperNavBar";
 import Alert from "./components/Alert";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Route } from "react-router-dom";
 import { Grid } from "@material-ui/core";
-import PrivateRoute from "./routing/PrivateRoute";
-import { useSelector } from "react-redux";
 import { theme } from "./theme";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { useLocation } from "react-router-dom";
 
 function AppShopper() {
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   let location = useLocation();
 
   return (
     <ThemeProvider theme={theme}>
       <Grid container direction="column">
-        <ShopperNavBar isSearchPage={location.pathname == "/search"} />
-
+        <ShopperNavBar isSearchPage={location.pathname === "/search"} />
         <Grid item xs={8}></Grid>
         <Grid item xs={12} sm={12}>
           <Alert />

@@ -1,35 +1,33 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
-import MUIAlert from "@material-ui/lab/Alert";
-import { mergeClasses } from "@material-ui/styles";
-import { Grid } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "80%",
+    width: "100%",
+    "& > * + *": {
+      marginTop: theme.spacing(2),
+    },
   },
 }));
 
 const Alert = () => {
-  const alerts = useSelector((state) => {
-    console.log(state);
-    return state.alert;
-  });
+  const alerts = useSelector((state) => state.alert);
+  const classes = useStyles();
 
   if (alerts !== null && alerts.length > 0) {
     return alerts.map((alert) => (
-      <div className={mergeClasses.root}>
-        <MUIAlert
+      <div className={classes.root}>
+        <Alert
           variant="filled"
-          severity={alert.alertType == "success" ? "success" : "error"}
+          severity={alert.alertType === "success" ? "success" : "error"}
         >
           {alert.message}
-        </MUIAlert>
+        </Alert>
       </div>
     ));
   }
-  return <Grid item />;
+  return null;
 };
 
 export default Alert;

@@ -1,5 +1,4 @@
 import { itineraryConstants } from "../../constants/itineraryConstants";
-import { setAlert } from "../alertActions";
 
 export const addToItinerary = (item) => (dispatch) => {
   dispatch({

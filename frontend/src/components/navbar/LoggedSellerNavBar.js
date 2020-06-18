@@ -13,20 +13,15 @@ import MenuItem from "@material-ui/core/MenuItem";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import IconButton from "@material-ui/core/IconButton";
 import Menu from "@material-ui/core/Menu";
-import ListSubheader from "@material-ui/core/ListSubheader";
 import { logout } from "../../actions/seller/authActions";
 import { useDispatch } from "react-redux";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
-import StarBorder from "@material-ui/icons/StarBorder";
 import Collapse from "@material-ui/core/Collapse";
 
 const drawerWidth = 200;
 
 const useStyles = makeStyles((theme) => ({
-  grow: {
-    flexGrow: 1,
-  },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
   },
@@ -127,7 +122,6 @@ export default function LoggedSellerNavBar() {
     review: false,
     chat: false,
   });
-  const json = drawerItems;
   const open = Boolean(anchorEl);
   const dispatch = useDispatch();
 
@@ -142,8 +136,6 @@ export default function LoggedSellerNavBar() {
   function handleCollapse(name) {
     setOpenCollapse({ ...openCollapse, ...{ [name]: !openCollapse[name] } });
   }
-
-  const menuId = "primary-search-account-menu";
 
   return (
     <div className={classes.grow}>

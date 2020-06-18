@@ -38,7 +38,7 @@ export const ItineraryList = () => {
     if (loading && itinerary) {
       setItinerary(itineraryItems);
     }
-  }, [itineraryItems]);
+  }, [itineraryItems, itinerary, loading]);
 
   const onDragEnd = (result) => {
     if (!result.destination) {

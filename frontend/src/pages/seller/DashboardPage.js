@@ -1,9 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid } from "@material-ui/core";
 import { useSelector } from "react-redux";
-
-const drawerWidth = 200;
 
 const useStyles = makeStyles((theme) => ({
   paper: {

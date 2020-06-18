@@ -1,5 +1,4 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import {
   AppBar,
   Toolbar,
@@ -17,20 +16,7 @@ import { OptionSelect } from "../select/OptionSelect";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../actions/seller/authActions";
 
-const useStyles = makeStyles((theme) => ({
-  grow: {
-    flexGrow: 1,
-  },
-  toolbar: {
-    minHeight: 40,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-}));
-
 export default function ShopperNavBar({ isSearchPage }) {
-  const classes = useStyles();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);

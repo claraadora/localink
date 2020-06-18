@@ -9,6 +9,16 @@ import {
 import "@reach/combobox/styles.css";
 import { makeStyles } from "@material-ui/styles";
 import { useSelector } from "react-redux";
+import {
+  pink,
+  deepPurple,
+  indigo,
+  cyan,
+  teal,
+  lime,
+  orange,
+  amber,
+} from "@material-ui/core/colors";
 
 function createKey(location) {
   return location.lat + location.lng;
@@ -33,6 +43,16 @@ const options = {
   disableDefaultUI: true,
   zoomControl: true,
 };
+const lineColors = [
+  pink[300],
+  deepPurple[300],
+  indigo[300],
+  cyan[300],
+  teal[300],
+  lime[300],
+  amber[300],
+  orange[300],
+];
 // const directionsService = new window.google.maps.DirectionsService();
 export default function Map() {
   const { isLoaded, loadError } = useLoadScript({
@@ -55,6 +75,13 @@ export default function Map() {
     lng: 103.773538,
   });
   const [travelMode, setTravelMode] = useState("DRIVING");
+
+  //Set color
+  const [colorIdx, setColorIdx] = useState(1);
+  useEffect(() => {
+    const updatedColorIdx = colorIdx + 1;
+    setColorIdx(updatedColorIdx);
+  }, colorIdx);
 
   useEffect(() => {
     if (!loading && productArray) {
@@ -112,6 +139,10 @@ export default function Map() {
         <DirectionsRenderer
           options={{
             directions: response,
+            polylineOptions: {
+              strokeColor: lineColors[colorIdx],
+              strokeWeight: 4,
+            },
           }}
         />
       )}

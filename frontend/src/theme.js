@@ -4,7 +4,6 @@ import {
   yellow,
   grey,
   lightBlue,
-  blue,
   green,
 } from "@material-ui/core/colors";
 

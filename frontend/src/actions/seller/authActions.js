@@ -1,13 +1,8 @@
-import React from "react";
 import authConstants from "../../constants/authConstants";
 import profileConstants from "../../constants/profileConstants";
 import { setAlert } from "../alertActions";
-import { createBrowserHistory } from "history";
 import axios from "axios";
 import setAuthToken from "../../utils/setAuthToken";
-import { Redirect } from "react-router-dom";
-
-const history = createBrowserHistory();
 
 export const loadUser = () => async (dispatch) => {
   if (localStorage.token) {

@@ -1,8 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Card, Button, Typography, Grid } from "@material-ui/core";
-import { addToItinerary } from "../../actions/shopper/itineraryActions";
-import { useDispatch } from "react-redux";
+import { Card, Typography, Grid } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,7 +24,6 @@ function trimString(word, maxLength) {
 export const ItineraryCard = (props) => {
   const classes = useStyles();
   const data = props.content;
-  const dispatch = useDispatch();
 
   return (
     <Card className={classes.root}>

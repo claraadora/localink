@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import AppSeller from "./AppSeller";
 import AppShopper from "./AppShopper";
 import { theme } from "./theme";
-import { themeSeller } from "./themeSeller";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { loadUser } from "./actions/seller/authActions";
 import { getCurrentProfile } from "./actions/seller/profileActions";

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
 import clsx from "clsx";
 import { lighten, makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
@@ -213,10 +212,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function createData(name, description, price) {
-  return { name, description, price };
-}
-
 export default function ReviewTable() {
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
@@ -245,7 +240,7 @@ export default function ReviewTable() {
       );
       setRows(updatedRows);
     }
-  }, [loading, getCurrentProfile, profile]);
+  }, [loading, dispatch, profile]);
 
   console.log("rows = " + rows);
 

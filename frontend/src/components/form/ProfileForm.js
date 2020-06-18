@@ -46,6 +46,7 @@ const ProfileForm = () => {
   const inputLabelStyles = borderedTextFieldStylesHook.useInputLabel();
 
   const [formData, setFormData] = useState(initialState);
+  const { shopName, description, avatar, address } = formData;
 
   useEffect(() => {
     if (!profile) dispatch(getCurrentProfile());
@@ -59,9 +60,7 @@ const ProfileForm = () => {
       profileData[shopName] = user.shopName;
       setFormData(profileData);
     }
-  }, [loading, getCurrentProfile, profile]);
-
-  const { shopName, description, avatar, address } = formData;
+  }, [loading, dispatch, profile, shopName, user.shopName]);
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });

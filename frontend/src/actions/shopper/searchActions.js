@@ -1,8 +1,6 @@
-import React from "react";
 import axios from "axios";
 import { setAlert } from "../alertActions";
 import searchConstants from "../../constants/searchConstants";
-import { Redirect } from "react-router-dom";
 
 export const loadSearch = (search, service) => async (dispatch) => {
   try {
