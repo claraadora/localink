@@ -1,20 +1,56 @@
 function initMap() {
-  const startPoints = [
-    'Ubi avenue 2',
-    '629 Aljunied Rd, #04-02A, Singapore 389838'
-  ];
-  const endPoints = [
-    '629 Aljunied Rd, #04-02A, Singapore 389838',
-    'Sri Manmatha Karuneshvarar temple'
+  //[ubi, aljunied, kallang]
+  const inputAddresses = [
+    { lat: 1.3287683, lng: 103.8963967 },
+    {
+      lat: 1.3263764,
+      lng: 103.8795565
+    },
+    {
+      lat: 1.3088789,
+      lng: 103.865919
+    }
   ];
 
-  const markerLabels = ['A', 'B', 'C', 'D', 'E'];
+  const labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const labelledAddresses = labelAddress(inputAddresses);
+
+  function labelAddress(addresses) {
+    const labelledAddresses = [];
+    let i = 0;
+    addresses.forEach(address => {
+      const labelled = {
+        address: address,
+        label: labels.charAt(i)
+      };
+      i++;
+      labelledAddresses.push(labelled);
+    });
+    return labelledAddresses;
+  }
+
+  const startPoints = getStartPoints(inputAddresses); //[ubi, aljunied]
+  const endPoints = getEndPoints(inputAddresses); //[aljunied, kallang]
+
+  function getStartPoints(addresses) {
+    const copy = [...addresses];
+    copy.pop();
+    return copy;
+  }
+
+  function getEndPoints(addresses) {
+    const copy = [...addresses];
+    copy.shift();
+    return copy;
+  }
+
   const colors = ['#ff99ff', '#99c2ff', '#ff8080', '#ff8c1a'];
 
   const directionsService = new google.maps.DirectionsService();
   const map = new google.maps.Map(document.getElementById('map'), {
     zoom: 7,
-    center: { lat: 41.85, lng: -87.65 }
+    center: { lat: 41.85, lng: -87.65 },
+    gestureHandling: 'cooperative'
   });
   let routeData = []; //nested array contains multiple routes between 2 locations
   let start = 0; //keep track of nested array
@@ -28,8 +64,8 @@ function initMap() {
     directionsService.route(
       //create DirectionsRequest object
       {
-        origin: { query: startPoints[i] },
-        destination: { query: endPoints[i] },
+        origin: startPoints[i],
+        destination: endPoints[i],
         travelMode: 'DRIVING',
         provideRouteAlternatives: true
       },
@@ -38,7 +74,9 @@ function initMap() {
           let routes = [];
           routeData.push(routes);
           for (let i = 0; i < response.routes.length; i++) {
+            //for (let i = 0; i < 1; i++) {
             routeData[start].push({
+              summary: response.routes[i].summary,
               distance: response.routes[i].legs[0].distance,
               duration: response.routes[i].legs[0].duration,
               fare: response.routes[i].fare,
@@ -48,27 +86,30 @@ function initMap() {
             });
 
             const polyline = createPolyline(start, i);
-            console.log(response);
 
             const directionsRenderer = new google.maps.DirectionsRenderer({
               polylineOptions: polyline,
               suppressMarkers: true,
               map: map,
               directions: response,
-              routeIndex: i
+              routeIndex: i,
+              hideRouteList: true
             });
 
-            position = response.routes[0].legs[0];
-
-            setTextDirections(polyline, directionsRenderer);
+            //setTextDirections(polyline, directionsRenderer, response);
+            writeDirectionsSteps(polyline, response.routes[i].legs[0]);
           }
 
+          position = response.routes[0].legs[0];
           if (start === 0) {
+            console.log('only once');
+            console.log(position);
             createMarker(position.start_location, start);
           }
 
           start++;
 
+          console.log('start: ' + start);
           createMarker(position.end_location, start);
         } else {
           window.alert('Directions request failed due to ' + status);
@@ -77,12 +118,106 @@ function initMap() {
     );
   }
 
+  function writeDirectionsSteps(polyline, data) {
+    const steps = data.steps;
+    const start_address = data.start_address;
+    const end_address = data.end_address;
+    const start_location = data.start_location;
+    const end_location = data.end_location;
+
+    const start_label = labelledAddresses.find(function (element) {
+      return (
+        truncate(element.address.lat) == truncate(start_location.lat()) &&
+        truncate(element.address.lng) == truncate(start_location.lng())
+      );
+    }).label;
+
+    const end_label = labelledAddresses.find(function (element) {
+      return (
+        truncate(element.address.lat) == truncate(end_location.lat()) &&
+        truncate(element.address.lng) == truncate(end_location.lng())
+      );
+    }).label;
+
+    google.maps.event.addListener(polyline, 'click', function () {
+      var overlayContent = document.getElementById('right-panel');
+      overlayContent.innerHTML = '';
+
+      overlayContent.innerHTML +=
+        `<h2> From ${start_label}: </h2>` +
+        start_address +
+        '<hr>' +
+        `<h2> To ${end_label}: </h2>` +
+        end_address +
+        '</h2> <hr>';
+
+      for (var i = 0; i < steps.length; i++) {
+        const count = i + 1;
+        overlayContent.innerHTML +=
+          '<p>' +
+          +count +
+          '. ' +
+          steps[i].instructions +
+          '</p><small>' +
+          steps[i].distance.text +
+          '</small>' +
+          '<hr>';
+      }
+
+      // overlayContent.innerHTML +=
+      //   '<h1>' + end_label + '</h1>' + '<h1>' + end_address + '</h1>';
+    });
+  }
+
+  function truncate(num) {
+    truncateDecimals = function (number) {
+      return Math[number < 0 ? 'ceil' : 'floor'](number);
+    };
+    return truncateDecimals(num * 1000) / 1000;
+  }
+
   function createMarker(latLng, i) {
-    new google.maps.Marker({
+    const marker = new google.maps.Marker({
       position: latLng,
       map: map,
-      label: markerLabels[i]
+      label: labels[i]
     });
+
+    const infowindow = new google.maps.InfoWindow({});
+
+    if (i === inputAddresses.length - 1) {
+      google.maps.event.addListener(
+        marker,
+        'mouseover',
+        (function (marker, i) {
+          return function () {
+            infowindow.setContent(routeData[i - 1][0].end_address);
+            infowindow.open(map, marker);
+          };
+        })(marker, i)
+      );
+    } else {
+      google.maps.event.addListener(
+        marker,
+        'mouseover',
+        (function (marker, i) {
+          return function () {
+            infowindow.setContent(routeData[i][0].start_address);
+            infowindow.open(map, marker);
+          };
+        })(marker, i)
+      );
+    }
+
+    google.maps.event.addListener(
+      marker,
+      'mouseout',
+      (function () {
+        return function () {
+          infowindow.close();
+        };
+      })()
+    );
   }
 
   function createPolyline(start, i) {
@@ -123,32 +258,16 @@ function initMap() {
   }
 
   function formatRouteData(data) {
-    console.log(data);
     const fare = data.fare ? data.fare.text : 'not available';
     return (
-      'distance: ' +
+      'route: ' +
+      data.summary +
+      '<br> distance: ' +
       data.distance.text +
       '<br> duration: ' +
       data.duration.text +
       '<br> fare: ' +
-      fare +
-      '<br> start: ' +
-      data.start_address +
-      '<br> end: ' +
-      data.end_address +
-      '<br> <a href="">Select</a>'
+      fare
     );
-  }
-
-  function setTextDirections(polyline, directionsRenderer) {
-    console.log('std');
-    google.maps.event.addListener(polyline, 'click', function () {
-      //clear previous panel
-      document.getElementById('right-panel').innerHTML = '';
-      directionsRenderer.setPanel(document.getElementById('right-panel'));
-      //   var control = document.getElementById('floating-panel');
-      //   control.style.display = 'block';
-      //   map.controls[google.maps.ControlPosition.TOP_CENTER].push(control);
-    });
   }
 }
