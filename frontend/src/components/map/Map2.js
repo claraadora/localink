@@ -24,7 +24,19 @@ import {
 function createKey(location) {
   return location.lat + location.lng;
 }
-
+function createPolyline(start, i) {
+  const polyline = new window.google.maps.Polyline({
+    //   path: response.routes[i].overview_path,
+    strokeColor: colors[i % (colors.length - 1)],
+    strokeWeight: 5,
+    zIndex: 1,
+    tag: {
+      index: start,
+      nestedIndex: i,
+    },
+  });
+}
+const colors = ["#ff99ff", "#99c2ff", "#ff8080", "#ff8c1a"];
 const A = { lat: 1.30655, lng: 103.773523 };
 const B = { lat: 1.31655, lng: 103.773523 };
 const C = { lat: 1.32655, lng: 103.773523 };
@@ -34,8 +46,8 @@ function Map() {
   const productArray = useSelector((state) => state.search.productArray);
   const loading = useSelector((state) => state.search.loading);
   const [searchResult, setSearchResult] = useState(null);
-  const [startPoints, setStartPoints] = useState([A, B, C]);
-  const [endPoints, setEndPoints] = useState([B.C, D]);
+  const [startPoints, setStartPoints] = useState([A]);
+  const [endPoints, setEndPoints] = useState([B]);
   const [travelMode, setTravelMode] = useState("DRIVING");
   const [routeData, setRouteData] = useState([]);
   const [directions, setDirections] = useState(null);
@@ -48,6 +60,7 @@ function Map() {
 
   useEffect(() => {
     const DirectionsService = new window.google.maps.DirectionsService();
+    let start = 0;
 
     for (let i = 0; i < startPoints.length; i++) {
       DirectionsService.route(
@@ -58,14 +71,30 @@ function Map() {
         },
         (response, status) => {
           if (status === window.google.maps.DirectionsStatus.OK) {
-            setDirections(response);
+            let routes = [];
+            routeData.push(routes);
+
+            for (let j = 0; j < response.routes.length; j++) {
+              routeData[start].push({
+                distance: response.routes[j].legs[0].distance,
+                duration: response.routes[j].legs[0].duration,
+                fare: response.routes[j].fare,
+                end_address: response.routes[j].legs[0].end_address,
+                start_address: response.routes[j].legs[0].start_address,
+                routeIndex: j,
+              });
+
+              const polyline = createPolyline(i, j);
+            }
+            start++;
+            setRouteData(routeData);
           } else {
             console.error(`error fetching directions ${response}`);
           }
         }
       );
     }
-  }, []);
+  }, [startPoints, endPoints]);
 
   return (
     <GoogleMap defaultZoom={12} defaultCenter={{ lat: 1.3521, lng: 103.8198 }}>
@@ -79,7 +108,13 @@ function Map() {
               />
             );
           })}
-      {directions && <DirectionsRenderer directions={directions} />}
+      {routeData !== [] &&
+        routeData.map((routes) => {
+          console.log(routes);
+          for (let i = 0; i < routes.length; i++) {
+            return <DirectionsRenderer directions={routes} routeIndex={i} />;
+          }
+        })}
     </GoogleMap>
   );
 }
