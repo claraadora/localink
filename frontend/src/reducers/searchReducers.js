@@ -3,10 +3,7 @@ import searchConstants from "../constants/searchConstants";
 const initialState = {
   productArray: [],
   loading: true,
-  sortedBy: {
-    sortBy: "distance",
-    order: "ascending",
-  },
+  sortedBy: "distance",
   error: {},
 };
 

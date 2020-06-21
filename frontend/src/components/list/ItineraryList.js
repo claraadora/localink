@@ -26,7 +26,7 @@ const getListStyle = (isDraggingOver) => ({
   background: isDraggingOver ? lightGreen[100] : lightBlue[50],
   display: "flex",
   overflow: "auto",
-  width: "100%",
+  width: "75%",
 });
 
 export const ItineraryList = () => {

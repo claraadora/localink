@@ -43,11 +43,11 @@ export const ItineraryCard = (props) => {
               {trimString(data.shop_docs[0].address, 20)}
             </Typography>
           </Grid>
-        </Grid>
-        <Grid item xs={2}>
-          <Typography variant="body2" component="p">
-            ${data.price}
-          </Typography>
+          <Grid item xs={2}>
+            <Typography variant="body2" component="p">
+              ${data.price}
+            </Typography>
+          </Grid>
         </Grid>
         <Grid item xs={1} />
       </Grid>
