@@ -1,5 +1,6 @@
 import React from "react";
-import LocalinkMap from "../../components/map/Map";
+import { LocalinkMap } from "../../components/map/Map2";
+// import LocalinkMap from "../../components/map/Map";
 import { LocationList } from "../../components/list/LocationList";
 import { ItineraryList } from "../../components/list/ItineraryList";
 import { makeStyles } from "@material-ui/core/styles";

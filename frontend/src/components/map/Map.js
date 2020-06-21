@@ -95,7 +95,8 @@ export default function Map() {
         //     routeIndex: i,
         //   });
         // }
-        setRouteData(() => [...routeData, [response]]);
+        routeData.push(response);
+        setRouteData(() => routeData);
       } else {
         window.alert("Directions request failed due to " + response.status);
       }
@@ -130,7 +131,7 @@ export default function Map() {
     >
       {searchResult == null
         ? null
-        : searchResult.map((product, index) => {
+        : searchResult.map((product) => {
             return (
               <Marker
                 key={createKey(product.shop_docs[0].latLng)}
@@ -141,32 +142,27 @@ export default function Map() {
 
       {startPoints !== [] &&
         endPoints !== [] &&
-        startPoints.map((startPoint, index) => (
+        startPoints.map((startPoint) => (
           <DirectionsService
             options={{
-              destination: endPoints[index],
-              origin: startPoint,
+              destination: endPoints[0],
+              origin: startPoints[0],
               provideRouteAlternatives: false,
               travelMode: travelMode,
             }}
             callback={directionsCallback}
           />
         ))}
-      {console.log("route data" + routeData)}
-
       {routeData !== [] &&
-        routeData.map((routesBetweenTwoStops, index) => {
-          let nthStop = index;
-          routesBetweenTwoStops.map((route, index) => (
-            <DirectionsRenderer
-              options={{
-                directions: routesBetweenTwoStops,
-                routeIndex: index,
-                polylineOptions: createPolyline(nthStop, index),
-              }}
-            />
-          ));
-        })}
+        routeData.map((response) => (
+          <DirectionsRenderer
+            options={{
+              directions: response,
+              routeIndex: 0,
+              polylineOptions: createPolyline(0, 0),
+            }}
+          />
+        ))}
     </GoogleMap>
   );
 }
