@@ -1,7 +1,8 @@
 //const io = require('socket.io')(server);
 
-const Message = require('../../models/Message');
-const Chat = require('../../models/Chat');
+const Message = require('../../../models/Message');
+const Chat = require('../../../models/Chat');
+const Shop = require('../../../models/Shop');
 
 module.exports = app => {
   app.io.on('connection', socket => {
@@ -10,7 +11,6 @@ module.exports = app => {
         const {
           userId,
           username,
-          userImage,
           message,
           time,
           type,
@@ -27,6 +27,8 @@ module.exports = app => {
           isShopperSender = true;
         }
 
+        const shop = await Shop.findOne({ owner: business_id });
+
         const newMessage = new Message({
           userId,
           username,
@@ -37,7 +39,7 @@ module.exports = app => {
 
         let chat = new Chat({
           shopper: shopper_id,
-          business: business_id,
+          shop: shop.id,
           message: newMessage,
           isShopper: isShopperSender
         });

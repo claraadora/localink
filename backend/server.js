@@ -49,7 +49,7 @@ app.use('', require('./routes/api/distance/distance.router'));
 
 //Chat
 app.io = require('socket.io')();
-require('./routes/api/chat')(app);
+require('./routes/api/chat/chat')(app);
 
 const PORT = process.env.PORT || 5000;
 

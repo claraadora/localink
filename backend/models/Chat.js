@@ -7,9 +7,9 @@ const ChatSchema = new mongoose.Schema({
       ref: 'Shopper',
       required: true
     },
-    business: {
+    shop: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Business',
+      ref: 'Shop',
       required: true
     },
     message: {
