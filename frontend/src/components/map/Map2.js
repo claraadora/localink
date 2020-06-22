@@ -98,6 +98,7 @@ function Map() {
 
   return (
     <GoogleMap defaultZoom={12} defaultCenter={{ lat: 1.3521, lng: 103.8198 }}>
+      {console.log("routeData" + routeData)}
       {searchResult == null
         ? null
         : searchResult.map((product, index) => {
@@ -112,7 +113,9 @@ function Map() {
         routeData.map((routes) => {
           console.log(routes);
           for (let i = 0; i < routes.length; i++) {
-            return <DirectionsRenderer directions={routes} routeIndex={i} />;
+            return (
+              <DirectionsRenderer directions={routes} routeIndex={i} polyline />
+            );
           }
         })}
     </GoogleMap>

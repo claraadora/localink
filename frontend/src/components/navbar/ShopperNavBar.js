@@ -80,6 +80,9 @@ export default function ShopperNavBar({ isSearchPage }) {
                 >
                   <AccountCircle />
                 </IconButton>
+                <Button component={Link} to="/chat">
+                  Chat
+                </Button>
               </Grid>
               <Menu
                 id="menu-appbar"

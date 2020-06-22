@@ -5,6 +5,7 @@ import ShopperSignUpPage from "./pages/shopper/SignUpPage";
 import ShopperSearchPage from "./pages/shopper/SearchPage";
 import ShopperProfilePage from "./pages/shopper/ProfilePage";
 import ShopperCataloguePage from "./pages/shopper/CataloguePage";
+import ChatPage from "./pages/ChatPage";
 import ShopperNavBar from "./components/navbar/ShopperNavBar";
 import Alert from "./components/Alert";
 import { Route } from "react-router-dom";
@@ -28,6 +29,7 @@ function AppShopper() {
           <Route exact path="/search" component={ShopperSearchPage} />
           <Route exact path="/profile" component={ShopperProfilePage} />
           <Route exact path="/catalogue" component={ShopperCataloguePage} />
+          <Route exact path="/chat" component={ChatPage} />
           <Route exact path="/" component={ShopperLandingPage} />
         </Grid>
       </Grid>
