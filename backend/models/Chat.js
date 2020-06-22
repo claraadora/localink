@@ -1,18 +1,24 @@
 const mongoose = require('mongoose');
 
-const Chat = new mongoose.Schema({
+const ChatSchema = new mongoose.Schema({
   chat: {
-    shopper_id: {
-      type: String,
+    shopper: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Shopper',
       required: true
     },
-    business_id: {
-      type: String,
+    business: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Business',
       required: true
     },
     message: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Message'
+    },
+    isShopper: {
+      type: Boolean,
+      required: true
     }
   }
 });
