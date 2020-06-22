@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const MessageSchema = new mongoose.Schema({
+  userId: {
+    type: Number,
+    required: true
+  },
   username: {
     type: String,
     required: true
@@ -12,6 +16,10 @@ const MessageSchema = new mongoose.Schema({
   date: {
     type: Date,
     default: Date.now
+  },
+  type: {
+    type: String,
+    required: true
   }
 });
 

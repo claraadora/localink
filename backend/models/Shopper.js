@@ -31,10 +31,6 @@ const ShopperSchema = new mongoose.Schema({
       ref: 'Review'
     }
   ],
-  inbox: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Chatlist'
-  },
   transactionHistory: [
     //products
     {
