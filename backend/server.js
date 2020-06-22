@@ -1,7 +1,17 @@
 const express = require('express');
 const connectDB = require('./config/db');
+const connectClient = require('./config/clientdb');
+
+// console.log('server: ' + db);
+// connectClient().then(db => console.log('server: ' + db));
 
 const app = express();
+
+const server = require('http').createServer(app);
+const io = require('socket.io')(server);
+
+//Connect Mongodb client
+connectClient();
 
 //Connect Database
 connectDB();
@@ -37,6 +47,10 @@ app.use('/reset_password', require('./routes/api/email/shopper.email.router'));
 //Define route to get distance to shop
 app.use('', require('./routes/api/distance/distance.router'));
 
+//Chat
+app.io = require('socket.io')();
+require('./routes/api/chat')(app);
+
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+server.listen(PORT, () => console.log(`Server started on port ${PORT}`));
