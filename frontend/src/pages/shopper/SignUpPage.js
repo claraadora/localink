@@ -48,14 +48,8 @@ export default function SignUpPage() {
   });
   const { name, email, password, password2 } = formData;
   const dispatch = useDispatch();
-  const responseSuccessGoogle = (response) => {
-    console.log("yay");
-    // dispatch(loginWithGoogle());
-  };
-
-  const responseErrorGoogle = (response) => {
-    console.log("error");
-    dispatch(loginWithGoogle());
+  const responseGoogle = (response) => {
+    dispatch(loginWithGoogle(response));
   };
 
   const onChange = (e) =>
@@ -156,14 +150,29 @@ export default function SignUpPage() {
               </Link>
             </Grid>
           </Grid>
-          <Divider />
-          <GoogleLogin
-            clientId="56020081309-ndum5jd4ltace1utokr28brbrtjkjhb9.apps.googleusercontent.com"
-            buttonText="Sign up with Google"
-            onSuccess={responseSuccessGoogle}
-            onFailure={responseErrorGoogle}
-            cookiePolicy={"single_host_origin"}
-          />
+          <Grid item container="row" alignItems="center">
+            <Grid item xs={5}>
+              <Divider />
+            </Grid>
+            <Grid item xs={1}>
+              <body>or</body>
+            </Grid>
+            <Grid item xs={6}>
+              <Divider />
+            </Grid>
+          </Grid>
+          <Grid container direction="column" alignItems="center" spacing={3}>
+            <Grid item />
+            <Grid item>
+              <GoogleLogin
+                clientId="56020081309-ndum5jd4ltace1utokr28brbrtjkjhb9.apps.googleusercontent.com"
+                buttonText="Sign up with Google"
+                onSuccess={responseGoogle}
+                onFailure={responseGoogle}
+                cookiePolicy={"single_host_origin"}
+              />
+            </Grid>
+          </Grid>
         </form>
       </div>
     </Container>

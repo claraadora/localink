@@ -80,7 +80,7 @@ export const ChatPage = () => {
           className="infinite-container"
           style={{ height: "500px", overflowY: "scroll" }}
         >
-          {chat && renderChatCards()}
+          {chat.chats && renderChatCards()}
           <div ref={messagesEndRef} />
         </div>
         <div>

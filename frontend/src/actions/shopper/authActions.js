@@ -53,14 +53,14 @@ export const login = ({ email, password }) => async (dispatch) => {
   }
 };
 
-export const loginWithGoogle = (token) => async (dispatch) => {
+export const loginWithGoogle = (response) => async (dispatch) => {
   const config = {
     headers: {
       "Content-Type": "application/json",
     },
   };
 
-  const body = JSON.stringify(token);
+  const body = JSON.stringify(response.tokenId);
 
   try {
     const res = await axios.post("/auth/google-login ", body, config); // api/auth
