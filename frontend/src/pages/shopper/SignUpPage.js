@@ -159,7 +159,7 @@ export default function SignUpPage() {
           <Divider />
           <GoogleLogin
             clientId="56020081309-ndum5jd4ltace1utokr28brbrtjkjhb9.apps.googleusercontent.com"
-            buttonText="Login with Google"
+            buttonText="Sign up with Google"
             onSuccess={responseSuccessGoogle}
             onFailure={responseErrorGoogle}
             cookiePolicy={"single_host_origin"}
