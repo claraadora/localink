@@ -44,6 +44,7 @@ app.use('/profile', require('./routes/api/shopper/profile'));
 app.use('/review', require('./routes/api/shopper/review'));
 app.use('/search', require('./routes/api/shopper/search'));
 app.use('/reset_password', require('./routes/api/email/shopper.email.router'));
+app.use('/inbox', require('./routes/api/chat/inboxShopper'));
 //Define route to get distance to shop
 app.use('', require('./routes/api/distance/distance.router'));
 
