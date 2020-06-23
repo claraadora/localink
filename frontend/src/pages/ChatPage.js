@@ -6,6 +6,7 @@ import { ChatCard } from "../components/card/ChatCard";
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
 import { getChat, afterPostMessage } from "../actions/chatActions";
+import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,6 +26,8 @@ export const ChatPage = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
   const messagesEndRef = useRef(null);
+  const location = useLocation();
+  const isShopper = location.pathname === "/chat" ? true : false;
 
   useEffect(() => {
     dispatch(getChat(user._id));
@@ -41,7 +44,6 @@ export const ChatPage = () => {
     let userId = user._id;
     let time = moment();
     let type = "text";
-    let isShopper = true;
     let receiverId = "5ee10b4fd3dc884052fee116";
 
     socket.emit("Input Chat Message", {
@@ -65,7 +67,13 @@ export const ChatPage = () => {
 
   const renderChatCards = () => {
     chat &&
-      chat.chats.map((message) => <ChatCard key={message._id} {...message} />);
+      chat.chats.map((chat) => {
+        let name = isShopper ? chat.shop.shopName : chat.shopper.name;
+        let message = chat.message.message;
+        // let image = isShopper ? chat.shop.image : chat.shopper.image;
+        let id = chat.message._id;
+        return <ChatCard key={id} name={name} message={message} />;
+      });
   };
 
   return (

@@ -30,10 +30,10 @@ export const ChatCard = (props) => {
     <div style={{ width: "100%" }}>
       <ListItem alignItems="flex-start">
         <ListItemAvatar>
-          <Avatar alt={props.sender.name} src={props.sender.image} />
+          <Avatar alt={props.name} src={props.image} />
         </ListItemAvatar>
         <ListItemText
-          primary={props.sender.name}
+          primary={props.name}
           secondary={
             <React.Fragment>
               <Typography

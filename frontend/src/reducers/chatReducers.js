@@ -1,7 +1,7 @@
 import chatConstants from "../constants/chatConstants";
 
 const initialState = {
-  chats: "",
+  chats: [],
   error: {},
 };
 
@@ -14,7 +14,7 @@ export const chat = (state = initialState, action) => {
     case chatConstants.AFTER_POST_MESSAGE:
       return {
         ...state,
-        chats: state.chats.concat(payload.chat.message.message),
+        chats: state.chats.concat(payload),
       };
     case chatConstants.CHAT_ERROR:
       return {
