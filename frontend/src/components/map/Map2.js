@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   withGoogleMap,
   withScriptjs,
@@ -6,10 +6,10 @@ import {
   Marker,
   DirectionsRenderer,
   Polyline,
-  InfoWindow,
-} from "react-google-maps";
-import { makeStyles } from "@material-ui/styles";
-import { useSelector } from "react-redux";
+  InfoWindow
+} from 'react-google-maps';
+import { makeStyles } from '@material-ui/styles';
+import { useSelector } from 'react-redux';
 import {
   pink,
   deepPurple,
@@ -18,8 +18,8 @@ import {
   teal,
   lime,
   orange,
-  amber,
-} from "@material-ui/core/colors";
+  amber
+} from '@material-ui/core/colors';
 
 function createKey(location) {
   return location.lat + location.lng;
@@ -32,23 +32,23 @@ function createPolyline(start, i) {
     zIndex: 1,
     tag: {
       index: start,
-      nestedIndex: i,
-    },
+      nestedIndex: i
+    }
   });
 }
-const colors = ["#ff99ff", "#99c2ff", "#ff8080", "#ff8c1a"];
+const colors = ['#ff99ff', '#99c2ff', '#ff8080', '#ff8c1a'];
 const A = { lat: 1.30655, lng: 103.773523 };
 const B = { lat: 1.31655, lng: 103.773523 };
 const C = { lat: 1.32655, lng: 103.773523 };
 const D = { lat: 1.308086, lng: 103.773538 };
 
 function Map() {
-  const productArray = useSelector((state) => state.search.productArray);
-  const loading = useSelector((state) => state.search.loading);
+  const productArray = useSelector(state => state.search.productArray);
+  const loading = useSelector(state => state.search.loading);
   const [searchResult, setSearchResult] = useState(null);
   const [startPoints, setStartPoints] = useState([A]);
   const [endPoints, setEndPoints] = useState([B]);
-  const [travelMode, setTravelMode] = useState("DRIVING");
+  const [travelMode, setTravelMode] = useState('DRIVING');
   const [routeData, setRouteData] = useState([]);
   const [directions, setDirections] = useState(null);
 
@@ -61,13 +61,15 @@ function Map() {
   useEffect(() => {
     const DirectionsService = new window.google.maps.DirectionsService();
     let start = 0;
+    console.log('inside useEffect to draw route');
 
     for (let i = 0; i < startPoints.length; i++) {
+      console.log(i);
       DirectionsService.route(
         {
           origin: startPoints[i],
           destination: endPoints[i],
-          travelMode: travelMode,
+          travelMode: travelMode
         },
         (response, status) => {
           if (status === window.google.maps.DirectionsStatus.OK) {
@@ -81,7 +83,7 @@ function Map() {
                 fare: response.routes[j].fare,
                 end_address: response.routes[j].legs[0].end_address,
                 start_address: response.routes[j].legs[0].start_address,
-                routeIndex: j,
+                routeIndex: j
               });
 
               const polyline = createPolyline(i, j);
@@ -98,7 +100,7 @@ function Map() {
 
   return (
     <GoogleMap defaultZoom={12} defaultCenter={{ lat: 1.3521, lng: 103.8198 }}>
-      {console.log("routeData" + routeData)}
+      {console.log('routeData' + routeData)}
       {searchResult == null
         ? null
         : searchResult.map((product, index) => {
@@ -110,7 +112,8 @@ function Map() {
             );
           })}
       {routeData !== [] &&
-        routeData.map((routes) => {
+        routeData.map(routes => {
+          console.log('each route is');
           console.log(routes);
           for (let i = 0; i < routes.length; i++) {
             return (
@@ -126,7 +129,7 @@ const MapWrapped = withScriptjs(withGoogleMap(Map));
 
 export const LocalinkMap = () => {
   return (
-    <div style={{ width: "100vw", height: "100vh" }}>
+    <div style={{ width: '100vw', height: '100vh' }}>
       <MapWrapped
         googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
         loadingElement={<div style={{ height: `100%` }} />}
