@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const connectClient = require('../../../config/clientdb');
+const mongoose = require('mongoose');
 
 const Shopper = require('../../../models/Shopper');
 const Chat = require('../../../models/Chat');
@@ -12,13 +13,18 @@ const Chat = require('../../../models/Chat');
 router.get('/:shopper_id', async (req, res) => {
   try {
     const shopperId = req.params.shopper_id;
+    console.log(typeof shopperId);
+    const newShopperId = mongoose.Types.ObjectId(shopperId);
+    console.log(typeof newShopperId);
     const chatList = [];
     const db = await connectClient();
-    db.collections('chats')
+    db.collection('chats')
       .aggregate([
         {
           $match: {
-            shopper: shopperId //get object whether or not shopper is sender or receiver
+            shopper: {
+              $toObjectId: shopperId
+            } //get object whether or not shopper is sender or receiver
           }
         },
         {
@@ -36,20 +42,21 @@ router.get('/:shopper_id', async (req, res) => {
         },
         {
           $group: {
-            _id: $business, //group messages by same business id
-            chatList: { $push: $message }
+            _id: '$business', //group messages by same business id
+            chatList: { $push: '$message' }
           }
         }
       ])
       .each(function (error, chat) {
+        console.log(chat);
         if (chat) {
           chatList.unshift(chat);
         } else {
-          res.status(200).json(products);
+          res.status(200).json(chatList);
         }
       });
   } catch (error) {
-    console.error(err.message);
+    console.error(error.message);
     res.status(500).send('Server Error');
   }
 });
