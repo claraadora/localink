@@ -4,24 +4,24 @@ function initMap() {
     { lat: 1.3287683, lng: 103.8963967 },
     {
       lat: 1.3263764,
-      lng: 103.8795565,
+      lng: 103.8795565
     },
     {
       lat: 1.3088789,
-      lng: 103.865919,
-    },
+      lng: 103.865919
+    }
   ];
 
-  const labels = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   const labelledAddresses = labelAddress(inputAddresses);
 
   function labelAddress(addresses) {
     const labelledAddresses = [];
     let i = 0;
-    addresses.forEach((address) => {
+    addresses.forEach(address => {
       const labelled = {
         address: address,
-        label: labels.charAt(i),
+        label: labels.charAt(i)
       };
       i++;
       labelledAddresses.push(labelled);
@@ -44,13 +44,13 @@ function initMap() {
     return copy;
   }
 
-  const colors = ["#ff99ff", "#99c2ff", "#ff8080", "#ff8c1a"];
+  const colors = ['#ff99ff', '#99c2ff', '#ff8080', '#ff8c1a'];
 
   const directionsService = new google.maps.DirectionsService();
-  const map = new google.maps.Map(document.getElementById("map"), {
+  const map = new google.maps.Map(document.getElementById('map'), {
     zoom: 7,
     center: { lat: 41.85, lng: -87.65 },
-    gestureHandling: "cooperative",
+    gestureHandling: 'cooperative'
   });
   let routeData = []; //nested array contains multiple routes between 2 locations
   let start = 0; //keep track of nested array
@@ -66,11 +66,11 @@ function initMap() {
       {
         origin: startPoints[i],
         destination: endPoints[i],
-        travelMode: "DRIVING",
-        provideRouteAlternatives: true,
+        travelMode: 'DRIVING',
+        provideRouteAlternatives: true
       },
       function (response, status) {
-        if (status === "OK") {
+        if (status === 'OK') {
           let routes = [];
           routeData.push(routes);
           for (let i = 0; i < response.routes.length; i++) {
@@ -82,18 +82,19 @@ function initMap() {
               fare: response.routes[i].fare,
               end_address: response.routes[i].legs[0].end_address,
               start_address: response.routes[i].legs[0].start_address,
-              routeIndex: i,
+              routeIndex: i
             });
 
             const polyline = createPolyline(start, i);
-
+            console.log('resp is: ');
+            console.log(response);
             const directionsRenderer = new google.maps.DirectionsRenderer({
               polylineOptions: polyline,
               suppressMarkers: true,
               map: map,
               directions: response,
               routeIndex: i,
-              hideRouteList: true,
+              hideRouteList: true
             });
 
             //setTextDirections(polyline, directionsRenderer, response);
@@ -102,17 +103,17 @@ function initMap() {
 
           position = response.routes[0].legs[0];
           if (start === 0) {
-            console.log("only once");
+            console.log('only once');
             console.log(position);
             createMarker(position.start_location, start);
           }
 
           start++;
 
-          console.log("start: " + start);
+          console.log('start: ' + start);
           createMarker(position.end_location, start);
         } else {
-          window.alert("Directions request failed due to " + status);
+          window.alert('Directions request failed due to ' + status);
         }
       }
     );
@@ -139,29 +140,29 @@ function initMap() {
       );
     }).label;
 
-    google.maps.event.addListener(polyline, "click", function () {
-      var overlayContent = document.getElementById("right-panel");
-      overlayContent.innerHTML = "";
+    google.maps.event.addListener(polyline, 'click', function () {
+      var overlayContent = document.getElementById('right-panel');
+      overlayContent.innerHTML = '';
 
       overlayContent.innerHTML +=
         `<h2> From ${start_label}: </h2>` +
         start_address +
-        "<hr>" +
+        '<hr>' +
         `<h2> To ${end_label}: </h2>` +
         end_address +
-        "</h2> <hr>";
+        '</h2> <hr>';
 
       for (var i = 0; i < steps.length; i++) {
         const count = i + 1;
         overlayContent.innerHTML +=
-          "<p>" +
+          '<p>' +
           +count +
-          ". " +
+          '. ' +
           steps[i].instructions +
-          "</p><small>" +
+          '</p><small>' +
           steps[i].distance.text +
-          "</small>" +
-          "<hr>";
+          '</small>' +
+          '<hr>';
       }
 
       // overlayContent.innerHTML +=
@@ -171,7 +172,7 @@ function initMap() {
 
   function truncate(num) {
     truncateDecimals = function (number) {
-      return Math[number < 0 ? "ceil" : "floor"](number);
+      return Math[number < 0 ? 'ceil' : 'floor'](number);
     };
     return truncateDecimals(num * 1000) / 1000;
   }
@@ -180,7 +181,7 @@ function initMap() {
     const marker = new google.maps.Marker({
       position: latLng,
       map: map,
-      label: labels[i],
+      label: labels[i]
     });
 
     const infowindow = new google.maps.InfoWindow({});
@@ -188,7 +189,7 @@ function initMap() {
     if (i === inputAddresses.length - 1) {
       google.maps.event.addListener(
         marker,
-        "mouseover",
+        'mouseover',
         (function (marker, i) {
           return function () {
             infowindow.setContent(routeData[i - 1][0].end_address);
@@ -199,7 +200,7 @@ function initMap() {
     } else {
       google.maps.event.addListener(
         marker,
-        "mouseover",
+        'mouseover',
         (function (marker, i) {
           return function () {
             infowindow.setContent(routeData[i][0].start_address);
@@ -211,7 +212,7 @@ function initMap() {
 
     google.maps.event.addListener(
       marker,
-      "mouseout",
+      'mouseout',
       (function () {
         return function () {
           infowindow.close();
@@ -228,8 +229,8 @@ function initMap() {
       zIndex: 1,
       tag: {
         index: start,
-        nestedIndex: i,
-      },
+        nestedIndex: i
+      }
     });
 
     polyline.setMap(map);
@@ -237,19 +238,19 @@ function initMap() {
     const infowindow = new google.maps.InfoWindow({});
     infowindow.setContent(formatRouteData(routeData[start][i]));
 
-    google.maps.event.addListener(polyline, "mouseover", function (event) {
+    google.maps.event.addListener(polyline, 'mouseover', function (event) {
       polyline.setOptions({
         strokeWeight: 8,
-        zIndex: 2,
+        zIndex: 2
       });
       infowindow.setPosition(event.latLng);
       infowindow.open(map);
     });
 
-    google.maps.event.addListener(polyline, "mouseout", function () {
+    google.maps.event.addListener(polyline, 'mouseout', function () {
       polyline.setOptions({
         strokeWeight: 5,
-        zIndex: 0,
+        zIndex: 0
       });
       infowindow.close();
     });
@@ -258,15 +259,15 @@ function initMap() {
   }
 
   function formatRouteData(data) {
-    const fare = data.fare ? data.fare.text : "not available";
+    const fare = data.fare ? data.fare.text : 'not available';
     return (
-      "route: " +
+      'route: ' +
       data.summary +
-      "<br> distance: " +
+      '<br> distance: ' +
       data.distance.text +
-      "<br> duration: " +
+      '<br> duration: ' +
       data.duration.text +
-      "<br> fare: " +
+      '<br> fare: ' +
       fare
     );
   }
