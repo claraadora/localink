@@ -14,7 +14,7 @@ router.get('/inbox/:shopper_id', async (req, res) => {
     const shopperId = req.params.shopper_id;
     const chatList = [];
     const db = await connectClient();
-    db.collections('Chat')
+    db.collections('chats')
       .aggregate([
         {
           $match: {
@@ -23,7 +23,7 @@ router.get('/inbox/:shopper_id', async (req, res) => {
         },
         {
           $lookup: {
-            from: 'message',
+            from: 'messages',
             localField: '_id',
             foreignField: 'message',
             as: 'message_docs'
