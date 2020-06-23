@@ -14,7 +14,7 @@ const io = require('socket.io')(server);
 connectClient();
 
 //Connect Database
-//connectDB();
+connectDB();
 
 //load environment variables
 const dotenv = require('dotenv');
