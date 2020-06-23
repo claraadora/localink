@@ -12,7 +12,10 @@ export const chat = (state = initialState, action) => {
     case chatConstants.GET_CHATS:
       return { ...state, chats: action.payload };
     case chatConstants.AFTER_POST_MESSAGE:
-      return { ...state, chats: state.chats.concat(payload) };
+      return {
+        ...state,
+        chats: state.chats.concat(payload.chat.message.message),
+      };
     case chatConstants.CHAT_ERROR:
       return {
         ...state,

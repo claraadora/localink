@@ -8,7 +8,7 @@ export const getChat = (id) => async (dispatch) => {
     console.log("id " + id);
 
     dispatch({
-      type: chatConstants.GET_CHATS,
+      type: chatConstants.GET_CHAT,
       payload: res.data,
     });
   } catch (err) {

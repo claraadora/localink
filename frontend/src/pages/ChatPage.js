@@ -6,7 +6,6 @@ import { ChatCard } from "../components/card/ChatCard";
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
 import { getChat, afterPostMessage } from "../actions/chatActions";
-import chat from "../reducers/chatReducers";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,7 +21,7 @@ const socket = io("http://localhost:5000");
 export const ChatPage = () => {
   const [message, setMessage] = useState("");
   const user = useSelector((state) => state.auth.user);
-  const chats = useSelector((state) => state.chats);
+  const chat = useSelector((state) => state.chat);
   const dispatch = useDispatch();
   const classes = useStyles();
   const messagesEndRef = useRef(null);
@@ -45,8 +44,6 @@ export const ChatPage = () => {
     let isShopper = true;
     let receiverId = "5ee10b4fd3dc884052fee116";
 
-    console.log(time);
-
     socket.emit("Input Chat Message", {
       userId,
       username,
@@ -57,19 +54,18 @@ export const ChatPage = () => {
       isShopper,
     });
     setMessage("");
+    console.log("submitted");
   };
 
   const scrollToBottom = () => {
     messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
   };
 
-  useEffect(scrollToBottom, [chats]);
+  useEffect(scrollToBottom, [chat]);
 
   const renderChatCards = () => {
     chat &&
-      chat.chatList.map((message) => (
-        <ChatCard key={message._id} {...chat.chat} />
-      ));
+      chat.chats.map((message) => <ChatCard key={message._id} {...message} />);
   };
 
   return (
@@ -84,7 +80,7 @@ export const ChatPage = () => {
           className="infinite-container"
           style={{ height: "500px", overflowY: "scroll" }}
         >
-          {chats && renderChatCards()}
+          {chat && renderChatCards()}
           <div ref={messagesEndRef} />
         </div>
         <div>
