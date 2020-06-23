@@ -6,6 +6,7 @@ import { ChatCard } from "../components/card/ChatCard";
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
 import { getChat, afterPostMessage } from "../actions/chatActions";
+import chat from "../reducers/chatReducers";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 const socket = io("http://localhost:5000");
 
 export const ChatPage = () => {
-  const [chatMessage, setChatMessage] = useState("");
+  const [message, setMessage] = useState("");
   const user = useSelector((state) => state.auth.user);
   const chats = useSelector((state) => state.chats);
   const dispatch = useDispatch();
@@ -37,20 +38,25 @@ export const ChatPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    let time = moment();
-    let type = "text";
     let username = user.name;
     let userId = user["_id"];
+    let time = moment();
+    let type = "text";
+    let isShopper = true;
+    let receiverId = "5ee10b4fd3dc884052fee116";
+
     console.log(time);
 
     socket.emit("Input Chat Message", {
-      chatMessage,
       userId,
+      username,
+      message,
       time,
       type,
-      username,
+      receiverId,
+      isShopper,
     });
-    setChatMessage("");
+    setMessage("");
   };
 
   const scrollToBottom = () => {
@@ -60,8 +66,10 @@ export const ChatPage = () => {
   useEffect(scrollToBottom, [chats]);
 
   const renderChatCards = () => {
-    chats.chats &&
-      chats.chats.map((chat) => <ChatCard key={chat._id} {...chat} />);
+    chat &&
+      chat.chatList.map((message) => (
+        <ChatCard key={message._id} {...chat.chat} />
+      ));
   };
 
   return (
@@ -85,10 +93,10 @@ export const ChatPage = () => {
               id="message"
               type="text"
               placeholder="Message"
-              value={chatMessage}
-              onChange={(e) => setChatMessage(e.target.value)}
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
             />
-            <Button type="submit" disabled={chatMessage.length === 0}>
+            <Button type="submit" disabled={message.length === 0}>
               Send
             </Button>
           </form>
