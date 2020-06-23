@@ -9,7 +9,7 @@ const Chat = require('../../../models/Chat');
 // @desc     Get all coversations of shopper
 // @access   Private
 // @return   User
-router.get('/inbox/:shopper_id', async (req, res) => {
+router.get('/:shopper_id', async (req, res) => {
   try {
     const shopperId = req.params.shopper_id;
     const chatList = [];
