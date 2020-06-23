@@ -5,6 +5,7 @@ import { setAlert } from "./alertActions";
 export const getChat = (id) => async (dispatch) => {
   try {
     const res = await axios.get(`/inbox/${id}`);
+    console.log("id " + id);
 
     dispatch({
       type: chatConstants.GET_CHATS,

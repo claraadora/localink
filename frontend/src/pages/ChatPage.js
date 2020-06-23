@@ -28,7 +28,7 @@ export const ChatPage = () => {
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
-    dispatch(getChat());
+    dispatch(getChat(user._id));
     socket.on("Output Chat Message", (messageFromBackEnd) => {
       console.log(messageFromBackEnd);
       dispatch(afterPostMessage(messageFromBackEnd));
@@ -39,7 +39,7 @@ export const ChatPage = () => {
     e.preventDefault();
 
     let username = user.name;
-    let userId = user["_id"];
+    let userId = user._id;
     let time = moment();
     let type = "text";
     let isShopper = true;
