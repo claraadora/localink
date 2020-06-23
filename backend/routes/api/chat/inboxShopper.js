@@ -13,9 +13,6 @@ const Chat = require('../../../models/Chat');
 router.get('/:shopper_id', async (req, res) => {
   try {
     const shopperId = req.params.shopper_id;
-    console.log(typeof shopperId);
-    const newShopperId = mongoose.Types.ObjectId(shopperId);
-    console.log(typeof newShopperId);
     const chatList = [];
     const db = await connectClient();
     db.collection('chats')
