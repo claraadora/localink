@@ -14,7 +14,7 @@ const io = require('socket.io')(server);
 connectClient();
 
 //Connect Database
-connectDB();
+//connectDB();
 
 //load environment variables
 const dotenv = require('dotenv');
@@ -49,8 +49,68 @@ app.use('/inbox', require('./routes/api/chat/inboxShopper'));
 app.use('', require('./routes/api/distance/distance.router'));
 
 //Chat
-app.io = require('socket.io')();
-require('./routes/api/chat/chat')(app);
+// app.io = require('socket.io')();
+// require('./routes/api/chat/chat')(app);
+
+const Message = require('./models/Message');
+const Chat = require('./models/Chat');
+const Shop = require('./models/Shop');
+
+io.on('connection', socket => {
+  socket.on('Input Chat Message', msg => {
+    connectDB().then(async db => {
+      try {
+        const {
+          userId,
+          username,
+          message,
+          time,
+          type,
+          receiverId,
+          isShopper
+        } = msg;
+
+        let shopper_id = receiverId;
+        let business_id = userId;
+        let isShopperSender = false;
+        if (isShopper) {
+          shopper_id = userId;
+          business_id = receiverId;
+          isShopperSender = true;
+        }
+
+        const shop = await Shop.findOne({ owner: business_id });
+
+        const newMessage = new Message({
+          userId,
+          username,
+          message,
+          time,
+          type
+        });
+
+        let chat = new Chat({
+          shopper: shopper_id,
+          shop: shop.id,
+          message: newMessage,
+          isShopper: isShopperSender
+        });
+
+        await chat.save();
+
+        if (isShopper) {
+          chat = await chat.populate('shopper').execPopulate();
+        } else {
+          chat = await chat.populate('business').execPopulate();
+        }
+        return io.emit('Output Chat Message', chat);
+      } catch (error) {
+        console.log(error);
+        res.status(500).json('Server error');
+      }
+    });
+  });
+});
 
 const PORT = process.env.PORT || 5000;
 
