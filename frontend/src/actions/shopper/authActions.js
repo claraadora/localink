@@ -59,8 +59,9 @@ export const loginWithGoogle = (response) => async (dispatch) => {
       "Content-Type": "application/json",
     },
   };
+  const tokenId = response.tokenId;
 
-  const body = JSON.stringify(response.tokenId);
+  const body = JSON.stringify({ tokenId });
 
   try {
     const res = await axios.post("/auth/google-login ", body, config); // api/auth
@@ -84,6 +85,38 @@ export const loginWithGoogle = (response) => async (dispatch) => {
   }
 };
 
+export const loginWithFacebook = (response) => async (dispatch) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  const accessToken = response.accessToken;
+  const userID = response.userID;
+
+  const body = JSON.stringify({ accessToken, userID });
+
+  try {
+    const res = await axios.post("/auth/facebook-login ", body, config); // api/auth
+
+    dispatch({
+      type: authConstants.LOGIN_SUCCESS,
+      payload: res.data,
+    });
+
+    dispatch(loadUser());
+  } catch (err) {
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, "error")));
+    }
+
+    dispatch({
+      type: authConstants.LOGIN_FAILURE,
+    });
+  }
+};
 //Register user
 export const signup = ({ name, email, password }) => async (dispatch) => {
   const config = {

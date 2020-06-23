@@ -13,10 +13,15 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { setAlert } from "../../actions/alertActions";
-import { signup, loginWithGoogle } from "../../actions/shopper/authActions";
+import {
+  signup,
+  loginWithGoogle,
+  loginWithFacebook,
+} from "../../actions/shopper/authActions";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import GoogleLogin from "react-google-login";
+import FacebookLogin from "react-facebook-login";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -36,6 +41,28 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  buttonFacebook: {
+    width: "165px",
+    height: "42px",
+    borderRadius: "4px",
+    background: "#3b5998",
+    color: "white",
+    border: "0px transparent",
+    textAlign: "center",
+    margin: "5px",
+    display: "inline-block",
+  },
+  buttonGoogle: {
+    width: "165px",
+    height: "42px",
+    borderRadius: "4px",
+    background: "#db3236",
+    color: "white",
+    border: "0px transparent",
+    textAlign: "center",
+    margin: "5px",
+    display: "inline-block",
+  },
 }));
 
 export default function SignUpPage() {
@@ -52,6 +79,9 @@ export default function SignUpPage() {
     dispatch(loginWithGoogle(response));
   };
 
+  const responseFacebook = (response) => {
+    dispatch(loginWithFacebook(response));
+  };
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -161,15 +191,25 @@ export default function SignUpPage() {
               <Divider />
             </Grid>
           </Grid>
-          <Grid container direction="column" alignItems="center" spacing={3}>
-            <Grid item />
-            <Grid item>
+          <Grid container direction="row" justify="center">
+            <Grid item xs={6}>
               <GoogleLogin
                 clientId="56020081309-ndum5jd4ltace1utokr28brbrtjkjhb9.apps.googleusercontent.com"
                 buttonText="Sign up with Google"
                 onSuccess={responseGoogle}
                 onFailure={responseGoogle}
                 cookiePolicy={"single_host_origin"}
+                className={classes.buttonGoogle}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <FacebookLogin
+                appId="1088597931155576"
+                autoLoad={false}
+                callback={responseFacebook}
+                cssClass={classes.buttonFacebook}
+                textButton="&nbsp;&nbsp;Sign up with Facebook"
+                icon="fa-facebook"
               />
             </Grid>
           </Grid>
