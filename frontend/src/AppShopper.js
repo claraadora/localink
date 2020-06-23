@@ -30,7 +30,7 @@ function AppShopper() {
           <Route exact path="/profile" component={ShopperProfilePage} />
           <Route exact path="/catalogue" component={ShopperCataloguePage} />
           <Route exact path="/chat" component={ChatPage} />
-          <Route exact path="/" render={ShopperLandingPage} />
+          <Route exact path="/" component={ShopperLandingPage} />
         </Grid>
       </Grid>
     </ThemeProvider>

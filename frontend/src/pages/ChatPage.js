@@ -26,8 +26,7 @@ export const ChatPage = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
   const messagesEndRef = useRef(null);
-  const location = useLocation();
-  const isShopper = location.pathname === "/chat" ? true : false;
+  const isShopper = true;
 
   useEffect(() => {
     dispatch(getChat(user._id));

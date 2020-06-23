@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
 
 export const ChatCard = (props) => {
   const classes = useStyles();
+  console.log(props.name);
   return (
     <div style={{ width: "100%" }}>
       <ListItem alignItems="flex-start">
