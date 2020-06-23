@@ -1,5 +1,5 @@
 const chatConstants = {
-  GET_CHATS: "GET_CHATS",
+  GET_CHAT: "GET_CHAT",
   AFTER_POST_MESSAGE: "AFTER_POST_MESSAGE",
   CHAT_ERROR: "CHAT_ERROR",
 };

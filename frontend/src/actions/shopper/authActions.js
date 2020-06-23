@@ -34,7 +34,6 @@ export const login = ({ email, password }) => async (dispatch) => {
 
   try {
     const res = await axios.post("/auth", body, config); // api/auth
-
     dispatch({
       type: authConstants.LOGIN_SUCCESS,
       payload: res.data,
@@ -54,18 +53,17 @@ export const login = ({ email, password }) => async (dispatch) => {
   }
 };
 
-export const loginWithGoogle = ({ email, password }) => async (dispatch) => {
+export const loginWithGoogle = (token) => async (dispatch) => {
   const config = {
     headers: {
       "Content-Type": "application/json",
     },
   };
 
-  const body = JSON.stringify({ email, password });
-  console.log("body" + body);
+  const body = JSON.stringify(token);
 
   try {
-    const res = await axios.post("/auth", body, config); // api/auth
+    const res = await axios.post("/auth/google-login ", body, config); // api/auth
 
     dispatch({
       type: authConstants.LOGIN_SUCCESS,

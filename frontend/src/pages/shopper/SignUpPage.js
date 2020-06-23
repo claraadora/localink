@@ -164,7 +164,6 @@ export default function SignUpPage() {
             onFailure={responseErrorGoogle}
             cookiePolicy={"single_host_origin"}
           />
-          ,
         </form>
       </div>
     </Container>
