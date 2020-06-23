@@ -19,9 +19,12 @@ router.get('/:shopper_id', async (req, res) => {
       .aggregate([
         {
           $match: {
-            shopper: {
-              $toObjectId: shopperId
-            } //get object whether or not shopper is sender or receiver
+            $expr: {
+              shopper: '$shopperId'
+            }
+            // shopper: {
+            //   $toObjectId: shopperId
+            // } //get object whether or not shopper is sender or receiver
           }
         },
         {
@@ -45,7 +48,7 @@ router.get('/:shopper_id', async (req, res) => {
         }
       ])
       .each(function (error, chat) {
-        console.log(chat);
+        console.log('chat' + chat);
         if (chat) {
           chatList.unshift(chat);
         } else {

@@ -89,6 +89,8 @@ io.on('connection', socket => {
           type
         });
 
+        await newMessage.save();
+
         let chat = new Chat({
           shopper: shopper_id,
           shop: shop.id,
