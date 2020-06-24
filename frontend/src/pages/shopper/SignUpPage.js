@@ -97,7 +97,7 @@ export default function SignUpPage() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   if (isAuthenticated) {
-    return <Redirect to="/dashboard" />;
+    return <Redirect to="/search" />;
   }
 
   return (
@@ -204,7 +204,7 @@ export default function SignUpPage() {
             </Grid>
             <Grid item xs={6}>
               <FacebookLogin
-                appId="1088597931155576"
+                appId="2626284940958184"
                 autoLoad={false}
                 callback={responseFacebook}
                 cssClass={classes.buttonFacebook}
