@@ -20,18 +20,15 @@ router.get('/:shopper_id', async (req, res) => {
         {
           $match: {
             $expr: {
-              shopper: '$shopperId'
+              shopper: '$shopperId' //get object whether or not shopper is sender or receiver
             }
-            // shopper: {
-            //   $toObjectId: shopperId
-            // } //get object whether or not shopper is sender or receiver
           }
         },
         {
           $lookup: {
             from: 'messages',
-            localField: '_id',
-            foreignField: 'message',
+            localField: 'message',
+            foreignField: '_id',
             as: 'message_docs'
           }
         },
@@ -42,13 +39,20 @@ router.get('/:shopper_id', async (req, res) => {
         },
         {
           $group: {
-            _id: '$business', //group messages by same business id
+            _id: '$shop', //group messages by same shop id
             chatList: { $push: '$message' }
+          }
+        },
+        {
+          $lookup: {
+            from: 'messages',
+            localField: 'chatList',
+            foreignField: '_id',
+            as: 'message_docs'
           }
         }
       ])
       .each(function (error, chat) {
-        console.log('chat' + chat);
         if (chat) {
           chatList.unshift(chat);
         } else {
