@@ -1,27 +1,27 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const bcrypt = require('bcryptjs');
-const authShopper = require('../../../middleware/authShopper');
-const jwt = require('jsonwebtoken');
-const config = require('config');
-const { check, validationResult } = require('express-validator');
-const { OAuth2Client } = require('google-auth-library');
-const got = require('got');
+const bcrypt = require("bcryptjs");
+const authShopper = require("../../../middleware/authShopper");
+const jwt = require("jsonwebtoken");
+const config = require("config");
+const { check, validationResult } = require("express-validator");
+const { OAuth2Client } = require("google-auth-library");
+const got = require("got");
 
-const Shopper = require('../../../models/Shopper');
+const Shopper = require("../../../models/Shopper");
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 // @route    GET /auth
 // @desc     Get user by token (load user for frontend)
 // @access   Private
 // @return   User
-router.get('/', authShopper, async (req, res) => {
+router.get("/", authShopper, async (req, res) => {
   try {
     const shopper = await Shopper.findById(req.user.id);
     res.json(shopper);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).send("Server Error");
   }
 });
 
@@ -30,10 +30,10 @@ router.get('/', authShopper, async (req, res) => {
 // @access   Public
 // @return   User token
 router.post(
-  '/',
+  "/",
   [
-    check('email', 'Please include a valid email').isEmail(),
-    check('password', 'Password is required').exists()
+    check("email", "Please include a valid email").isEmail(),
+    check("password", "Password is required").exists(),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -49,7 +49,7 @@ router.post(
       if (!shopper) {
         return res
           .status(400)
-          .json({ errors: [{ msg: 'Invalid Credentials' }] });
+          .json({ errors: [{ msg: "Invalid Credentials" }] });
       }
 
       const isMatch = await bcrypt.compare(password, shopper.password);
@@ -57,19 +57,19 @@ router.post(
       if (!isMatch) {
         return res
           .status(400)
-          .json({ errors: [{ msg: 'Invalid Credentials' }] });
+          .json({ errors: [{ msg: "Invalid Credentials" }] });
       }
 
       const payload = {
         shopper: {
-          id: shopper.id
-        }
+          id: shopper.id,
+        },
       };
 
       jwt.sign(
         payload,
-        config.get('jwtSecret'),
-        { expiresIn: '5 days' },
+        config.get("jwtSecret"),
+        { expiresIn: "5 days" },
         (err, token) => {
           if (err) throw err;
           res.json({ token });
@@ -77,7 +77,7 @@ router.post(
       );
     } catch (err) {
       console.error(err.message);
-      res.status(500).send('Server error');
+      res.status(500).send("Server error");
     }
   }
 );
@@ -86,12 +86,12 @@ router.post(
 // @desc     Sign up or login with google
 // @access   Private
 // @return   token
-router.post('/google-login', async (req, res) => {
+router.post("/google-login", async (req, res) => {
   const { tokenId } = req.body;
   try {
     const response = await client.verifyIdToken({
       idToken: tokenId,
-      audience: process.env.GOOGLE_CLIENT_ID
+      audience: process.env.GOOGLE_CLIENT_ID,
     });
     const { email_verified, name, email } = response.payload;
 
@@ -99,12 +99,12 @@ router.post('/google-login', async (req, res) => {
       const token = await loginOrSignUp(name, email, process.env.GOOGLE_SECRET);
       res.json({ token });
     } else {
-      console.log('error logging in with google');
-      res.status(500).send('error logging in with google');
+      console.log("error logging in with google");
+      res.status(500).send("error logging in with google");
     }
   } catch (error) {
     console.error(err.message);
-    res.status(500).send('Server error');
+    res.status(500).send("Server error");
   }
 });
 
@@ -112,11 +112,11 @@ router.post('/google-login', async (req, res) => {
 // @desc     Sign up or login with facebook
 // @access   Private
 // @return   token
-router.post('/facebook-login', async (req, res) => {
+router.post("/facebook-login", async (req, res) => {
   const { userID, accessToken } = req.body;
 
   const urlGraphFacebook =
-    'https://graph.facebook.com/v2.11/${userID}/?fields=id,name,email&access_token=${acessToken}';
+    "https://graph.facebook.com/v2.11/${userID}/?fields=id,name,email&access_token=${acessToken}";
   let response = await got(urlGraphFacebook);
   response = response.json();
 
@@ -126,7 +126,7 @@ router.post('/facebook-login', async (req, res) => {
     res.json({ token });
   } catch (error) {
     console.error(err.message);
-    res.status(500).send('Server error');
+    res.status(500).send("Server error");
   }
 });
 
@@ -141,7 +141,7 @@ async function loginOrSignUp(name, email, secret) {
     shopper = new Shopper({
       name,
       email,
-      password
+      password,
     });
 
     await shopper.save();
@@ -149,14 +149,14 @@ async function loginOrSignUp(name, email, secret) {
 
   const payload = {
     shopper: {
-      id: shopper.id
-    }
+      id: shopper.id,
+    },
   };
 
-  jwt.sign(
+  await jwt.sign(
     payload,
-    config.get('jwtSecret'),
-    { expiresIn: '5 days' },
+    config.get("jwtSecret"),
+    { expiresIn: "5 days" },
     (err, token) => {
       if (err) throw err;
       tokenReturned = token;

@@ -46,8 +46,8 @@ function Map() {
   const productArray = useSelector((state) => state.search.productArray);
   const loading = useSelector((state) => state.search.loading);
   const [searchResult, setSearchResult] = useState(null);
-  const [startPoints, setStartPoints] = useState([A]);
-  const [endPoints, setEndPoints] = useState([B]);
+  const [startPoints, setStartPoints] = useState([A, B]);
+  const [endPoints, setEndPoints] = useState([B, C]);
   const [travelMode, setTravelMode] = useState("DRIVING");
   const [routeData, setRouteData] = useState([]);
   const [directions, setDirections] = useState(null);
@@ -108,6 +108,13 @@ function Map() {
     }
   };
 
+  function createMarker(latLng, i) {
+    const marker = new window.google.maps.Marker({
+      position: latLng,
+      // label: labels[i],
+    });
+  }
+
   return (
     <GoogleMap defaultZoom={12} defaultCenter={{ lat: 1.3521, lng: 103.8198 }}>
       {console.log("routeData" + routeData)}
@@ -121,7 +128,12 @@ function Map() {
               />
             );
           })}
-      {directions ? <DirectionsRenderer directions={directions[0]} /> : null}
+      {directions ? (
+        <>
+          <DirectionsRenderer directions={directions[0]} />
+          <DirectionsRenderer directions={directions[1]} />
+        </>
+      ) : null}
     </GoogleMap>
   );
 }
