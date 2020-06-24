@@ -97,7 +97,7 @@ router.post('/google-login', async (req, res) => {
 
     if (email_verified) {
       const token = await loginOrSignUp(name, email, process.env.GOOGLE_SECRET);
-      res.json(token);
+      res.json({ token });
     } else {
       console.log('error logging in with google');
       res.status(500).send('error logging in with google');
@@ -123,7 +123,7 @@ router.post('/facebook-login', async (req, res) => {
   const { email, name } = response;
   try {
     const token = await loginOrSignUp(name, email, process.env.FACEBOOK_SECRET);
-    res.json(token);
+    res.json({ token });
   } catch (error) {
     console.error(err.message);
     res.status(500).send('Server error');
