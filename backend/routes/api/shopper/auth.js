@@ -96,8 +96,38 @@ router.post('/google-login', async (req, res) => {
     const { email_verified, name, email } = response.payload;
 
     if (email_verified) {
-      const token = await loginOrSignUp(name, email, process.env.GOOGLE_SECRET);
-      res.json({ token });
+      //const token = await loginOrSignUp(name, email, process.env.GOOGLE_SECRET);
+
+      let shopper = await Shopper.findOne({ email });
+      if (!shopper) {
+        let password = email + process.env.GOOGLE_SECRET;
+        const salt = await bcrypt.genSalt(10);
+        password = await bcrypt.hash(password, salt);
+
+        shopper = new Shopper({
+          name,
+          email,
+          password
+        });
+
+        await shopper.save();
+      }
+
+      const payload = {
+        shopper: {
+          id: shopper.id
+        }
+      };
+
+      jwt.sign(
+        payload,
+        config.get('jwtSecret'),
+        { expiresIn: '5 days' },
+        (err, token) => {
+          if (err) throw err;
+          res.json({ token });
+        }
+      );
     } else {
       console.log('error logging in with google');
       res.status(500).send('error logging in with google');
@@ -117,6 +147,7 @@ router.post('/facebook-login', async (req, res) => {
 
   const urlGraphFacebook =
     'https://graph.facebook.com/v2.11/${userID}/?fields=id,name,email&access_token=${acessToken}';
+  console.log(urlGraphFacebook);
   let response = await got(urlGraphFacebook);
   response = response.json();
 
@@ -131,7 +162,6 @@ router.post('/facebook-login', async (req, res) => {
 });
 
 async function loginOrSignUp(name, email, secret) {
-  let tokenReturned = null;
   let shopper = await Shopper.findOne({ email });
   if (!shopper) {
     let password = email + secret;
@@ -159,10 +189,10 @@ async function loginOrSignUp(name, email, secret) {
     { expiresIn: '5 days' },
     (err, token) => {
       if (err) throw err;
-      tokenReturned = token;
+      console.log('sign ' + token);
+      return token;
     }
   );
-  return tokenReturned;
 }
 
 module.exports = router;
