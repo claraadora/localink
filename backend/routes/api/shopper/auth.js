@@ -131,6 +131,7 @@ router.post('/facebook-login', async (req, res) => {
 });
 
 async function loginOrSignUp(name, email, secret) {
+  let tokenReturned = null;
   let shopper = await Shopper.findOne({ email });
   if (!shopper) {
     let password = email + secret;
@@ -158,9 +159,10 @@ async function loginOrSignUp(name, email, secret) {
     { expiresIn: '5 days' },
     (err, token) => {
       if (err) throw err;
-      return token;
+      tokenReturned = token;
     }
   );
+  return tokenReturned;
 }
 
 module.exports = router;
