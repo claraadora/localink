@@ -26,18 +26,7 @@ function createKey(location) {
 }
 
 const colors = [pink, deepPurple, indigo, cyan, teal, lime, orange, amber];
-function createPolyline(start, i) {
-  const polyline = new window.google.maps.Polyline({
-    //   path: response.routes[i].overview_path,
-    strokeColor: colors[i % (colors.length - 1)],
-    strokeWeight: 5,
-    zIndex: 1,
-    tag: {
-      index: start,
-      nestedIndex: i,
-    },
-  });
-}
+
 const A = { lat: 1.30655, lng: 103.773523 };
 const B = { lat: 1.31655, lng: 103.773523 };
 const C = { lat: 1.32655, lng: 103.773523 };
@@ -47,12 +36,12 @@ function Map() {
   const productArray = useSelector((state) => state.search.productArray);
   const loading = useSelector((state) => state.search.loading);
   const [searchResult, setSearchResult] = useState(null);
-  const [startPoints, setStartPoints] = useState([A, B]);
-  const [endPoints, setEndPoints] = useState([B, C]);
+  const [startPoints, setStartPoints] = useState([B, C]);
+  const [endPoints, setEndPoints] = useState([C, D]);
   const [travelMode, setTravelMode] = useState("DRIVING");
   const [routeData, setRouteData] = useState([]);
-  const [directions, setDirections] = useState(null);
-  const [markers, setMarkers] = useState(null);
+  const [directions, setDirections] = useState([]);
+  const [markers, setMarkers] = useState([]);
 
   useEffect(() => {
     if (!loading && productArray) {
@@ -64,7 +53,6 @@ function Map() {
     const DirectionsService = new window.google.maps.DirectionsService();
     let start = 0;
     let tempArr = [];
-    let tempArrMarkers = [];
 
     for (let i = 0; i < startPoints.length; i++) {
       console.log(i);
@@ -80,6 +68,8 @@ function Map() {
             let routes = [];
             routeData.push(routes);
             tempArr.push(response);
+            console.log(response);
+            console.log("dirLength" + tempArr.length);
 
             for (let j = 0; j < response.routes.length; j++) {
               routeData[start].push({
@@ -92,13 +82,9 @@ function Map() {
               });
             }
             start++;
+            console.log(directions.length + "dirdiridiiridir");
             setRouteData(routeData);
             setDirections(tempArr);
-            let position = response.routes[0].legs[0];
-            if (i === 0) {
-              tempArrMarkers.push(position.start_location);
-            }
-            tempArrMarkers.push(position.end_location);
           } else {
             console.error(`error fetching directions ${response}`);
           }
@@ -106,7 +92,8 @@ function Map() {
       );
     }
     setMarkers([...[startPoints[0], ...endPoints]]);
-  }, [startPoints, endPoints]);
+    console.log("temp" + tempArr);
+  }, [startPoints, endPoints, directions]);
 
   const loopThru = (directions) => {
     for (let i = 0; i < directions.length; i++) {
@@ -136,7 +123,7 @@ function Map() {
               />
             );
           })}
-      {directions ? (
+      {directions !== [] ? (
         <>
           <DirectionsRenderer
             directions={directions[0]}
@@ -153,12 +140,19 @@ function Map() {
             directions={directions[1]}
             options={{
               suppressMarkers: true,
+              polylineOptions: {
+                strokeColor: colors[0][100],
+                strokeWeight: 5,
+                zIndex: 1,
+              },
             }}
           />
+          {console.log("dir")}
+          {console.log(directions)}
           <h1>{directions.length}</h1>
         </>
       ) : null}
-      {startPoints && endPoints && markers ? (
+      {markers !== [] ? (
         <>
           <Marker position={markers[0]} label="A" />
           <Marker position={markers[1]} label="B" />
@@ -183,18 +177,3 @@ export const LocalinkMap = () => {
     </div>
   );
 };
-
-{
-  /* <Marker
-            position={directions[0].routes[0].legs[0].start_location}
-            label="A"
-          />
-          <Marker
-            position={directions[0].routes[0].legs[0].end_location}
-            label="B"
-          />
-          <Marker
-            position={directions[1].routes[0].legs[0].end_location}
-            label="C"
-          /> */
-}
