@@ -24,6 +24,8 @@ import {
 function createKey(location) {
   return location.lat + location.lng;
 }
+
+const colors = [pink, deepPurple, indigo, cyan, teal, lime, orange, amber];
 function createPolyline(start, i) {
   const polyline = new window.google.maps.Polyline({
     //   path: response.routes[i].overview_path,
@@ -36,7 +38,6 @@ function createPolyline(start, i) {
     },
   });
 }
-const colors = ["#ff99ff", "#99c2ff", "#ff8080", "#ff8c1a"];
 const A = { lat: 1.30655, lng: 103.773523 };
 const B = { lat: 1.31655, lng: 103.773523 };
 const C = { lat: 1.32655, lng: 103.773523 };
@@ -141,6 +142,11 @@ function Map() {
             directions={directions[0]}
             options={{
               suppressMarkers: true,
+              polylineOptions: {
+                strokeColor: colors[0][100],
+                strokeWeight: 5,
+                zIndex: 1,
+              },
             }}
           />
           <DirectionsRenderer
@@ -149,6 +155,7 @@ function Map() {
               suppressMarkers: true,
             }}
           />
+          <h1>{directions.length}</h1>
         </>
       ) : null}
       {startPoints && endPoints && markers ? (
@@ -156,7 +163,6 @@ function Map() {
           <Marker position={markers[0]} label="A" />
           <Marker position={markers[1]} label="B" />
           <Marker position={markers[2]} label="C" />
-          <h1>{markers.length}</h1>
         </>
       ) : null}
     </GoogleMap>
