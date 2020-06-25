@@ -36,8 +36,8 @@ function Map() {
   const productArray = useSelector((state) => state.search.productArray);
   const loading = useSelector((state) => state.search.loading);
   const [searchResult, setSearchResult] = useState(null);
-  const [startPoints, setStartPoints] = useState([B, C]);
-  const [endPoints, setEndPoints] = useState([C, D]);
+  const [startPoints, setStartPoints] = useState([A, B, C]);
+  const [endPoints, setEndPoints] = useState([B, C, D]);
   const [travelMode, setTravelMode] = useState("DRIVING");
   const [routeData, setRouteData] = useState([]);
   const [directions, setDirections] = useState([]);
@@ -93,22 +93,7 @@ function Map() {
     }
     setMarkers([...[startPoints[0], ...endPoints]]);
     console.log("temp" + tempArr);
-  }, [startPoints, endPoints, directions]);
-
-  const loopThru = (directions) => {
-    for (let i = 0; i < directions.length; i++) {
-      for (let j = 0; j < directions[i].length; j++) {
-        return <DirectionsRenderer directions={directions[i]} />;
-      }
-    }
-  };
-
-  function createMarker(latLng, i) {
-    const marker = new window.google.maps.Marker({
-      position: latLng,
-      // label: labels[i],
-    });
-  }
+  }, [markers, directions]);
 
   return (
     <GoogleMap defaultZoom={12} defaultCenter={{ lat: 1.3521, lng: 103.8198 }}>
@@ -123,42 +108,35 @@ function Map() {
               />
             );
           })}
-      {directions !== [] ? (
-        <>
-          <DirectionsRenderer
-            directions={directions[0]}
-            options={{
-              suppressMarkers: true,
-              polylineOptions: {
-                strokeColor: colors[0][100],
-                strokeWeight: 5,
-                zIndex: 1,
-              },
-            }}
-          />
-          <DirectionsRenderer
-            directions={directions[1]}
-            options={{
-              suppressMarkers: true,
-              polylineOptions: {
-                strokeColor: colors[0][100],
-                strokeWeight: 5,
-                zIndex: 1,
-              },
-            }}
-          />
-          {console.log("dir")}
-          {console.log(directions)}
-          <h1>{directions.length}</h1>
-        </>
-      ) : null}
-      {markers !== [] ? (
-        <>
-          <Marker position={markers[0]} label="A" />
-          <Marker position={markers[1]} label="B" />
-          <Marker position={markers[2]} label="C" />
-        </>
-      ) : null}
+      {directions !== []
+        ? directions.map((direction, index) => {
+            for (let i = 0; i < direction.routes.length; i++) {
+              return (
+                <DirectionsRenderer
+                  directions={directions[index]}
+                  options={{
+                    suppressMarkers: true,
+                    polylineOptions: {
+                      strokeColor: colors[index][200],
+                      strokeWeight: 5,
+                      zIndex: 1,
+                    },
+                  }}
+                />
+              );
+            }
+          })
+        : null}
+      {markers !== []
+        ? markers.map((marker, index) => {
+            return (
+              <Marker
+                position={markers[index]}
+                label={String.fromCharCode(65 + index)}
+              />
+            );
+          })
+        : null}
     </GoogleMap>
   );
 }
