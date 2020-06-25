@@ -27,10 +27,10 @@ function createKey(location) {
 
 const colors = [pink, deepPurple, indigo, cyan, teal, lime, orange, amber];
 
-const A = { lat: 1.30655, lng: 103.773523 };
-const B = { lat: 1.31655, lng: 103.773523 };
-const C = { lat: 1.32655, lng: 103.773523 };
-const D = { lat: 1.308086, lng: 103.773538 };
+const A = { lat: 1.352783, lng: 103.769353 }; //Tampines Mall
+const B = { lat: 1.314948, lng: 103.764692 }; //Clementi Mall
+const C = { lat: 1.307043, lng: 103.788335 }; //Star vista
+const D = { lat: 1.263746, lng: 103.823665 }; //Vivo City
 
 function Map() {
   const productArray = useSelector((state) => state.search.productArray);
@@ -83,8 +83,10 @@ function Map() {
             }
             start++;
             console.log(directions.length + "dirdiridiiridir");
+            if (tempArr.length === startPoints.length) {
+              setDirections(tempArr);
+            }
             setRouteData(routeData);
-            setDirections(tempArr);
           } else {
             console.error(`error fetching directions ${response}`);
           }
@@ -93,7 +95,7 @@ function Map() {
     }
     setMarkers([...[startPoints[0], ...endPoints]]);
     console.log("temp" + tempArr);
-  }, [markers, directions]);
+  }, [setDirections]);
 
   return (
     <GoogleMap defaultZoom={12} defaultCenter={{ lat: 1.3521, lng: 103.8198 }}>
@@ -108,34 +110,51 @@ function Map() {
               />
             );
           })}
-      {directions !== []
+      {/* {directions !== []
         ? directions.map((direction, index) => {
             for (let i = 0; i < direction.routes.length; i++) {
+              console.log(direction.routes);
               return (
-                <DirectionsRenderer
-                  directions={directions[index]}
-                  options={{
-                    suppressMarkers: true,
-                    polylineOptions: {
-                      strokeColor: colors[index][200],
-                      strokeWeight: 5,
-                      zIndex: 1,
-                    },
-                  }}
-                />
+                <>
+                  <DirectionsRenderer
+                    directions={direction}
+                    routeIndex={i}
+                    options={{
+                      suppressMarkers: true,
+                      polylineOptions: {
+                        strokeColor: colors[index][i === 0 ? 400 : 100],
+                        strokeWeight: 5,
+                        zIndex: 1,
+                      },
+                    }}
+                  />
+                </>
               );
             }
           })
+        : null} */}
+      {directions !== []
+        ? directions.map((direction, idx) => {
+            return direction.routes.map((route, index) => (
+              <DirectionsRenderer
+                directions={direction}
+                routeIndex={index}
+                options={{
+                  suppressMarkers: true,
+                  polylineOptions: {
+                    strokeColor: colors[idx][index === 0 ? 400 : 200],
+                    strokeWeight: 5,
+                    zIndex: direction.routes.length - index,
+                  },
+                }}
+              />
+            ));
+          })
         : null}
       {markers !== []
-        ? markers.map((marker, index) => {
-            return (
-              <Marker
-                position={markers[index]}
-                label={String.fromCharCode(65 + index)}
-              />
-            );
-          })
+        ? markers.map((marker, index) => (
+            <Marker position={marker} label={String.fromCharCode(65 + index)} />
+          ))
         : null}
     </GoogleMap>
   );
