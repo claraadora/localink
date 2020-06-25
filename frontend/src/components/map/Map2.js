@@ -51,6 +51,7 @@ function Map() {
   const [travelMode, setTravelMode] = useState("DRIVING");
   const [routeData, setRouteData] = useState([]);
   const [directions, setDirections] = useState(null);
+  const [markers, setMarkers] = useState(null);
 
   useEffect(() => {
     if (!loading && productArray) {
@@ -62,6 +63,7 @@ function Map() {
     const DirectionsService = new window.google.maps.DirectionsService();
     let start = 0;
     let tempArr = [];
+    let tempArrMarkers = [];
 
     for (let i = 0; i < startPoints.length; i++) {
       console.log(i);
@@ -70,6 +72,7 @@ function Map() {
           origin: startPoints[i],
           destination: endPoints[i],
           travelMode: travelMode,
+          provideRouteAlternatives: true,
         },
         (response, status) => {
           if (status === window.google.maps.DirectionsStatus.OK) {
@@ -90,14 +93,18 @@ function Map() {
             start++;
             setRouteData(routeData);
             setDirections(tempArr);
-            console.log(tempArr.length);
-            console.log(directions);
+            let position = response.routes[0].legs[0];
+            if (i === 0) {
+              tempArrMarkers.push(position.start_location);
+            }
+            tempArrMarkers.push(position.end_location);
           } else {
             console.error(`error fetching directions ${response}`);
           }
         }
       );
     }
+    setMarkers([...[startPoints[0], ...endPoints]]);
   }, [startPoints, endPoints]);
 
   const loopThru = (directions) => {
@@ -130,8 +137,26 @@ function Map() {
           })}
       {directions ? (
         <>
-          <DirectionsRenderer directions={directions[0]} />
-          <DirectionsRenderer directions={directions[1]} />
+          <DirectionsRenderer
+            directions={directions[0]}
+            options={{
+              suppressMarkers: true,
+            }}
+          />
+          <DirectionsRenderer
+            directions={directions[1]}
+            options={{
+              suppressMarkers: true,
+            }}
+          />
+        </>
+      ) : null}
+      {startPoints && endPoints && markers ? (
+        <>
+          <Marker position={markers[0]} label="A" />
+          <Marker position={markers[1]} label="B" />
+          <Marker position={markers[2]} label="C" />
+          <h1>{markers.length}</h1>
         </>
       ) : null}
     </GoogleMap>
@@ -152,3 +177,18 @@ export const LocalinkMap = () => {
     </div>
   );
 };
+
+{
+  /* <Marker
+            position={directions[0].routes[0].legs[0].start_location}
+            label="A"
+          />
+          <Marker
+            position={directions[0].routes[0].legs[0].end_location}
+            label="B"
+          />
+          <Marker
+            position={directions[1].routes[0].legs[0].end_location}
+            label="C"
+          /> */
+}
