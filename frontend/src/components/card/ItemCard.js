@@ -40,7 +40,7 @@ export const ItemCard = (props) => {
         <Grid item xs={1} />
         <Grid item xs={9} container direction="column" justify="center">
           <Grid item>
-            <Typography variant="h6">{trimString(data.name, 30)}</Typography>
+            <Typography variant="h6">{trimString(data.name, 28)}</Typography>
           </Grid>
           <Grid item>
             <Typography variant="body2">

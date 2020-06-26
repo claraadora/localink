@@ -1,8 +1,8 @@
 import React from "react";
 import { LocalinkMap } from "../../components/map/Map2";
-// import LocalinkMap from "../../components/map/Map";
-import { LocationList } from "../../components/list/LocationList";
 import { ItineraryList } from "../../components/list/ItineraryList";
+import { ItineraryHeader } from "../../components/header/ItineraryHeader";
+import { LocationList } from "../../components/list/LocationList";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
@@ -27,8 +27,15 @@ const useStyles = makeStyles({
     position: "fixed",
     bottom: "15px",
     left: "30px",
-    width: "94%",
+    width: "70%",
     height: "120px",
+  },
+  itineraryHeader: {
+    position: "fixed",
+    bottom: "170px",
+    left: "30px",
+    width: "70%",
+    height: "40px",
   },
 });
 
@@ -42,6 +49,9 @@ function SearchPage() {
       </div>
       <div className={classes.locationList}>
         <LocationList />
+      </div>
+      <div className={classes.itineraryHeader}>
+        <ItineraryHeader />
       </div>
       <div className={classes.itineraryList}>
         <ItineraryList />
