@@ -56,7 +56,7 @@ export const ItemCard = (props) => {
               size="small"
               onClick={() => {
                 dispatch(
-                  isAdded ? removeFromItinerary(data) : addToItinerary(data)
+                  isAdded ? removeFromItinerary(data._id) : addToItinerary(data)
                 );
                 setIsAdded(!isAdded);
               }}

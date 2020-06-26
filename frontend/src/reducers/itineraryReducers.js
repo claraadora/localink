@@ -22,7 +22,7 @@ export default function itinerary(state = initialStates, action) {
       return {
         loading: false,
         itineraryArray: state.itineraryArray.filter(
-          (item) => item.id !== payload
+          (item) => item._id !== payload
         ),
       };
     default:
