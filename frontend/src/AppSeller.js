@@ -45,7 +45,7 @@ function AppSeller() {
                 path="/business/signup"
                 component={SellerSignUpPage}
               />
-              <Route exact path="/business/" component={SellerLandingPage} />
+              <Route exact path="/business" component={SellerLandingPage} />
               <Route
                 exact
                 path="/business/dashboard"

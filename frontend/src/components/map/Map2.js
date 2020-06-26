@@ -44,6 +44,7 @@ function Map() {
   const [markers, setMarkers] = useState([]);
   const mapRef = useRef();
   const selectedPolyline = useRef();
+  // const readyToSelectRoutes = useSelector((state)=> state.itinerary.)
 
   const onClick = () => {
     console.log("CLICKED" + selectedPolyline.current);
@@ -110,7 +111,7 @@ function Map() {
     );
   }
 
-  const onMouseOver = (data) => {
+  const onMouseOver = (e) => {
     console.log("clicked");
   };
   function writeDirectionsSteps(data) {
@@ -164,34 +165,7 @@ function Map() {
       {directions !== []
         ? directions.map((direction, idx) => {
             return direction.routes.map((route, index) => {
-              // const polyline = new window.google.maps.Polyline({
-              //   strokeColor: colors[idx][index === 0 ? 500 : 200],
-              //   strokeWeight: 5,
-              //   zIndex: direction.routes.length - index,
-              //   clickable: true,
-              // });
-
-              // const polyline = (
-              //   <Polyline
-              //     options={{
-              //       strokeColor: colors[0][500],
-              //       strokeWeight: 10,
-              //       zIndex: 1,
-              //       clickable: true,
-              //     }}
-              //   />
-              // );
-
               return (
-                // <DirectionsRenderer
-                //   directions={direction}
-                //   routeIndex={index}
-                //   options={{
-                //     hideRouteList: true,
-                //     suppressMarkers: true,
-                //     polylineOptions: polyline,
-                //   }}
-                // />
                 <Polyline
                   path={direction.routes[index].overview_path}
                   options={{
@@ -219,7 +193,7 @@ const MapWrapped = withScriptjs(withGoogleMap(Map));
 
 export const LocalinkMap = () => {
   return (
-    <div style={{ width: "100vw", height: "100vh" }}>
+    <div style={{ width: "100vw", height: "92vh" }}>
       <MapWrapped
         googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
         loadingElement={<div style={{ height: `100%` }} />}
