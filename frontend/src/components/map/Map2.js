@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   withGoogleMap,
   withScriptjs,
@@ -11,46 +11,43 @@ import {
 import { makeStyles } from '@material-ui/styles';
 import { useSelector } from 'react-redux';
 import {
+  purple,
   pink,
-  deepPurple,
-  indigo,
   cyan,
-  teal,
-  lime,
+  deepPurple,
   orange,
-  amber
+  indigo,
+  lime,
+  teal
 } from '@material-ui/core/colors';
 
 function createKey(location) {
   return location.lat + location.lng;
 }
-function createPolyline(start, i) {
-  const polyline = new window.google.maps.Polyline({
-    //   path: response.routes[i].overview_path,
-    strokeColor: colors[i % (colors.length - 1)],
-    strokeWeight: 5,
-    zIndex: 1,
-    tag: {
-      index: start,
-      nestedIndex: i
-    }
-  });
-}
-const colors = ['#ff99ff', '#99c2ff', '#ff8080', '#ff8c1a'];
-const A = { lat: 1.30655, lng: 103.773523 };
-const B = { lat: 1.31655, lng: 103.773523 };
-const C = { lat: 1.32655, lng: 103.773523 };
-const D = { lat: 1.308086, lng: 103.773538 };
+
+const colors = [pink, cyan, deepPurple, orange, indigo, lime, purple, teal];
+
+const A = { lat: 1.352783, lng: 103.769353 }; //Tampines Mall
+const B = { lat: 1.314948, lng: 103.764692 }; //Clementi Mall
+const C = { lat: 1.307043, lng: 103.788335 }; //Star vista
+const D = { lat: 1.263746, lng: 103.823665 }; //Vivo City
 
 function Map() {
   const productArray = useSelector(state => state.search.productArray);
   const loading = useSelector(state => state.search.loading);
   const [searchResult, setSearchResult] = useState(null);
-  const [startPoints, setStartPoints] = useState([A, B]);
-  const [endPoints, setEndPoints] = useState([B, C]);
+  const [startPoints, setStartPoints] = useState([A, B, C]);
+  const [endPoints, setEndPoints] = useState([B, C, D]);
   const [travelMode, setTravelMode] = useState('DRIVING');
   const [routeData, setRouteData] = useState([]);
-  const [directions, setDirections] = useState(null);
+  const [directions, setDirections] = useState([]);
+  const [markers, setMarkers] = useState([]);
+  const mapRef = useRef();
+  const selectedPolyline = useRef();
+
+  const onClick = () => {
+    console.log('CLICKED' + selectedPolyline.current);
+  };
 
   useEffect(() => {
     if (!loading && productArray) {
@@ -60,11 +57,9 @@ function Map() {
 
   useEffect(() => {
     const DirectionsService = new window.google.maps.DirectionsService();
-    let start = 0;
     let tempArr = [];
 
     for (let i = 0; i < startPoints.length; i++) {
-      console.log(i);
       DirectionsService.route(
         {
           origin: startPoints[i],
@@ -79,7 +74,7 @@ function Map() {
             tempArr.push(response);
 
             for (let j = 0; j < response.routes.length; j++) {
-              routeData[start].push({
+              routeData[i].push({
                 distance: response.routes[j].legs[0].distance,
                 duration: response.routes[j].legs[0].duration,
                 fare: response.routes[j].fare,
@@ -88,37 +83,74 @@ function Map() {
                 routeIndex: j
               });
             }
-            start++;
+            if (tempArr.length === startPoints.length) {
+              setDirections(tempArr);
+            }
             setRouteData(routeData);
-            setDirections(tempArr);
-            console.log(tempArr.length);
-            console.log(directions);
           } else {
             console.error(`error fetching directions ${response}`);
           }
         }
       );
     }
-  }, [startPoints, endPoints]);
+    setMarkers([...[startPoints[0], ...endPoints]]);
+  }, [setDirections]);
 
-  const loopThru = directions => {
-    for (let i = 0; i < directions.length; i++) {
-      for (let j = 0; j < directions[i].length; j++) {
-        return <DirectionsRenderer directions={directions[i]} />;
-      }
-    }
-  };
-
-  function createMarker(latLng, i) {
-    const marker = new window.google.maps.Marker({
-      position: latLng
-      // label: labels[i],
-    });
+  function formatRouteData(data) {
+    const fare = data.fare ? data.fare.text : 'not available';
+    return (
+      'route: ' +
+      data.summary +
+      '<br> distance: ' +
+      data.distance.text +
+      '<br> duration: ' +
+      data.duration.text +
+      '<br> fare: ' +
+      fare
+    );
   }
 
+  const onMouseOver = data => {
+    console.log('clicked');
+  };
+  function writeDirectionsSteps(data) {
+    const steps = data.steps;
+    const start_address = data.start_address;
+    const end_address = data.end_address;
+    const start_location = data.start_location;
+    const end_location = data.end_location;
+
+    var overlayContent = document.getElementById('right-panel');
+    overlayContent.innerHTML = '';
+
+    overlayContent.innerHTML +=
+      `<h2> From A: </h2>` +
+      start_address +
+      '<hr>' +
+      `<h2> To B: </h2>` +
+      end_address +
+      '</h2> <hr>';
+
+    for (var i = 0; i < steps.length; i++) {
+      const count = i + 1;
+      overlayContent.innerHTML +=
+        '<p>' +
+        +count +
+        '. ' +
+        steps[i].instructions +
+        '</p><small>' +
+        steps[i].distance.text +
+        '</small>' +
+        '<hr>';
+    }
+  }
   return (
-    <GoogleMap defaultZoom={12} defaultCenter={{ lat: 1.3521, lng: 103.8198 }}>
-      {console.log('routeData' + routeData)}
+    <GoogleMap
+      defaultZoom={12}
+      defaultCenter={{ lat: 1.3521, lng: 103.8198 }}
+      gestureHandling='cooperative'
+      ref={mapRef}
+    >
       {searchResult == null
         ? null
         : searchResult.map((product, index) => {
@@ -129,12 +161,56 @@ function Map() {
               />
             );
           })}
-      {directions ? (
-        <>
-          <DirectionsRenderer directions={directions[0]} />
-          <DirectionsRenderer directions={directions[1]} />
-        </>
-      ) : null}
+      {directions !== []
+        ? directions.map((direction, idx) => {
+            return direction.routes.map((route, index) => {
+              // const polyline = new window.google.maps.Polyline({
+              //   strokeColor: colors[idx][index === 0 ? 500 : 200],
+              //   strokeWeight: 5,
+              //   zIndex: direction.routes.length - index,
+              //   clickable: true,
+              // });
+
+              // const polyline = (
+              //   <Polyline
+              //     options={{
+              //       strokeColor: colors[0][500],
+              //       strokeWeight: 10,
+              //       zIndex: 1,
+              //       clickable: true,
+              //     }}
+              //   />
+              // );
+
+              return (
+                // <DirectionsRenderer
+                //   directions={direction}
+                //   routeIndex={index}
+                //   options={{
+                //     hideRouteList: true,
+                //     suppressMarkers: true,
+                //     polylineOptions: polyline,
+                //   }}
+                // />
+                <Polyline
+                  path={direction.routes[index].overview_path}
+                  options={{
+                    strokeColor: colors[idx][index === 0 ? 400 : 200],
+                    strokeWeight: 6,
+                    zIndex: 1,
+                    clickable: true
+                  }}
+                  onClick={e => onMouseOver(direction.routes[index].legs[0])}
+                />
+              );
+            });
+          })
+        : null}
+      {markers !== []
+        ? markers.map((marker, index) => (
+            <Marker position={marker} label={String.fromCharCode(65 + index)} />
+          ))
+        : null}
     </GoogleMap>
   );
 }
