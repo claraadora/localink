@@ -17,9 +17,9 @@ export const reorderItinerary = (item) => (dispatch) => {
   // dispatch(setAlert("Added to Itinerary", "success"));
 };
 
-export const removeFromItinerary = (item) => (dispatch) => {
+export const removeFromItinerary = (id) => (dispatch) => {
   dispatch({
     type: itineraryConstants.REMOVE_FROM_ITINERARY,
-    payload: item,
+    payload: id,
   });
 };
