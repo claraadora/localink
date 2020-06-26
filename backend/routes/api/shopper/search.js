@@ -125,7 +125,7 @@ router.post(
         },
         {
           $project: {
-            _id: 0,
+            _id: 1,
             name: 1,
             description: 1,
             price: 1,
