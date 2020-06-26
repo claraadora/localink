@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   withGoogleMap,
   withScriptjs,
@@ -11,21 +11,21 @@ import {
 import { makeStyles } from "@material-ui/styles";
 import { useSelector } from "react-redux";
 import {
+  purple,
   pink,
-  deepPurple,
-  indigo,
   cyan,
-  teal,
-  lime,
+  deepPurple,
   orange,
-  amber,
+  indigo,
+  lime,
+  teal,
 } from "@material-ui/core/colors";
 
 function createKey(location) {
   return location.lat + location.lng;
 }
 
-const colors = [pink, deepPurple, indigo, cyan, teal, lime, orange, amber];
+const colors = [pink, cyan, deepPurple, orange, indigo, lime, purple, teal];
 
 const A = { lat: 1.352783, lng: 103.769353 }; //Tampines Mall
 const B = { lat: 1.314948, lng: 103.764692 }; //Clementi Mall
@@ -42,6 +42,12 @@ function Map() {
   const [routeData, setRouteData] = useState([]);
   const [directions, setDirections] = useState([]);
   const [markers, setMarkers] = useState([]);
+  const mapRef = useRef();
+  const selectedPolyline = useRef();
+
+  const onClick = () => {
+    console.log("CLICKED" + selectedPolyline.current);
+  };
 
   useEffect(() => {
     if (!loading && productArray) {
@@ -51,11 +57,9 @@ function Map() {
 
   useEffect(() => {
     const DirectionsService = new window.google.maps.DirectionsService();
-    let start = 0;
     let tempArr = [];
 
     for (let i = 0; i < startPoints.length; i++) {
-      console.log(i);
       DirectionsService.route(
         {
           origin: startPoints[i],
@@ -68,11 +72,9 @@ function Map() {
             let routes = [];
             routeData.push(routes);
             tempArr.push(response);
-            console.log(response);
-            console.log("dirLength" + tempArr.length);
 
             for (let j = 0; j < response.routes.length; j++) {
-              routeData[start].push({
+              routeData[i].push({
                 distance: response.routes[j].legs[0].distance,
                 duration: response.routes[j].legs[0].duration,
                 fare: response.routes[j].fare,
@@ -81,8 +83,6 @@ function Map() {
                 routeIndex: j,
               });
             }
-            start++;
-            console.log(directions.length + "dirdiridiiridir");
             if (tempArr.length === startPoints.length) {
               setDirections(tempArr);
             }
@@ -94,12 +94,63 @@ function Map() {
       );
     }
     setMarkers([...[startPoints[0], ...endPoints]]);
-    console.log("temp" + tempArr);
   }, [setDirections]);
 
+  function formatRouteData(data) {
+    const fare = data.fare ? data.fare.text : "not available";
+    return (
+      "route: " +
+      data.summary +
+      "<br> distance: " +
+      data.distance.text +
+      "<br> duration: " +
+      data.duration.text +
+      "<br> fare: " +
+      fare
+    );
+  }
+
+  const onMouseOver = (data) => {
+    console.log("clicked");
+  };
+  function writeDirectionsSteps(data) {
+    const steps = data.steps;
+    const start_address = data.start_address;
+    const end_address = data.end_address;
+    const start_location = data.start_location;
+    const end_location = data.end_location;
+
+    var overlayContent = document.getElementById("right-panel");
+    overlayContent.innerHTML = "";
+
+    overlayContent.innerHTML +=
+      `<h2> From A: </h2>` +
+      start_address +
+      "<hr>" +
+      `<h2> To B: </h2>` +
+      end_address +
+      "</h2> <hr>";
+
+    for (var i = 0; i < steps.length; i++) {
+      const count = i + 1;
+      overlayContent.innerHTML +=
+        "<p>" +
+        +count +
+        ". " +
+        steps[i].instructions +
+        "</p><small>" +
+        steps[i].distance.text +
+        "</small>" +
+        "<hr>";
+    }
+  }
   return (
-    <GoogleMap defaultZoom={12} defaultCenter={{ lat: 1.3521, lng: 103.8198 }}>
-      {console.log("routeData" + routeData)}
+    <GoogleMap
+      defaultZoom={12}
+      defaultCenter={{ lat: 1.3521, lng: 103.8198 }}
+      gestureHandling="cooperative"
+      ref={mapRef}
+    >
       {searchResult == null
         ? null
         : searchResult.map((product, index) => {
@@ -110,45 +161,49 @@ function Map() {
               />
             );
           })}
-      {/* {directions !== []
-        ? directions.map((direction, index) => {
-            for (let i = 0; i < direction.routes.length; i++) {
-              console.log(direction.routes);
-              return (
-                <>
-                  <DirectionsRenderer
-                    directions={direction}
-                    routeIndex={i}
-                    options={{
-                      suppressMarkers: true,
-                      polylineOptions: {
-                        strokeColor: colors[index][i === 0 ? 400 : 100],
-                        strokeWeight: 5,
-                        zIndex: 1,
-                      },
-                    }}
-                  />
-                </>
-              );
-            }
-          })
-        : null} */}
       {directions !== []
         ? directions.map((direction, idx) => {
-            return direction.routes.map((route, index) => (
-              <DirectionsRenderer
-                directions={direction}
-                routeIndex={index}
-                options={{
-                  suppressMarkers: true,
-                  polylineOptions: {
+            return direction.routes.map((route, index) => {
+              // const polyline = new window.google.maps.Polyline({
+              //   strokeColor: colors[idx][index === 0 ? 500 : 200],
+              //   strokeWeight: 5,
+              //   zIndex: direction.routes.length - index,
+              //   clickable: true,
+              // });
+
+              // const polyline = (
+              //   <Polyline
+              //     options={{
+              //       strokeColor: colors[0][500],
+              //       strokeWeight: 10,
+              //       zIndex: 1,
+              //       clickable: true,
+              //     }}
+              //   />
+              // );
+
+              return (
+                // <DirectionsRenderer
+                //   directions={direction}
+                //   routeIndex={index}
+                //   options={{
+                //     hideRouteList: true,
+                //     suppressMarkers: true,
+                //     polylineOptions: polyline,
+                //   }}
+                // />
+                <Polyline
+                  path={direction.routes[index].overview_path}
+                  options={{
                     strokeColor: colors[idx][index === 0 ? 400 : 200],
-                    strokeWeight: 5,
-                    zIndex: direction.routes.length - index,
-                  },
-                }}
-              />
-            ));
+                    strokeWeight: 6,
+                    zIndex: 1,
+                    clickable: true,
+                  }}
+                  onClick={(e) => onMouseOver(direction.routes[index].legs[0])}
+                />
+              );
+            });
           })
         : null}
       {markers !== []
