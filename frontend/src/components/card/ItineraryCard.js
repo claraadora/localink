@@ -1,6 +1,9 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Card, Typography, Grid } from "@material-ui/core";
+import { Card, Typography, Grid, IconButton } from "@material-ui/core";
+import DeleteIcon from "@material-ui/icons/Delete";
+import { useDispatch } from "react-redux";
+import { removeFromItinerary } from "../../actions/shopper/itineraryActions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,6 +27,7 @@ function trimString(word, maxLength) {
 export const ItineraryCard = (props) => {
   const classes = useStyles();
   const data = props.content;
+  const dispatch = useDispatch();
 
   return (
     <Card className={classes.root}>
@@ -49,7 +53,14 @@ export const ItineraryCard = (props) => {
             </Typography>
           </Grid>
         </Grid>
-        <Grid item xs={1} />
+        <Grid item xs={1}>
+          <IconButton
+            aria-label="delete"
+            onClick={() => dispatch(removeFromItinerary(data._id))}
+          >
+            <DeleteIcon />
+          </IconButton>
+        </Grid>
       </Grid>
     </Card>
   );

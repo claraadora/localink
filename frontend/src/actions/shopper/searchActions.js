@@ -38,6 +38,16 @@ export const loadSearch = (search, service) => async (dispatch) => {
   }
 };
 
+export const loadRoute = () => (dispatch) => {
+  dispatch({
+    type: searchConstants.CLEAR_SEARCH,
+  });
+
+  dispatch({
+    type: searchConstants.LOAD_ROUTE,
+  });
+};
+
 export const reorderSearch = (sortBy, order, items) => (dispatch) => {
   const sortedSearch = items.sort(dynamicSort(sortBy, order));
   dispatch({
