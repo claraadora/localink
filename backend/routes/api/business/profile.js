@@ -2,39 +2,14 @@ const express = require('express');
 const router = express.Router();
 const authBusiness = require('../../../middleware/authBusiness');
 const checkBusinessOwner = require('../../../middleware/CheckBusinessOwner');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const config = require('config');
-const { check, validationResult } = require('express-validator');
-// const normalize = require('normalize-url');
+const { check } = require('express-validator');
 
-const Business = require('../../../models/Business');
-const Shop = require('../../../models/Shop');
-const User = require('../../../models/User');
-const geocode = require('../distance/geocode');
+const profileControllerBusiness = require('../../../controllers/business/profileControllerBusiness');
 
 // @route    GET business/profile/me
-// @desc     Get current users shop (not profile)
+// @desc     Get current users shop (not profile, profile is business)
 // @access   Private
-router.get('/me', authBusiness, async (req, res) => {
-  try {
-    const shop = await Shop.findOne({
-      owner: req.user.id
-    });
-
-    if (!shop) {
-      return res.status(400).json({ msg: 'There is no shop for this user' });
-    }
-
-    await shop.populate({ path: 'reviews', model: 'Review' }).execPopulate();
-    await shop.populate({ path: 'products', model: 'Product' }).execPopulate();
-
-    res.json(shop);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
-  }
-});
+router.get('/me', authBusiness, profileControllerBusiness.getShop);
 
 // @route    POST business/profile;
 // @desc     Create or update user profile
@@ -48,66 +23,7 @@ router.post(
       check('address', 'Address is required')
     ]
   ],
-  async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-    const {
-      shopName,
-      avatar,
-      description,
-      address,
-      distance,
-      promotions,
-      openingHours,
-      contactDetails,
-      delivery
-    } = req.body;
-
-    const coordinates = await geocode(address);
-    const latLng = {
-      lat: coordinates.lat,
-      lng: coordinates.lng
-    };
-
-    const profileFields = {
-      shopName
-    };
-
-    const shopFields = {
-      shopName,
-      avatar,
-      description,
-      promotions,
-      openingHours,
-      contactDetails,
-      delivery,
-      address,
-      latLng,
-      distance
-    };
-
-    try {
-      // Using upsert option (creates new doc if no match is found):
-      let profile = await Business.findOneAndUpdate(
-        { _id: req.user.id },
-        { $set: profileFields },
-        { new: true, upsert: true }
-      );
-
-      let shop = await Shop.findOneAndUpdate(
-        { owner: profile.id },
-        { $set: shopFields },
-        { new: true, upsert: true }
-      );
-
-      res.json(shop);
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send('Server Error');
-    }
-  }
+  profileControllerBusiness.createOrUpdateProfile
 );
 
 // @route    POST business/profile/account-settings-email;
@@ -119,26 +35,7 @@ router.post(
     checkBusinessOwner,
     check('email', 'Please include a valid email').isEmail()
   ],
-  async (req, res) => {
-    const errors = validationResult(req); //converts errors into error object
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
-    const { email } = req.body;
-
-    try {
-      const user = await User.findById(req.user.user_id);
-
-      user.email = email;
-      await user.save();
-
-      res.json(user);
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send('Server error');
-    }
-  }
+  profileControllerBusiness.updateEmail
 );
 
 // @route    POST business/profile/account-settings-password;
@@ -156,53 +53,7 @@ router.post(
       'Please enter a password with 6 or more characters'
     ).isLength({ min: 6 })
   ],
-  async (req, res) => {
-    const errors = validationResult(req); //converts errors into error object
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
-    const { oldPassword, newPassword } = req.body;
-
-    try {
-      const user = await User.findById(req.user.user_id);
-
-      const isMatch = await bcrypt.compare(oldPassword, user.password);
-
-      if (!isMatch) {
-        return res
-          .status(400)
-          .json({ errors: [{ msg: 'Invalid Credentials' }] });
-      }
-
-      const salt = await bcrypt.genSalt(10);
-
-      user.password = await bcrypt.hash(newPassword, salt);
-
-      await user.save();
-
-      const payload = {
-        business: {
-          id: req.user.id,
-          user_id: user.id
-        }
-      };
-
-      //Create token
-      jwt.sign(
-        payload,
-        config.get('jwtSecret'),
-        { expiresIn: '5 days' },
-        (err, token) => {
-          if (err) throw err;
-          res.json({ token });
-        }
-      );
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send('Server error');
-    }
-  }
+  profileControllerBusiness.updatePassword
 );
 
 module.exports = router;
