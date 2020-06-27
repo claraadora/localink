@@ -104,7 +104,7 @@ async function updateEmail(req, res) {
     user.email = email;
     await user.save();
 
-    res.json(user);
+    res.status(200).json(user);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
