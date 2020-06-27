@@ -25,17 +25,17 @@ const useStyles = makeStyles({
   },
   itineraryList: {
     position: "fixed",
-    bottom: "15px",
+    bottom: "40px",
     left: "30px",
     width: "70%",
-    height: "120px",
+    height: "100px",
   },
   itineraryHeader: {
     position: "fixed",
-    bottom: "170px",
+    bottom: "130px",
     left: "30px",
     width: "70%",
-    height: "40px",
+    height: "45px",
   },
 });
 

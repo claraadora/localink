@@ -3,6 +3,7 @@ const searchConstants = {
   SEARCH_ERROR: "SEARCH_ERROR",
   REORDER_SEARCH: "REORDER_SEARCH",
   CLEAR_SEARCH: "CLEAR_SEARCH",
+  LOAD_ROUTE: "LOAD_ROUTE",
 };
 
 export default searchConstants;

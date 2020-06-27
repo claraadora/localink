@@ -4,6 +4,7 @@ const initialState = {
   productArray: [],
   loading: true,
   sortedBy: "distance",
+  renderRoute: false,
   error: {},
 };
 
@@ -16,6 +17,12 @@ export default function (state = initialState, action) {
         error: {},
         loading: false,
         productArray: payload,
+      };
+    case searchConstants.LOAD_ROUTE:
+      return {
+        error: {},
+        loading: false,
+        renderRoute: true,
       };
     case searchConstants.REORDER_SEARCH:
       return {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { FixedSizeList as List } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { ItemCard } from "../card/ItemCard";
@@ -6,18 +6,8 @@ import { useSelector } from "react-redux";
 
 export const LocationList = () => {
   const productArray = useSelector((state) => state.search.productArray);
-  const loading = useSelector((state) => state.search.loading);
 
-  const [searchResult, setSearchResult] = useState(null);
-
-  useEffect(() => {
-    if (!loading && productArray) {
-      console.log("Search result is " + productArray);
-      setSearchResult(productArray);
-    }
-  }, [loading, productArray]);
-
-  if (searchResult == null) {
+  if (productArray == null) {
     return null;
   } else {
     return (
@@ -26,12 +16,12 @@ export const LocationList = () => {
           <List
             className="List"
             height={height}
-            itemCount={searchResult.length}
+            itemCount={productArray.length}
             itemSize={125}
             width={width}
           >
             {({ index, style }) => {
-              return <ItemCard style={style} content={searchResult[index]} />;
+              return <ItemCard style={style} content={productArray[index]} />;
             }}
           </List>
         )}

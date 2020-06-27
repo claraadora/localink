@@ -1,12 +1,13 @@
-import React from "react";
-import { Toolbar, Typography, Button, Grid } from "@material-ui/core";
+import React, { useState } from "react";
+import { Paper, Typography, Button, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { lightBlue } from "@material-ui/core/colors";
-import { useSelector } from "react-redux";
+import { teal } from "@material-ui/core/colors";
+import { useSelector, useDispatch } from "react-redux";
+import { loadRoute } from "../../actions/shopper/searchActions";
 
 const useStyles = makeStyles({
   header: {
-    backgroundColor: lightBlue[200],
+    backgroundColor: teal[50],
     width: "100%",
     display: "flex",
     padding: "0px 0px 0px 0px",
@@ -16,12 +17,13 @@ const useStyles = makeStyles({
 export const ItineraryHeader = () => {
   const itineraryItems = useSelector((state) => state.itinerary.itineraryArray);
   const classes = useStyles();
-
+  const isDisplayingDirections = useState(false);
+  const dispatch = useDispatch();
   if (itineraryItems.length === 0) {
     return null;
   } else {
     return (
-      <Toolbar className={classes.header}>
+      <Paper className={classes.header}>
         <Grid
           container
           direction="row"
@@ -32,12 +34,12 @@ export const ItineraryHeader = () => {
             <Typography variant="body1">Itinerary</Typography>
           </Grid>
           <Grid item>
-            <Button>
+            <Button onClick={() => dispatch(loadRoute())}>
               <Typography variant="body2">Calculate Routes</Typography>
             </Button>
           </Grid>
         </Grid>
-      </Toolbar>
+      </Paper>
     );
   }
 };

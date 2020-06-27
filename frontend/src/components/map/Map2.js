@@ -33,28 +33,30 @@ const C = { lat: 1.307043, lng: 103.788335 }; //Star vista
 const D = { lat: 1.263746, lng: 103.823665 }; //Vivo City
 
 function Map() {
-  const productArray = useSelector((state) => state.search.productArray);
+  const searchResult = useSelector((state) => state.search.productArray);
   const loading = useSelector((state) => state.search.loading);
-  const [searchResult, setSearchResult] = useState(null);
-  const [startPoints, setStartPoints] = useState([A, B, C]);
-  const [endPoints, setEndPoints] = useState([B, C, D]);
+  const stops = useSelector((state) => state.itinerary.itineraryArray);
+  const [startPoints, setStartPoints] = useState([]);
+  const [endPoints, setEndPoints] = useState([]);
   const [travelMode, setTravelMode] = useState("DRIVING");
   const [routeData, setRouteData] = useState([]);
   const [directions, setDirections] = useState([]);
   const [markers, setMarkers] = useState([]);
   const mapRef = useRef();
   const selectedPolyline = useRef();
-  // const readyToSelectRoutes = useSelector((state)=> state.itinerary.)
+  const renderRoute = useSelector((state) => state.search.renderRoute);
 
   const onClick = () => {
     console.log("CLICKED" + selectedPolyline.current);
   };
 
   useEffect(() => {
-    if (!loading && productArray) {
-      setSearchResult(productArray);
-    }
-  }, [loading, productArray]);
+    const latLng = stops.map((product) => product.shop_docs[0].latLng);
+    console.log(latLng[0]);
+    setStartPoints(latLng.slice(0, latLng.length - 2));
+    setEndPoints(latLng.slice(1, latLng.length - 1));
+    console.log("changed");
+  }, [stops]);
 
   useEffect(() => {
     const DirectionsService = new window.google.maps.DirectionsService();
@@ -69,13 +71,11 @@ function Map() {
           provideRouteAlternatives: true,
         },
         (response, status) => {
-          if (status === window.google.maps.DirectionsStatus.OK) {
+          if (status === "OK") {
             let routes = [];
-            routeData.push(routes);
             tempArr.push(response);
-
             for (let j = 0; j < response.routes.length; j++) {
-              routeData[i].push({
+              routes.push({
                 distance: response.routes[j].legs[0].distance,
                 duration: response.routes[j].legs[0].duration,
                 fare: response.routes[j].fare,
@@ -84,18 +84,24 @@ function Map() {
                 routeIndex: j,
               });
             }
+            routeData.push(routes);
             if (tempArr.length === startPoints.length) {
               setDirections(tempArr);
             }
-            setRouteData(routeData);
+
+            if (routeData.length === startPoints.length) {
+              setRouteData(routeData);
+            }
           } else {
             console.error(`error fetching directions ${response}`);
           }
         }
       );
     }
-    setMarkers([...[startPoints[0], ...endPoints]]);
-  }, [setDirections]);
+    if (startPoints !== [] && endPoints !== []) {
+      setMarkers([...[startPoints[0], ...endPoints]]);
+    }
+  }, [setDirections, setRouteData, stops, startPoints, endPoints]);
 
   function formatRouteData(data) {
     const fare = data.fare ? data.fare.text : "not available";
@@ -182,7 +188,11 @@ function Map() {
         : null}
       {markers !== []
         ? markers.map((marker, index) => (
-            <Marker position={marker} label={String.fromCharCode(65 + index)} />
+            <Marker
+              key={createKey(marker)}
+              position={marker}
+              label={String.fromCharCode(65 + index)}
+            />
           ))
         : null}
     </GoogleMap>
