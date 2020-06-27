@@ -69,13 +69,11 @@ function Map() {
           provideRouteAlternatives: true,
         },
         (response, status) => {
-          if (status === window.google.maps.DirectionsStatus.OK) {
+          if (status === "OK") {
             let routes = [];
-            routeData.push(routes);
             tempArr.push(response);
-
             for (let j = 0; j < response.routes.length; j++) {
-              routeData[i].push({
+              routes.push({
                 distance: response.routes[j].legs[0].distance,
                 duration: response.routes[j].legs[0].duration,
                 fare: response.routes[j].fare,
@@ -84,10 +82,14 @@ function Map() {
                 routeIndex: j,
               });
             }
+            routeData.push(routes);
             if (tempArr.length === startPoints.length) {
               setDirections(tempArr);
             }
-            setRouteData(routeData);
+
+            if (routeData.length === startPoints.length) {
+              setRouteData(routeData);
+            }
           } else {
             console.error(`error fetching directions ${response}`);
           }
@@ -95,7 +97,7 @@ function Map() {
       );
     }
     setMarkers([...[startPoints[0], ...endPoints]]);
-  }, [setDirections]);
+  }, [setDirections, setRouteData]);
 
   function formatRouteData(data) {
     const fare = data.fare ? data.fare.text : "not available";

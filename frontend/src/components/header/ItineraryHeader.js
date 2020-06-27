@@ -1,12 +1,12 @@
 import React from "react";
-import { Toolbar, Typography, Button, Grid } from "@material-ui/core";
+import { Paper, Typography, Button, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { lightBlue } from "@material-ui/core/colors";
+import { amber } from "@material-ui/core/colors";
 import { useSelector } from "react-redux";
 
 const useStyles = makeStyles({
   header: {
-    backgroundColor: lightBlue[200],
+    backgroundColor: amber[100],
     width: "100%",
     display: "flex",
     padding: "0px 0px 0px 0px",
@@ -21,13 +21,8 @@ export const ItineraryHeader = () => {
     return null;
   } else {
     return (
-      <Toolbar className={classes.header}>
-        <Grid
-          container
-          direction="row"
-          justify="space-around"
-          alignItems="center"
-        >
+      <Paper className={classes.header}>
+        <Grid container direction="row" justify="space-between">
           <Grid item>
             <Typography variant="body1">Itinerary</Typography>
           </Grid>
@@ -37,7 +32,7 @@ export const ItineraryHeader = () => {
             </Button>
           </Grid>
         </Grid>
-      </Toolbar>
+      </Paper>
     );
   }
 };
