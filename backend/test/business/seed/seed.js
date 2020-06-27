@@ -1,4 +1,5 @@
 const { ObjectID } = require('mongodb');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 
@@ -48,20 +49,36 @@ const userStaff = {
 //Init token
 const firstUserOwnerToken = createToken(businessId, firstUserOwnerId);
 const userOwnerToken = createToken(businessId, userOwnerId);
-const userStaffToken = createToken(business, userStaffId);
+const userStaffToken = createToken(businessId, userStaffId);
+
+async function removeDummyUsers() {
+  try {
+    await Business.findByIdAndDelete(businessId);
+    await User.deleteMany({
+      _id: {
+        $in: [firstUserOwnerId, userOwnerId, userStaffId]
+      }
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+}
 
 async function addDummyUsers() {
-  await Business.findByIdAndDelete(businessId);
-  await User.deleteMany({
-    _id: {
-      $in: [firstUserOwnerId, userOwnerId, userStaffId]
-    }
-  });
   try {
     const businessObj = await new Business(business).save();
-    const firstUserOwnerObj = await new User(firstUserOwner).save();
-    const userOwnerObj = await new User(userOwner).save();
-    const userStaffObj = await new User(userStaff).save();
+    const firstUserOwnerObj = await new User(firstUserOwner);
+    firstUserOwnerObj.password = await hashPassword(firstUserOwnerObj.password);
+    await firstUserOwnerObj.save();
+
+    const userOwnerObj = await new User(userOwner);
+    userOwnerObj.password = await hashPassword(userOwnerObj.password);
+    await userOwnerObj.save();
+
+    const userStaffObj = await new User(userStaff);
+    userStaffObj.password = await hashPassword(userStaffObj.password);
+    await userStaffObj.save();
+
     businessObj.users.push(firstUserOwnerObj, userOwnerObj, userStaffObj);
     await businessObj.save();
   } catch (error) {
@@ -125,6 +142,52 @@ function createToken(businessId, userId) {
   return jwt.sign(payload, config.get('jwtSecret')).toString();
 }
 
+async function hashPassword(password) {
+  const salt = await bcrypt.genSalt(10);
+  const pw = await bcrypt.hash(password, salt);
+  return pw;
+}
+
+function compareToken(token1, token2) {
+  try {
+    let token1_id = null;
+    let token1_userId = null;
+    let token2_id = null;
+    let token2_userId = null;
+    jwt.verify(token1, config.get('jwtSecret'), async (error, decoded) => {
+      if (error) {
+        return { message: 'Invalid token' };
+      } else {
+        if (decoded.business) {
+          token1_id = decoded.business.id;
+          token1_userId = decoded.business.user_id;
+        } else {
+          return { message: 'Not a business token' };
+        }
+      }
+    });
+    jwt.verify(token2, config.get('jwtSecret'), async (error, decoded) => {
+      if (error) {
+        return { message: 'Invalid token' };
+      } else {
+        if (decoded.business) {
+          token2_id = decoded.business.id;
+          token2_userId = decoded.business.user_id;
+        } else {
+          return { message: 'Not a business token' };
+        }
+      }
+    });
+    if (token1_id == token2_id && token1_userId == token2_userId) {
+      return true;
+    } else {
+      return { message: 'Token payload does not match' };
+    }
+  } catch (error) {
+    return { message: 'Something wrong with compareToken function in seed.js' };
+  }
+}
+
 module.exports = {
   business,
   firstUserOwner,
@@ -133,5 +196,7 @@ module.exports = {
   firstUserOwnerToken,
   userOwnerToken,
   userStaffToken,
-  addDummyUsers
+  addDummyUsers,
+  removeDummyUsers,
+  compareToken
 };
