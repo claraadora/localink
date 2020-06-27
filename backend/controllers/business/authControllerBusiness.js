@@ -33,7 +33,6 @@ async function login(req, res) {
     if (!user) {
       return res.status(400).json({ errors: [{ msg: 'Invalid Credentials' }] });
     }
-
     const business = await Business.findOne({
       users: mongoose.Types.ObjectId(user.id)
     });

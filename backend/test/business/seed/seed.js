@@ -5,7 +5,6 @@ const config = require('config');
 
 const Business = require('../../../models/Business');
 const User = require('../../../models/User');
-const { deleteOne } = require('../../../models/Business');
 
 const businessId = new ObjectID();
 const firstUserOwnerId = new ObjectID();
@@ -148,44 +147,78 @@ async function hashPassword(password) {
   return pw;
 }
 
+function decodeToken(token) {
+  let token_id = null;
+  let token_userId = null;
+
+  jwt.verify(token, config.get('jwtSecret'), async (error, decoded) => {
+    if (error) {
+      return { message: 'Invalid token' };
+    } else {
+      if (decoded.business) {
+        token_id = decoded.business.id;
+        token_userId = decoded.business.user_id;
+      } else {
+        return { message: 'Not a business token' };
+      }
+    }
+  });
+
+  return {
+    token_id,
+    token_userId
+  };
+}
+
 function compareToken(token1, token2) {
   try {
-    let token1_id = null;
-    let token1_userId = null;
-    let token2_id = null;
-    let token2_userId = null;
-    jwt.verify(token1, config.get('jwtSecret'), async (error, decoded) => {
-      if (error) {
-        return { message: 'Invalid token' };
-      } else {
-        if (decoded.business) {
-          token1_id = decoded.business.id;
-          token1_userId = decoded.business.user_id;
-        } else {
-          return { message: 'Not a business token' };
-        }
-      }
-    });
-    jwt.verify(token2, config.get('jwtSecret'), async (error, decoded) => {
-      if (error) {
-        return { message: 'Invalid token' };
-      } else {
-        if (decoded.business) {
-          token2_id = decoded.business.id;
-          token2_userId = decoded.business.user_id;
-        } else {
-          return { message: 'Not a business token' };
-        }
-      }
-    });
-    if (token1_id == token2_id && token1_userId == token2_userId) {
-      return true;
+    const decoded1 = decodeToken(token1);
+    const decoded2 = decodeToken(token2);
+    if (decoded1.message) {
+      return decoded1;
+    } else if (decoded2.message) {
+      return decoded2;
     } else {
-      return { message: 'Token payload does not match' };
+      const token1_id = decoded1.token_id;
+      const token1_userId = decoded1.token_userId;
+      const token2_id = decoded2.token_id;
+      const token2_userId = decoded2.token_userId;
+      //   console.log(
+      //     token1_id +
+      //       '  ' +
+      //       token2_id +
+      //       '  ' +
+      //       token1_userId +
+      //       '  ' +
+      //       token2_userId
+      //   );
+      if (token1_id == token2_id && token1_userId == token2_userId) {
+        return true;
+      } else {
+        return { message: 'Token payload does not match' };
+      }
     }
   } catch (error) {
     return { message: 'Something wrong with compareToken function in seed.js' };
   }
+}
+
+async function getBusinessFromToken(token) {
+  const decoded = decodeToken(token);
+  const business = await Business.findById(decoded.token_id);
+  const user = await User.findById(decoded.token_userId);
+  return {
+    businessId: business.id,
+    userId: user.id,
+    shopName: business.shopName,
+    email: user.email,
+    name: user.name
+  };
+}
+
+async function clearDB(businessId, userId) {
+  await Business.findByIdAndDelete(businessId);
+  await User.findByIdAndDelete(userId);
 }
 
 module.exports = {
@@ -198,5 +231,7 @@ module.exports = {
   userStaffToken,
   addDummyUsers,
   removeDummyUsers,
-  compareToken
+  compareToken,
+  getBusinessFromToken,
+  clearDB
 };

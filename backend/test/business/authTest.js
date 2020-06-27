@@ -16,15 +16,13 @@ const {
 
 //Configure chai
 chai.use(chaiHTTP);
-chai.should();
 
 //const authControllerBusiness = require('../../controllers/business/authControllerBusiness');
 const app = require('../../server');
 
-beforeEach(addDummyUsers);
-afterEach(removeDummyUsers);
-
 describe('authControllerBusiness', () => {
+  beforeEach(addDummyUsers);
+  afterEach(removeDummyUsers);
   //Test to get user by token
   describe('Get business from token', () => {
     it('Given first owner token should return business object', done => {
