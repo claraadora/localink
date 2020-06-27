@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
 const authShopper = require('../../../middleware/authShopper');
+const auth = require('../../../middleware/auth');
 
 const Shop = require('../../../models/Shop');
 const Shopper = require('../../../models/Shopper');
@@ -66,10 +67,10 @@ router.post(
 // @access   Private
 // @return   Array of reviews
 // @user     Business
-router.get('/business', authShopper, async (req, res) => {
+router.get('/business/:business_id', authShopper, async (req, res) => {
   try {
     const shop = await Shop.findOne({
-      owner: req.user.id
+      owner: req.params.business_id
     }).populate({
       path: 'reviews',
       model: 'Review'
