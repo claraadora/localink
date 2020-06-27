@@ -4,7 +4,7 @@ const { check } = require('express-validator');
 const checkBusinessOwner = require('../../../middleware/checkBusinessOwner');
 const checkObjectId = require('../../../middleware/CheckObjectId');
 
-const userController = require('../../../controllers/business/userController');
+const userControllerBusiness = require('../../../controllers/business/userControllerBusiness');
 
 // @route    POST /business/user
 // @desc     Add user to existing business
@@ -24,7 +24,7 @@ router.post(
       ).isLength({ min: 6 })
     ]
   ],
-  userController.addUserToBusiness
+  userControllerBusiness.addUserToBusiness
 );
 
 // @route    DELETE business/user/:user_id
@@ -33,7 +33,7 @@ router.post(
 router.delete(
   '/:user_id',
   [checkBusinessOwner, checkObjectId('user_id')],
-  userController.deleteUser
+  userControllerBusiness.deleteUser
 );
 
 // @route    POST /business/user/:user_id
@@ -51,7 +51,7 @@ router.post(
       // check('email', 'Please include a valid email').isEmail()
     ]
   ],
-  userController.editUser
+  userControllerBusiness.editUser
 );
 
 //activate and deactivate user
@@ -62,7 +62,7 @@ router.post(
 router.get(
   '/:user_id',
   [checkBusinessOwner, checkObjectId('user_id')],
-  userController.activateOrDeactivateUser
+  userControllerBusiness.activateOrDeactivateUser
 );
 
 module.exports = router;

@@ -4,12 +4,12 @@ const authBusiness = require('../../../middleware/authBusiness');
 const checkBusinessOwner = require('../../../middleware/CheckBusinessOwner');
 const { check } = require('express-validator');
 
-const profileController = require('../../../controllers/business/profileController');
+const profileControllerBusiness = require('../../../controllers/business/profileControllerBusiness');
 
 // @route    GET business/profile/me
 // @desc     Get current users shop (not profile, profile is business)
 // @access   Private
-router.get('/me', authBusiness, profileController.getShop);
+router.get('/me', authBusiness, profileControllerBusiness.getShop);
 
 // @route    POST business/profile;
 // @desc     Create or update user profile
@@ -23,7 +23,7 @@ router.post(
       check('address', 'Address is required')
     ]
   ],
-  profileController.createOrUpdateProfile
+  profileControllerBusiness.createOrUpdateProfile
 );
 
 // @route    POST business/profile/account-settings-email;
@@ -35,7 +35,7 @@ router.post(
     checkBusinessOwner,
     check('email', 'Please include a valid email').isEmail()
   ],
-  profileController.updateEmail
+  profileControllerBusiness.updateEmail
 );
 
 // @route    POST business/profile/account-settings-password;
@@ -53,7 +53,7 @@ router.post(
       'Please enter a password with 6 or more characters'
     ).isLength({ min: 6 })
   ],
-  profileController.updatePassword
+  profileControllerBusiness.updatePassword
 );
 
 module.exports = router;

@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { check } = require('express-validator');
 
-const indexController = require('../../../controllers/business/indexController');
+const indexControllerBusiness = require('../../../controllers/business/indexControllerBusiness');
 
 // @route    POST /business
 // @desc     Register user
@@ -19,7 +19,7 @@ router.post(
       'Please enter a password with 6 or more characters'
     ).isLength({ min: 6 })
   ],
-  indexController.registerBusiness
+  indexControllerBusiness.registerBusiness
 );
 
 module.exports = router;

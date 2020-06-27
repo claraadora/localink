@@ -4,10 +4,10 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 const { validationResult } = require('express-validator');
 
-const Business = require('../models/Business');
-const Shop = require('../models/Shop');
-const User = require('../models/User');
-const geocode = require('../routes/api/distance/geocode');
+const Business = require('../../models/Business');
+const Shop = require('../../models/Shop');
+const User = require('../../models/User');
+const geocode = require('../../routes/api/distance/geocode');
 
 async function getShop(req, res) {
   try {

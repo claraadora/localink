@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 
-const Business = require('../models/Business');
+const Business = require('../../models/Business');
 
 async function getUserByToken(req, res) {
   try {

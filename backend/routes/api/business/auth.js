@@ -3,13 +3,13 @@ const router = express.Router();
 const authBusiness = require('../../../middleware/authBusiness');
 const { check } = require('express-validator');
 
-const authController = require('../../../controllers/business/authController');
+const authControllerBusiness = require('../../../controllers/business/authControllerBusiness');
 
 // @route    GET business/auth
 // @desc     Get user by token (load user for frontend)
 // @access   Private
 // @return   User
-router.get('/', authBusiness, authController.getUserByToken);
+router.get('/', authBusiness, authControllerBusiness.getUserByToken);
 
 // @route    POST business/auth
 // @desc     Authenticate user & get token (login)
@@ -21,7 +21,7 @@ router.post(
     check('email', 'Please include a valid email').isEmail(),
     check('password', 'Password is required').exists()
   ],
-  authController.login
+  authControllerBusiness.login
 );
 
 module.exports = router;

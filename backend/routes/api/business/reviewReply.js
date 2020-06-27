@@ -3,7 +3,7 @@ const router = express();
 const authBusiness = require('../../../middleware/authBusiness');
 const checkObjectId = require('../../../middleware/CheckObjectId');
 
-const reviewReplyController = require('../../../controllers/business/reviewReplyController');
+const reviewReplyControllerBusiness = require('../../../controllers/business/reviewReplyControllerBusiness');
 
 // @route    POST business/review-reply/:review_id
 // @desc     Post a reply to a review
@@ -11,7 +11,7 @@ const reviewReplyController = require('../../../controllers/business/reviewReply
 router.post(
   '/:review_id',
   [authBusiness, checkObjectId('review_id')],
-  reviewReplyController.reviewReply
+  reviewReplyControllerBusiness.reviewReply
 );
 
 module.exports = router;

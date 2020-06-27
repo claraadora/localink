@@ -3,8 +3,8 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 const { validationResult } = require('express-validator');
 
-const Business = require('../models/Business');
-const User = require('../models/User');
+const Business = require('../../models/Business');
+const User = require('../../models/User');
 
 async function addUserToBusiness(req, res) {
   const errors = validationResult(req);
