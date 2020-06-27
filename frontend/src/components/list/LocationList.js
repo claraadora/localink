@@ -27,7 +27,7 @@ export const LocationList = () => {
             className="List"
             height={height}
             itemCount={searchResult.length}
-            itemSize={120}
+            itemSize={125}
             width={width}
           >
             {({ index, style }) => {

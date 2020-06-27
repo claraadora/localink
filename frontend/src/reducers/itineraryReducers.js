@@ -18,6 +18,13 @@ export default function itinerary(state = initialStates, action) {
         loading: false,
         itineraryArray: payload,
       };
+    case itineraryConstants.REMOVE_FROM_ITINERARY:
+      return {
+        loading: false,
+        itineraryArray: state.itineraryArray.filter(
+          (item) => item._id !== payload
+        ),
+      };
     default:
       return state;
   }

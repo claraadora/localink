@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 import {
   withGoogleMap,
   withScriptjs,
@@ -6,10 +6,10 @@ import {
   Marker,
   DirectionsRenderer,
   Polyline,
-  InfoWindow
-} from 'react-google-maps';
-import { makeStyles } from '@material-ui/styles';
-import { useSelector } from 'react-redux';
+  InfoWindow,
+} from "react-google-maps";
+import { makeStyles } from "@material-ui/styles";
+import { useSelector } from "react-redux";
 import {
   purple,
   pink,
@@ -18,8 +18,8 @@ import {
   orange,
   indigo,
   lime,
-  teal
-} from '@material-ui/core/colors';
+  teal,
+} from "@material-ui/core/colors";
 
 function createKey(location) {
   return location.lat + location.lng;
@@ -33,20 +33,21 @@ const C = { lat: 1.307043, lng: 103.788335 }; //Star vista
 const D = { lat: 1.263746, lng: 103.823665 }; //Vivo City
 
 function Map() {
-  const productArray = useSelector(state => state.search.productArray);
-  const loading = useSelector(state => state.search.loading);
+  const productArray = useSelector((state) => state.search.productArray);
+  const loading = useSelector((state) => state.search.loading);
   const [searchResult, setSearchResult] = useState(null);
   const [startPoints, setStartPoints] = useState([A, B, C]);
   const [endPoints, setEndPoints] = useState([B, C, D]);
-  const [travelMode, setTravelMode] = useState('DRIVING');
+  const [travelMode, setTravelMode] = useState("DRIVING");
   const [routeData, setRouteData] = useState([]);
   const [directions, setDirections] = useState([]);
   const [markers, setMarkers] = useState([]);
   const mapRef = useRef();
   const selectedPolyline = useRef();
+  // const readyToSelectRoutes = useSelector((state)=> state.itinerary.)
 
   const onClick = () => {
-    console.log('CLICKED' + selectedPolyline.current);
+    console.log("CLICKED" + selectedPolyline.current);
   };
 
   useEffect(() => {
@@ -65,7 +66,7 @@ function Map() {
           origin: startPoints[i],
           destination: endPoints[i],
           travelMode: travelMode,
-          provideRouteAlternatives: true
+          provideRouteAlternatives: true,
         },
         (response, status) => {
           if (status === window.google.maps.DirectionsStatus.OK) {
@@ -80,7 +81,7 @@ function Map() {
                 fare: response.routes[j].fare,
                 end_address: response.routes[j].legs[0].end_address,
                 start_address: response.routes[j].legs[0].start_address,
-                routeIndex: j
+                routeIndex: j,
               });
             }
             if (tempArr.length === startPoints.length) {
@@ -97,21 +98,21 @@ function Map() {
   }, [setDirections]);
 
   function formatRouteData(data) {
-    const fare = data.fare ? data.fare.text : 'not available';
+    const fare = data.fare ? data.fare.text : "not available";
     return (
-      'route: ' +
+      "route: " +
       data.summary +
-      '<br> distance: ' +
+      "<br> distance: " +
       data.distance.text +
-      '<br> duration: ' +
+      "<br> duration: " +
       data.duration.text +
-      '<br> fare: ' +
+      "<br> fare: " +
       fare
     );
   }
 
-  const onMouseOver = data => {
-    console.log('clicked');
+  const onMouseOver = (e) => {
+    console.log("clicked");
   };
   function writeDirectionsSteps(data) {
     const steps = data.steps;
@@ -120,35 +121,35 @@ function Map() {
     const start_location = data.start_location;
     const end_location = data.end_location;
 
-    var overlayContent = document.getElementById('right-panel');
-    overlayContent.innerHTML = '';
+    var overlayContent = document.getElementById("right-panel");
+    overlayContent.innerHTML = "";
 
     overlayContent.innerHTML +=
       `<h2> From A: </h2>` +
       start_address +
-      '<hr>' +
+      "<hr>" +
       `<h2> To B: </h2>` +
       end_address +
-      '</h2> <hr>';
+      "</h2> <hr>";
 
     for (var i = 0; i < steps.length; i++) {
       const count = i + 1;
       overlayContent.innerHTML +=
-        '<p>' +
+        "<p>" +
         +count +
-        '. ' +
+        ". " +
         steps[i].instructions +
-        '</p><small>' +
+        "</p><small>" +
         steps[i].distance.text +
-        '</small>' +
-        '<hr>';
+        "</small>" +
+        "<hr>";
     }
   }
   return (
     <GoogleMap
       defaultZoom={12}
       defaultCenter={{ lat: 1.3521, lng: 103.8198 }}
-      gestureHandling='cooperative'
+      gestureHandling="cooperative"
       ref={mapRef}
     >
       {searchResult == null
@@ -164,43 +165,16 @@ function Map() {
       {directions !== []
         ? directions.map((direction, idx) => {
             return direction.routes.map((route, index) => {
-              // const polyline = new window.google.maps.Polyline({
-              //   strokeColor: colors[idx][index === 0 ? 500 : 200],
-              //   strokeWeight: 5,
-              //   zIndex: direction.routes.length - index,
-              //   clickable: true,
-              // });
-
-              // const polyline = (
-              //   <Polyline
-              //     options={{
-              //       strokeColor: colors[0][500],
-              //       strokeWeight: 10,
-              //       zIndex: 1,
-              //       clickable: true,
-              //     }}
-              //   />
-              // );
-
               return (
-                // <DirectionsRenderer
-                //   directions={direction}
-                //   routeIndex={index}
-                //   options={{
-                //     hideRouteList: true,
-                //     suppressMarkers: true,
-                //     polylineOptions: polyline,
-                //   }}
-                // />
                 <Polyline
                   path={direction.routes[index].overview_path}
                   options={{
                     strokeColor: colors[idx][index === 0 ? 400 : 200],
                     strokeWeight: 6,
                     zIndex: 1,
-                    clickable: true
+                    clickable: true,
                   }}
-                  onClick={e => onMouseOver(direction.routes[index].legs[0])}
+                  onClick={(e) => onMouseOver(direction.routes[index].legs[0])}
                 />
               );
             });
@@ -219,7 +193,7 @@ const MapWrapped = withScriptjs(withGoogleMap(Map));
 
 export const LocalinkMap = () => {
   return (
-    <div style={{ width: '100vw', height: '100vh' }}>
+    <div style={{ width: "100vw", height: "92vh" }}>
       <MapWrapped
         googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
         loadingElement={<div style={{ height: `100%` }} />}

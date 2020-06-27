@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Card, Button, Typography, Grid } from "@material-ui/core";
-import { addToItinerary } from "../../actions/shopper/itineraryActions";
+import {
+  addToItinerary,
+  removeFromItinerary,
+} from "../../actions/shopper/itineraryActions";
 import { useSelector, useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
@@ -26,6 +29,7 @@ export const ItemCard = (props) => {
   const data = props.content;
   const dispatch = useDispatch();
   const sortedBy = useSelector((state) => state.search.sortedBy);
+  const [isAdded, setIsAdded] = useState(false);
 
   return (
     <Card
@@ -36,7 +40,7 @@ export const ItemCard = (props) => {
         <Grid item xs={1} />
         <Grid item xs={9} container direction="column" justify="center">
           <Grid item>
-            <Typography variant="h6">{trimString(data.name, 30)}</Typography>
+            <Typography variant="h6">{trimString(data.name, 28)}</Typography>
           </Grid>
           <Grid item>
             <Typography variant="body2">
@@ -48,8 +52,16 @@ export const ItemCard = (props) => {
           </Grid>
           <Grid item>
             {console.log("data" + data)}
-            <Button size="small" onClick={() => dispatch(addToItinerary(data))}>
-              Add to Itinerary
+            <Button
+              size="small"
+              onClick={() => {
+                dispatch(
+                  isAdded ? removeFromItinerary(data._id) : addToItinerary(data)
+                );
+                setIsAdded(!isAdded);
+              }}
+            >
+              {isAdded ? "Remove from Itinerary" : "Add to Itinerary"}
             </Button>
           </Grid>
         </Grid>

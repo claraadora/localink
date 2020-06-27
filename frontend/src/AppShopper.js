@@ -23,7 +23,6 @@ function AppShopper() {
         <ShopperNavBar isSearchPage={location.pathname === "/search"} />
         <Grid item xs={8}></Grid>
         <Grid item xs={12} sm={12}>
-          <Alert />
           <Route exact path="/login" component={ShopperLogInPage} />
           <Route exact path="/signup" component={ShopperSignUpPage} />
           <Route exact path="/search" component={ShopperSearchPage} />
