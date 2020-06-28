@@ -47,13 +47,12 @@ function Map() {
 
   useEffect(() => {
     const latLng = stops.map((product) => product.shop_docs[0].latLng);
-
-    setStartPoints(latLng.slice(0, latLng.length - 2));
-    setEndPoints(latLng.slice(1, latLng.length - 1));
+    const newStart = latLng.slice(0, latLng.length - 1);
+    const newEnd = latLng.slice(1, latLng.length);
+    setStartPoints(newStart);
+    setEndPoints(newEnd);
     setMarkers(latLng);
-    console.log("changed");
-    console.log(markers.length + "length");
-  }, [stops]);
+  }, [stops, setStartPoints, setEndPoints, setMarkers]);
 
   useEffect(() => {});
 
@@ -61,6 +60,8 @@ function Map() {
     const DirectionsService = new window.google.maps.DirectionsService();
     let tempArr = [];
 
+    console.log("here");
+    console.log(startPoints.length);
     for (let i = 0; i < startPoints.length; i++) {
       DirectionsService.route(
         {
@@ -84,6 +85,8 @@ function Map() {
               });
             }
             routeData.push(routes);
+            console.log("temp" + tempArr.length);
+            console.log("start" + startPoints.length);
             if (tempArr.length === startPoints.length) {
               setDirections(tempArr);
             }
@@ -97,7 +100,15 @@ function Map() {
         }
       );
     }
-  }, [setDirections, setRouteData, stops, startPoints, endPoints]);
+  }, [
+    setDirections,
+    setRouteData,
+    setStartPoints,
+    setEndPoints,
+    stops,
+    startPoints,
+    endPoints,
+  ]);
 
   function formatRouteData(data) {
     const fare = data.fare ? data.fare.text : "not available";
@@ -166,6 +177,7 @@ function Map() {
         : null}
       {renderRoute && stops.length > 0 && directions.length > 0
         ? directions.map((direction, idx) => {
+            console.log("mapping");
             return direction.routes.map((route, index) => {
               return (
                 <Polyline
@@ -184,8 +196,6 @@ function Map() {
         : null}
       {renderRoute && stops.length > 0 && markers.length > 0
         ? markers.map((marker, index) => {
-            console.log(markers.length);
-            console.log(marker.lat);
             return (
               <Marker
                 key={index}
