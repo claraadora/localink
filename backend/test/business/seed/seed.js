@@ -41,7 +41,7 @@ const userStaff = {
   name: 'test user staff',
   email: 'testUS@yahoo.com',
   password: 'testUS@yahoo.com',
-  role: 'owner',
+  role: 'staff',
   activated: true
 };
 
@@ -216,6 +216,18 @@ async function getBusinessFromToken(token) {
   };
 }
 
+async function getUserFromToken(token) {
+  const decoded = decodeToken(token);
+  const user = await User.findById(decoded.token_userId);
+  return user;
+}
+
+async function getShopFromToken(token) {
+  const decoded = decodeToken(token);
+  const shop = await Shop.findOne({ owner: decoded.token_id });
+  return shop;
+}
+
 async function clearDB(businessId, userId) {
   await Business.findByIdAndDelete(businessId);
   await User.findByIdAndDelete(userId);
@@ -233,5 +245,7 @@ module.exports = {
   removeDummyUsers,
   compareToken,
   getBusinessFromToken,
+  getUserFromToken,
+  getShopFromToken,
   clearDB
 };
