@@ -27,11 +27,6 @@ function createKey(location) {
 
 const colors = [pink, cyan, deepPurple, orange, indigo, lime, purple, teal];
 
-const A = { lat: 1.352783, lng: 103.769353 }; //Tampines Mall
-const B = { lat: 1.314948, lng: 103.764692 }; //Clementi Mall
-const C = { lat: 1.307043, lng: 103.788335 }; //Star vista
-const D = { lat: 1.263746, lng: 103.823665 }; //Vivo City
-
 function Map() {
   const searchResult = useSelector((state) => state.search.productArray);
   const loading = useSelector((state) => state.search.loading);
@@ -52,11 +47,15 @@ function Map() {
 
   useEffect(() => {
     const latLng = stops.map((product) => product.shop_docs[0].latLng);
-    console.log(latLng[0]);
+
     setStartPoints(latLng.slice(0, latLng.length - 2));
     setEndPoints(latLng.slice(1, latLng.length - 1));
+    setMarkers(latLng);
     console.log("changed");
+    console.log(markers.length + "length");
   }, [stops]);
+
+  useEffect(() => {});
 
   useEffect(() => {
     const DirectionsService = new window.google.maps.DirectionsService();
@@ -97,9 +96,6 @@ function Map() {
           }
         }
       );
-    }
-    if (startPoints !== [] && endPoints !== []) {
-      setMarkers([...[startPoints[0], ...endPoints]]);
     }
   }, [setDirections, setRouteData, stops, startPoints, endPoints]);
 
@@ -158,17 +154,17 @@ function Map() {
       gestureHandling="cooperative"
       ref={mapRef}
     >
-      {searchResult == null
-        ? null
-        : searchResult.map((product, index) => {
+      {!renderRoute && searchResult.length > 0
+        ? searchResult.map((product, index) => {
             return (
               <Marker
                 key={createKey(product.shop_docs[0].latLng)}
                 position={product.shop_docs[0].latLng}
               />
             );
-          })}
-      {directions !== []
+          })
+        : null}
+      {renderRoute && stops.length > 0 && directions.length > 0
         ? directions.map((direction, idx) => {
             return direction.routes.map((route, index) => {
               return (
@@ -186,14 +182,18 @@ function Map() {
             });
           })
         : null}
-      {markers !== []
-        ? markers.map((marker, index) => (
-            <Marker
-              key={createKey(marker)}
-              position={marker}
-              label={String.fromCharCode(65 + index)}
-            />
-          ))
+      {renderRoute && stops.length > 0 && markers.length > 0
+        ? markers.map((marker, index) => {
+            console.log(markers.length);
+            console.log(marker.lat);
+            return (
+              <Marker
+                key={index}
+                position={marker}
+                label={String.fromCharCode(65 + index)}
+              />
+            );
+          })
         : null}
     </GoogleMap>
   );
