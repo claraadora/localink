@@ -48,6 +48,20 @@ export const loadRoute = () => (dispatch) => {
   });
 };
 
+export const loadDirectionSteps = (directionSteps) => (dispatch) => {
+  dispatch({
+    type: searchConstants.LOAD_DIRECTION_STEPS,
+    payload: directionSteps,
+  });
+};
+
+export const updateDirectionSteps = (directionStep) => (dispatch) => {
+  dispatch({
+    type: searchConstants.UPDATE_DIRECTION_STEPS,
+    payload: directionStep,
+  });
+};
+
 export const reorderSearch = (sortBy, order, items) => (dispatch) => {
   const sortedSearch = items.sort(dynamicSort(sortBy, order));
   dispatch({

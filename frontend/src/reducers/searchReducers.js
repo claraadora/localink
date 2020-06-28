@@ -5,6 +5,7 @@ const initialState = {
   loading: true,
   sortedBy: "distance",
   renderRoute: false,
+  directionSteps: [],
   error: {},
 };
 
@@ -23,6 +24,14 @@ export default function (state = initialState, action) {
         error: {},
         loading: false,
         renderRoute: true,
+      };
+    case searchConstants.LOAD_DIRECTION_STEPS:
+    case searchConstants.UPDATE_DIRECTION_STEPS:
+      return {
+        error: {},
+        loading: false,
+        renderRoute: true,
+        directionSteps: payload,
       };
     case searchConstants.REORDER_SEARCH:
       return {

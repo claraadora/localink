@@ -3,7 +3,9 @@ import { LocalinkMap } from "../../components/map/Map2";
 import { ItineraryList } from "../../components/list/ItineraryList";
 import { ItineraryHeader } from "../../components/header/ItineraryHeader";
 import { LocationList } from "../../components/list/LocationList";
+import { DirectionList } from "../../components/list/DirectionList";
 import { makeStyles } from "@material-ui/core/styles";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles({
   root: {
@@ -37,19 +39,34 @@ const useStyles = makeStyles({
     width: "70%",
     height: "45px",
   },
+  directionList: {
+    position: "fixed",
+    top: "90px",
+    right: "15px",
+    height: "684px",
+    width: "22%",
+    zIndex: 100,
+  },
 });
 
 function SearchPage() {
   const classes = useStyles();
+  const renderRoute = useSelector((state) => state.search.renderRoute);
 
   return (
     <div className={classes.root}>
       <div className={classes.map}>
         <LocalinkMap />
       </div>
-      <div className={classes.locationList}>
-        <LocationList />
-      </div>
+      {renderRoute ? (
+        <div className={classes.directionList}>
+          <DirectionList />
+        </div>
+      ) : (
+        <div className={classes.locationList}>
+          <LocationList />
+        </div>
+      )}
       <div className={classes.itineraryHeader}>
         <ItineraryHeader />
       </div>
