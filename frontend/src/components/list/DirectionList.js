@@ -25,6 +25,7 @@ export const DirectionList = () => {
                   style={style}
                   content={directionSteps[index]}
                   nth={index}
+                  id={`direction-list-${index}`}
                 />
               );
             }}

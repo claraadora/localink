@@ -58,16 +58,46 @@ export const DirectionCard = (props) => {
       className={classes.root}
       style={{ ...props.style, padding: "10px 0px 2px 0px" }}
     >
-      <Grid container direction="column" spacing={1}>
-        <Grid item container direction="row" spacing={1}>
+      <Grid container direction="column" spacing={2}>
+        <Grid
+          item
+          container
+          direction="row"
+          spacing={1}
+          className={classes.header}
+        >
           <Grid item>
-            <Typography>{String.fromCharCode(65 + props.index)}</Typography>
+            <Typography>{String.fromCharCode(65 + props.nth)}</Typography>
           </Grid>
           <Grid item>
             <Typography>{startAddress}</Typography>
           </Grid>
         </Grid>
+        {steps.map((step, index) => {
+          let el = document.createElement("html");
+          return (
+            <Grid item container direction="row" spacing={1}>
+              <Grid item xs={1} />
+              <Grid item xs={1}>
+                {index + 1}
+              </Grid>
+              <Grid item xs={7}>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: `${step.instructions}`,
+                  }}
+                />
+              </Grid>
+              <Grid item xs={2}>
+                {step.distance.text}
+              </Grid>
+              <Grid item xs={1} />
+            </Grid>
+          );
+        })}
       </Grid>
     </Card>
   );
 };
+
+// {step.instructions.replace(/<\/?[^>]+(>|$)/g, "")}
