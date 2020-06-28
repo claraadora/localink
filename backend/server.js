@@ -7,6 +7,10 @@ const connectClient = require('./config/clientdb');
 
 const app = express();
 
+//load environment variables
+const dotenv = require('dotenv');
+dotenv.config();
+
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
@@ -15,10 +19,6 @@ connectClient();
 
 //Connect Database
 connectDB();
-
-//load environment variables
-const dotenv = require('dotenv');
-dotenv.config();
 
 // Init Middleware
 app.use(express.json());
@@ -29,6 +29,7 @@ app.get('/', (req, res) => res.send('API running'));
 app.use('/business', require('./routes/api/business/index'));
 app.use('/business/auth', require('./routes/api/business/auth'));
 app.use('/business/profile', require('./routes/api/business/profile'));
+//app.use('/business/shop', require('./routes/api/business/shop'));
 app.use('/business/product', require('./routes/api/business/product'));
 app.use('/business/user', require('./routes/api/business/user'));
 app.use('/business/review-reply', require('./routes/api/business/reviewReply'));
