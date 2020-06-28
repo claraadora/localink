@@ -30,10 +30,12 @@ export const ItineraryHeader = () => {
           justify="space-around"
           alignItems="center"
         >
-          <Grid item>
-            <Typography variant="body1">Itinerary</Typography>
+          <Grid item xs={1} />
+          <Grid item xs={2}>
+            <Typography variant="h6">Itinerary</Typography>
           </Grid>
-          <Grid item>
+          <Grid item xs={7} />
+          <Grid item xs={2}>
             <Button onClick={() => dispatch(loadRoute())}>
               <Typography variant="body2">Calculate Routes</Typography>
             </Button>
