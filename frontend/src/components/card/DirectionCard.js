@@ -2,13 +2,15 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Card, Button, Typography, Grid } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
+import { teal, lightGreen } from "@material-ui/core/colors";
+import { getThemeProps } from "@material-ui/styles";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.primary.light,
   },
   header: {
-    backgroundColor: theme.palette.secondary.light,
+    backgroundColor: teal[100],
   },
 }));
 
@@ -46,12 +48,6 @@ function writeDirectionsSteps(data) {
 
 export const DirectionCard = (props) => {
   const classes = useStyles();
-  const data = props.content;
-  const steps = data.steps;
-  const startAddress = data.start_address;
-  const endAaddress = data.end_address;
-  const startLocation = data.start_location;
-  const endLocation = data.end_location;
 
   return (
     <Card
@@ -66,35 +62,42 @@ export const DirectionCard = (props) => {
           spacing={1}
           className={classes.header}
         >
+          <Grid item xs={1} />
           <Grid item>
-            <Typography>{String.fromCharCode(65 + props.nth)}</Typography>
+            <Typography variant="h6">
+              {String.fromCharCode(65 + props.nth)}
+            </Typography>
           </Grid>
           <Grid item>
-            <Typography>{startAddress}</Typography>
+            <Typography variant="h6">
+              {props.last ? props.content : props.content.start_address}
+            </Typography>
           </Grid>
         </Grid>
-        {steps.map((step, index) => {
-          let el = document.createElement("html");
-          return (
-            <Grid item container direction="row" spacing={1}>
-              <Grid item xs={1} />
-              <Grid item xs={1}>
-                {index + 1}
-              </Grid>
-              <Grid item xs={7}>
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: `${step.instructions}`,
-                  }}
-                />
-              </Grid>
-              <Grid item xs={2}>
-                {step.distance.text}
-              </Grid>
-              <Grid item xs={1} />
-            </Grid>
-          );
-        })}
+        {!props.last
+          ? props.content.steps.map((step, index) => {
+              return (
+                <Grid item container direction="row" spacing={1}>
+                  <Grid item xs={1} />
+                  <Grid item xs={1}>
+                    {index + 1}
+                  </Grid>
+                  <Grid item xs={8}>
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: `${step.instructions}`,
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={2}>
+                    <Typography variant="body2">
+                      {step.distance.text}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              );
+            })
+          : null}
       </Grid>
     </Card>
   );
