@@ -10,7 +10,7 @@ const getDistance = require('../distance/distance');
 // @desc     Get the start location, update shopper's location
 // @access   Private
 // @return   User
-router.post('/start-location', authShopper, async (req, res) => {
+router.post('/start-location', async (req, res) => {
   const { currentLocation, startLocation } = req.body;
   let location = null;
   if (currentLocation == 'true') {
