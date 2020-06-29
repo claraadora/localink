@@ -89,7 +89,7 @@ export const updateUserLocation = (currentLocation, startLocation) => async (
       },
     };
     const body = JSON.stringify({ currentLocation, startLocation });
-    const res = await axios.post("/search", body, config);
+    const res = await axios.post("/start-location", body, config);
 
     dispatch({
       type: searchConstants.UPDATE_USER_LOCATION,
