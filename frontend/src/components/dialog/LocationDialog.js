@@ -12,6 +12,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import MyLocationIcon from "@material-ui/icons/MyLocation";
+import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   startButton: {
@@ -26,17 +27,39 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     fontSize: "14px",
   },
+  text: {
+    fontSize: "14px",
+  },
 }));
 
 export const LocationDialog = () => {
   const [open, setOpen] = React.useState(true);
+  const [manualAdd, setManualAdd] = React.useState(false);
   const classes = useStyles();
+  const dispatch = useDispatch();
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleManualAdd = () => {
+    setManualAdd(true);
+  };
+
+  const handleBack = () => {
+    setManualAdd(false);
+  };
+
+  const handleSubmitAddManual = () => {
+    setOpen(false);
+    setManualAdd(false);
+  };
+
+  const handleTrack = () => {
     setOpen(false);
   };
 
@@ -50,11 +73,11 @@ export const LocationDialog = () => {
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">Add your location.</DialogTitle>
+        <DialogTitle id="form-dialog-title">Add your location</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Adding your current location allows us to help you find items near
-            you.
+            you
           </DialogContentText>
           {/* <TextField
             autoFocus
@@ -65,61 +88,75 @@ export const LocationDialog = () => {
             placeholder="Key in your location"
             fullWidth
           /> */}
-          <Button
-            onClick={handleClose}
-            color="primary"
-            className={classes.startButton}
-          >
-            Manually key in your location.
-          </Button>
-          {/**START OF DIVIDER */}
-          <Grid item container="row" alignItems="center">
-            <Grid item xs={5}>
-              <Divider />
-            </Grid>
-            <Grid item xs={1}>
-              <body>or</body>
-            </Grid>
-            <Grid item xs={6}>
-              <Divider />
-            </Grid>
-          </Grid>
-          {/**END OF DIVIDER */}
-          <Button
-            onClick={handleClose}
-            color="primary"
-            className={classes.startButton}
-          >
-            Allow localink to track your location.
-          </Button>
-          {/**START OF DIVIDER */}
-          <Grid item container="row" alignItems="center">
-            <Grid item xs={5}>
-              <Divider />
-            </Grid>
-            <Grid item xs={1}>
-              <body>or</body>
-            </Grid>
-            <Grid item xs={6}>
-              <Divider />
-            </Grid>
-          </Grid>
-          {/**END OF DIVIDER */}
-          <Button
-            onClick={handleClose}
-            color="primary"
-            className={classes.startButton}
-          >
-            Use localink without starting position.
-          </Button>
+          {!manualAdd ? (
+            <div>
+              <Button
+                onClick={handleManualAdd}
+                color="primary"
+                className={classes.startButton}
+              >
+                Manually key in your location
+              </Button>
+              <Grid item container="row" alignItems="center">
+                <Grid item xs={5}>
+                  <Divider />
+                </Grid>
+                <Grid item xs={1}>
+                  <body>or</body>
+                </Grid>
+                <Grid item xs={6}>
+                  <Divider />
+                </Grid>
+              </Grid>
+              <Button
+                onClick={handleTrack}
+                color="primary"
+                className={classes.startButton}
+              >
+                Allow localink to track your location
+              </Button>
+            </div>
+          ) : (
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Your location"
+              type="text"
+              placeholder="Key in your location"
+              fullWidth
+            />
+          )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleClose} color="primary">
-            Allow
-          </Button>
+          {manualAdd ? (
+            <div>
+              <Button
+                onClick={handleClose}
+                color="primary"
+                className={classes.text}
+                onClick={handleSubmitAddManual}
+              >
+                Submit Location
+              </Button>
+              <Button
+                onClick={handleClose}
+                color="primary"
+                className={classes.text}
+                onClick={handleBack}
+              >
+                Back
+              </Button>
+            </div>
+          ) : (
+            <Button
+              onClick={handleClose}
+              color="primary"
+              className={classes.text}
+            >
+              Use without starting position
+            </Button>
+          )}
         </DialogActions>
       </Dialog>
     </div>
