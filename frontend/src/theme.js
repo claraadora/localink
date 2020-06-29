@@ -63,7 +63,7 @@ export const theme = createMuiTheme({
     button: {
       fontFamily: '"Metropolis", sans-serif',
       fontWeight: 500,
-      fontSize: "1.3rem",
+      fontSize: "1rem",
       letterSpacing: 1,
       textTransform: "none",
       color: yellow[100],
@@ -71,7 +71,7 @@ export const theme = createMuiTheme({
     navBar: {
       fontFamily: '"Metropolis", sans-serif',
       fontWeight: 500,
-      fontSize: "1.1rem",
+      fontSize: "1rem",
       letterSpacing: 1,
       textTransform: "none",
       color: "white",
