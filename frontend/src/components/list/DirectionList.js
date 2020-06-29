@@ -1,30 +1,36 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { VariableSizeList as List } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { DirectionCard } from "../card/DirectionCard";
 import { useSelector } from "react-redux";
 
 export const DirectionList = () => {
-  const directionSteps = useSelector((state) => state.search.directionSteps);
+  const search = useSelector((state) => state.search);
   const renderRoute = useSelector((state) => state.search.renderRoute);
+  const [dirSteps, setDirSteps] = useState(search.directionSteps);
+
+  useEffect(() => {
+    console.log("changed");
+    setDirSteps(search.directionSteps);
+  }, [search]);
 
   const getItemSize = (index) => {
-    if (index < directionSteps.length) {
-      const numOfSteps = directionSteps[index].steps.length;
+    if (index < dirSteps.length) {
+      const numOfSteps = dirSteps[index].steps.length;
       return (numOfSteps + 1) * 53;
     } else {
       return 30;
     }
   };
 
-  if (renderRoute && directionSteps && directionSteps.length > 0) {
+  if (renderRoute && dirSteps && dirSteps.length > 0) {
     return (
       <AutoSizer>
         {({ height, width }) => (
           <List
             className="List"
             height={height}
-            itemCount={directionSteps.length + 1}
+            itemCount={dirSteps.length + 1}
             itemSize={getItemSize}
             width={width}
           >
@@ -33,11 +39,11 @@ export const DirectionList = () => {
                 <DirectionCard
                   style={style}
                   content={
-                    index < directionSteps.length
-                      ? directionSteps[index]
-                      : directionSteps[directionSteps.length - 1].end_address
+                    index < dirSteps.length
+                      ? dirSteps[index]
+                      : dirSteps[dirSteps.length - 1].end_address
                   }
-                  last={index < directionSteps.length ? false : true}
+                  last={index < dirSteps.length ? false : true}
                   nth={index}
                   id={`direction-list-${index}`}
                 />

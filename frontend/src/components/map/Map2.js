@@ -46,6 +46,7 @@ function Map() {
   const selectedPolyline = useRef();
   const renderRoute = useSelector((state) => state.search.renderRoute);
   const dispatch = useDispatch();
+  const [currLines, setCurrLines] = useState([]);
 
   const onClick = () => {
     console.log("CLICKED" + selectedPolyline.current);
@@ -111,6 +112,8 @@ function Map() {
       if (renderRoute) {
         dispatch(loadDirectionSteps(dirSteps));
       }
+      const len = directions.length;
+      setCurrLines(Array(len).fill(0));
     }
   }, [
     setDirections,
@@ -162,16 +165,21 @@ function Map() {
                 <Polyline
                   path={direction.routes[index].overview_path}
                   options={{
-                    strokeColor: colors[idx][index === 0 ? 400 : 200],
+                    strokeColor:
+                      colors[idx][index === currLines[idx] ? 400 : 200],
                     strokeWeight: 6,
-                    zIndex: 1,
+                    zIndex: 10 - index,
                     clickable: true,
                   }}
-                  onClick={(e) => {
+                  onClick={() => {
                     const newDirSteps = directionSteps;
                     newDirSteps[idx] = direction.routes[index].legs[0];
                     setDirectionSteps(newDirSteps);
                     dispatch(updateDirectionSteps(newDirSteps));
+
+                    const newCurrLines = currLines;
+                    newCurrLines[idx] = index;
+                    setCurrLines(newCurrLines);
                   }}
                 />
               );

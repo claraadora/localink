@@ -14,36 +14,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function writeDirectionsSteps(data) {
-  const steps = data.steps;
-  const start_address = data.start_address;
-  const end_address = data.end_address;
-  const start_location = data.start_location;
-  const end_location = data.end_location;
-
-  var overlayContent = document.getElementById("right-panel");
-  overlayContent.innerHTML = "";
-
-  overlayContent.innerHTML +=
-    `<h2> From A: </h2>` +
-    start_address +
-    "<hr>" +
-    `<h2> To B: </h2>` +
-    end_address +
-    "</h2> <hr>";
-
-  for (var i = 0; i < steps.length; i++) {
-    const count = i + 1;
-    overlayContent.innerHTML +=
-      "<p>" +
-      +count +
-      ". " +
-      steps[i].instructions +
-      "</p><small>" +
-      steps[i].distance.text +
-      "</small>" +
-      "<hr>";
-  }
+function trimString(word, maxLength) {
+  return word <= maxLength ? word : word.substring(0, maxLength - 3) + "...";
 }
 
 export const DirectionCard = (props) => {
@@ -70,7 +42,9 @@ export const DirectionCard = (props) => {
           </Grid>
           <Grid item>
             <Typography variant="h6">
-              {props.last ? props.content : props.content.start_address}
+              {props.last
+                ? props.content
+                : trimString(props.content.start_address, 18)}
             </Typography>
           </Grid>
         </Grid>
