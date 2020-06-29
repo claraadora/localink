@@ -13,7 +13,7 @@ const getDistance = require('../distance/distance');
 router.post('/start-location', async (req, res) => {
   const { currentLocation, startLocation } = req.body;
   let location = null;
-  if (currentLocation == 'true') {
+  if (currentLocation == true) {
     location = await getCurrentLocation();
   } else {
     location = await geocode(startLocation);
