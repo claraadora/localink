@@ -9,12 +9,13 @@ import {
   Menu,
   MenuItem,
 } from "@material-ui/core";
-import AccountCircle from "@material-ui/icons/AccountCircle";
+import { AccountCircle } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import { SearchInput } from "../input/SearchInput";
 import { OptionSelect } from "../select/OptionSelect";
 import { useSelector, useDispatch } from "react-redux";
-import { logout } from "../../actions/seller/authActions";
+import { logout } from "../../actions/shopper/authActions";
+import { LocationDialog } from "../../components/dialog/LocationDialog";
 
 export default function ShopperNavBar({ isSearchPage }) {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -55,6 +56,10 @@ export default function ShopperNavBar({ isSearchPage }) {
                   <Grid item>Sort by: </Grid>
                   <Grid item>
                     <OptionSelect />
+                  </Grid>
+                  <Grid item>
+                    My Location:
+                    <LocationDialog />
                   </Grid>
                 </Grid>
               </Grid>
@@ -111,11 +116,10 @@ export default function ShopperNavBar({ isSearchPage }) {
                   </Button>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>My account</MenuItem>
-              </Menu>{" "}
+              </Menu>
             </>
           ) : (
             <>
-              {" "}
               <Grid item>
                 <Button color="inherit" component={Link} to="/business">
                   sell on localink

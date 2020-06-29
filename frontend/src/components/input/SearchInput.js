@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     alignItems: "center",
-    width: 400,
+    width: 300,
     backgroundColor: fade(theme.palette.common.white, 0.35),
     "&:hover": {
       backgroundColor: fade(theme.palette.common.white, 0.4),
