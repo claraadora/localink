@@ -13,6 +13,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import MyLocationIcon from "@material-ui/icons/MyLocation";
 import { useDispatch } from "react-redux";
+import { updateUserLocation } from "../../actions/shopper/searchActions";
 
 const useStyles = makeStyles((theme) => ({
   startButton: {
@@ -35,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
 export const LocationDialog = () => {
   const [open, setOpen] = React.useState(true);
   const [manualAdd, setManualAdd] = React.useState(false);
+  const [manualLocation, setManualLocation] = React.useState(null);
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -46,21 +48,23 @@ export const LocationDialog = () => {
     setOpen(false);
   };
 
-  const handleManualAdd = () => {
-    setManualAdd(true);
-  };
-
   const handleBack = () => {
     setManualAdd(false);
+  };
+
+  const handleManualAdd = () => {
+    setManualAdd(true);
   };
 
   const handleSubmitAddManual = () => {
     setOpen(false);
     setManualAdd(false);
+    dispatch(updateUserLocation(false, manualLocation));
   };
 
   const handleTrack = () => {
     setOpen(false);
+    dispatch(updateUserLocation(true, null));
   };
 
   return (
@@ -124,6 +128,7 @@ export const LocationDialog = () => {
               label="Your location"
               type="text"
               placeholder="Key in your location"
+              onChange={(e) => setManualLocation(e.target.value)}
               fullWidth
             />
           )}

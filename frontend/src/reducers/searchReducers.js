@@ -7,6 +7,7 @@ const initialState = {
   renderRoute: false,
   directionSteps: [],
   error: {},
+  userLocation: null,
 };
 
 export default function (state = initialState, action) {
@@ -15,12 +16,14 @@ export default function (state = initialState, action) {
   switch (type) {
     case searchConstants.SEARCH_REQUEST:
       return {
+        ...state,
         error: {},
         loading: false,
         productArray: payload,
       };
     case searchConstants.LOAD_ROUTE:
       return {
+        ...state,
         error: {},
         loading: false,
         renderRoute: true,
@@ -28,6 +31,7 @@ export default function (state = initialState, action) {
     case searchConstants.LOAD_DIRECTION_STEPS:
     case searchConstants.UPDATE_DIRECTION_STEPS:
       return {
+        ...state,
         error: {},
         loading: false,
         renderRoute: true,
@@ -35,6 +39,7 @@ export default function (state = initialState, action) {
       };
     case searchConstants.REORDER_SEARCH:
       return {
+        ...state,
         error: {},
         loading: false,
         sortedBy: payload.sortedBy,
@@ -49,9 +54,15 @@ export default function (state = initialState, action) {
       };
     case searchConstants.CLEAR_SEARCH:
       return {
+        ...state,
         error: {},
         productArray: [],
         loading: false,
+      };
+    case searchConstants.UPDATE_USER_LOCATION:
+      return {
+        ...state,
+        userLocation: payload,
       };
     default:
       return state;
