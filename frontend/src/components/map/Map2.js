@@ -33,6 +33,8 @@ const colors = [pink, cyan, deepPurple, orange, indigo, lime, purple, teal];
 
 function Map() {
   const searchResult = useSelector((state) => state.search.productArray);
+  const searchSelector = useSelector((state) => state.search);
+  const [userLocation, setUserLocation] = useState(searchSelector.userLocation);
   const loading = useSelector((state) => state.search.loading);
   const stops = useSelector((state) => state.itinerary.itineraryArray);
   const [startPoints, setStartPoints] = useState([]);
@@ -51,6 +53,10 @@ function Map() {
   const onClick = () => {
     console.log("CLICKED" + selectedPolyline.current);
   };
+
+  useEffect(() => {
+    setUserLocation(searchSelector.userLocation);
+  }, [searchSelector]);
 
   useEffect(() => {
     const latLng = stops.map((product) => product.shop_docs[0].latLng);
@@ -129,20 +135,6 @@ function Map() {
     endPoints,
   ]);
 
-  function formatRouteData(data) {
-    const fare = data.fare ? data.fare.text : "not available";
-    return (
-      "route: " +
-      data.summary +
-      "<br> distance: " +
-      data.distance.text +
-      "<br> duration: " +
-      data.duration.text +
-      "<br> fare: " +
-      fare
-    );
-  }
-
   return (
     <GoogleMap
       defaultZoom={12}
@@ -150,6 +142,9 @@ function Map() {
       gestureHandling="cooperative"
       ref={mapRef}
     >
+      {userLocation ? (
+        <Marker key={createKey(userLocation)} postion={userLocation} />
+      ) : null}
       {!renderRoute && searchResult.length > 0
         ? searchResult.map((product, index) => {
             return (
