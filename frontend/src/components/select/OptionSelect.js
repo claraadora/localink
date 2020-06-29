@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { deepPurple } from "@material-ui/core/colors";
 import {
   Select,
@@ -73,11 +73,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 export const OptionSelect = () => {
-  const [val, setVal] = useState(1);
+  const [val, setVal] = useState(0);
   const productArray = useSelector((state) => state.search.productArray);
   const classes = useStyles();
   const dispatch = useDispatch();
+  const search = useSelector((state) => state.search);
+  const [userLocation, setUserlocation] = useState(search.userLocation);
 
+  useEffect(() => {
+    setUserlocation(search.userLocation);
+  }, [search]);
   const handleChange = (event) => {
     setVal(event.target.value);
   };
@@ -119,9 +124,14 @@ export const OptionSelect = () => {
         <MenuItem value={0} onClick={() => handleSort("ratings", "ascending")}>
           <Typography>Ratings</Typography>
         </MenuItem>
-        <MenuItem value={1} onClick={() => handleSort("distance", "ascending")}>
-          <Typography>Distance</Typography>
-        </MenuItem>
+        {userLocation !== null ? (
+          <MenuItem
+            value={1}
+            onClick={() => handleSort("distance", "ascending")}
+          >
+            <Typography>Distance</Typography>
+          </MenuItem>
+        ) : null}
         <MenuItem value={2} onClick={() => handleSort("price", "ascending")}>
           <Typography>Price Low to High</Typography>
         </MenuItem>
