@@ -19,11 +19,11 @@ router.post('/start-location', async (req, res) => {
     location = await geocode(startLocation);
   }
   try {
-    let shopper = await Shopper.findOneAndUpdate(
-      { _id: req.user.id },
-      { latLng: location },
-      { new: true }
-    );
+    // let shopper = await Shopper.findOneAndUpdate(
+    //   { _id: req.user.id },
+    //   { latLng: location },
+    //   { new: true }
+    // );
     console.log('Successfully updated location of shopper');
 
     const allShops = await Shop.find();
