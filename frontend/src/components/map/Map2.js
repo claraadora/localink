@@ -113,7 +113,7 @@ function Map() {
         dispatch(loadDirectionSteps(dirSteps));
       }
       const len = directions.length;
-      setCurrLines(Array(len).fill(0));
+      console.log("im here");
     }
   }, [
     setDirections,
@@ -121,6 +121,8 @@ function Map() {
     setStartPoints,
     setEndPoints,
     setDirectionSteps,
+    setCurrLines,
+    currLines,
     renderRoute,
     stops,
     startPoints,
@@ -163,23 +165,36 @@ function Map() {
             return direction.routes.map((route, index) => {
               return (
                 <Polyline
-                  path={direction.routes[index].overview_path}
-                  options={{
-                    strokeColor:
-                      colors[idx][index === currLines[idx] ? 400 : 200],
-                    strokeWeight: 6,
-                    zIndex: 10 - index,
-                    clickable: true,
-                  }}
                   onClick={() => {
                     const newDirSteps = directionSteps;
                     newDirSteps[idx] = direction.routes[index].legs[0];
                     setDirectionSteps(newDirSteps);
                     dispatch(updateDirectionSteps(newDirSteps));
 
-                    const newCurrLines = currLines;
+                    let newCurrLines = currLines;
+                    if (currLines.length === 0) {
+                      newCurrLines = Array(directions.length).fill(0);
+                    }
                     newCurrLines[idx] = index;
                     setCurrLines(newCurrLines);
+                    console.log("idx" + newCurrLines[idx]);
+                  }}
+                  path={direction.routes[index].overview_path}
+                  options={{
+                    strokeColor:
+                      currLines.length === 0
+                        ? colors[idx][index === 0 ? 400 : 200]
+                        : colors[idx][index === currLines[idx] ? 400 : 200],
+                    strokeWeight: 6,
+                    zIndex:
+                      currLines.length === 0
+                        ? index === 0
+                          ? 5
+                          : 1
+                        : index === currLines[idx]
+                        ? 5
+                        : 1,
+                    clickable: true,
                   }}
                 />
               );
