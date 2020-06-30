@@ -1,3 +1,5 @@
+const { ObjectID } = require('mongodb');
+const profileId = new ObjectID();
 const {
   business,
   firstUserOwner,
@@ -18,6 +20,8 @@ const Shop = require('../../../models/Shop');
 const geocode = require('../../../routes/api/distance/geocode');
 
 const dummyProfile = {
+  _id: profileId,
+  owner: business._id,
   shopName: 'test create or update profile',
   avatar:
     'https://image.shutterstock.com/image-photo/white-transparent-leaf-on-mirror-260nw-1029171697.jpg',
@@ -30,6 +34,8 @@ const dummyProfile = {
 };
 
 const updatedDummyProfile = {
+  _id: profileId,
+  owner: business._id,
   shopName: 'updated test create or update profile',
   avatar:
     'https://image.shutterstock.com/image-photo/white-transparent-leaf-on-mirror-260nw-1029171697.jpg',
@@ -50,13 +56,14 @@ const newPassword = {
   newPassword: 'testbusinessOwner@yahoo.com'
 };
 
-async function addDummyProfileToFirstOwner() {
+async function addDummyProfileToBusiness() {
   try {
     const profileFields = {
       shopName: dummyProfile.shopName
     };
+
     const profile = await Business.findOneAndUpdate(
-      { _id: firstUserOwner.id },
+      { _id: business._id },
       { $set: profileFields },
       { new: true, upsert: true }
     );
@@ -78,8 +85,8 @@ async function addDummyProfileToFirstOwner() {
   }
 }
 
-async function deleteDummyShopOfFirstOwner() {
-  await Shop.findOneAndDelete({ owner: firstUserOwner.id });
+async function deleteDummyShopOfBusiness() {
+  await Shop.findOneAndDelete({ owner: business.id });
 }
 
 module.exports = {
@@ -87,6 +94,6 @@ module.exports = {
   updatedDummyProfile,
   newEmail,
   newPassword,
-  addDummyProfileToFirstOwner,
-  deleteDummyShopOfFirstOwner
+  addDummyProfileToBusiness,
+  deleteDummyShopOfBusiness
 };

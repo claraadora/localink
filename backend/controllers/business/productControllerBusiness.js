@@ -52,7 +52,6 @@ async function updateProduct(req, res) {
     return res.status(400).json({ errors: errors.array() });
   }
   const { name, image, description, price, stock, isService } = req.body;
-
   const productFields = {
     name,
     image,
