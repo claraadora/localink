@@ -20,10 +20,6 @@ import ReviewTable from "./components/table/ReviewTable";
 function AppSeller() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
-  if (isAuthenticated) {
-    return <Redirect to="/business/dashboard" />;
-  }
-
   return (
     <ThemeProvider theme={themeSeller}>
       <Grid container direction="column" spacing={5}>
@@ -45,7 +41,7 @@ function AppSeller() {
                 path="/business/signup"
                 component={SellerSignUpPage}
               />
-              <Route exact path="/business" component={SellerLandingPage} />
+              <Route exact path="/business/" component={SellerLandingPage} />
               <Route
                 exact
                 path="/business/dashboard"

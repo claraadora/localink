@@ -53,7 +53,7 @@ export default function LogInPage() {
   };
 
   if (isAuthenticated) {
-    return <Redirect to="/business/dashboard" />;
+    return <Redirect to="/business/account/profile" />;
   }
 
   return (

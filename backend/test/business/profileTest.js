@@ -23,8 +23,8 @@ const {
   updatedDummyProfile,
   newEmail,
   newPassword,
-  addDummyProfileToFirstOwner,
-  deleteDummyShopOfFirstOwner
+  addDummyProfileToBusiness,
+  deleteDummyShopOfBusiness
 } = require('./seed/seedProfile');
 
 const bcrypt = require('bcryptjs');
@@ -153,8 +153,8 @@ describe('profileControllerBusiness', () => {
   });
 
   describe('account settings', () => {
-    beforeEach(addDummyProfileToFirstOwner);
-    afterEach(deleteDummyShopOfFirstOwner);
+    beforeEach(addDummyProfileToBusiness);
+    afterEach(deleteDummyShopOfBusiness);
 
     it('Should return updated user with updated email', done => {
       chai

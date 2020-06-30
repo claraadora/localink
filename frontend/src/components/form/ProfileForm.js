@@ -60,7 +60,7 @@ const ProfileForm = () => {
       profileData[shopName] = user.shopName;
       setFormData(profileData);
     }
-  }, [loading, dispatch, profile, shopName, user.shopName]);
+  }, [loading, dispatch, profile, shopName, user]);
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });

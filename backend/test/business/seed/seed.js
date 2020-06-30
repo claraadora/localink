@@ -81,7 +81,7 @@ async function addDummyUsers() {
     businessObj.users.push(firstUserOwnerObj, userOwnerObj, userStaffObj);
     await businessObj.save();
   } catch (error) {
-    console.log(error.message);
+    //console.log(error.message);
   }
 }
 
@@ -183,15 +183,15 @@ function compareToken(token1, token2) {
       const token1_userId = decoded1.token_userId;
       const token2_id = decoded2.token_id;
       const token2_userId = decoded2.token_userId;
-      //   console.log(
-      //     token1_id +
-      //       '  ' +
-      //       token2_id +
-      //       '  ' +
-      //       token1_userId +
-      //       '  ' +
-      //       token2_userId
-      //   );
+      // console.log(
+      //   token1_id +
+      //     '  ' +
+      //     token2_id +
+      //     '  ' +
+      //     token1_userId +
+      //     '  ' +
+      //     token2_userId
+      // );
       if (token1_id == token2_id && token1_userId == token2_userId) {
         return true;
       } else {
