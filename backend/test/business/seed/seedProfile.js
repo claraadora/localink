@@ -34,7 +34,7 @@ const dummyProfile = {
 };
 
 const updatedDummyProfile = {
-  _id: profileId,
+  //_id: profileId,
   owner: business._id,
   shopName: 'updated test create or update profile',
   avatar:
@@ -86,7 +86,7 @@ async function addDummyProfileToBusiness() {
 }
 
 async function deleteDummyShopOfBusiness() {
-  await Shop.findOneAndDelete({ owner: business.id });
+  await Shop.findOneAndDelete({ owner: business._id });
 }
 
 module.exports = {

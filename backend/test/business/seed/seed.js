@@ -52,12 +52,12 @@ const userStaffToken = createToken(businessId, userStaffId);
 
 async function removeDummyUsers() {
   try {
-    await Business.findByIdAndDelete(businessId);
     await User.deleteMany({
       _id: {
         $in: [firstUserOwnerId, userOwnerId, userStaffId]
       }
     });
+    await Business.findByIdAndDelete(businessId);
   } catch (error) {
     console.log(error.message);
   }
@@ -81,55 +81,9 @@ async function addDummyUsers() {
     businessObj.users.push(firstUserOwnerObj, userOwnerObj, userStaffObj);
     await businessObj.save();
   } catch (error) {
-    //console.log(error.message);
+    console.log(error.message);
   }
 }
-
-// function addDummyUsers(done) {
-//   console.log(firstUserOwnerId, userOwnerId, userStaffId);
-//   console.log('bo');
-//   console.log(businessObj);
-//   if (businessObj) {
-//     businessObj.users.filter(user => {
-//       console.log('user in filter');
-//       console.log(user._id);
-//       console.log(firstUserOwnerId, userOwnerId, userStaffId);
-//       return (
-//         user._id !== firstUserOwnerId &&
-//         user._id !== userOwnerId &&
-//         user._id !== userStaffId
-//       );
-//     });
-//   }
-//   console.log(businessObj);
-//   //   if (businessObj) {
-//   //     Business.findByIdAndDelete(businessId);
-//   //   }
-//   User.deleteMany({
-//     _id: {
-//       $in: [firstUserOwnerId, userOwnerId, userStaffId]
-//     }
-//   })
-//     .then(() => {
-//       businessObj = new Business(business).save();
-//       firstUserOwnerObj = new User(firstUserOwner).save();
-//       userOwnerObj = new User(userOwner).save();
-//       userStaffObj = new User(userStaff).save();
-//       Promise.all([
-//         businessObj,
-//         firstUserOwnerObj,
-//         userOwnerObj,
-//         userStaffObj
-//       ]).then(arr => {
-//         arr[0].users.push(arr[1], arr[2], arr[3]);
-//         businessObj = arr[0];
-//         firstUserOwnerObj = arr[1];
-//         userOwnerObj = arr[2];
-//         userStaffObj = arr[3];
-//       });
-//     })
-//     .then(() => done());
-// }
 
 function createToken(businessId, userId) {
   const payload = {

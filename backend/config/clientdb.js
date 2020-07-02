@@ -17,8 +17,16 @@ const connectClient = async () => {
       console.log('MongoDB client connected...');
       const db = client.db('test');
       //For testing
-      // db.collection('shops').remove(
-      //   { shopName: 'test create or update profile' },
+      // db.collection('users').remove(
+      //   { name: 'test user owner' },
+      //   { $multi: true }
+      // );
+      // db.collection('users').remove(
+      //   { name: 'test user staff' },
+      //   { $multi: true }
+      // );
+      // db.collection('users').remove(
+      //   { name: 'test first business owner' },
       //   { $multi: true }
       // );
       dbb = db;

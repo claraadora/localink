@@ -35,10 +35,9 @@ chai.use(chaiHTTP);
 //const authControllerBusiness = require('../../controllers/business/authControllerBusiness');
 const app = require('../../server');
 
-before(addDummyUsers);
-after(removeDummyUsers);
-
 describe('profileControllerBusiness', () => {
+  beforeEach(addDummyUsers);
+  afterEach(removeDummyUsers);
   describe('profile settings', () => {
     it('Should create and return new profile if no existing profile', done => {
       chai
