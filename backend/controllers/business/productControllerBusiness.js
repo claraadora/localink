@@ -70,6 +70,7 @@ async function updateProduct(req, res) {
     );
 
     let shop = await Shop.findOne({ _id: product.shop });
+
     shop = await shop.populate('products').execPopulate();
     res.json(shop);
   } catch (err) {

@@ -34,7 +34,6 @@ const dummyProfile = {
 };
 
 const updatedDummyProfile = {
-  //_id: profileId,
   owner: business._id,
   shopName: 'updated test create or update profile',
   avatar:
@@ -74,19 +73,17 @@ async function addDummyProfileToBusiness() {
       lng: coordinates.lng
     };
 
-    const shopFields = { ...dummyProfile, latLng };
-    const shop = await Shop.findOneAndUpdate(
-      { owner: profile.id },
-      { $set: shopFields },
-      { new: true, upsert: true }
-    );
+    const shopFields = { ...dummyProfile, owner: profile.id, latLng };
+    const shop = new Shop(shopFields);
+    await shop.save();
   } catch (error) {
     console.log(error.message);
   }
 }
 
 async function deleteDummyShopOfBusiness() {
-  await Shop.findOneAndDelete({ owner: business._id });
+  await Shop.findByIdAndDelete(profileId);
+  await Shop.findOneAndDelete({ shopName: updatedDummyProfile.shopName }); //remove added profile using route controller
 }
 
 module.exports = {

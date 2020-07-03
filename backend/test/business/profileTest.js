@@ -38,6 +38,7 @@ const app = require('../../server');
 describe('profileControllerBusiness', () => {
   beforeEach(addDummyUsers);
   afterEach(removeDummyUsers);
+  after(deleteDummyShopOfBusiness);
   describe('profile settings', () => {
     it('Should create and return new profile if no existing profile', done => {
       chai

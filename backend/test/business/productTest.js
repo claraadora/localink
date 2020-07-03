@@ -27,7 +27,8 @@ const {
   dummyProduct,
   updatedDummyProduct,
   addDummyProduct,
-  removeDummyProduct
+  removeDummyProduct,
+  removeAddedDummyProduct
 } = require('./seed/seedProduct');
 
 //Configure chai
@@ -41,6 +42,7 @@ describe('productControllerBusiness', () => {
   beforeEach(addDummyProfileToBusiness);
   beforeEach(addDummyProduct);
   afterEach(removeDummyProduct);
+  after(removeAddedDummyProduct);
   afterEach(deleteDummyShopOfBusiness);
   afterEach(removeDummyUsers);
 

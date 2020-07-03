@@ -23,7 +23,6 @@ module.exports = function (req, res, next) {
             .status(401)
             .json({ msg: 'Passed a shopper token to a business account' });
         }
-
         req.userType = decoded;
         const user_id = decoded.business.user_id;
         const user = await User.findById(user_id);

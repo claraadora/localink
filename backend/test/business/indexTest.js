@@ -11,6 +11,7 @@ const {
   userStaffToken,
   addDummyUsers,
   removeDummyUsers,
+  removeAddedDummyUsers,
   compareToken,
   getBusinessFromToken,
   clearDB
@@ -25,7 +26,8 @@ const app = require('../../server');
 let result = null;
 
 describe('indexControllerBusiness', () => {
-  afterEach(() => clearDB(result.businessId, result.userId));
+  after(removeAddedDummyUsers);
+  //afterEach(() => clearDB(result.businessId, result.userId));
   describe('Register business', () => {
     it('Should return token upon successful registration', done => {
       const registerCredentials = {

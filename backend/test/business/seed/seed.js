@@ -63,6 +63,11 @@ async function removeDummyUsers() {
   }
 }
 
+async function removeAddedDummyUsers() {
+  await Business.findOneAndDelete({ shopName: business.shopName });
+  await User.findOneAndDelete({ name: firstUserOwner.name });
+}
+
 async function addDummyUsers() {
   try {
     const businessObj = await new Business(business).save();
@@ -197,6 +202,7 @@ module.exports = {
   userStaffToken,
   addDummyUsers,
   removeDummyUsers,
+  removeAddedDummyUsers,
   compareToken,
   getBusinessFromToken,
   getUserFromToken,

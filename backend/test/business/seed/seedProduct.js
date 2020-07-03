@@ -55,7 +55,6 @@ async function addDummyProduct() {
   try {
     await product.save();
     const shop = await Shop.findOne({ owner: business._id });
-    const businessObj = await Business.findById(business._id);
     shop.products.unshift(product);
     await shop.save();
   } catch (error) {
@@ -67,11 +66,18 @@ async function removeDummyProduct() {
   await Product.findByIdAndDelete(dummyProduct._id);
   const shop = await Shop.findOne({ owner: business._id });
   shop.products.shift();
+  await shop.save();
+}
+
+async function removeAddedDummyProduct() {
+  await Product.findOneAndDelete({ name: dummyProduct.name });
+  await Business.findOneAndDelete({ shopName: business.shopName });
 }
 
 module.exports = {
   dummyProduct,
   updatedDummyProduct,
   addDummyProduct,
-  removeDummyProduct
+  removeDummyProduct,
+  removeAddedDummyProduct
 };
