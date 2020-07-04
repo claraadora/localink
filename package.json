@@ -8,7 +8,9 @@
     "server-install": "cd backend && npm install && npm start",
     "client-install": "cd frontend && npm install && npm start",
     "dev": "concurrently \"npm run server-install\" \"npm run client-install\"",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix ./frontend/client npm run build --prefix ./frontend/client"
+    "install": "cd frontend && npm install",
+    "build": "cd frontend/client && npm run build",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm run install && npm run build"
   },
   "author": "Olivia and Clara",
   "license": "MIT",
