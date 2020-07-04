@@ -6,7 +6,7 @@ let dbb = null;
 
 const connectClient = async () => {
   await MongoClient.connect(
-    URI,
+    process.env.MONGODB_URI || URI,
     {
       useUnifiedTopology: true
     },

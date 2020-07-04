@@ -3,8 +3,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 
-const Business = require('../../../models/Business');
-const User = require('../../../models/User');
+const Business = require('../../../backend/models/Business');
+const User = require('../../../backend/models/User');
 
 const businessId = new ObjectID();
 const firstUserOwnerId = new ObjectID();

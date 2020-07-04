@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { check } = require('express-validator');
 const authBusiness = require('../../../middleware/authBusiness');
-const checkObjectId = require('../../../middleware/checkObjectId');
+const checkObjectId = require('../../../middleware/CheckObjectId');
 const productControllerBusiness = require('../../../controllers/business/productControllerBusiness');
 
 // @route    POST business/product

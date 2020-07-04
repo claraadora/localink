@@ -35,7 +35,7 @@ const {
 chai.use(chaiHTTP);
 
 const app = require('../../server');
-const Product = require('../../models/Product');
+const Product = require('../../backend/models/Product');
 
 describe('productControllerBusiness', () => {
   beforeEach(addDummyUsers);
