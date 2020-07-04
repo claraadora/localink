@@ -9,12 +9,13 @@
     "client-install": "cd frontend && npm install && npm start",
     "dev": "concurrently \"npm run server-install\" \"npm run client-install\"",
     "install": "cd frontend && npm install",
-    "build": "cd frontend && cd client && npm run build",
+    "build": "cd frontend && npm run build",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm run install && npm run build"
   },
   "author": "Olivia and Clara",
   "license": "MIT",
   "dependencies": {
-    "concurrently": "^5.2.0"
+    "concurrently": "^5.2.0",
+    "path": "^0.12.7"
   }
 }
