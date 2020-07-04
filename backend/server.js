@@ -1,6 +1,7 @@
 const express = require('express');
 const connectDB = require('./config/db');
 const connectClient = require('./config/clientdb');
+const path = require('path');
 
 // console.log('server: ' + db);
 // connectClient().then(db => console.log('server: ' + db));
@@ -23,7 +24,7 @@ connectDB();
 // Init Middleware
 app.use(express.json());
 
-app.get('/', (req, res) => res.send('API running'));
+//app.get('/', (req, res) => res.send('API running'));
 
 //Define routes for businesses
 app.use('/business', require('./routes/api/business/index'));
@@ -114,6 +115,17 @@ io.on('connection', socket => {
     });
   });
 });
+
+//Serve static assets in production
+if (process.env.NODE_ENV === 'production') {
+  //Set static folder
+  app.use(express.static('frontend/client/build'));
+  app.get('*', (req, res) => {
+    res.sendFile(
+      path.resolve(__dirname, 'frontend', 'client', 'build', 'index.html')
+    );
+  });
+}
 
 const PORT = process.env.PORT || 5000;
 
