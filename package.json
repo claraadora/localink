@@ -4,12 +4,12 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "cd backend &&  npm install && node server.js",
+    "start": "cd backend && node server.js",
     "server-install": "cd backend && npm install && npm start",
     "client-install": "cd frontend && npm install && npm start",
     "dev": "concurrently \"npm run server-install\" \"npm run client-install\"",
     "install": "cd frontend && npm install",
-    "build": "cd client && npm run build",
+    "build": "cd frontend && cd client && npm run build",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm run install && npm run build"
   },
   "author": "Olivia and Clara",
