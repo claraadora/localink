@@ -11,6 +11,7 @@
   "author": "Olivia and Clara",
   "license": "MIT",
   "dependencies": {
+    "@livechat/ui-kit": "^0.4.0-10",
     "concurrently": "^5.2.0"
   }
 }
