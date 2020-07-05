@@ -58,8 +58,14 @@ export default function ShopperNavBar({ isSearchPage }) {
                     <OptionSelect />
                   </Grid>
                   <Grid item>
-                    My Location:
-                    <LocationDialog />
+                    <Grid container direction="row" alignItems="center">
+                      <Grid item xs={8}>
+                        My location:
+                      </Grid>
+                      <Grid item xs={4}>
+                        <LocationDialog />
+                      </Grid>
+                    </Grid>
                   </Grid>
                 </Grid>
               </Grid>
@@ -127,12 +133,12 @@ export default function ShopperNavBar({ isSearchPage }) {
               </Grid>
               <Grid item>
                 <Button color="inherit" component={Link} to="/signup">
-                  Sign up
+                  sign up
                 </Button>
               </Grid>
               <Grid item>
                 <Button color="inherit" component={Link} to="/login">
-                  Log in
+                  log in
                 </Button>
               </Grid>
             </>
