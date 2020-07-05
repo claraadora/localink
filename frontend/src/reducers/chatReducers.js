@@ -1,7 +1,9 @@
 import chatConstants from "../constants/chatConstants";
 
 const initialState = {
-  conversations: [],
+  chatList: [],
+  activeChat: null,
+  loading: true,
   error: {},
 };
 
@@ -9,17 +11,13 @@ export const chat = (state = initialState, action) => {
   const { type, payload } = action;
 
   switch (type) {
-    case chatConstants.GET_CHATS:
-      return { ...state, conversations: action.payload };
-    case chatConstants.AFTER_POST_MESSAGE:
-      return {
-        ...state,
-        conversations: state.conversations.concat(payload),
-      };
+    case chatConstants.GET_CHAT:
+      return { ...state, chatList: payload, loading: false };
     case chatConstants.CHAT_ERROR:
       return {
         ...state,
         error: payload,
+        loading: false,
       };
     default:
       return state;
@@ -27,3 +25,9 @@ export const chat = (state = initialState, action) => {
 };
 
 export default chat;
+
+// case chatConstants.AFTER_POST_MESSAGE:
+//   return {
+//     ...state,
+//     chatList: state.conversations.concat(payload),
+//   };

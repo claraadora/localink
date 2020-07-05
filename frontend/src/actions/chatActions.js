@@ -2,17 +2,17 @@ import axios from "axios";
 import chatConstants from "../constants/chatConstants";
 import { setAlert } from "./alertActions";
 
-export const getChat = (id) => async (dispatch) => {
+export const getChatList = (id) => async (dispatch) => {
   try {
     const res = await axios.get(`/inbox/${id}`);
-    console.log("id " + id);
+    console.log("idididiid " + id);
 
     dispatch({
       type: chatConstants.GET_CHAT,
       payload: res.data,
     });
+    console.log(res.data);
   } catch (err) {
-    console.log(err);
     const errors = err.response.data.errors;
 
     if (errors) {
