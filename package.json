@@ -4,14 +4,38 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "server-install": "cd backend && npm install && npm start",
-    "client-install": "cd frontend && npm install && npm start",
-    "dev": "concurrently \"npm run server-install\" \"npm run client-install\""
+    "start": "node server",
+    "server": "nodemon server",
+    "client": "npm start --prefix frontend",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "test": "mocha --recursive --timeout 10000 -r dotenv/config",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend"
   },
   "author": "Olivia and Clara",
   "license": "MIT",
   "dependencies": {
-    "@livechat/ui-kit": "^0.4.0-10",
-    "concurrently": "^5.2.0"
+    "bcryptjs": "^2.4.3",
+    "config": "^3.3.1",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-validator": "^6.5.0",
+    "google-auth-library": "^6.0.2",
+    "got": "^11.3.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongodb": "^3.5.7",
+    "mongoose": "^5.9.20",
+    "nodemailer": "^6.4.8",
+    "socket.io": "^2.3.0",
+    "concurrently": "^5.2.0",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "concurrently": "^5.2.0",
+    "expect": "^26.1.0",
+    "mocha": "^8.0.1",
+    "nodemon": "^2.0.4"
   }
 }

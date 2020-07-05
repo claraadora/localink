@@ -6,7 +6,7 @@ let dbb = null;
 
 const connectClient = async () => {
   await MongoClient.connect(
-    URI,
+    process.env.MONGODB_URI || URI,
     {
       useUnifiedTopology: true
     },
@@ -16,7 +16,15 @@ const connectClient = async () => {
       }
       console.log('MongoDB client connected...');
       const db = client.db('test');
-      //For testing
+      // //For testing
+      // db.collection('products').remove(
+      //   { name: 'test product create, update, delete' },
+      //   { $multi: true }
+      // );
+      // db.collection('shops').remove(
+      //   { shopName: 'updated test create or update profile' },
+      //   { $multi: true }
+      // );
       // db.collection('shops').remove(
       //   { shopName: 'test create or update profile' },
       //   { $multi: true }

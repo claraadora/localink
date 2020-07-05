@@ -20,11 +20,10 @@ chai.use(chaiHTTP);
 //const authControllerBusiness = require('../../controllers/business/authControllerBusiness');
 const app = require('../../server');
 
-beforeEach(addDummyUsers);
-afterEach(removeDummyUsers);
-
-describe('authControllerBusiness', () => {
+describe('autheControllerBusiness', () => {
   //Test to get user by token
+  beforeEach(addDummyUsers);
+  afterEach(removeDummyUsers);
   describe('Get business from token', () => {
     it('Given first owner token should return business object', done => {
       chai

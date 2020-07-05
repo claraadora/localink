@@ -25,7 +25,9 @@ const {
   addDummyProfileToBusiness,
   deleteDummyShopOfBusiness
 } = require('./seedProfile');
-const Product = require('../../../models/Product');
+const Product = require('../../../backend/models/Product');
+const Shop = require('../../../backend/models/Shop');
+const Business = require('../../../backend/models/Business');
 
 const dummyProduct = {
   _id: productId,
@@ -50,11 +52,32 @@ const updatedDummyProduct = {
 
 async function addDummyProduct() {
   const product = new Product(dummyProduct);
-  await product.save();
-  // console.log(business._id);
-  // const shop = Shop.findOne({ owner: business._id });
-  // shop.products.push(product);
-  // await shop.save();
+  try {
+    await product.save();
+    const shop = await Shop.findOne({ owner: business._id });
+    shop.products.unshift(product);
+    await shop.save();
+  } catch (error) {
+    console.log(error.message);
+  }
 }
 
-module.exports = { dummyProduct, updatedDummyProduct, addDummyProduct };
+async function removeDummyProduct() {
+  await Product.findByIdAndDelete(dummyProduct._id);
+  const shop = await Shop.findOne({ owner: business._id });
+  shop.products.shift();
+  await shop.save();
+}
+
+async function removeAddedDummyProduct() {
+  await Product.findOneAndDelete({ name: dummyProduct.name });
+  await Business.findOneAndDelete({ shopName: business.shopName });
+}
+
+module.exports = {
+  dummyProduct,
+  updatedDummyProduct,
+  addDummyProduct,
+  removeDummyProduct,
+  removeAddedDummyProduct
+};
