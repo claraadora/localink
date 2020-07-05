@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from 'react';
 import {
   withGoogleMap,
   withScriptjs,
@@ -6,10 +6,10 @@ import {
   Marker,
   DirectionsRenderer,
   Polyline,
-  InfoWindow,
-} from "react-google-maps";
-import { makeStyles } from "@material-ui/styles";
-import { useSelector, useDispatch } from "react-redux";
+  InfoWindow
+} from 'react-google-maps';
+import { makeStyles } from '@material-ui/styles';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   purple,
   pink,
@@ -18,12 +18,12 @@ import {
   orange,
   indigo,
   lime,
-  teal,
-} from "@material-ui/core/colors";
+  teal
+} from '@material-ui/core/colors';
 import {
   loadDirectionSteps,
-  updateDirectionSteps,
-} from "../../actions/shopper/searchActions";
+  updateDirectionSteps
+} from '../../actions/shopper/searchActions';
 
 function createKey(location) {
   return location.lat + location.lng;
@@ -32,26 +32,26 @@ function createKey(location) {
 const colors = [pink, cyan, deepPurple, orange, indigo, lime, purple, teal];
 
 function Map() {
-  const searchResult = useSelector((state) => state.search.productArray);
-  const searchSelector = useSelector((state) => state.search);
+  const searchResult = useSelector(state => state.search.productArray);
+  const searchSelector = useSelector(state => state.search);
   const [userLocation, setUserLocation] = useState(searchSelector.userLocation);
-  const loading = useSelector((state) => state.search.loading);
-  const stops = useSelector((state) => state.itinerary.itineraryArray);
+  const loading = useSelector(state => state.search.loading);
+  const stops = useSelector(state => state.itinerary.itineraryArray);
   const [startPoints, setStartPoints] = useState([]);
   const [endPoints, setEndPoints] = useState([]);
-  const [travelMode, setTravelMode] = useState("DRIVING");
+  const [travelMode, setTravelMode] = useState('DRIVING');
   const [routeData, setRouteData] = useState([]);
   const [directions, setDirections] = useState([]);
   const [markers, setMarkers] = useState([]);
   const [directionSteps, setDirectionSteps] = useState([]);
   const mapRef = useRef();
   const selectedPolyline = useRef();
-  const renderRoute = useSelector((state) => state.search.renderRoute);
+  const renderRoute = useSelector(state => state.search.renderRoute);
   const dispatch = useDispatch();
   const [currLines, setCurrLines] = useState([]);
 
   const onClick = () => {
-    console.log("CLICKED" + selectedPolyline.current);
+    console.log('CLICKED' + selectedPolyline.current);
   };
 
   useEffect(() => {
@@ -59,7 +59,7 @@ function Map() {
   }, [searchSelector]);
 
   useEffect(() => {
-    const latLng = stops.map((product) => product.shop_docs[0].latLng);
+    const latLng = stops.map(product => product.shop_docs[0].latLng);
     const newStart = latLng.slice(0, latLng.length - 1);
     const newEnd = latLng.slice(1, latLng.length);
     setStartPoints(newStart);
@@ -71,7 +71,7 @@ function Map() {
     const DirectionsService = new window.google.maps.DirectionsService();
     let tempArr = [];
 
-    console.log("here");
+    console.log('here');
     console.log(startPoints.length);
     for (let i = 0; i < startPoints.length; i++) {
       DirectionsService.route(
@@ -79,10 +79,10 @@ function Map() {
           origin: startPoints[i],
           destination: endPoints[i],
           travelMode: travelMode,
-          provideRouteAlternatives: true,
+          provideRouteAlternatives: true
         },
         (response, status) => {
-          if (status === "OK") {
+          if (status === 'OK') {
             let routes = [];
             tempArr.push(response);
             for (let j = 0; j < response.routes.length; j++) {
@@ -92,7 +92,7 @@ function Map() {
                 fare: response.routes[j].fare,
                 end_address: response.routes[j].legs[0].end_address,
                 start_address: response.routes[j].legs[0].start_address,
-                routeIndex: j,
+                routeIndex: j
               });
             }
             routeData.push(routes);
@@ -111,15 +111,13 @@ function Map() {
     }
     if (directions.length === stops.length - 1) {
       //default direction steps
-      const dirSteps = directions.map(
-        (direction) => direction.routes[0].legs[0]
-      );
+      const dirSteps = directions.map(direction => direction.routes[0].legs[0]);
       setDirectionSteps(dirSteps);
       if (renderRoute) {
         dispatch(loadDirectionSteps(dirSteps));
       }
       const len = directions.length;
-      console.log("im here");
+      console.log('im here');
     }
   }, [
     setDirections,
@@ -132,14 +130,14 @@ function Map() {
     renderRoute,
     stops,
     startPoints,
-    endPoints,
+    endPoints
   ]);
 
   return (
     <GoogleMap
       defaultZoom={12}
       defaultCenter={{ lat: 1.3521, lng: 103.8198 }}
-      gestureHandling="cooperative"
+      gestureHandling='cooperative'
       ref={mapRef}
     >
       {userLocation ? (
@@ -172,7 +170,7 @@ function Map() {
                     }
                     newCurrLines[idx] = index;
                     setCurrLines(newCurrLines);
-                    console.log("idx" + newCurrLines[idx]);
+                    console.log('idx' + newCurrLines[idx]);
                   }}
                   path={direction.routes[index].overview_path}
                   options={{
@@ -189,7 +187,7 @@ function Map() {
                         : index === currLines[idx]
                         ? 5
                         : 1,
-                    clickable: true,
+                    clickable: true
                   }}
                 />
               );
@@ -215,7 +213,7 @@ const MapWrapped = withScriptjs(withGoogleMap(Map));
 
 export const LocalinkMap = () => {
   return (
-    <div style={{ width: "100vw", height: "92vh" }}>
+    <div style={{ width: '100vw', height: '92vh' }}>
       <MapWrapped
         googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
         loadingElement={<div style={{ height: `100%` }} />}

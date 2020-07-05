@@ -14,15 +14,14 @@ const Chat = require('../../../models/Chat');
 router.get('/:shopper_id', async (req, res) => {
   try {
     const shopperId = req.params.shopper_id;
+    console.log(typeof shopperId);
     const chatList = [];
     const db = await connectClient();
     db.collection('chats')
       .aggregate([
         {
           $match: {
-            $expr: {
-              shopper: '$shopperId' //get object whether or not shopper is sender or receiver
-            }
+            shopper: new mongoose.Types.ObjectId(shopperId) //get object whether or not shopper is sender or receiver
           }
         },
         {
