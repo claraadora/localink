@@ -3,16 +3,31 @@ import { ThemeProvider, defaultTheme } from "@livechat/ui-kit";
 import { LocalinkChatList } from "../components/chat/ChatList";
 import { LocalinkMessageList } from "../components/chat/MessageList";
 import { useDispatch, useSelector } from "react-redux";
-import { getChatList } from "../actions/chatActions";
 import { Grid } from "@material-ui/core";
 import { themeChat } from "../themeChat";
-export const ChatPage = () => {
+import io from "socket.io-client";
+import moment from "moment";
+import { getChatList, afterPostMessage } from "../actions/chatActions";
+
+const socket = io("http://localhost:5000");
+
+export const ChatPage = (props) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
   const loading = useSelector((state) => state.chat.loading);
+
+  useEffect(() => {
+    socket.on("Output Chat Message", (messageFromBackEnd) => {
+      console.log(messageFromBackEnd);
+      dispatch(afterPostMessage(messageFromBackEnd));
+    });
+    return () => socket.disconnect();
+  }, []);
+
   useEffect(() => {
     dispatch(getChatList(user._id));
-  }, [user, dispatch, loading]);
+  }, [user, loading, dispatch]);
+
   return (
     <ThemeProvider theme={themeChat}>
       <Grid container direction="column">
@@ -21,7 +36,7 @@ export const ChatPage = () => {
             <LocalinkChatList />
           </Grid>
           <Grid item md={9}>
-            <LocalinkMessageList />
+            <LocalinkMessageList socket={socket} isShopper={props.isShopper} />
           </Grid>
         </Grid>
       </Grid>
