@@ -19,15 +19,14 @@ export const chat = (state = initialState, action) => {
         error: payload,
         loading: false,
       };
+    case chatConstants.AFTER_POST_MESSAGE:
+      return {
+        ...state,
+        chatList: state.conversations.concat(payload),
+      };
     default:
       return state;
   }
 };
 
 export default chat;
-
-// case chatConstants.AFTER_POST_MESSAGE:
-//   return {
-//     ...state,
-//     chatList: state.conversations.concat(payload),
-//   };

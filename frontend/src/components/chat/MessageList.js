@@ -1,23 +1,57 @@
 import React, { useState, useEffect } from "react";
-import { MessageList } from "@livechat/ui-kit";
-import { useSelector } from "react-redux";
+import {
+  Row,
+  MessageList,
+  TextInput,
+  SendButton,
+  TextComposer,
+} from "@livechat/ui-kit";
+import { useSelector, useDispatch } from "react-redux";
 import { LocalinkMessageListItem } from "./MessageListItem";
 import { Paper, makeStyles } from "@material-ui/core";
+import moment from "moment";
+import { getChat, afterPostMessage } from "../../actions/chatActions";
 
 const useStyles = makeStyles({
   paper: {
     backgroundColor: "#000000",
   },
 });
-export const LocalinkMessageList = () => {
+
+export const LocalinkMessageList = (props) => {
   const chat = useSelector((state) => state.chat);
+  const user = useSelector((state) => state.auth.user);
   const [activeChat, setActiveChat] = useState(chat.activeChat);
   const [chatList, setChatList] = useState(chat.chatList);
+  const [textInput, setTextInput] = useState("");
+  const dispatch = useDispatch();
+
   const classes = useStyles();
   useEffect(() => {
     setChatList(chat.chatList);
     setActiveChat(chat.activeChat);
   }, [chat]);
+
+  const handleSubmit = (e) => {
+    let username = user.name;
+    let userId = user._id;
+    let time = moment();
+    let type = "text";
+    let receiverId = chatList[activeChat]._id;
+    let isShopper = props.isShopper;
+
+    props.socket.emit("Input Chat Message", {
+      userId,
+      username,
+      textInput,
+      time,
+      type,
+      receiverId,
+      isShopper,
+    });
+    setTextInput("");
+    console.log("submitted");
+  };
 
   if (chatList.length === 0) {
     return null;
@@ -31,6 +65,16 @@ export const LocalinkMessageList = () => {
             return <LocalinkMessageListItem data={msg} key={index} />;
           })}
         </MessageList>
+        <TextComposer
+          value={textInput}
+          onChange={(e) => setTextInput(e.target.value)}
+          onSend={handleSubmit}
+        >
+          <Row align="center">
+            <TextInput fill />
+            <SendButton fit />
+          </Row>
+        </TextComposer>
       </Paper>
     );
   }
