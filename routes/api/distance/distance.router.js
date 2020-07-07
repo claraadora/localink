@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const authShopper = require('../../../middleware/authShopper');
+const authShopper = require('../../../middleware/shopper/authShopper');
 
 const getCurrentLocation = require('./geolocation');
 const geocode = require('./geocode');

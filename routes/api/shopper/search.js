@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { check } = require('express-validator');
-const authShopper = require('../../../middleware/authShopper');
+const authShopper = require('../../../middleware/shopper/authShopper');
 
 const searchController = require('../../../controllers/shopper/searchController');
 

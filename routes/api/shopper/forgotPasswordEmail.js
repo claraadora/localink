@@ -3,8 +3,8 @@ const router = express.Router();
 const {
   sendPasswordResetEmail,
   receivedNewPassword
-} = require('./email.controller');
-const authShopper = require('../../../middleware/authShopper');
+} = require('../../../controllers/email/email.controller');
+const authShopper = require('../../../middleware/shopper/authShopper');
 const resetPasswordAuth = require('../../../middleware/ResetPasswordAuth');
 
 // @route    POST /reset_password/:email

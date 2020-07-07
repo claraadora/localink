@@ -28,6 +28,10 @@ const ShopperSchema = new mongoose.Schema({
       type: Number
     }
   },
+  isAccountActive: {
+    type: Boolean,
+    default: false
+  },
   reviews: [
     {
       type: mongoose.Schema.Types.ObjectId,

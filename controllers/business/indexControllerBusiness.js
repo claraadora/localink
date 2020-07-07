@@ -1,7 +1,6 @@
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const config = require('config');
 const { validationResult } = require('express-validator');
+const { sendActivationEmail } = require('../email/activationEmailController');
 
 const Business = require('../../models/Business');
 const User = require('../../models/User');
@@ -42,23 +41,7 @@ async function registerBusiness(req, res) {
 
     await business.save();
 
-    const payload = {
-      business: {
-        id: business.id,
-        user_id: user.id
-      }
-    };
-
-    //Create token
-    jwt.sign(
-      payload,
-      config.get('jwtSecret'),
-      { expiresIn: '5 days' },
-      (err, token) => {
-        if (err) throw err;
-        res.json({ token });
-      }
-    );
+    sendActivationEmail(business, user, res);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');

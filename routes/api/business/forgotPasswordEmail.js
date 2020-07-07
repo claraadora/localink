@@ -3,8 +3,8 @@ const router = express.Router();
 const {
   sendPasswordResetEmail,
   receivedNewPassword
-} = require('./email.controller');
-const checkBusinessOwner = require('../../../middleware/CheckBusinessOwner');
+} = require('../../../controllers/email/email.controller');
+const checkBusinessOwner = require('../../../middleware/business/CheckBusinessOwner');
 const resetPasswordAuth = require('../../../middleware/ResetPasswordAuth');
 
 // @route    POST business/reset_password/:email

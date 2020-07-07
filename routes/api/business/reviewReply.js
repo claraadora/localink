@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express();
-const authBusiness = require('../../../middleware/authBusiness');
+const authBusiness = require('../../../middleware/business/authBusiness');
 const checkObjectId = require('../../../middleware/CheckObjectId');
 
 const reviewReplyControllerBusiness = require('../../../controllers/business/reviewReplyControllerBusiness');

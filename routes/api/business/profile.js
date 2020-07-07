@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const authBusiness = require('../../../middleware/authBusiness');
-const checkBusinessOwner = require('../../../middleware/CheckBusinessOwner');
+const authBusiness = require('../../../middleware/business/authBusiness');
+const checkBusinessOwner = require('../../../middleware/business/CheckBusinessOwner');
 const { check } = require('express-validator');
 
 const profileControllerBusiness = require('../../../controllers/business/profileControllerBusiness');

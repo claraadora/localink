@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const authShopper = require('../../../middleware/authShopper');
+const authShopper = require('../../../middleware/shopper/authShopper');
 const { check } = require('express-validator');
 
 const profileController = require('../../../controllers/shopper/profileController');
