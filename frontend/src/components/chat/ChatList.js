@@ -4,18 +4,11 @@ import { useSelector } from "react-redux";
 import { LocalinkChatListItem } from "./ChatListItem";
 import { makeStyles } from "@material-ui/styles";
 
-const useStyles = makeStyles({
-  chatList: {
-    width: "20%",
-  },
-});
-
 export const LocalinkChatList = () => {
   const chat = useSelector((state) => state.chat);
   const [activeChat, setActiveChat] = useState(chat.activeChat);
   const [chatList, setChatList] = useState(chat.chatList);
 
-  const classes = useStyles();
   useEffect(() => {
     setChatList(chat.chatList);
     setActiveChat(chat.activeChat);
@@ -25,9 +18,9 @@ export const LocalinkChatList = () => {
     return null;
   } else {
     return (
-      <ChatList className={classes.chatList}>
+      <ChatList>
         {chatList.length > 0 &&
-          chatList.map((chatItem) => {
+          chatList.map((chatItem, index) => {
             const [_id, shopName, message_list] = [
               chatItem._id,
               chatItem.shopName,
@@ -36,7 +29,7 @@ export const LocalinkChatList = () => {
             const len = message_list.length;
             return (
               <LocalinkChatListItem
-                isActive={activeChat._id === _id}
+                isActive={activeChat === index}
                 name={shopName}
                 timestamp={len > 0 ? message_list[len - 1].date : null}
                 message={len > 0 ? message_list[len - 1].message : null}

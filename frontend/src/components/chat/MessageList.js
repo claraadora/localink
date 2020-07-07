@@ -1,64 +1,37 @@
 import React, { useState, useEffect } from "react";
-import { ChatList } from "@livechat/ui-kit";
+import { MessageList } from "@livechat/ui-kit";
 import { useSelector } from "react-redux";
-import {
-  MessageList,
-  MessageGroup,
-  Message,
-  MessageMedia,
-} from "./ChatListItem";
+import { LocalinkMessageListItem } from "./MessageListItem";
+import { Paper, makeStyles } from "@material-ui/core";
 
+const useStyles = makeStyles({
+  paper: {
+    backgroundColor: "#000000",
+  },
+});
 export const LocalinkMessageList = () => {
   const chat = useSelector((state) => state.chat);
-  // const [activeChat, setActiveChat] = useState(chat.activeChat);
-  const [activeChat, setActiveChat] = useState({
-    id: 0,
-    name: "Olivia",
-    timestamp: "14:31",
-    message: "Hello, I'm Olivia",
-    messageList: [["aa", "aaaaa", "aaaaaaa"], []],
-  });
-
-  //   const [chatList, setChatList] = useState(chat.chatList);
-  const [chatList, setChatList] = useState([]);
-
+  const [activeChat, setActiveChat] = useState(chat.activeChat);
+  const [chatList, setChatList] = useState(chat.chatList);
+  const classes = useStyles();
   useEffect(() => {
-    setChatList([
-      {
-        id: 0,
-        name: "Olivia",
-        timestamp: "14:31",
-        message: "Hello, I'm Olivia",
-      },
-      {
-        id: 1,
-        name: "TA Olivia",
-        timestamp: "14:32",
-        message: "Hello, I'm TA Olivia",
-      },
-    ]);
-  }, []);
+    setChatList(chat.chatList);
+    setActiveChat(chat.activeChat);
+  }, [chat]);
 
-  //   useEffect(() => {
-  //     setActiveChat(chat.activeChat);
-  //     setChatList(chat.chatList);
-  //   }, [chat]);
-
-  if (chatList === []) {
+  if (chatList.length === 0) {
     return null;
   } else {
+    const msgList = chatList[activeChat].message_list;
     return (
-      <ChatList>
-        {chatList &&
-          chatList.map((chatItem) => (
-            <LocalinkChatListItem
-              isActive={activeChat.id === chatItem.id}
-              name={chatItem.name}
-              timestamp={chatItem.timestamp}
-              message={chatItem.message}
-            />
-          ))}
-      </ChatList>
+      <Paper className={classes.paper}>
+        <MessageList active>
+          {msgList.map((msg, index) => {
+            console.log(index);
+            return <LocalinkMessageListItem data={msg} key={index} />;
+          })}
+        </MessageList>
+      </Paper>
     );
   }
 };

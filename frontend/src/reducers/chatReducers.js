@@ -2,7 +2,7 @@ import chatConstants from "../constants/chatConstants";
 
 const initialState = {
   chatList: [],
-  activeChat: null,
+  activeChat: 0,
   loading: true,
   error: {},
 };
