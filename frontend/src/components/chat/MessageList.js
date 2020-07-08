@@ -37,13 +37,16 @@ export const LocalinkMessageList = (props) => {
     let userId = user._id;
     let time = moment();
     let type = "text";
-    let receiverId = chatList[activeChat]._id;
+    let receiverId = props.isShopper
+      ? chatList[activeChat].shopId
+      : chatList[activeChat].shopperId;
     let isShopper = props.isShopper;
+    let message = textInput;
 
     props.socket.emit("Input Chat Message", {
       userId,
       username,
-      textInput,
+      message,
       time,
       type,
       receiverId,
