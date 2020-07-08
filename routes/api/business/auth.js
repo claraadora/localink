@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const authBusiness = require('../../../middleware/authBusiness');
+const authBusiness = require('../../../middleware/business/authBusiness');
+const authRequired = require('../../../middleware/business/authRequired');
 const { check } = require('express-validator');
 
 const authControllerBusiness = require('../../../controllers/business/authControllerBusiness');
@@ -18,8 +19,11 @@ router.get('/', authBusiness, authControllerBusiness.getUserByToken);
 router.post(
   '/',
   [
-    check('email', 'Please include a valid email').isEmail(),
-    check('password', 'Password is required').exists()
+    authRequired,
+    [
+      check('email', 'Please include a valid email').isEmail(),
+      check('password', 'Password is required').exists()
+    ]
   ],
   authControllerBusiness.login
 );

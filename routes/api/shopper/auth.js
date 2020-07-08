@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const authShopper = require('../../../middleware/authShopper');
+const authShopper = require('../../../middleware/shopper/authShopper');
+const authRequired = require('../../../middleware/shopper/authRequired');
 
 const { check } = require('express-validator');
 
@@ -19,8 +20,11 @@ router.get('/', authShopper, authController.getUserByToken);
 router.post(
   '/',
   [
-    check('email', 'Please include a valid email').isEmail(),
-    check('password', 'Password is required').exists()
+    authRequired,
+    [
+      check('email', 'Please include a valid email').isEmail(),
+      check('password', 'Password is required').exists()
+    ]
   ],
   authController.login
 );

@@ -17,6 +17,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  isAccountActive: {
+    type: Boolean,
+    default: false
+  },
   activated: {
     type: Boolean
   }

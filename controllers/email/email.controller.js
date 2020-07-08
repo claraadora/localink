@@ -7,9 +7,9 @@ const {
 } = require('./email');
 
 const mongoose = require('mongoose');
-const Business = require('../../../models/Business');
-const User = require('../../../models/User');
-const Shopper = require('../../../models/Shopper');
+const Business = require('../../models/Business');
+const User = require('../../models/User');
+const Shopper = require('../../models/Shopper');
 
 const usePasswordHashToMakeToken = (user, specificUser) => {
   let password = null;

@@ -28,6 +28,10 @@ app.use(express.json());
 
 //Define routes for businesses
 app.use('/business', require('./routes/api/business/index'));
+app.use(
+  '/business/account-activation',
+  require('./routes/api/business/accountActivation')
+);
 app.use('/business/auth', require('./routes/api/business/auth'));
 app.use('/business/profile', require('./routes/api/business/profile'));
 //app.use('/business/shop', require('./routes/api/business/shop'));
@@ -36,19 +40,27 @@ app.use('/business/user', require('./routes/api/business/user'));
 app.use('/business/review-reply', require('./routes/api/business/reviewReply'));
 app.use(
   '/business/reset_password',
-  require('./routes/api/email/business.email.router')
+  require('./routes/api/business/forgotPasswordEmail')
 );
 
 //Define routes for shoppers
 app.use('/', require('./routes/api/shopper/index'));
+app.use(
+  '/account-activation',
+  require('./routes/api/shopper/accountActivation')
+);
 app.use('/auth', require('./routes/api/shopper/auth'));
 app.use('/profile', require('./routes/api/shopper/profile'));
 app.use('/review', require('./routes/api/shopper/review'));
 app.use('/search', require('./routes/api/shopper/search'));
-app.use('/reset_password', require('./routes/api/email/shopper.email.router'));
+app.use('/reset_password', require('./routes/api/shopper/forgotPasswordEmail'));
 app.use('/inbox', require('./routes/api/chat/inboxShopper'));
 //Define route to get distance to shop
 app.use('', require('./routes/api/distance/distance.router'));
+app.use(
+  '/account-activation',
+  require('./routes/api/shopper/accountActivation')
+);
 
 //Chat
 // app.io = require('socket.io')();

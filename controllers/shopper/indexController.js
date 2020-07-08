@@ -1,7 +1,6 @@
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const config = require('config');
 const { validationResult } = require('express-validator');
+const { sendActivationEmail } = require('../email/activationEmailController');
 
 const Shopper = require('../../models/Shopper');
 
@@ -31,22 +30,7 @@ async function registerShopper(req, res) {
 
     await shopper.save();
 
-    const payload = {
-      shopper: {
-        id: shopper.id
-      }
-    };
-
-    //Create token
-    jwt.sign(
-      payload,
-      config.get('jwtSecret'),
-      { expiresIn: '5 days' },
-      (err, token) => {
-        if (err) throw err;
-        res.json({ token });
-      }
-    );
+    sendActivationEmail(shopper, shopper, res);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
