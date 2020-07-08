@@ -34,7 +34,6 @@ app.use(
 );
 app.use('/business/auth', require('./routes/api/business/auth'));
 app.use('/business/profile', require('./routes/api/business/profile'));
-//app.use('/business/shop', require('./routes/api/business/shop'));
 app.use('/business/product', require('./routes/api/business/product'));
 app.use('/business/user', require('./routes/api/business/user'));
 app.use('/business/review-reply', require('./routes/api/business/reviewReply'));
