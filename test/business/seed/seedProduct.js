@@ -25,9 +25,9 @@ const {
   addDummyProfileToBusiness,
   deleteDummyShopOfBusiness
 } = require('./seedProfile');
-const Product = require('../../../backend/models/Product');
-const Shop = require('../../../backend/models/Shop');
-const Business = require('../../../backend/models/Business');
+const Product = require('../../../models/Product');
+const Shop = require('../../../models/Shop');
+const Business = require('../../../models/Business');
 
 const dummyProduct = {
   _id: productId,

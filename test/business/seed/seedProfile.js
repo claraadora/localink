@@ -15,9 +15,9 @@ const {
   getShopFromToken,
   clearDB
 } = require('./seed');
-const Business = require('../../../backend/models/Business');
-const Shop = require('../../../backend/models/Shop');
-const geocode = require('../../../backend/routes/api/distance/geocode');
+const Business = require('../../../models/Business');
+const Shop = require('../../../models/Shop');
+const geocode = require('../../../routes/api/distance/geocode');
 
 const dummyProfile = {
   _id: profileId,

@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const chai = require('chai');
 const chaiHTTP = require('chai-http');
 const assert = chai.assert;
@@ -9,6 +10,8 @@ const {
   firstUserOwnerToken,
   userOwnerToken,
   userStaffToken,
+  registerCredentials,
+  registerUser,
   addDummyUsers,
   removeDummyUsers,
   removeAddedDummyUsers,
@@ -20,22 +23,14 @@ const {
 //Configure chai
 chai.use(chaiHTTP);
 
-//const authControllerBusiness = require('../../controllers/business/authControllerBusiness');
 const app = require('../../server');
 
 let result = null;
 
 describe('indexControllerBusiness', () => {
-  after(removeAddedDummyUsers);
-  //afterEach(() => clearDB(result.businessId, result.userId));
+  afterEach(removeAddedDummyUsers);
   describe('Register business', () => {
-    it('Should return token upon successful registration', done => {
-      const registerCredentials = {
-        shopName: business.shopName,
-        name: firstUserOwner.name,
-        email: firstUserOwner.email,
-        password: firstUserOwner.password
-      };
+    it('Registered business should be saved', done => {
       chai
         .request(app)
         .post('/business')
@@ -43,23 +38,59 @@ describe('indexControllerBusiness', () => {
         .send(registerCredentials)
         .end(async function (error, res) {
           assert.equal(error, null, 'error is not null');
-          assert.equal(res.status, 200), 'status is not 200';
-          result = await getBusinessFromToken(res.body.token);
+          assert.equal(res.status, 250, 'status is not 200');
+          const user = await User.findOne({ email: registerCredentials.email });
+          const business = await Business.findOne({
+            users: mongoose.Types.ObjectId(user.id)
+          });
+          const status = user.isAccountActive;
+          assert.equal(status, false, 'default activation status is not false');
           assert.equal(
-            result.shopName,
+            business.shopName,
             registerCredentials.shopName,
             'Shop name is different'
           );
           assert.equal(
-            result.name,
+            user.name,
             registerCredentials.name,
             'Name is different'
           );
           assert.equal(
-            result.email,
+            user.email,
             registerCredentials.email,
             'Email is different'
           );
+          done();
+        });
+    });
+
+    it('Should send activation email successful registration', done => {
+      chai
+        .request(app)
+        .post('/business')
+        .set('Content-Type', 'application/json')
+        .send(registerCredentials)
+        .end(async function (error, res) {
+          assert.equal(error, null, 'error is not null');
+          assert.equal(res.status, 250, 'status is not 200');
+          assert.equal(res.body, 'Email sent successfully');
+          done();
+        });
+    });
+  });
+
+  describe('Test account activation', () => {
+    beforeEach(async () => {
+      this.activationLink = await registerUser();
+    });
+    it('Registered account should be active', done => {
+      chai
+        .request(app)
+        .get(this.activationLink)
+        .end(async function (error, res) {
+          assert.equal(error, null, 'error is not null');
+          assert.equal(res.status, 200, 'status is not 200');
+          assert.equal(res.text, 'Activated account successfully');
           done();
         });
     });
