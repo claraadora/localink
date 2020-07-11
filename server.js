@@ -41,6 +41,7 @@ app.use(
   '/business/reset_password',
   require('./routes/api/business/forgotPasswordEmail')
 );
+app.use('/new-chat', require('./routes/api/chat/newChat'));
 
 //Define routes for shoppers
 app.use('/', require('./routes/api/shopper/index'));
