@@ -24,6 +24,15 @@ const registerCredentials = {
   password: dummyShopper.password
 };
 
+const newEmail = {
+  email: 'updatedtestshopper@yahoo.com'
+};
+
+const newPassword = {
+  oldPassword: dummyShopper.password,
+  newPassword: 'updatedtestshopper@yahoo.com'
+};
+
 async function addDummyShopper() {
   const shopper = await new Shopper(dummyShopper).save();
   shopper.isAccountActive = true;
@@ -57,6 +66,8 @@ function createToken() {
 }
 
 function decodeToken(token) {
+  let token_id = null;
+
   jwt.verify(token, config.get('jwtSecret'), async (error, decoded) => {
     if (error) {
       return { message: 'Invalid token' };
@@ -119,13 +130,22 @@ async function registerShopper() {
   return substring;
 }
 
+async function getShopperFromToken(token) {
+  const decoded = decodeToken(token);
+  const shopper = await Shopper.findById(decoded.token_id);
+  return shopper;
+}
+
 module.exports = {
   dummyShopper,
   shopperToken,
   registerCredentials,
+  newEmail,
+  newPassword,
   addDummyShopper,
   removeDummyShopper,
   removeAddedDummyShopper,
   registerShopper,
-  compareToken
+  compareToken,
+  getShopperFromToken
 };
