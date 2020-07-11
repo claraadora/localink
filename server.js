@@ -86,11 +86,11 @@ io.on('connection', socket => {
 
         let shopper_id = receiverId;
         let business_id = userId;
-        let isShopperSender = false;
-        if (isShopper) {
+        let isShopperSender = 'false';
+        if (isShopper == 'true') {
           shopper_id = userId;
           business_id = receiverId;
-          isShopperSender = true;
+          isShopperSender = 'true';
         }
 
         const shop = await Shop.findOne({ owner: business_id });

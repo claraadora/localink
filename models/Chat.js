@@ -16,7 +16,7 @@ const ChatSchema = new mongoose.Schema({
     ref: 'Message'
   },
   isShopper: {
-    type: Boolean,
+    type: String,
     required: true
   }
 });
