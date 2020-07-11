@@ -10,7 +10,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { LocalinkMessageListItem } from "./MessageListItem";
 import { Paper, makeStyles } from "@material-ui/core";
 import moment from "moment";
-import { getChat, afterPostMessage } from "../../actions/chatActions";
+import { getChatById } from "../../utils/chat";
 
 const useStyles = makeStyles({
   paper: {
@@ -37,9 +37,7 @@ export const LocalinkMessageList = (props) => {
     let userId = user._id;
     let time = moment();
     let type = "text";
-    let receiverId = props.isShopper
-      ? chatList[activeChat].shopId
-      : chatList[activeChat].shopperId;
+    let receiverId = activeChat;
     let isShopper = props.isShopper;
     let message = textInput;
 
@@ -59,12 +57,14 @@ export const LocalinkMessageList = (props) => {
   if (chatList.length === 0) {
     return null;
   } else {
-    const msgList = chatList[activeChat].message_list;
+    const msgList =
+      activeChat === null
+        ? chatList[0].message_list
+        : getChatById(props.activeChat, props.isShopper, chatList).message_list;
     return (
       <Paper className={classes.paper}>
         <MessageList active>
           {msgList.map((msg, index) => {
-            console.log(index);
             return <LocalinkMessageListItem data={msg} key={index} />;
           })}
         </MessageList>

@@ -34,3 +34,10 @@ export const afterPostMessage = (data) => (dispatch) => {
     payload: data,
   });
 };
+
+export const setCurrActive = (id) => (dispatch) => {
+  dispatch({
+    type: chatConstants.SET_CURR_ACTIVE_CHAT,
+    payload: id,
+  });
+};

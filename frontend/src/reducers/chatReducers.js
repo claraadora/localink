@@ -2,7 +2,7 @@ import chatConstants from "../constants/chatConstants";
 
 const initialState = {
   chatList: [],
-  activeChat: 0,
+  activeChat: null,
   loading: true,
   error: {},
 };
@@ -22,7 +22,19 @@ export const chat = (state = initialState, action) => {
     case chatConstants.AFTER_POST_MESSAGE:
       return {
         ...state,
-        chatList: state.conversations.concat(payload),
+        chatList: state.chatList.map((chatItem) => {
+          if (
+            chatItem[payload.isShopper ? "shop" : "shopper"] ===
+            state.activeChat
+          ) {
+            chatItem.message_list.push(payload.message);
+          }
+        }),
+      };
+    case chatConstants.SET_CURR_ACTIVE_CHAT:
+      return {
+        ...state,
+        activeChat: payload,
       };
     default:
       return state;

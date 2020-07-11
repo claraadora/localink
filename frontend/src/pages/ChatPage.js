@@ -19,7 +19,7 @@ export const ChatPage = (props) => {
   useEffect(() => {
     socket.on("Output Chat Message", (messageFromBackEnd) => {
       console.log(messageFromBackEnd);
-      dispatch(afterPostMessage(messageFromBackEnd));
+      dispatch(afterPostMessage(messageFromBackEnd, props.isShopper));
     });
     return () => socket.disconnect();
   }, []);
@@ -33,7 +33,7 @@ export const ChatPage = (props) => {
       <Grid container direction="column">
         <Grid item md={12} container direction="row">
           <Grid item md={3}>
-            <LocalinkChatList />
+            <LocalinkChatList isShopper={props.isShopper} />
           </Grid>
           <Grid item md={9}>
             <LocalinkMessageList socket={socket} isShopper={props.isShopper} />

@@ -21,7 +21,7 @@ export const LocalinkChatListItem = (props) => {
   return (
     <ChatListItem
       active={props.isActive}
-      // onClick={() => dispatch(setCurrActive(props.id))}
+      onClick={() => dispatch(setCurrActive(props._id))}
     >
       <Avatar letter={props.name[0]} />
       <Column fill>
