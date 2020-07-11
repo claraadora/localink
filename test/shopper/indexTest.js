@@ -3,21 +3,14 @@ const chai = require('chai');
 const chaiHTTP = require('chai-http');
 const assert = chai.assert;
 const {
-  business,
-  firstUserOwner,
-  userOwner,
-  userStaff,
-  firstUserOwnerToken,
-  userOwnerToken,
-  userStaffToken,
+  dummyShopper,
+  shopperToken,
   registerCredentials,
-  registerUser,
-  addDummyUsers,
-  removeDummyUsers,
-  removeAddedDummyUsers,
-  compareToken,
-  getBusinessFromToken,
-  clearDB
+  addDummyShopper,
+  removeDummyShopper,
+  removeAddedDummyShopper,
+  registerShopper,
+  compareToken
 } = require('./seed/seed');
 
 //Configure chai
@@ -27,36 +20,30 @@ const app = require('../../server');
 
 let result = null;
 
-describe('indexControllerBusiness', () => {
-  afterEach(removeAddedDummyUsers);
-  describe('Register business', () => {
-    it('Registered business should be saved', done => {
+describe('indexControllerShopper', () => {
+  afterEach(removeAddedDummyShopper);
+  describe('Register shopper', () => {
+    it('Registered shopper should be saved', done => {
       chai
         .request(app)
-        .post('/business')
+        .post('/')
         .set('Content-Type', 'application/json')
         .send(registerCredentials)
         .end(async function (error, res) {
           assert.equal(error, null, 'error is not null');
           assert.equal(res.status, 250, 'status is not 200');
-          const user = await User.findOne({ email: registerCredentials.email });
-          const business = await Business.findOne({
-            users: mongoose.Types.ObjectId(user.id)
+          const shopper = await Shopper.findOne({
+            email: registerCredentials.email
           });
-          const status = user.isAccountActive;
+          const status = shopper.isAccountActive;
           assert.equal(status, false, 'default activation status is not false');
           assert.equal(
-            business.shopName,
-            registerCredentials.shopName,
-            'Shop name is different'
-          );
-          assert.equal(
-            user.name,
+            shopper.name,
             registerCredentials.name,
             'Name is different'
           );
           assert.equal(
-            user.email,
+            shopper.email,
             registerCredentials.email,
             'Email is different'
           );
@@ -67,7 +54,7 @@ describe('indexControllerBusiness', () => {
     it('Should send activation email successful registration', done => {
       chai
         .request(app)
-        .post('/business')
+        .post('/')
         .set('Content-Type', 'application/json')
         .send(registerCredentials)
         .end(async function (error, res) {
@@ -81,9 +68,9 @@ describe('indexControllerBusiness', () => {
 
   describe('Test account activation', () => {
     beforeEach(async () => {
-      this.activationLink = await registerUser();
+      this.activationLink = await registerShopper();
     });
-    it('Registered account should be active', done => {
+    it('Registered account should be active after activation', done => {
       chai
         .request(app)
         .get(this.activationLink)

@@ -14,7 +14,6 @@ const Chat = require('../../../models/Chat');
 router.get('/:shopper_id', async (req, res) => {
   try {
     const shopperId = req.params.shopper_id;
-    console.log(typeof shopperId);
     const chatList = [];
     const db = await connectClient();
     db.collection('chats')
