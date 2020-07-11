@@ -89,6 +89,7 @@ async function deleteDummyShopOfBusiness() {
 module.exports = {
   dummyProfile,
   updatedDummyProfile,
+  profileId,
   newEmail,
   newPassword,
   addDummyProfileToBusiness,

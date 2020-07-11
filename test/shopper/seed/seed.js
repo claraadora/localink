@@ -24,15 +24,6 @@ const registerCredentials = {
   password: dummyShopper.password
 };
 
-const newEmail = {
-  email: 'updatedtestshopper@yahoo.com'
-};
-
-const newPassword = {
-  oldPassword: dummyShopper.password,
-  newPassword: 'updatedtestshopper@yahoo.com'
-};
-
 async function addDummyShopper() {
   const shopper = await new Shopper(dummyShopper).save();
   shopper.isAccountActive = true;
@@ -140,8 +131,6 @@ module.exports = {
   dummyShopper,
   shopperToken,
   registerCredentials,
-  newEmail,
-  newPassword,
   addDummyShopper,
   removeDummyShopper,
   removeAddedDummyShopper,

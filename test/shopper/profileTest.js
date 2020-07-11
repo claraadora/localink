@@ -6,8 +6,6 @@ const {
   dummyShopper,
   shopperToken,
   registerCredentials,
-  newEmail,
-  newPassword,
   addDummyShopper,
   removeDummyShopper,
   removeAddedDummyShopper,
@@ -15,6 +13,8 @@ const {
   compareToken,
   getShopperFromToken
 } = require('./seed/seed');
+
+const { newEmail, newPassword } = require('./seed/seedProfile');
 
 const bcrypt = require('bcryptjs');
 

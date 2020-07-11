@@ -15,7 +15,6 @@ async function createReview(req, res) {
     const shopper = await Shopper.findById(req.user.id);
     const product = await Product.findById(req.body.product_id);
     let shop = await Shop.findById(product.shop);
-
     const newReview = new Review({
       author: shopper.id,
       shop: product.shop,
