@@ -40,17 +40,20 @@ export const addChatItem = (shopId, shopperId, isShopper) => async (
   const body = JSON.stringify({ shopId, shopperId, isShopper });
 
   try {
-    const res = await axios.post("/newChat", body, config);
+    const res = await axios.post("/new-chat", body, config);
     dispatch({
       type: chatConstants.ADD_CHAT_ITEM,
     });
     dispatch(setCurrActive(isShopper ? shopId : shopperId));
     dispatch(getChatList(isShopper ? shopId : shopperId));
+
+    console.log(body);
   } catch (err) {
     const errors = err.response.data.errors;
     if (errors) {
       errors.forEach((error) => dispatch(setAlert(error.msg, "error")));
     }
+    console.log(errors);
 
     dispatch({
       type: chatConstants.CHAT_ERROR,
