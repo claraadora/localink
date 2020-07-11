@@ -3,6 +3,7 @@ const chatConstants = {
   AFTER_POST_MESSAGE: "AFTER_POST_MESSAGE",
   CHAT_ERROR: "CHAT_ERROR",
   SET_CURR_ACTIVE_CHAT: "SET_CURR_ACTIVE_CHAT",
+  ADD_CHAT_ITEM: "ADD_CHAT_ITEM",
 };
 
 export default chatConstants;
