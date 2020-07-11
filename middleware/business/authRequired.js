@@ -7,6 +7,10 @@ module.exports = async function (req, res, next) {
     req.user = user;
     next();
   } else {
-    res.send('Account not activated, click here to send email');
+    res
+      .status(400)
+      .json({
+        errors: [{ msg: 'Account not activated, click here to send email' }]
+      });
   }
 };
