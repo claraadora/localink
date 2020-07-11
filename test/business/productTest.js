@@ -40,8 +40,8 @@ const Product = require('../../models/Product');
 describe('productControllerBusiness', () => {
   beforeEach(addDummyUsers);
   beforeEach(addDummyProfileToBusiness);
-  beforeEach(addDummyProduct);
-  afterEach(removeDummyProduct);
+  beforeEach(() => addDummyProduct(dummyProduct));
+  afterEach(() => removeDummyProduct(dummyProduct));
   after(removeAddedDummyProduct);
   afterEach(deleteDummyShopOfBusiness);
   afterEach(removeDummyUsers);

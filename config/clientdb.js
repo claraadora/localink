@@ -16,7 +16,7 @@ const connectClient = async () => {
       }
       console.log('MongoDB client connected...');
       const db = client.db('test');
-      // //For testing
+      //For testing
       // db.collection('users').remove(
       //   { name: 'test first business owner' },
       //   { $multi: true }
@@ -27,6 +27,14 @@ const connectClient = async () => {
       // );
       // db.collection('users').remove(
       //   { name: 'test user staff' },
+      //   { $multi: true }
+      // );
+      // db.collection('businesses').remove(
+      //   { shopName: 'test create or update profile' },
+      //   { $multi: true }
+      // );
+      // db.collection('shops').remove(
+      //   { shopName: 'test create or update profile' },
       //   { $multi: true }
       // );
       dbb = db;

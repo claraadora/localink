@@ -60,7 +60,6 @@ async function addDummyProfileToBusiness() {
     const profileFields = {
       shopName: dummyProfile.shopName
     };
-
     const profile = await Business.findOneAndUpdate(
       { _id: business._id },
       { $set: profileFields },
