@@ -21,7 +21,7 @@ const useStyles = makeStyles({
 export const LocalinkMessageList = (props) => {
   const chat = useSelector((state) => state.chat);
   const user = useSelector((state) => state.auth.user);
-  const isShopper = useSelector((state) => state.page.isShopper);
+  const isShopperState = useSelector((state) => state.page.isShopper);
   const [activeChat, setActiveChat] = useState(chat.activeChat);
   const [chatList, setChatList] = useState(chat.chatList);
   const [msgList, setMsgList] = useState(null);
@@ -33,13 +33,12 @@ export const LocalinkMessageList = (props) => {
     setChatList(chat.chatList);
     setActiveChat(chat.activeChat);
     if (chat.chatList.length > 0) {
-      console.log("id" + chat.activeChat);
-      console.log("isShopper" + isShopper);
-      console.log("len" + chat.chatList.length);
-      const currChat = getChatById(chat.activeChat, isShopper, chat.chatList);
-      console.log(currChat._id);
+      const currChat = getChatById(
+        chat.activeChat,
+        isShopperState,
+        chat.chatList
+      );
       const currMsgList = currChat.message_list;
-      console.log(currMsgList.length);
       setMsgList(currMsgList);
     }
   }, [chat, dispatch]);
@@ -50,7 +49,7 @@ export const LocalinkMessageList = (props) => {
     let time = moment();
     let type = "text";
     let receiverId = activeChat;
-    let isShopper = isShopper ? "true" : "false";
+    let isShopper = isShopperState ? "true" : "false";
     let message = textInput;
 
     props.socket.emit("Input Chat Message", {
@@ -64,7 +63,6 @@ export const LocalinkMessageList = (props) => {
     });
     setTextInput("");
     console.log("submitted");
-    console.log(isShopper);
   };
 
   if (chatList.length === 0 || msgList === null) {

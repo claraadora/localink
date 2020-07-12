@@ -27,8 +27,9 @@ export const chat = (state = initialState, action) => {
             chatItem[payload.isShopper ? "shop" : "shopper"] ===
             state.activeChat
           ) {
-            chatItem.message_list.push(payload.message);
+            chatItem.message_list.push(payload.messageFromBackEnd.message);
           }
+          return chatItem;
         }),
       };
     case chatConstants.SET_CURR_ACTIVE_CHAT:

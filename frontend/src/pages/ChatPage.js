@@ -20,7 +20,7 @@ export const ChatPage = (props) => {
   useEffect(() => {
     socket.on("Output Chat Message", (messageFromBackEnd) => {
       console.log(messageFromBackEnd);
-      dispatch(afterPostMessage(messageFromBackEnd, isShopper));
+      dispatch(afterPostMessage({ messageFromBackEnd, isShopper }));
     });
     return () => socket.disconnect();
   }, []);
