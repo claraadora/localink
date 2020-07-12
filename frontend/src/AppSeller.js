@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import SellerLandingPage from "./pages/seller/LandingPage";
 import SellerLogInPage from "./pages/seller/LogInPage";
 import SellerSignUpPage from "./pages/seller/SignUpPage";
@@ -16,10 +17,14 @@ import { useSelector } from "react-redux";
 import { themeSeller } from "./themeSeller";
 import { ThemeProvider } from "@material-ui/core/styles";
 import ReviewTable from "./components/table/ReviewTable";
+import { updateIsShopper } from "./actions/pageActions";
 
 function AppSeller() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(updateIsShopper(false));
+  }, []);
   return (
     <ThemeProvider theme={themeSeller}>
       <Grid container direction="column" spacing={5}>

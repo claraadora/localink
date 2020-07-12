@@ -2,16 +2,17 @@ import axios from "axios";
 import chatConstants from "../constants/chatConstants";
 import { setAlert } from "./alertActions";
 
-export const getChatList = (id) => async (dispatch) => {
+export const getChatList = (id, isShopper) => async (dispatch) => {
   try {
     const res = await axios.get(`/inbox/${id}`);
-    console.log("idididiid " + id);
 
+    if (res.length > 0) {
+      dispatch(setCurrActive(res[0][isShopper ? "shop" : "shopper"]));
+    }
     dispatch({
       type: chatConstants.GET_CHAT,
       payload: res.data,
     });
-    console.log(res.data);
   } catch (err) {
     const errors = err.response.data.errors;
 

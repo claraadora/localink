@@ -5,6 +5,7 @@ import profile from "./profileReducers";
 import search from "./searchReducers";
 import itinerary from "./itineraryReducers";
 import chat from "./chatReducers";
+import page from "./pageReducers";
 
 export default combineReducers({
   auth,
@@ -13,4 +14,5 @@ export default combineReducers({
   search,
   itinerary,
   chat,
+  page,
 });
