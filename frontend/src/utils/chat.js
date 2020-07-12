@@ -7,7 +7,8 @@ export const getChatById = (id, isShopper, chatList) => {
     check = "shopper";
   }
   for (let i = 0; i < chatList.length; i++) {
-    if (chatList[i].check === id) {
+    console.log(chatList[i][check]);
+    if (chatList[i][check] === id) {
       return chatList[i];
     }
   }

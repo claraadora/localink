@@ -5,9 +5,12 @@ import { setAlert } from "./alertActions";
 export const getChatList = (id, isShopper) => async (dispatch) => {
   try {
     const res = await axios.get(`/inbox/${id}`);
+    if (isShopper === false) {
+      console.log("HHAHAHHHA");
+    }
 
-    if (res.length > 0) {
-      dispatch(setCurrActive(res[0][isShopper ? "shop" : "shopper"]));
+    if (res.data.length > 0) {
+      dispatch(setCurrActive(res.data[0][isShopper ? "shop" : "shopper"]));
     }
     dispatch({
       type: chatConstants.GET_CHAT,
@@ -46,7 +49,7 @@ export const addChatItem = (shopId, shopperId, isShopper) => async (
       type: chatConstants.ADD_CHAT_ITEM,
     });
     dispatch(setCurrActive(isShopper ? shopId : shopperId));
-    dispatch(getChatList(isShopper ? shopId : shopperId));
+    dispatch(getChatList(isShopper ? shopId : shopperId, isShopper));
 
     console.log(body);
   } catch (err) {
@@ -69,9 +72,9 @@ export const afterPostMessage = (data) => (dispatch) => {
   });
 };
 
-export const setCurrActive = (id) => (dispatch) => {
+export const setCurrActive = (receiverId) => (dispatch) => {
   dispatch({
     type: chatConstants.SET_CURR_ACTIVE_CHAT,
-    payload: id,
+    payload: receiverId,
   });
 };

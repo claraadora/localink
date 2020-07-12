@@ -26,7 +26,7 @@ export const ChatPage = (props) => {
   }, []);
 
   useEffect(() => {
-    dispatch(getChatList(user._id));
+    dispatch(getChatList(user._id, isShopper));
   }, [user, loading, dispatch]);
 
   return (

@@ -33,13 +33,16 @@ export const LocalinkMessageList = (props) => {
     setChatList(chat.chatList);
     setActiveChat(chat.activeChat);
     if (chat.chatList.length > 0) {
-      setMsgList(
-        activeChat === null
-          ? chat.chatList[0].message_list
-          : getChatById(activeChat, isShopper, chat.chatList).message_list
-      );
+      console.log("id" + chat.activeChat);
+      console.log("isShopper" + isShopper);
+      console.log("len" + chat.chatList.length);
+      const currChat = getChatById(chat.activeChat, isShopper, chat.chatList);
+      console.log(currChat._id);
+      const currMsgList = currChat.message_list;
+      console.log(currMsgList.length);
+      setMsgList(currMsgList);
     }
-  }, [chat]);
+  }, [chat, dispatch]);
 
   const handleSubmit = (e) => {
     let username = user.name;
@@ -64,7 +67,7 @@ export const LocalinkMessageList = (props) => {
     console.log(isShopper);
   };
 
-  if (chatList.length === 0) {
+  if (chatList.length === 0 || msgList === null) {
     return null;
   } else {
     return (
