@@ -21,6 +21,7 @@ const useStyles = makeStyles({
 export const LocalinkMessageList = (props) => {
   const chat = useSelector((state) => state.chat);
   const user = useSelector((state) => state.auth.user);
+  const isShopper = useSelector((state) => state.page.isShopper);
   const [activeChat, setActiveChat] = useState(chat.activeChat);
   const [chatList, setChatList] = useState(chat.chatList);
   const [msgList, setMsgList] = useState(null);
@@ -35,7 +36,7 @@ export const LocalinkMessageList = (props) => {
       setMsgList(
         activeChat === null
           ? chat.chatList[0].message_list
-          : getChatById(activeChat, props.isShopper, chat.chatList).message_list
+          : getChatById(activeChat, isShopper, chat.chatList).message_list
       );
     }
   }, [chat]);
@@ -46,7 +47,7 @@ export const LocalinkMessageList = (props) => {
     let time = moment();
     let type = "text";
     let receiverId = activeChat;
-    let isShopper = props.isShopper ? "true" : "false";
+    let isShopper = isShopper ? "true" : "false";
     let message = textInput;
 
     props.socket.emit("Input Chat Message", {

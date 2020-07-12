@@ -5,6 +5,7 @@ import { LocalinkChatListItem } from "./ChatListItem";
 
 export const LocalinkChatList = (props) => {
   const chat = useSelector((state) => state.chat);
+  const isShopper = useSelector((state) => state.page.isShopper);
   const [activeChat, setActiveChat] = useState(chat.activeChat);
   const [chatList, setChatList] = useState(chat.chatList);
 
@@ -21,7 +22,7 @@ export const LocalinkChatList = (props) => {
         {chatList.length > 0 &&
           chatList.map((chatItem) => {
             const [_id, shopName, message_list] = [
-              props.isShopper ? chatItem.shop : chatItem.shopper,
+              isShopper ? chatItem.shop : chatItem.shopper,
               chatItem.shopName,
               chatItem.message_list,
             ];

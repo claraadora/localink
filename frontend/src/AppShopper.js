@@ -34,11 +34,7 @@ function AppShopper() {
           <Route exact path="/search" component={ShopperSearchPage} />
           <Route exact path="/profile" component={ShopperProfilePage} />
           <Route exact path="/catalogue" component={ShopperCataloguePage} />
-          <Route
-            exact
-            path="/chat"
-            render={() => <ChatPage isShopper={true} />}
-          />
+          <Route exact path="/chat" component={ChatPage} />
           <Route exact path="/" component={ShopperLandingPage} />
         </Grid>
       </Grid>
