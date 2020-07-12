@@ -11,12 +11,10 @@ async function addUserToBusiness(req, res) {
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-
   const { role, name, email, password } = req.body;
 
   try {
     const business = await Business.findById(req.user.id);
-
     let user = await User.findOne({ email });
     if (user) {
       return res
@@ -43,23 +41,6 @@ async function addUserToBusiness(req, res) {
     await business.save();
 
     res.status(200).json('Added user successfully');
-    // const payload = {
-    //   business: {
-    //     id: business.id,
-    //     user_id: user.id
-    //   }
-    // };
-
-    // //Create token
-    // jwt.sign(
-    //   payload,
-    //   config.get('jwtSecret'),
-    //   { expiresIn: '5 days' },
-    //   (err, token) => {
-    //     if (err) throw err;
-    //     res.json({ token });
-    //   }
-    // );
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
@@ -69,12 +50,11 @@ async function addUserToBusiness(req, res) {
 async function deleteUser(req, res) {
   try {
     const business = await Business.findById(req.user.id);
-
-    business.users.filter(user => {
-      return user.toString() != req.params.user_id;
-    });
+    const newUsersArr = business.users.filter(
+      user => user.toString() !== req.params.user_id
+    );
+    business.users = newUsersArr;
     business.save();
-
     await User.findByIdAndDelete(req.params.user_id);
 
     res.status(200).json('Deactivated user successfully');
@@ -109,7 +89,7 @@ async function activateOrDeactivateUser(req, res) {
   try {
     const user = await User.findById(req.params.user_id);
     user.activated = !user.activated;
-    user.save();
+    await user.save();
     res.status(200).json('successfully changed user activation status');
   } catch (error) {
     console.error(err.message);

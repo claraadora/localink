@@ -105,6 +105,8 @@ async function removeDummyUsers() {
 async function removeAddedDummyUsers() {
   await Business.findOneAndDelete({ shopName: business.shopName });
   await User.findOneAndDelete({ name: firstUserOwner.name });
+  await User.findOneAndDelete({ name: userOwner.name });
+  await User.findOneAndDelete({ name: userStaff.name });
 }
 
 async function addDummyUsers() {
@@ -251,5 +253,6 @@ module.exports = {
   getBusinessFromToken,
   getUserFromToken,
   getShopFromToken,
+  hashPassword,
   clearDB
 };
