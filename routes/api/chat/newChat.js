@@ -13,6 +13,16 @@ const Chat = require('../../../models/Chat');
 router.post('/', async (req, res) => {
   const { shopperId, shopId, isShopper } = req.body;
 
+  // const newMessage = new Message({
+  //     userId,
+  //     username = '',
+  //     message = '',
+  //     time = '',
+  //     type = ''
+  //   });
+
+  //   await newMessage.save();
+
   const chat = new Chat({
     shopper: shopperId,
     shop: shopId,
