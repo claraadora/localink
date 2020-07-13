@@ -41,6 +41,7 @@ app.use(
   '/business/reset_password',
   require('./routes/api/business/forgotPasswordEmail')
 );
+app.use('/new-chat', require('./routes/api/chat/newChat'));
 
 //Define routes for shoppers
 app.use('/', require('./routes/api/shopper/index'));
@@ -84,15 +85,13 @@ io.on('connection', socket => {
         } = msg;
 
         let shopper_id = receiverId;
-        let business_id = userId;
-        let isShopperSender = false;
-        if (isShopper) {
+        let shop_id = userId;
+        // let isShopperSender = 'false';
+        if (isShopper == 'true') {
           shopper_id = userId;
-          business_id = receiverId;
-          isShopperSender = true;
+          shop_id = receiverId;
+          // isShopperSender = 'true';
         }
-
-        const shop = await Shop.findOne({ owner: business_id });
 
         const newMessage = new Message({
           userId,
@@ -106,19 +105,16 @@ io.on('connection', socket => {
 
         let chat = new Chat({
           shopper: shopper_id,
-          shop: shop.id,
-          message: newMessage,
-          isShopper: isShopperSender
+          shop: shop_id,
+          message: newMessage
+          // isShopper: isShopperSender
         });
 
         await chat.save();
 
-        if (isShopper) {
-          chat = await chat.populate('shopper').execPopulate();
-        } else {
-          chat = await chat.populate('business').execPopulate();
+        if (userId !== receiverId) {
+          return io.emit('Output Chat Message', newMessage);
         }
-        return io.emit('Output Chat Message', chat);
       } catch (error) {
         console.log(error);
         res.status(500).json('Server error');
