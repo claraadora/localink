@@ -70,6 +70,8 @@ const Message = require('./models/Message');
 const Chat = require('./models/Chat');
 const Shop = require('./models/Shop');
 
+const moment = require('moment');
+
 io.on('connection', socket => {
   socket.on('Input Chat Message', msg => {
     connectDB().then(async db => {
@@ -84,6 +86,8 @@ io.on('connection', socket => {
           isShopper
         } = msg;
 
+        const momentTime = moment(time);
+
         let shopper_id = receiverId;
         let shop_id = userId;
         // let isShopperSender = 'false';
@@ -93,11 +97,18 @@ io.on('connection', socket => {
           // isShopperSender = 'true';
         }
 
+        const formattedTime = {
+          sameDay: momentTime.format('h:mm a'),
+          lastDay: momentTime.format('[Yesterday] h:mm a'),
+          lastWeek: momentTime.format('[Last] dddd [at] h:mm'),
+          sameElse: momentTime.format('Do MMMM YYYY [at] h:mm a')
+        };
+
         const newMessage = new Message({
           userId,
           username,
           message,
-          time,
+          time: formattedTime,
           type
         });
 
@@ -117,7 +128,7 @@ io.on('connection', socket => {
         }
       } catch (error) {
         console.log(error);
-        res.status(500).json('Server error');
+        return error;
       }
     });
   });

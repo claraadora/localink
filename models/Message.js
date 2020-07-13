@@ -13,6 +13,7 @@ const MessageSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  time: mongoose.Schema.Types.Mixed,
   date: {
     type: Date,
     default: Date.now

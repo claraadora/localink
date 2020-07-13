@@ -14,11 +14,11 @@ const ChatSchema = new mongoose.Schema({
   message: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Message'
-  },
-  isShopper: {
-    type: String,
-    required: true
   }
+  // isShopper: {
+  //   type: String,
+  //   required: true
+  // }
 });
 
 module.exports = Chat = mongoose.model('Chat', ChatSchema);
