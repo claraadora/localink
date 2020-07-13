@@ -35,7 +35,7 @@ export default function ShopperNavBar({ isSearchPage }) {
     <AppBar position="static">
       <Toolbar>
         <Grid container direction="column" justify="center">
-          <Grid container direction="row" spacing={2} md={12}>
+          <Grid item container direction="row" spacing={2} md={12}>
             <Grid item md={0} xs={1} />
             <Grid item container justify="flex-start" md={2} xs={2}>
               <Button color="inherit" href="/">

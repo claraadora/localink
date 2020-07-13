@@ -11,6 +11,7 @@ import { LocalinkMessageListItem } from "./MessageListItem";
 import { Paper, makeStyles } from "@material-ui/core";
 import moment from "moment";
 import { getChatById } from "../../utils/chat";
+import { afterPostMessage } from "../../actions/chatActions";
 
 const useStyles = makeStyles({
   paper: {
@@ -38,19 +39,34 @@ export const LocalinkMessageList = (props) => {
         isShopperState,
         chat.chatList
       );
+      console.log(currChat);
+      console.log(currChat.message_list);
       const currMsgList = currChat.message_list;
       setMsgList(currMsgList);
     }
   }, [chat, dispatch]);
 
   const handleSubmit = (e) => {
+    let momentObj = moment();
     let username = user.name;
     let userId = user._id;
-    let time = moment();
+    let time = {
+      sameDay: momentObj.format("h:mm a"),
+      sameElse: momentObj.format("Do MMMM YYYY h:mm a"),
+      unformatted: momentObj,
+    };
     let type = "text";
     let receiverId = activeChat;
     let isShopper = isShopperState ? "true" : "false";
     let message = textInput;
+
+    const obj = {
+      userId,
+      username,
+      message,
+      time,
+      type,
+    };
 
     props.socket.emit("Input Chat Message", {
       userId,
@@ -61,8 +77,10 @@ export const LocalinkMessageList = (props) => {
       receiverId,
       isShopper,
     });
+    msgList.push(obj);
+    setMsgList(msgList);
     setTextInput("");
-    console.log("submitted");
+    dispatch(afterPostMessage(obj, isShopper));
   };
 
   if (chatList.length === 0 || msgList === null) {
