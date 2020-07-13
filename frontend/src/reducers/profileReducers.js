@@ -4,6 +4,7 @@ const initialState = {
   profile: null,
   loading: true,
   error: {},
+  isShopper: null,
 };
 
 export default function (state = initialState, action) {
@@ -29,6 +30,10 @@ export default function (state = initialState, action) {
         ...state,
         profile: null,
         loading: false,
+      };
+    case profileConstants.UPDATE_IS_SHOPPER:
+      return {
+        ...state,
       };
     default:
       return state;
