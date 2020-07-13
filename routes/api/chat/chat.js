@@ -37,7 +37,8 @@ module.exports = io => {
           sameDay: momentTime.format('h:mm a'),
           lastDay: momentTime.format('[Yesterday] h:mm a'),
           lastWeek: momentTime.format('[Last] dddd [at] h:mm'),
-          sameElse: momentTime.format('Do MMMM YYYY [at] h:mm a')
+          sameElse: momentTime.format('Do MMMM YYYY [at] h:mm a'),
+          unformatted: momentTime
         };
 
         const newMessage = new Message({
