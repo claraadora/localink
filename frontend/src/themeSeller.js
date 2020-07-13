@@ -24,9 +24,14 @@ export const themeSeller = createMuiTheme({
       fontSize: "2.125rem",
       letterSpacing: 0,
     },
-    h6: {
+    h5: {
       fontFamily: '"Metropolis", sans-serif',
       fontWeight: 500,
+      fontSize: "1.3rem",
+    },
+    h6: {
+      fontFamily: '"Metropolis", sans-serif',
+      fontWeight: 600,
       fontSize: "0.9375rem",
     },
     subtitle1: {
@@ -45,7 +50,7 @@ export const themeSeller = createMuiTheme({
     button: {
       fontFamily: '"Metropolis", sans-serif',
       fontWeight: 500,
-      fontSize: "1.3rem",
+      fontSize: "1rem",
       letterSpacing: 1,
       textTransform: "none",
       color: yellow[100],
@@ -53,7 +58,7 @@ export const themeSeller = createMuiTheme({
     navBar: {
       fontFamily: '"Metropolis", sans-serif',
       fontWeight: 500,
-      fontSize: "1.1rem",
+      fontSize: "1rem",
       letterSpacing: 1,
       textTransform: "none",
       color: "white",

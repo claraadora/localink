@@ -86,6 +86,7 @@ io.on('connection', socket => {
 
         let shopper_id = receiverId;
         let shop_id = userId;
+<<<<<<< HEAD
         // let isShopperSender = 'false';
         if (isShopper == 'true') {
           shopper_id = userId;
@@ -93,6 +94,17 @@ io.on('connection', socket => {
           // isShopperSender = 'true';
         }
 
+=======
+        let isShopperSender = 'false';
+        if (isShopper == 'true') {
+          shopper_id = userId;
+          shop_id = receiverId;
+          isShopperSender = 'true';
+        }
+
+        //const shop = await Shop.findById(shop_id);
+
+>>>>>>> 60735604a4e272486c2f193432c509ee80a9b272
         const newMessage = new Message({
           userId,
           username,
@@ -106,14 +118,26 @@ io.on('connection', socket => {
         let chat = new Chat({
           shopper: shopper_id,
           shop: shop_id,
+<<<<<<< HEAD
           message: newMessage
           // isShopper: isShopperSender
+=======
+          message: newMessage,
+          isShopper: isShopperSender
+>>>>>>> 60735604a4e272486c2f193432c509ee80a9b272
         });
 
         await chat.save();
 
+<<<<<<< HEAD
         if (userId !== receiverId) {
           return io.emit('Output Chat Message', newMessage);
+=======
+        if (isShopper == 'true') {
+          chat = await chat.populate('shopper').execPopulate();
+        } else {
+          chat = await chat.populate('shop').execPopulate();
+>>>>>>> 60735604a4e272486c2f193432c509ee80a9b272
         }
       } catch (error) {
         console.log(error);

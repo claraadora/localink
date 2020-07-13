@@ -7,6 +7,7 @@ import {
 } from "../../actions/shopper/itineraryActions";
 import { useSelector, useDispatch } from "react-redux";
 import Popover from "@material-ui/core/Popover";
+import { addChatItem } from "../../actions/chatActions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,6 +40,7 @@ export const ItemCard = (props) => {
   const sortedBy = useSelector((state) => state.search.sortedBy);
   const [isAdded, setIsAdded] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const userId = useSelector((state) => state.auth.user._id);
 
   const handlePopoverOpen = (event) => {
     console.log("WHERE");
@@ -90,6 +92,14 @@ export const ItemCard = (props) => {
                 }}
               >
                 {isAdded ? "Remove from Itinerary" : "Add to Itinerary"}
+              </Button>
+              <Button
+                size="small"
+                onClick={() =>
+                  dispatch(addChatItem(data.shop_docs[0]._id, userId, true))
+                }
+              >
+                Ask Seller
               </Button>
             </Grid>
           </Grid>

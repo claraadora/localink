@@ -141,6 +141,9 @@ export default function LoggedSellerNavBar() {
     <div className={classes.grow}>
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
+          <Button component={Link} to="/business/chat">
+            Chat
+          </Button>
           <Button
             color="inherit"
             component={Link}

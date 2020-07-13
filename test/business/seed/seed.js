@@ -3,8 +3,12 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 
-const Business = require('../../../backend/models/Business');
-const User = require('../../../backend/models/User');
+const Business = require('../../../models/Business');
+const User = require('../../../models/User');
+
+const {
+  getActivationLink
+} = require('../../../controllers/email/activationEmailController');
 
 const businessId = new ObjectID();
 const firstUserOwnerId = new ObjectID();
@@ -45,6 +49,41 @@ const userStaff = {
   activated: true
 };
 
+const registerCredentials = {
+  shopName: business.shopName,
+  name: firstUserOwner.name,
+  email: firstUserOwner.email,
+  password: firstUserOwner.password
+};
+
+async function registerUser() {
+  const { shopName, name, email, password } = registerCredentials;
+  const business = new Business({
+    shopName
+  });
+
+  const salt = await bcrypt.genSalt(10);
+
+  const pw = await bcrypt.hash(password, salt);
+
+  const user = new User({
+    name,
+    email,
+    password: pw,
+    role: 'owner',
+    activated: true
+  });
+
+  await user.save();
+
+  business.users.push(user);
+
+  await business.save();
+
+  const substring = getActivationLink(user).substr(21);
+  return substring;
+}
+
 //Init token
 const firstUserOwnerToken = createToken(businessId, firstUserOwnerId);
 const userOwnerToken = createToken(businessId, userOwnerId);
@@ -66,20 +105,25 @@ async function removeDummyUsers() {
 async function removeAddedDummyUsers() {
   await Business.findOneAndDelete({ shopName: business.shopName });
   await User.findOneAndDelete({ name: firstUserOwner.name });
+  await User.findOneAndDelete({ name: userOwner.name });
+  await User.findOneAndDelete({ name: userStaff.name });
 }
 
 async function addDummyUsers() {
   try {
     const businessObj = await new Business(business).save();
     const firstUserOwnerObj = await new User(firstUserOwner);
+    firstUserOwnerObj.isAccountActive = true;
     firstUserOwnerObj.password = await hashPassword(firstUserOwnerObj.password);
     await firstUserOwnerObj.save();
 
     const userOwnerObj = await new User(userOwner);
+    userOwnerObj.isAccountActive = true;
     userOwnerObj.password = await hashPassword(userOwnerObj.password);
     await userOwnerObj.save();
 
     const userStaffObj = await new User(userStaff);
+    userStaffObj.isAccountActive = true;
     userStaffObj.password = await hashPassword(userStaffObj.password);
     await userStaffObj.save();
 
@@ -200,6 +244,8 @@ module.exports = {
   firstUserOwnerToken,
   userOwnerToken,
   userStaffToken,
+  registerCredentials,
+  registerUser,
   addDummyUsers,
   removeDummyUsers,
   removeAddedDummyUsers,
@@ -207,5 +253,6 @@ module.exports = {
   getBusinessFromToken,
   getUserFromToken,
   getShopFromToken,
+  hashPassword,
   clearDB
 };

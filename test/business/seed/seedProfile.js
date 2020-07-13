@@ -15,9 +15,9 @@ const {
   getShopFromToken,
   clearDB
 } = require('./seed');
-const Business = require('../../../backend/models/Business');
-const Shop = require('../../../backend/models/Shop');
-const geocode = require('../../../backend/routes/api/distance/geocode');
+const Business = require('../../../models/Business');
+const Shop = require('../../../models/Shop');
+const geocode = require('../../../routes/api/distance/geocode');
 
 const dummyProfile = {
   _id: profileId,
@@ -60,7 +60,6 @@ async function addDummyProfileToBusiness() {
     const profileFields = {
       shopName: dummyProfile.shopName
     };
-
     const profile = await Business.findOneAndUpdate(
       { _id: business._id },
       { $set: profileFields },
@@ -89,6 +88,7 @@ async function deleteDummyShopOfBusiness() {
 module.exports = {
   dummyProfile,
   updatedDummyProfile,
+  profileId,
   newEmail,
   newPassword,
   addDummyProfileToBusiness,

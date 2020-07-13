@@ -10,7 +10,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { LocalinkMessageListItem } from "./MessageListItem";
 import { Paper, makeStyles } from "@material-ui/core";
 import moment from "moment";
-import { getChat, afterPostMessage } from "../../actions/chatActions";
+import { getChatById } from "../../utils/chat";
 
 const useStyles = makeStyles({
   paper: {
@@ -21,8 +21,10 @@ const useStyles = makeStyles({
 export const LocalinkMessageList = (props) => {
   const chat = useSelector((state) => state.chat);
   const user = useSelector((state) => state.auth.user);
+  const isShopperState = useSelector((state) => state.page.isShopper);
   const [activeChat, setActiveChat] = useState(chat.activeChat);
   const [chatList, setChatList] = useState(chat.chatList);
+  const [msgList, setMsgList] = useState(null);
   const [textInput, setTextInput] = useState("");
   const dispatch = useDispatch();
 
@@ -30,17 +32,24 @@ export const LocalinkMessageList = (props) => {
   useEffect(() => {
     setChatList(chat.chatList);
     setActiveChat(chat.activeChat);
-  }, [chat]);
+    if (chat.chatList.length > 0) {
+      const currChat = getChatById(
+        chat.activeChat,
+        isShopperState,
+        chat.chatList
+      );
+      const currMsgList = currChat.message_list;
+      setMsgList(currMsgList);
+    }
+  }, [chat, dispatch]);
 
   const handleSubmit = (e) => {
     let username = user.name;
     let userId = user._id;
     let time = moment();
     let type = "text";
-    let receiverId = props.isShopper
-      ? chatList[activeChat].shopId
-      : chatList[activeChat].shopperId;
-    let isShopper = props.isShopper;
+    let receiverId = activeChat;
+    let isShopper = isShopperState ? "true" : "false";
     let message = textInput;
 
     props.socket.emit("Input Chat Message", {
@@ -56,15 +65,13 @@ export const LocalinkMessageList = (props) => {
     console.log("submitted");
   };
 
-  if (chatList.length === 0) {
+  if (chatList.length === 0 || msgList === null) {
     return null;
   } else {
-    const msgList = chatList[activeChat].message_list;
     return (
       <Paper className={classes.paper}>
         <MessageList active>
           {msgList.map((msg, index) => {
-            console.log(index);
             return <LocalinkMessageListItem data={msg} key={index} />;
           })}
         </MessageList>

@@ -37,7 +37,7 @@ export default function LoggedSellerNavBar() {
             to="/business"
             backgroundColor="transparent"
           >
-            <Typography variant="navBar">localink for sellers</Typography>
+            <Typography variant="h1">localink for sellers</Typography>
           </Button>
           <div className={classes.grow} />
           <Button color="inherit" component={Link} to="/">

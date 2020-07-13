@@ -20,7 +20,7 @@ chai.use(chaiHTTP);
 //const authControllerBusiness = require('../../controllers/business/authControllerBusiness');
 const app = require('../../server');
 
-describe('autheControllerBusiness', () => {
+describe('authControllerBusiness', () => {
   //Test to get user by token
   beforeEach(addDummyUsers);
   afterEach(removeDummyUsers);
