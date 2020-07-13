@@ -19,9 +19,9 @@ export const ChatPage = (props) => {
 
   useEffect(() => {
     socket.on("Output Chat Message", (messageFromBackEnd) => {
-      console.log(messageFromBackEnd);
-
-      dispatch(afterPostMessage({ messageFromBackEnd, isShopper }));
+      if (messageFromBackEnd.userId !== user._id) {
+        dispatch(afterPostMessage({ messageFromBackEnd, isShopper }));
+      }
     });
     return () => socket.disconnect();
   }, []);
