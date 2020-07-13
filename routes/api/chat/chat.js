@@ -50,9 +50,7 @@ module.exports = io => {
 
         await chat.save();
 
-        if (userId !== receiverId) {
-          return io.emit('Output Chat Message', newMessage);
-        }
+        return io.emit('Output Chat Message', newMessage);
       } catch (error) {
         console.log(error);
         return error;
