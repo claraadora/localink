@@ -22,8 +22,6 @@ module.exports = io => {
           isShopper
         } = msg;
 
-        const momentTime = moment(time);
-
         let shopper_id = receiverId;
         let shop_id = userId;
         // let isShopperSender = 'false';
@@ -33,19 +31,11 @@ module.exports = io => {
           // isShopperSender = 'true';
         }
 
-        const formattedTime = {
-          sameDay: momentTime.format('h:mm a'),
-          lastDay: momentTime.format('[Yesterday] h:mm a'),
-          lastWeek: momentTime.format('[Last] dddd [at] h:mm'),
-          sameElse: momentTime.format('Do MMMM YYYY [at] h:mm a'),
-          unformatted: momentTime
-        };
-
         const newMessage = new Message({
           userId,
           username,
           message,
-          time: formattedTime,
+          time,
           type
         });
 
