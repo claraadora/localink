@@ -3,17 +3,11 @@ const connectDB = require('./config/db');
 const connectClient = require('./config/clientdb');
 const path = require('path');
 
-// console.log('server: ' + db);
-// connectClient().then(db => console.log('server: ' + db));
-
 const app = express();
 
 //load environment variables
 const dotenv = require('dotenv');
 dotenv.config();
-
-const server = require('http').createServer(app);
-const io = require('socket.io')(server);
 
 //Connect Mongodb client
 connectClient();
@@ -62,77 +56,10 @@ app.use(
   require('./routes/api/shopper/accountActivation')
 );
 
-//Chat
-// app.io = require('socket.io')();
-// require('./routes/api/chat/chat')(app);
-
-const Message = require('./models/Message');
-const Chat = require('./models/Chat');
-const Shop = require('./models/Shop');
-
-const moment = require('moment');
-
-io.on('connection', socket => {
-  socket.on('Input Chat Message', msg => {
-    connectDB().then(async db => {
-      try {
-        const {
-          userId,
-          username,
-          message,
-          time,
-          type,
-          receiverId,
-          isShopper
-        } = msg;
-
-        const momentTime = moment(time);
-
-        let shopper_id = receiverId;
-        let shop_id = userId;
-        // let isShopperSender = 'false';
-        if (isShopper == 'true') {
-          shopper_id = userId;
-          shop_id = receiverId;
-          // isShopperSender = 'true';
-        }
-
-        const formattedTime = {
-          sameDay: momentTime.format('h:mm a'),
-          lastDay: momentTime.format('[Yesterday] h:mm a'),
-          lastWeek: momentTime.format('[Last] dddd [at] h:mm'),
-          sameElse: momentTime.format('Do MMMM YYYY [at] h:mm a')
-        };
-
-        const newMessage = new Message({
-          userId,
-          username,
-          message,
-          time: formattedTime,
-          type
-        });
-
-        await newMessage.save();
-
-        let chat = new Chat({
-          shopper: shopper_id,
-          shop: shop_id,
-          message: newMessage
-          // isShopper: isShopperSender
-        });
-
-        await chat.save();
-
-        if (userId !== receiverId) {
-          return io.emit('Output Chat Message', newMessage);
-        }
-      } catch (error) {
-        console.log(error);
-        return error;
-      }
-    });
-  });
-});
+//Define chat route
+const server = require('http').createServer(app);
+const io = require('socket.io')(server);
+const chatRoute = require('./routes/api/chat/chat')(io);
 
 //Serve static assets in production
 if (process.env.NODE_ENV === 'production') {
