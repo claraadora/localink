@@ -20,18 +20,17 @@ const useStyles = makeStyles({
   },
   locationList: {
     position: "fixed",
-    top: "10%",
-    right: "15px",
-    height: "684px",
+    top: "20%",
+    right: "2%",
+    height: "78%",
     width: "22%",
     zIndex: 100,
   },
   itineraryList: {
     position: "fixed",
-    bottom: "40px",
-    left: "30px",
+    bottom: "2%",
+    right: "25%",
     width: "70%",
-    height: "100px",
   },
   itineraryHeader: {
     position: "fixed",
@@ -77,9 +76,6 @@ function SearchPage() {
       )}
       <div className={classes.searchNavBar}>
         <SearchNavBar />
-      </div>
-      <div className={classes.itineraryHeader}>
-        <ItineraryHeader />
       </div>
       <div className={classes.itineraryList}>
         <ItineraryList />

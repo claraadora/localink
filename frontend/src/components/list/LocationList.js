@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     padding: theme.spacing(1),
+    outline: "0.01% none black",
   },
 }));
 
@@ -52,27 +53,6 @@ export const LocationList = () => {
                     onMouseEnter={handlePopoverOpen}
                     onMouseLeave={handlePopoverClose}
                   />
-                  {/* <Popover
-                    id="mouse-over-popover"
-                    className={classes.popover}
-                    classes={{
-                      paper: classes.paper,
-                    }}
-                    open={open}
-                    anchorEl={anchorEl}
-                    anchorOrigin={{
-                      vertical: "center",
-                      horizontal: "left",
-                    }}
-                    transformOrigin={{
-                      vertical: "center",
-                      horizontal: "right",
-                    }}
-                    onClose={handlePopoverClose}
-                    disableRestoreFocus
-                  >
-                    <Typography>I use Popover.</Typography>
-                  </Popover> */}
                 </div>
               );
             }}

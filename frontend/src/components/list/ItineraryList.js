@@ -4,6 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { reorderItinerary } from "../../actions/shopper/itineraryActions";
 import { ItineraryCard } from "../card/ItineraryCard";
 import { lightBlue, lightGreen } from "@material-ui/core/colors";
+import NavigationIcon from "@material-ui/icons/Navigation";
+import { Paper, IconButton } from "@material-ui/core";
 
 const grid = 8;
 const reorder = (list, startIndex, endIndex) => {
@@ -55,35 +57,46 @@ export const ItineraryList = () => {
     setItinerary(items);
   };
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="droppable" direction="horizontal">
-        {(provided, snapshot) => (
-          <div
-            ref={provided.innerRef}
-            style={getListStyle(snapshot.isDraggingOver)}
-            {...provided.droppableProps}
-          >
-            {itineraryItems.map((item, index) => (
-              <Draggable key={item.name} draggableId={item.name} index={index}>
-                {(provided, snapshot) => (
-                  <div
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                    style={getItemStyle(
-                      snapshot.isDragging,
-                      provided.draggableProps.style
-                    )}
-                  >
-                    <ItineraryCard content={item} />
-                  </div>
-                )}
-              </Draggable>
-            ))}
-            {provided.placeholder}
-          </div>
-        )}
-      </Droppable>
-    </DragDropContext>
+    <Paper>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="droppable" direction="horizontal">
+          {(provided, snapshot) => (
+            <div
+              ref={provided.innerRef}
+              style={getListStyle(snapshot.isDraggingOver)}
+              {...provided.droppableProps}
+            >
+              {itineraryItems.map((item, index) => (
+                <Draggable
+                  key={item.name}
+                  draggableId={item.name}
+                  index={index}
+                >
+                  {(provided, snapshot) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                      style={getItemStyle(
+                        snapshot.isDragging,
+                        provided.draggableProps.style
+                      )}
+                    >
+                      <ItineraryCard content={item} />
+                    </div>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+      {itineraryItems.length > 0 ? (
+        <IconButton>
+          <NavigationIcon fontSize="large" />
+        </IconButton>
+      ) : null}
+    </Paper>
   );
 };

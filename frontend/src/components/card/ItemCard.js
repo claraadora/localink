@@ -17,16 +17,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 14,
     color: theme.palette.secondary,
   },
-  pos: {
-    marginBottom: 12,
-  },
-  popover: {
-    pointerEvents: "none",
-  },
-  paper: {
-    padding: theme.spacing(1),
-    zIndex: 1000,
-  },
 }));
 
 function trimString(word, maxLength) {
@@ -66,7 +56,11 @@ export const ItemCard = (props) => {
     <div>
       <Card
         className={classes.root}
-        style={{ ...props.style, padding: "10px 0px 2px 0px" }}
+        style={{
+          ...props.style,
+          padding: "10px 0px 2px 0px",
+          outline: "1px solid silver",
+        }}
         aria-owns={open ? "mouse-over-popover" : undefined}
         aria-haspopup="true"
         onMouseEnter={handlePopoverOpen}
