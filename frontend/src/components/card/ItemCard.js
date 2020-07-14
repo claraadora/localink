@@ -33,6 +33,14 @@ function trimString(word, maxLength) {
   return word <= maxLength ? word : word.substring(0, maxLength - 3) + "...";
 }
 
+function trimDistance(distance) {
+  if (distance > 1000) {
+    return `${Math.round(distance / 1000)} km`;
+  } else {
+    return `${distance} m`;
+  }
+}
+
 export const ItemCard = (props) => {
   const classes = useStyles();
   const data = props.content;
@@ -41,6 +49,7 @@ export const ItemCard = (props) => {
   const [isAdded, setIsAdded] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const userId = useSelector((state) => state.auth.user._id);
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   const handlePopoverOpen = (event) => {
     console.log("WHERE");
@@ -93,14 +102,16 @@ export const ItemCard = (props) => {
               >
                 {isAdded ? "Remove from Itinerary" : "Add to Itinerary"}
               </Button>
-              <Button
-                size="small"
-                onClick={() =>
-                  dispatch(addChatItem(data.shop_docs[0]._id, userId, true))
-                }
-              >
-                Ask Seller
-              </Button>
+              {isAuthenticated ? (
+                <Button
+                  size="small"
+                  onClick={() =>
+                    dispatch(addChatItem(data.shop_docs[0]._id, userId, true))
+                  }
+                >
+                  Ask Seller
+                </Button>
+              ) : null}
             </Grid>
           </Grid>
           <Grid item xs={2}>
@@ -109,33 +120,11 @@ export const ItemCard = (props) => {
                 ? `$${data.price}`
                 : sortedBy === "ratings"
                 ? Math.round(data.shop_docs[0].ratings * 10) / 10
-                : `${data.shop_docs[0].distance}km`}
+                : trimDistance(data.shop_docs[0].distance)}
             </Typography>
           </Grid>
         </Grid>
       </Card>
-      {/* <Popover
-        id="mouse-over-popover"
-        className={classes.popover}
-        classes={{
-          paper: classes.paper,
-        }}
-        open={open}
-        anchorReference="anchorPosition"
-        anchorPosition={{ top: "50%", left: "50%" }}
-        // anchorOrigin={{
-        //   vertical: "center",
-        //   horizontal: "left",
-        // }}
-        // transformOrigin={{
-        //   vertical: "centeår",
-        //   horizontal: "right",
-        // }}
-        onClose={handlePopoverClose}
-        disableRestoreFocus
-      >
-        <Typography>I use Popover.</Typography>
-      </Popover> */}
     </div>
   );
 };
