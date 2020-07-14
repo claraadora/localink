@@ -9,10 +9,10 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     alignItems: "center",
-    width: 300,
-    backgroundColor: fade(theme.palette.common.white, 0.35),
+    width: "100%",
+    backgroundColor: fade(theme.palette.primary.main, 0.1),
     "&:hover": {
-      backgroundColor: fade(theme.palette.common.white, 0.4),
+      backgroundColor: fade(theme.palette.primary.main, 0.2),
     },
   },
   iconButton: {

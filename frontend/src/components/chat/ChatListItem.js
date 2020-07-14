@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   ChatListItem,
   Avatar,
@@ -7,9 +7,9 @@ import {
   Subtitle,
   Title,
 } from "@livechat/ui-kit";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setCurrActive } from "../../actions/chatActions";
-import { makeStyles, Grid } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 
 function trimString(word, maxLength) {
   return word <= maxLength ? word : word.substring(0, maxLength - 3) + "...";

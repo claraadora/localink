@@ -11,11 +11,8 @@ import {
 } from "@material-ui/core";
 import { AccountCircle } from "@material-ui/icons";
 import { Link } from "react-router-dom";
-import { SearchInput } from "../input/SearchInput";
-import { OptionSelect } from "../select/OptionSelect";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../actions/shopper/authActions";
-import { LocationDialog } from "../../components/dialog/LocationDialog";
 
 export default function ShopperNavBar({ isSearchPage }) {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -43,39 +40,6 @@ export default function ShopperNavBar({ isSearchPage }) {
               </Button>
             </Grid>
             <Grid item md={5} xs={0} />
-            {isSearchPage ? (
-              <>
-                <Grid item>
-                  <SearchInput />
-                </Grid>
-                <Grid item>
-                  <Grid
-                    container
-                    direction="row"
-                    alignItems="center"
-                    justify="center"
-                    spacing={2}
-                  >
-                    <Grid item>Sort by: </Grid>
-                    <Grid item>
-                      <OptionSelect />
-                    </Grid>
-                    <Grid item>
-                      <Grid container direction="row" alignItems="center">
-                        <Grid item xs={8}>
-                          My location:
-                        </Grid>
-                        <Grid item xs={4}>
-                          <LocationDialog />
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </>
-            ) : (
-              <Grid item xs={6} />
-            )}
             {isAuthenticated ? (
               <Grid item container md={4} xs={4} justify="space-evenly">
                 <Grid

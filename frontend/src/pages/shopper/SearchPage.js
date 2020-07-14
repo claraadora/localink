@@ -6,11 +6,12 @@ import { LocationList } from "../../components/list/LocationList";
 import { DirectionList } from "../../components/list/DirectionList";
 import { makeStyles } from "@material-ui/core/styles";
 import { useSelector } from "react-redux";
+import { SearchNavBar } from "../../components/navbar/SearchNavBar";
 
 const useStyles = makeStyles({
   root: {
-    height: "92vh",
-    width: "calc(100vw-10px)",
+    height: "100%",
+    width: "100%",
   },
   map: {
     height: "100%",
@@ -19,7 +20,7 @@ const useStyles = makeStyles({
   },
   locationList: {
     position: "fixed",
-    top: "90px",
+    top: "10%",
     right: "15px",
     height: "684px",
     width: "22%",
@@ -47,6 +48,13 @@ const useStyles = makeStyles({
     width: "22%",
     zIndex: 100,
   },
+  searchNavBar: {
+    position: "fixed",
+    top: "10%",
+    left: "25%",
+    width: "50%",
+    display: "inline-block",
+  },
 });
 
 function SearchPage() {
@@ -67,6 +75,9 @@ function SearchPage() {
           <LocationList />
         </div>
       )}
+      <div className={classes.searchNavBar}>
+        <SearchNavBar />
+      </div>
       <div className={classes.itineraryHeader}>
         <ItineraryHeader />
       </div>

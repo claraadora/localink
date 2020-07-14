@@ -39,8 +39,6 @@ export const LocalinkMessageList = (props) => {
         isShopperState,
         chat.chatList
       );
-      console.log(currChat);
-      console.log(currChat.message_list);
       const currMsgList = currChat.message_list;
       setMsgList(currMsgList);
     }
