@@ -6,6 +6,7 @@ import { ItineraryCard } from "../card/ItineraryCard";
 import { lightBlue, lightGreen } from "@material-ui/core/colors";
 import NavigationIcon from "@material-ui/icons/Navigation";
 import { Paper, IconButton } from "@material-ui/core";
+import { loadRoute } from "../../actions/shopper/searchActions";
 
 const grid = 8;
 const reorder = (list, startIndex, endIndex) => {
@@ -93,7 +94,7 @@ export const ItineraryList = () => {
         </Droppable>
       </DragDropContext>
       {itineraryItems.length > 0 ? (
-        <IconButton>
+        <IconButton onClick={() => dispatch(loadRoute())}>
           <NavigationIcon fontSize="large" />
         </IconButton>
       ) : null}
