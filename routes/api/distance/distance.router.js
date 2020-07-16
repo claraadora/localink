@@ -35,7 +35,7 @@ router.post('/start-location', async (req, res) => {
       }
     });
     console.log('Successfully updated distance to shops');
-    console.log(location);
+
     res.status(200).json(location);
   } catch (err) {
     console.error(err.message);
