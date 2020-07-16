@@ -49,8 +49,6 @@ const ProfileForm = () => {
   const { shopName, description, avatar, address } = formData;
 
   useEffect(() => {
-    if (!profile) dispatch(getCurrentProfile());
-
     if (!loading && profile) {
       const profileData = { ...initialState };
       for (const key in profile) {
