@@ -6,7 +6,6 @@ import {
   removeFromItinerary,
 } from "../../actions/shopper/itineraryActions";
 import { useSelector, useDispatch } from "react-redux";
-import Popover from "@material-ui/core/Popover";
 import { addChatItem } from "../../actions/chatActions";
 
 const useStyles = makeStyles((theme) => ({

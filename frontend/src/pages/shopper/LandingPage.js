@@ -4,7 +4,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import { Link } from "react-router-dom";
-import { yellow, green, cyan } from "@material-ui/core/colors";
+import { yellow, green } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
   heroContent: {

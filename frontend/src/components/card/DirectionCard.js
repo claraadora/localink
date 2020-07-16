@@ -1,9 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Card, Button, Typography, Grid } from "@material-ui/core";
-import { useSelector, useDispatch } from "react-redux";
-import { teal, lightGreen } from "@material-ui/core/colors";
-import { getThemeProps } from "@material-ui/styles";
+import { Card, Typography, Grid } from "@material-ui/core";
+import { teal } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
   root: {

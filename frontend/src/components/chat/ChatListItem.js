@@ -11,10 +11,6 @@ import { useDispatch } from "react-redux";
 import { setCurrActive } from "../../actions/chatActions";
 import { Grid } from "@material-ui/core";
 
-function trimString(word, maxLength) {
-  return word <= maxLength ? word : word.substring(0, maxLength - 3) + "...";
-}
-
 export const LocalinkChatListItem = (props) => {
   const dispatch = useDispatch();
 

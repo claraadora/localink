@@ -8,7 +8,7 @@ import ShopperProfilePage from "./pages/shopper/ProfilePage";
 import ShopperCataloguePage from "./pages/shopper/CataloguePage";
 import ChatPage from "./pages/ChatPage";
 import ShopperNavBar from "./components/navbar/ShopperNavBar";
-import Alert from "./components/Alert";
+// import Alert from "./components/Alert";
 import { Route } from "react-router-dom";
 import { Grid } from "@material-ui/core";
 import { theme } from "./theme";
@@ -21,7 +21,7 @@ function AppShopper() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(updateIsShopper(true));
-  }, []);
+  }, [dispatch]);
 
   return (
     <ThemeProvider theme={theme}>

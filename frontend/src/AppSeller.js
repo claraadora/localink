@@ -7,7 +7,7 @@ import SellerDashboardPage from "./pages/seller/DashboardPage";
 import LoggedSellerNavBar from "./components/navbar/LoggedSellerNavBar";
 import SellerNavBar from "./components/navbar/SellerNavBar";
 import Alert from "./components/Alert";
-import { Route, Redirect } from "react-router-dom";
+import { Route } from "react-router-dom";
 import { Grid } from "@material-ui/core";
 import ProductTable from "./components/table/ProductTable";
 import ProductForm from "./components/form/ProductForm";
@@ -24,7 +24,7 @@ function AppSeller() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(updateIsShopper(false));
-  }, []);
+  }, [dispatch]);
   return (
     <ThemeProvider theme={themeSeller}>
       <Grid container direction="column" spacing={5}>
