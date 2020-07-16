@@ -88,7 +88,11 @@ export const updateUserLocation = (currentLocation, startLocation) => async (
         "Content-Type": "application/json",
       },
     };
-    const body = JSON.stringify({ currentLocation, startLocation });
+    const body = JSON.stringify({
+      currentLocation: currentLocation,
+      startLocation: startLocation,
+    });
+    console.log(body);
     const res = await axios.post("/start-location", body, config);
 
     dispatch({

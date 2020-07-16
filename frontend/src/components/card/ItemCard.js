@@ -38,7 +38,7 @@ export const ItemCard = (props) => {
   const sortedBy = useSelector((state) => state.search.sortedBy);
   const [isAdded, setIsAdded] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const userId = useSelector((state) => state.auth.user._id);
+  const auth = useSelector((state) => state.auth);
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   const handlePopoverOpen = (event) => {
@@ -100,7 +100,9 @@ export const ItemCard = (props) => {
                 <Button
                   size="small"
                   onClick={() =>
-                    dispatch(addChatItem(data.shop_docs[0]._id, userId, true))
+                    dispatch(
+                      addChatItem(data.shop_docs[0]._id, auth.user._id, true)
+                    )
                   }
                 >
                   Ask Seller
