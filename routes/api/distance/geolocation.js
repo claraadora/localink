@@ -12,6 +12,7 @@ const geolocation = async () => {
     },
     responseType: 'json'
   });
+
   return body.location;
 };
 
