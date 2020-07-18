@@ -1,12 +1,11 @@
 import React, { useEffect } from "react";
-import { ThemeProvider, defaultTheme } from "@livechat/ui-kit";
+import { ThemeProvider } from "@livechat/ui-kit";
 import { LocalinkChatList } from "../components/chat/ChatList";
 import { LocalinkMessageList } from "../components/chat/MessageList";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid } from "@material-ui/core";
 import { themeChat } from "../themeChat";
 import io from "socket.io-client";
-import moment from "moment";
 import { getChatList, afterPostMessage } from "../actions/chatActions";
 
 const socket = io("http://localhost:5000");
@@ -24,11 +23,11 @@ export const ChatPage = (props) => {
       }
     });
     return () => socket.disconnect();
-  }, []);
+  }, [dispatch, isShopper, user._id]);
 
   useEffect(() => {
     dispatch(getChatList(user._id, isShopper));
-  }, [user, loading, dispatch]);
+  }, [user, loading, dispatch, isShopper]);
 
   return (
     <ThemeProvider theme={themeChat}>

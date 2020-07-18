@@ -47,6 +47,7 @@ export const addChatItem = (shopId, shopperId, isShopper) => async (
     const res = await axios.post("/new-chat", body, config);
     dispatch({
       type: chatConstants.ADD_CHAT_ITEM,
+      payload: res,
     });
     dispatch(setCurrActive(isShopper ? shopId : shopperId));
     dispatch(getChatList(isShopper ? shopId : shopperId, isShopper));

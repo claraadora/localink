@@ -1,168 +1,136 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
+  withGoogleMap,
+  withScriptjs,
   GoogleMap,
-  useLoadScript,
   Marker,
-  DirectionsService,
   DirectionsRenderer,
   Polyline,
   InfoWindow,
-} from "@react-google-maps/api";
-import { useSelector } from "react-redux";
+} from "react-google-maps";
+import { makeStyles } from "@material-ui/styles";
+import { useSelector, useDispatch } from "react-redux";
+import { teal } from "@material-ui/core/colors";
 import {
-  pink,
-  deepPurple,
-  indigo,
-  cyan,
-  teal,
-  lime,
-  orange,
-  amber,
-} from "@material-ui/core/colors";
-import greenDot from "../../assets/smallgreendotmarker.png";
+  loadDirectionSteps,
+  updateDirectionSteps,
+} from "../../actions/shopper/searchActions";
 
 function createKey(location) {
   return location.lat + location.lng;
 }
 
-const libraries = ["places"];
-const mapContainerStyles = {
-  height: "100%",
-};
-const center = {
-  lat: 1.3521,
-  lng: 103.8198,
-};
-const options = {
-  disableDefaultUI: true,
-  zoomControl: true,
-};
-const colors = [
-  pink[300],
-  deepPurple[300],
-  indigo[300],
-  cyan[300],
-  teal[300],
-  lime[300],
-  amber[300],
-  orange[300],
-];
+function Map() {
+  const searchSelector = useSelector((state) => state.search);
+  const itinerarySelector = useSelector((state) => state.itinerary);
+  const dispatch = useDispatch();
 
-const A = { lat: 1.30655, lng: 103.773523 };
-const B = { lat: 1.31655, lng: 103.773523 };
-const C = { lat: 1.32655, lng: 103.773523 };
-const D = { lat: 1.308086, lng: 103.773538 };
+  // Marker
+  const products = searchSelector.productArray;
+  const userLocation = searchSelector.userLocation;
+  const [markers, setMarkers] = useState([]);
 
-export default function Map() {
-  const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
-    libraries,
-  });
-  const productArray = useSelector((state) => state.search.productArray);
-  const loading = useSelector((state) => state.search.loading);
-  const [searchResult, setSearchResult] = useState(null);
-
-  // User's states
-  const [startPoints, setStartPoints] = useState([A]);
-  const [endPoints, setEndPoints] = useState([B]);
+  // Route
+  const itineraryStops = itinerarySelector.itineraryArray;
+  const [stops, setStops] = useState(null);
+  const [waypoints, setWaypoints] = useState([]);
+  const [directions, setDirections] = useState(null);
   const [travelMode, setTravelMode] = useState("DRIVING");
-  const [isMouseOver, setIsMouseOver] = useState(false);
+  const renderRoute = useSelector((state) => state.search.renderRoute);
 
-  //Google Map API States
-  const [routeData, setRouteData] = useState([]); //array of responses
+  // Refs
+  const mapRef = useRef();
+  const selectedPolyline = useRef();
+
+  const onClick = () => {
+    console.log("CLICKED" + selectedPolyline.current);
+  };
 
   useEffect(() => {
-    if (!loading && productArray) {
-      setSearchResult(productArray);
+    const latLng = itineraryStops.map((product) => product.shop_docs[0].latLng);
+    if (userLocation !== null) {
+      latLng.push(userLocation);
     }
-  }, [loading, productArray]);
 
-  if (loadError) return "Error loading maps";
-  if (!isLoaded) return "Loading Maps...";
+    setStops(latLng);
+    console.log(latLng.length + "length");
 
-  const directionsCallback = (response) => {
-    if (response !== null) {
-      if (response.status === "OK") {
-        // let routes = [];
-        // console.log("lenght" + response.routes.length);
-        // for (let i = 0; i < response.routes.length; i++) {
-        //   routes.push({
-        //     distance: response.routes[i].legs[0].distance,
-        //     duration: response.routes[i].legs[0].duration,
-        //     fare: response.routes[i].fare,
-        //     end_address: response.routes[i].legs[0].end_address,
-        //     start_address: response.routes[i].legs[0].start_address,
-        //     routeIndex: i,
-        //   });
-        // }
-        routeData.push(response);
-        setRouteData(() => routeData);
-      } else {
-        window.alert("Directions request failed due to " + response.status);
-      }
+    if (latLng.length > 2) {
+      const temp = [];
+      latLng.map((stop, index) => {
+        if (index !== 0 && index !== stops.length - 1) {
+          temp.push({
+            location: stop,
+            stopover: true,
+          });
+        }
+      });
+      setWaypoints(temp);
     }
-  };
+  }, [itineraryStops, userLocation]);
 
-  const createPolyline = (start, i) => {
-    return (
-      <Polyline
-        options={{
-          strokeColor: colors[i % (colors.length - 1)],
-          strokeWeight: isMouseOver ? 8 : 5,
-          zIndex: isMouseOver ? 2 : 0,
-          tag: {
-            index: start,
-            nestedIndex: i,
-          },
-        }}
-        onMouseOver={() => setIsMouseOver(true)}
-        onMouseOut={() => setIsMouseOver(false)}
-      />
-    );
-  };
+  useEffect(() => {
+    const DirectionsService = new window.google.maps.DirectionsService();
+
+    if (stops && stops.length > 1) {
+      const len = stops.length;
+      DirectionsService.route(
+        {
+          origin: stops[0],
+          destination: stops[len - 1],
+          waypoints: waypoints,
+          travelMode: travelMode,
+        },
+        (response, status) => {
+          if (status === "OK") {
+            setDirections(response);
+            console.log(directions);
+          } else {
+            console.error(`error fetching directions ${response}`);
+          }
+        }
+      );
+    }
+  }, [stops, renderRoute, travelMode]);
 
   return (
     <GoogleMap
-      id="direction-example"
-      mapContainerStyle={mapContainerStyles}
-      zoom={12}
-      center={center}
-      options={options}
+      defaultZoom={12}
+      defaultCenter={{ lat: 1.3521, lng: 103.8198 }}
+      gestureHandling="cooperative"
+      defaultOptions={{ disableDefaultUI: true }}
+      ref={mapRef}
     >
-      {searchResult == null
-        ? null
-        : searchResult.map((product) => {
-            return (
-              <Marker
-                key={createKey(product.shop_docs[0].latLng)}
-                position={product.shop_docs[0].latLng}
-              />
-            );
-          })}
-
-      {startPoints !== [] &&
-        endPoints !== [] &&
-        startPoints.map((startPoint) => (
-          <DirectionsService
-            options={{
-              destination: endPoints[0],
-              origin: startPoints[0],
-              provideRouteAlternatives: false,
-              travelMode: travelMode,
-            }}
-            callback={directionsCallback}
-          />
-        ))}
-      {routeData !== [] &&
-        routeData.map((response) => (
-          <DirectionsRenderer
-            options={{
-              directions: response,
-              routeIndex: 0,
-              polylineOptions: createPolyline(0, 0),
-            }}
-          />
-        ))}
+      {/**RENDER ALL PRODUCT MARKERS*/}
+      {!renderRoute &&
+        products.length > 0 &&
+        products.map((product) => {
+          return (
+            <Marker
+              key={createKey(product.shop_docs[0].latLng)}
+              position={product.shop_docs[0].latLng}
+            />
+          );
+        })}
+      {/**RENDER ROUTE*/}
+      {renderRoute && stops && directions && (
+        <DirectionsRenderer directions={directions} />
+      )}
     </GoogleMap>
   );
 }
+
+const MapWrapped = withScriptjs(withGoogleMap(Map));
+
+export const LocalinkMap = () => {
+  return (
+    <div style={{ width: "100vw", height: "92vh" }}>
+      <MapWrapped
+        googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
+        loadingElement={<div style={{ height: `100%` }} />}
+        containerElement={<div style={{ height: `100%` }} />}
+        mapElement={<div style={{ height: `100%` }} />}
+      />
+    </div>
+  );
+};

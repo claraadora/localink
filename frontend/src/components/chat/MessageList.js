@@ -42,7 +42,7 @@ export const LocalinkMessageList = (props) => {
       const currMsgList = currChat.message_list;
       setMsgList(currMsgList);
     }
-  }, [chat, dispatch]);
+  }, [chat, dispatch, isShopperState]);
 
   const handleSubmit = (e) => {
     let momentObj = moment();

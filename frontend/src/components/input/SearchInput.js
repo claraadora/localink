@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import SearchIcon from "@material-ui/icons/Search";
 import { InputBase, IconButton, Paper } from "@material-ui/core";
 import { fade, makeStyles } from "@material-ui/core/styles";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { loadSearch } from "../../actions/shopper/searchActions";
 
 const useStyles = makeStyles((theme) => ({

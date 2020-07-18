@@ -4,7 +4,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import { Link } from "react-router-dom";
-import { yellow, green, cyan } from "@material-ui/core/colors";
+import { yellow, green } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
   heroContent: {
@@ -21,6 +21,11 @@ const useStyles = makeStyles((theme) => ({
     padding: "0 30px",
     justifyContent: "center",
   },
+  content: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
 }));
 
 function LandingPage() {
@@ -32,35 +37,22 @@ function LandingPage() {
       direction="column"
       justify="center"
       alignItems="center"
-      spacing={10}
+      style={{ height: "100%" }}
+      spacing={5}
     >
-      <Grid item md={12} />
-      <Grid item md={12} />
-      <Grid item md={12}>
-        <Typography
-          component="h1"
-          variant="h2"
-          align="center"
-          color="textPrimary"
-          gutterBottom
-        >
+      <Grid item>
+        <Typography variant="h2" color="textPrimary" gutterBottom>
           Local shopping made fun and easy!
         </Typography>
-        <Grid item md={12}>
-          <Typography
-            variant="h5"
-            align="center"
-            color="textSecondary"
-            component="p"
-          >
-            Quickly help you find where to buy what you are looking for!
-          </Typography>
-        </Grid>
+        <Typography variant="h5" color="textSecondary" align="center">
+          Quickly help you find where to buy what you are looking for!
+        </Typography>
       </Grid>
-      <Grid item md={12} />
-      <Button className={classes.startButton} component={Link} to="/search">
-        Start searching now!
-      </Button>
+      <Grid item>
+        <Button className={classes.startButton} component={Link} to="/search">
+          Start searching now!
+        </Button>
+      </Grid>
     </Grid>
   );
 }

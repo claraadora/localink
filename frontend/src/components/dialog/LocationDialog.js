@@ -1,6 +1,5 @@
 import React from "react";
 import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
 import Button from "@material-ui/core/Button";
@@ -137,7 +136,6 @@ export const LocationDialog = () => {
           {manualAdd ? (
             <div>
               <Button
-                onClick={handleClose}
                 color="primary"
                 className={classes.text}
                 onClick={handleSubmitAddManual}
@@ -145,7 +143,6 @@ export const LocationDialog = () => {
                 Submit Location
               </Button>
               <Button
-                onClick={handleClose}
                 color="primary"
                 className={classes.text}
                 onClick={handleBack}

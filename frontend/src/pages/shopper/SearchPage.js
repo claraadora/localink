@@ -1,5 +1,5 @@
 import React from "react";
-import { LocalinkMap } from "../../components/map/Map2";
+import { LocalinkMap } from "../../components/map/Map";
 import { ItineraryList } from "../../components/list/ItineraryList";
 import { ItineraryHeader } from "../../components/header/ItineraryHeader";
 import { LocationList } from "../../components/list/LocationList";

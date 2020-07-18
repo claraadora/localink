@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  createProfile,
-  getCurrentProfile,
-} from "../../actions/seller/profileActions";
+import { createProfile } from "../../actions/seller/profileActions";
 import { useSelector, useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
