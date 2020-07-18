@@ -120,7 +120,7 @@ const receivedNewPassword = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const newPasswordHash = await bcrypt.hash(password, salt);
     await collection.findByIdAndUpdate(user_id, { password: newPasswordHash });
-    res.status(202).json('Password change successful');
+    res.status(202).send('Password change successful');
   } catch (error) {
     res.status(500).json(error);
   }

@@ -2,6 +2,7 @@ const chai = require('chai');
 const chaiHTTP = require('chai-http');
 const assert = chai.assert;
 const expect = require('expect');
+const bcrypt = require('bcryptjs');
 
 const {
   business,
@@ -17,10 +18,12 @@ const {
 } = require('./seed/seed');
 
 const {
+  password,
   addBusiness,
   addUserOwner,
   removeUpdatedUser,
   addDeactivatedStaff,
+  registerAddedUser,
   updatedUser
 } = require('./seed/seedUser');
 
@@ -42,7 +45,7 @@ describe('userControllerBusiness', () => {
       .send(userOwner)
       .end(async (error, res) => {
         assert.equal(error, null, 'error is not null');
-        assert.equal(res.status, 200), 'status is not 200';
+        assert.equal(res.status, 250), 'status is not 200';
         const businessObj = await Business.findById(business._id);
         const addedUser = await User.findById(businessObj.users[1]);
         const dummyUserFields = {
@@ -53,8 +56,51 @@ describe('userControllerBusiness', () => {
         expect(res => {
           expect(addedUser).to.include(dummyUserFields);
         });
+        assert.equal(
+          addedUser.password,
+          undefined,
+          'password is not undefined'
+        );
         done();
       });
+  });
+
+  it('Should send activation email after adding user, role: owner', done => {
+    chai
+      .request(app)
+      .post('/business/user')
+      .set('x-auth-token', firstUserOwnerToken)
+      .send(userOwner)
+      .end(async (error, res) => {
+        assert.equal(error, null, 'error is not null');
+        assert.equal(res.status, 250, 'status is not 200');
+        assert.equal(res.body, 'Email sent successfully');
+        done();
+      });
+  });
+
+  describe('Test account activation', () => {
+    beforeEach(async () => {
+      this.activationLink = await registerAddedUser();
+    });
+    it('Should set password of new user, role: owner', done => {
+      chai
+        .request(app)
+        .post(this.activationLink)
+        .send(password)
+        .end(async function (error, res) {
+          assert.equal(error, null, 'error is not null');
+          assert.equal(res.status, 202, 'status is not 202');
+          assert.equal(res.text, 'Password change successful');
+          const user = await User.findOne({ email: userOwner.email });
+          const isMatch = await bcrypt.compare(
+            password.password,
+            user.password
+          );
+          assert.equal(isMatch, true, 'Password not set');
+          done();
+        });
+    });
   });
 
   it('Should create and save new user, role: staff', done => {
@@ -65,7 +111,7 @@ describe('userControllerBusiness', () => {
       .send(userStaff)
       .end(async (error, res) => {
         assert.equal(error, null, 'error is not null');
-        assert.equal(res.status, 200), 'status is not 200';
+        assert.equal(res.status, 250), 'status is not 250';
         const businessObj = await Business.findById(business._id);
         const addedUser = await User.findById(businessObj.users[1]);
         const dummyUserFields = {
