@@ -4,7 +4,6 @@ import SellerLandingPage from "./pages/seller/LandingPage";
 import SellerLogInPage from "./pages/seller/LogInPage";
 import SellerSignUpPage from "./pages/seller/SignUpPage";
 import SellerDashboardPage from "./pages/seller/DashboardPage";
-import LoggedSellerNavBar from "./components/navbar/LoggedSellerNavBar";
 import SellerNavBar from "./components/navbar/SellerNavBar";
 import Alert from "./components/Alert";
 import { Route } from "react-router-dom";
@@ -29,7 +28,7 @@ function AppSeller() {
     <ThemeProvider theme={themeSeller}>
       <Grid container direction="column" spacing={5}>
         <Grid item>
-          {isAuthenticated ? <LoggedSellerNavBar /> : <SellerNavBar />}
+          <SellerNavBar />
         </Grid>
         <Grid item />
         <Grid item container direction="row" spacing={5}>
