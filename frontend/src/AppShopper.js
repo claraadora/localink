@@ -10,11 +10,28 @@ import ChatPage from "./pages/ChatPage";
 import ShopperNavBar from "./components/navbar/ShopperNavBar";
 // import Alert from "./components/Alert";
 import { Route } from "react-router-dom";
-import { Grid } from "@material-ui/core";
+import { Grid, makeStyles } from "@material-ui/core";
 import { theme } from "./theme";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { useLocation } from "react-router-dom";
 import { updateIsShopper } from "./actions/pageActions";
+
+const useStyles = makeStyles({
+  main: {
+    display: "flex",
+    flexDirection: "column",
+    height: "100vh",
+  },
+  content: {
+    width: "100%",
+    flexGrow: 1,
+    display: "flex",
+    flexDirection: "column",
+  },
+  navBar: {
+    width: "100%",
+  },
+});
 
 function AppShopper() {
   let location = useLocation();
@@ -22,13 +39,15 @@ function AppShopper() {
   useEffect(() => {
     dispatch(updateIsShopper(true));
   }, [dispatch]);
+  const classes = useStyles();
 
   return (
     <ThemeProvider theme={theme}>
-      <Grid container direction="column">
-        <ShopperNavBar isSearchPage={location.pathname === "/search"} />
-        <Grid item xs={8}></Grid>
-        <Grid item xs={12} sm={12}>
+      <div className={classes.main}>
+        <div className={classes.navBar}>
+          <ShopperNavBar isSearchPage={location.pathname === "/search"} />
+        </div>
+        <div className={classes.content}>
           <Route exact path="/login" component={ShopperLogInPage} />
           <Route exact path="/signup" component={ShopperSignUpPage} />
           <Route exact path="/search" component={ShopperSearchPage} />
@@ -36,8 +55,8 @@ function AppShopper() {
           <Route exact path="/catalogue" component={ShopperCataloguePage} />
           <Route exact path="/chat" component={ChatPage} />
           <Route exact path="/" component={ShopperLandingPage} />
-        </Grid>
-      </Grid>
+        </div>
+      </div>
     </ThemeProvider>
   );
 }

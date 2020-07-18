@@ -5,8 +5,9 @@ import { reorderItinerary } from "../../actions/shopper/itineraryActions";
 import { ItineraryCard } from "../card/ItineraryCard";
 import { lightBlue, lightGreen } from "@material-ui/core/colors";
 import NavigationIcon from "@material-ui/icons/Navigation";
-import { Paper, IconButton } from "@material-ui/core";
+import { Paper, IconButton, Grid } from "@material-ui/core";
 import { loadRoute } from "../../actions/shopper/searchActions";
+import { mergeClasses } from "@material-ui/styles";
 
 const grid = 8;
 const reorder = (list, startIndex, endIndex) => {
@@ -29,8 +30,15 @@ const getListStyle = (isDraggingOver) => ({
   background: isDraggingOver ? lightGreen[100] : lightBlue[50],
   display: "flex",
   overflow: "auto",
-  width: "100%",
+  width: "95%",
 });
+
+// const getButtonStyle = (isDraggingOver) => ({
+//   background: isDraggingOver ? lightGreen[100] : lightBlue[50],
+//   display: "flex",
+//   overflow: "auto",
+//   width: "95%",
+// });
 
 export const ItineraryList = () => {
   const itineraryItems = useSelector((state) => state.itinerary.itineraryArray);
@@ -59,45 +67,49 @@ export const ItineraryList = () => {
   };
   return (
     <Paper>
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="droppable" direction="horizontal">
-          {(provided, snapshot) => (
-            <div
-              ref={provided.innerRef}
-              style={getListStyle(snapshot.isDraggingOver)}
-              {...provided.droppableProps}
-            >
-              {itineraryItems.map((item, index) => (
-                <Draggable
-                  key={item.name}
-                  draggableId={item.name}
-                  index={index}
-                >
-                  {(provided, snapshot) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      style={getItemStyle(
-                        snapshot.isDragging,
-                        provided.draggableProps.style
-                      )}
-                    >
-                      <ItineraryCard content={item} />
-                    </div>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
-      {itineraryItems.length > 0 ? (
-        <IconButton onClick={() => dispatch(loadRoute())}>
-          <NavigationIcon fontSize="large" />
-        </IconButton>
-      ) : null}
+      <Grid item>
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="droppable" direction="horizontal">
+            {(provided, snapshot) => (
+              <div
+                ref={provided.innerRef}
+                style={getListStyle(snapshot.isDraggingOver)}
+                {...provided.droppableProps}
+              >
+                {itineraryItems.map((item, index) => (
+                  <Draggable
+                    key={item.name}
+                    draggableId={item.name}
+                    index={index}
+                  >
+                    {(provided, snapshot) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        style={getItemStyle(
+                          snapshot.isDragging,
+                          provided.draggableProps.style
+                        )}
+                      >
+                        <ItineraryCard content={item} />
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+      </Grid>
+      <Grid item>
+        {itineraryItems.length > 0 ? (
+          <IconButton onClick={() => dispatch(loadRoute())}>
+            <NavigationIcon fontSize="large" />
+          </IconButton>
+        ) : null}
+      </Grid>
     </Paper>
   );
 };

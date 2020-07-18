@@ -31,86 +31,84 @@ export default function ShopperNavBar({ isSearchPage }) {
   return (
     <AppBar position="static">
       <Toolbar>
-        <Grid container direction="column" justify="center">
-          <Grid item container direction="row" spacing={2} md={12}>
-            <Grid item md={0} xs={1} />
-            <Grid item container justify="flex-start" md={2} xs={2}>
-              <Button color="inherit" href="/">
-                <Typography variant="h1">localink</Typography>
-              </Button>
-            </Grid>
-            <Grid item md={5} xs={0} />
-            {isAuthenticated ? (
-              <Grid item container md={4} xs={4} justify="space-evenly">
-                <Grid
-                  item
-                  container
-                  xs={4}
-                  direction="row"
-                  justify="flex-end"
-                  alignItems="center"
-                >
-                  <IconButton
-                    edge="end"
-                    color="inherit"
-                    aria-label="open drawer"
-                    onClick={handleMenu}
-                  >
-                    <AccountCircle />
-                  </IconButton>
-                  <Button component={Link} to="/chat">
-                    Chat
-                  </Button>
-                </Grid>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  open={open}
-                  onClose={handleClose}
-                >
-                  <MenuItem onClick={handleClose}>
-                    <Button
-                      color="inherit"
-                      component={Link}
-                      to="/"
-                      disableRipple={true}
-                      onClick={() => dispatch(logout())}
-                    >
-                      Log out
-                    </Button>
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>My account</MenuItem>
-                </Menu>
-              </Grid>
-            ) : (
-              <Grid item container md={4} xs={8} justify="space-around">
-                <Grid item>
-                  <Button color="inherit" component={Link} to="/business">
-                    Sell on localink
-                  </Button>
-                </Grid>
-                <Grid item>
-                  <Button color="inherit" component={Link} to="/signup">
-                    Sign Up
-                  </Button>
-                </Grid>
-                <Grid item>
-                  <Button color="inherit" component={Link} to="/login">
-                    Log In
-                  </Button>
-                </Grid>
-              </Grid>
-            )}
+        <Grid container direction="row" spacing={2} md={12} alignItems="center">
+          <Grid item md={1} xs={0} />
+          <Grid item container justify="flex-start" md={2} xs={2}>
+            <Button color="inherit" href="/">
+              <Typography variant="h1">localink</Typography>
+            </Button>
           </Grid>
+          <Grid item md={5} xs={0} />
+          {isAuthenticated ? (
+            <Grid item container md={4} xs={4} justify="space-evenly">
+              <Grid
+                item
+                container
+                xs={4}
+                direction="row"
+                justify="flex-end"
+                alignItems="center"
+              >
+                <IconButton
+                  edge="end"
+                  color="inherit"
+                  aria-label="open drawer"
+                  onClick={handleMenu}
+                >
+                  <AccountCircle />
+                </IconButton>
+                <Button component={Link} to="/chat">
+                  Chat
+                </Button>
+              </Grid>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={open}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={handleClose}>
+                  <Button
+                    color="inherit"
+                    component={Link}
+                    to="/"
+                    disableRipple={true}
+                    onClick={() => dispatch(logout())}
+                  >
+                    Log out
+                  </Button>
+                </MenuItem>
+                <MenuItem onClick={handleClose}>My account</MenuItem>
+              </Menu>
+            </Grid>
+          ) : (
+            <Grid item container md={4} xs={8} justify="space-around">
+              <Grid item>
+                <Button color="inherit" component={Link} to="/business">
+                  Sell on localink
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button color="inherit" component={Link} to="/signup">
+                  Sign Up
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button color="inherit" component={Link} to="/login">
+                  Log In
+                </Button>
+              </Grid>
+            </Grid>
+          )}
         </Grid>
       </Toolbar>
     </AppBar>

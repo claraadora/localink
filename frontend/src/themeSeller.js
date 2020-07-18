@@ -21,7 +21,7 @@ export const themeSeller = createMuiTheme({
     h1: {
       fontFamily: '"Metropolis", sans-serif',
       fontWeight: 100,
-      fontSize: "2.125rem",
+      fontSize: "calc(10px+0.2vw)",
       letterSpacing: 0,
     },
     h5: {
@@ -31,7 +31,7 @@ export const themeSeller = createMuiTheme({
     },
     h6: {
       fontFamily: '"Metropolis", sans-serif',
-      fontWeight: 600,
+      fontWeight: 500,
       fontSize: "0.9375rem",
     },
     subtitle1: {
