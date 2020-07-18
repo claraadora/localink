@@ -49,7 +49,7 @@ const sendEmail = (res, emailTemplate) => {
       console.log(error);
       res.status(500).json('Error sending email');
     } else {
-      console.log(`**Email sent**`, info.response);
+      //console.log(`**Email sent**`, info.response);
       res.status(250).json('Email sent successfully');
     }
   });

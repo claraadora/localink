@@ -42,9 +42,11 @@ const sendPasswordResetEmail = async (req, res) => {
   const { email } = req.params;
   let user = null;
   let specificUser = null;
+  let isShopper = null;
 
   try {
     if (req.userType.shopper) {
+      isShopper = true;
       const shopper = await Shopper.findOne({ email });
 
       if (!shopper) {
@@ -53,6 +55,7 @@ const sendPasswordResetEmail = async (req, res) => {
       user = shopper;
       specificUser = shopper;
     } else if (req.userType.business) {
+      isShopper = false;
       specificUser = await User.findOne({ email });
 
       if (!specificUser) {
@@ -69,7 +72,7 @@ const sendPasswordResetEmail = async (req, res) => {
     res.status(404).json('No user with that email');
   }
   const token = usePasswordHashToMakeToken(user, specificUser);
-  const url = getPasswordResetURL(specificUser, token);
+  const url = getPasswordResetURL(isShopper, specificUser, token);
   const emailTemplate = resetPasswordTemplate(user, specificUser, url);
 
   const sendEmail = () => {
@@ -78,7 +81,6 @@ const sendPasswordResetEmail = async (req, res) => {
         console.log(error);
         res.status(500).json('Error sending email');
       } else {
-        //   console.log(info);
         console.log(`**Email sent**`, info.response);
         res.status(250).json('Email sent successfully');
       }

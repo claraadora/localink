@@ -31,10 +31,7 @@ router.post(
 // @access   Private
 router.post(
   '/account-settings-email',
-  [
-    checkBusinessOwner,
-    check('email', 'Please include a valid email').isEmail()
-  ],
+  [authBusiness, check('email', 'Please include a valid email').isEmail()],
   profileControllerBusiness.updateEmail
 );
 
@@ -44,7 +41,7 @@ router.post(
 router.post(
   '/account-settings-password',
   [
-    checkBusinessOwner,
+    authBusiness,
     check('oldPassword', 'Please enter your existing password').isLength({
       min: 6
     }),

@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+const e = require('express');
 
 const transported = nodemailer.createTransport({
   service: process.env.EMAIL_SERVICE,
@@ -8,20 +9,34 @@ const transported = nodemailer.createTransport({
   }
 });
 
-const getPasswordResetURL = (user, token) => {
-  return 'http://localhost:5000/password/reset/' + user._id + '/' + token;
+const getPasswordResetURL = (isShopper, user, token) => {
+  if (isShopper) {
+    return (
+      'http://localhost:5000/reset_password/receive_new_password/' +
+      user._id +
+      '/' +
+      token
+    );
+  } else {
+    return (
+      'http://localhost:5000/business/reset_password/receive_new_password/' +
+      user._id +
+      '/' +
+      token
+    );
+  }
 };
 
 const resetPasswordTemplate = (user, businessUser, url) => {
   const from = 'Localink' + '<' + process.env.SENDER_EMAIL_LOGIN + '>';
-  const to = user.email;
-  //const to = process.env.RECEIVER_EMAIL_LOGIN;
+  //const to = user.email;
+  const to = process.env.RECEIVER_EMAIL_LOGIN;
   const subject = 'Localink Password Reset';
   let recipient = null;
   if (user === businessUser) {
     recipient = user.name;
   } else {
-    recipient = user.shopName;
+    recipient = businessUser.name;
   }
   const html = `
     <p>Hey ${recipient || businessUser.email},</p>

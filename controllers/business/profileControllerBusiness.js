@@ -16,7 +16,8 @@ async function getShop(req, res) {
     });
 
     if (!shop) {
-      return res.status(400).json({ msg: 'There is no shop for this user' });
+      shop = {};
+      //return res.status(400).json({ msg: 'There is no shop for this user' });
     }
 
     await shop.populate({ path: 'reviews', model: 'Review' }).execPopulate();
