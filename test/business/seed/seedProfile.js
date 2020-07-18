@@ -55,6 +55,11 @@ const newPassword = {
   newPassword: 'testbusinessOwner@yahoo.com'
 };
 
+const newStaffPassword = {
+  oldPassword: userStaff.email,
+  newPassword: 'testUserStaff@yahoo.com'
+};
+
 async function addDummyProfileToBusiness() {
   try {
     const profileFields = {
@@ -91,6 +96,7 @@ module.exports = {
   profileId,
   newEmail,
   newPassword,
+  newStaffPassword,
   addDummyProfileToBusiness,
   deleteDummyShopOfBusiness
 };

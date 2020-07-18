@@ -23,6 +23,7 @@ const {
   updatedDummyProfile,
   newEmail,
   newPassword,
+  newStaffPassword,
   addDummyProfileToBusiness,
   deleteDummyShopOfBusiness
 } = require('./seed/seedProfile');
@@ -156,7 +157,7 @@ describe('profileControllerBusiness', () => {
     beforeEach(addDummyProfileToBusiness);
     afterEach(deleteDummyShopOfBusiness);
 
-    it('Should return updated user with updated email', done => {
+    it('Should return updated owner with updated email', done => {
       chai
         .request(app)
         .post('/business/profile/account-settings-email')
@@ -170,7 +171,7 @@ describe('profileControllerBusiness', () => {
         });
     });
 
-    it('Should return unauthorised access, action: update email by staff', done => {
+    it('Should return updated staff with updated email', done => {
       chai
         .request(app)
         .post('/business/profile/account-settings-email')
@@ -178,16 +179,13 @@ describe('profileControllerBusiness', () => {
         .send(newEmail)
         .end(async (error, res) => {
           assert.equal(error, null, 'error is not null');
-          assert.equal(res.status, 403, 'status is not 403');
-          assert.equal(
-            res.body.msg,
-            'authorization denied, only owner has access'
-          );
+          assert.equal(res.status, 200, 'status is not 200');
+          assert.equal(res.body.email, newEmail.email, 'email not updated');
           done();
         });
     });
 
-    it('Should return updated user with updated password', done => {
+    it('Should return updated owner with updated password', done => {
       chai
         .request(app)
         .post('/business/profile/account-settings-password')
@@ -208,19 +206,23 @@ describe('profileControllerBusiness', () => {
         });
     });
 
-    it('Should return unauthorised access, action: update password by staff', done => {
+    it('Should return updated staff with updated password', done => {
       chai
         .request(app)
         .post('/business/profile/account-settings-password')
         .set('x-auth-token', userStaffToken)
-        .send(newPassword)
+        .send(newStaffPassword)
         .end(async (error, res) => {
           assert.equal(error, null, 'error is not null');
-          assert.equal(res.status, 403, 'status is not 403');
-          assert.equal(
-            res.body.msg,
-            'authorization denied, only owner has access'
+          assert.equal(res.status, 200, 'status is not 200');
+          const returnedHashedPassword = (
+            await getUserFromToken(res.body.token)
+          ).password;
+          const isMatch = await bcrypt.compare(
+            newStaffPassword.newPassword,
+            returnedHashedPassword
           );
+          assert.equal(isMatch, true, 'password not updated');
           done();
         });
     });
