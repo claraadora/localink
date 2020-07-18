@@ -126,4 +126,9 @@ const receivedNewPassword = async (req, res) => {
   }
 };
 
-module.exports = { sendPasswordResetEmail, receivedNewPassword };
+module.exports = {
+  sendPasswordResetEmail,
+  receivedNewPassword,
+  getPasswordResetURL,
+  usePasswordHashToMakeToken
+};

@@ -1,17 +1,21 @@
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const config = require('config');
 const { validationResult } = require('express-validator');
 
 const Business = require('../../models/Business');
 const User = require('../../models/User');
+const {
+  sendActivationEmailUser
+} = require('../email/activationEmailController');
+const {
+  getPasswordResetURL,
+  usePasswordHashToMakeToken
+} = require('../email/email.controller');
 
 async function addUserToBusiness(req, res) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-  const { role, name, email, password } = req.body;
+  const { role, name, email } = req.body;
 
   try {
     const business = await Business.findById(req.user.id);
@@ -22,17 +26,14 @@ async function addUserToBusiness(req, res) {
         .json({ errors: [{ msg: 'User with that email already exists' }] });
     }
 
-    const salt = await bcrypt.genSalt(10);
-
-    const pw = await bcrypt.hash(password, salt);
-
     user = new User({
       name,
       email,
-      password: pw,
       role,
       activated: true
     });
+
+    user.isAccountActive = true;
 
     await user.save();
 
@@ -40,7 +41,11 @@ async function addUserToBusiness(req, res) {
 
     await business.save();
 
-    res.status(200).json('Added user successfully');
+    const token = usePasswordHashToMakeToken(business, user);
+    const url = getPasswordResetURL(false, user, token);
+    sendActivationEmailUser(business, user, url, res);
+
+    res.status(200).json('Added user and sent email successfully');
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
