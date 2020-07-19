@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(8, 0, 6),
   },
   startButton: {
-    background: `linear-gradient(to bottom right, ${lightBlue[600]}, ${cyan[50]})`,
+    background: `linear-gradient(to bottom right, ${lightBlue[400]}, ${cyan[50]})`,
     border: 0,
     borderRadius: 3,
     boxShadow: `0 3px 5px 2px ${lightBlue[100]}`,

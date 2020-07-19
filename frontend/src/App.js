@@ -23,10 +23,7 @@ export default function App() {
     <BrowserRouter>
       <Switch>
         <Route path="/business" component={AppSeller} />
-
-        <ThemeProvider theme={theme}>
-          <Route component={AppShopper} />
-        </ThemeProvider>
+        <Route path="/" component={AppShopper} />
       </Switch>
     </BrowserRouter>
   );

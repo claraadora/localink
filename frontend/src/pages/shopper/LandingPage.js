@@ -7,9 +7,6 @@ import { Link } from "react-router-dom";
 import { yellow, green } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
-  heroContent: {
-    padding: theme.spacing(8, 0, 6),
-  },
   startButton: {
     background: `linear-gradient(to bottom right, ${green[400]}, ${yellow[500]})`,
     border: 0,
@@ -20,11 +17,6 @@ const useStyles = makeStyles((theme) => ({
     width: 300,
     padding: "0 30px",
     justifyContent: "center",
-  },
-  content: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
   },
 }));
 
