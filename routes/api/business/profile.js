@@ -11,6 +11,11 @@ const profileControllerBusiness = require('../../../controllers/business/profile
 // @access   Private
 router.get('/me', authBusiness, profileControllerBusiness.getShop);
 
+// @route    GET business/profile/:shop_id
+// @desc     Get specified shop (not profile, profile is business)
+// @access   Private
+router.get('/:shop_id', profileControllerBusiness.getSpecifiedShop);
+
 // @route    POST business/profile;
 // @desc     Create or update user profile
 // @access   Private, only owner

@@ -23,7 +23,26 @@ async function getShop(req, res) {
     await shop.populate({ path: 'reviews', model: 'Review' }).execPopulate();
     await shop.populate({ path: 'products', model: 'Product' }).execPopulate();
 
-    res.json(shop);
+    res.status(200).json(shop);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+}
+
+async function getSpecifiedShop(req, res) {
+  try {
+    const shop = await Shop.findById(req.params.shop_id);
+
+    if (!shop) {
+      shop = {};
+      //return res.status(400).json({ msg: 'There is no shop for this user' });
+    }
+
+    await shop.populate({ path: 'reviews', model: 'Review' }).execPopulate();
+    await shop.populate({ path: 'products', model: 'Product' }).execPopulate();
+
+    res.status(200).json(shop);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
@@ -160,6 +179,7 @@ async function updatePassword(req, res) {
 
 module.exports = {
   getShop,
+  getSpecifiedShop,
   createOrUpdateProfile,
   updateEmail,
   updatePassword
