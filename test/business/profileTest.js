@@ -22,6 +22,8 @@ const {
 
 const bcrypt = require('bcryptjs');
 
+const Shop = require('../../models/Shop');
+
 //Configure chai
 chai.use(chaiHTTP);
 
@@ -88,6 +90,21 @@ describe('profileControllerBusiness', () => {
           assert.equal(res.status, 200, 'status is not 200');
           expect(res => {
             expect(res.body).to.eql(shopInInputToken);
+          });
+          done();
+        });
+    });
+
+    it('Should get and return specified shop', done => {
+      chai
+        .request(app)
+        .get(`/business/profile/${dummyProfile._id}`)
+        .end(async (error, res) => {
+          const shop = await Shop.findById(dummyProfile._id);
+          assert.equal(error, null, 'error is not null');
+          assert.equal(res.status, 200, 'status is not 200');
+          expect(res => {
+            expect(res.body).to.eql(shop);
           });
           done();
         });

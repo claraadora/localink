@@ -17,7 +17,6 @@ const {
 //Configure chai
 chai.use(chaiHTTP);
 
-//const authControllerBusiness = require('../../controllers/business/authControllerBusiness');
 const app = require('../../server');
 
 describe('authControllerBusiness', () => {

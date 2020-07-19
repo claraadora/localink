@@ -13,8 +13,6 @@ chai.use(chaiHTTP);
 
 const app = require('../../server');
 
-let result = null;
-
 describe('indexControllerBusiness', () => {
   afterEach(removeAddedDummyUsers);
   describe('Register business', () => {
@@ -60,7 +58,7 @@ describe('indexControllerBusiness', () => {
         .send(registerCredentials)
         .end(async function (error, res) {
           assert.equal(error, null, 'error is not null');
-          assert.equal(res.status, 250, 'status is not 200');
+          assert.equal(res.status, 250, 'status is not 250');
           assert.equal(res.body, 'Email sent successfully');
           done();
         });
