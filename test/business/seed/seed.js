@@ -231,11 +231,6 @@ async function getShopFromToken(token) {
   return shop;
 }
 
-async function clearDB(businessId, userId) {
-  await Business.findByIdAndDelete(businessId);
-  await User.findByIdAndDelete(userId);
-}
-
 module.exports = {
   business,
   firstUserOwner,
@@ -253,6 +248,5 @@ module.exports = {
   getBusinessFromToken,
   getUserFromToken,
   getShopFromToken,
-  hashPassword,
-  clearDB
+  hashPassword
 };

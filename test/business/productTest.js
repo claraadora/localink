@@ -4,22 +4,11 @@ const assert = chai.assert;
 const expect = require('expect');
 const {
   business,
-  firstUserOwner,
-  userOwner,
-  userStaff,
   firstUserOwnerToken,
-  userOwnerToken,
-  userStaffToken,
   addDummyUsers,
-  removeDummyUsers,
-  compareToken,
-  getBusinessFromToken,
-  getShopFromToken,
-  clearDB
+  removeDummyUsers
 } = require('./seed/seed');
 const {
-  dummyProfile,
-  updatedDummyProfile,
   addDummyProfileToBusiness,
   deleteDummyShopOfBusiness
 } = require('./seed/seedProfile');

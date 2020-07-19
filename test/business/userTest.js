@@ -10,11 +10,7 @@ const {
   userOwner,
   userStaff,
   firstUserOwnerToken,
-  userOwnerToken,
-  userStaffToken,
-  addDummyUsers,
-  removeAddedDummyUsers,
-  compareToken
+  removeAddedDummyUsers
 } = require('./seed/seed');
 
 const {
