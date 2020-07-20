@@ -5,15 +5,8 @@ const expect = require('expect');
 const {
   dummyShopper,
   shopperToken,
-  registerCredentials,
-  newEmail,
-  newPassword,
   addDummyShopper,
-  removeDummyShopper,
-  removeAddedDummyShopper,
-  registerShopper,
-  compareToken,
-  getShopperFromToken
+  removeDummyShopper
 } = require('./seed/seed');
 
 const {

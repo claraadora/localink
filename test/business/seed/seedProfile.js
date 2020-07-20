@@ -1,20 +1,6 @@
 const { ObjectID } = require('mongodb');
 const profileId = new ObjectID();
-const {
-  business,
-  firstUserOwner,
-  userOwner,
-  userStaff,
-  firstUserOwnerToken,
-  userOwnerToken,
-  userStaffToken,
-  addDummyUsers,
-  removeDummyUsers,
-  compareToken,
-  getBusinessFromToken,
-  getShopFromToken,
-  clearDB
-} = require('./seed');
+const { business, firstUserOwner, userStaff } = require('./seed');
 const Business = require('../../../models/Business');
 const Shop = require('../../../models/Shop');
 const geocode = require('../../../routes/api/distance/geocode');

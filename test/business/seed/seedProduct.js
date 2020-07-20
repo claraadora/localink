@@ -1,31 +1,9 @@
 const { ObjectID } = require('mongodb');
 const productId = new ObjectID();
 
-const {
-  business,
-  firstUserOwner,
-  userOwner,
-  userStaff,
-  firstUserOwnerToken,
-  userOwnerToken,
-  userStaffToken,
-  addDummyUsers,
-  removeDummyUsers,
-  compareToken,
-  getBusinessFromToken,
-  getShopFromToken,
-  clearDB
-} = require('./seed');
+const { business } = require('./seed');
 
-const {
-  dummyProfile,
-  updatedDummyProfile,
-  profileId,
-  newEmail,
-  newPassword,
-  addDummyProfileToBusiness,
-  deleteDummyShopOfBusiness
-} = require('./seedProfile');
+const { dummyProfile, profileId } = require('./seedProfile');
 const Product = require('../../../models/Product');
 const Shop = require('../../../models/Shop');
 const Business = require('../../../models/Business');
