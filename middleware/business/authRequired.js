@@ -7,8 +7,6 @@ module.exports = async function (req, res, next) {
     req.user = user;
     next();
   } else {
-    res.status(400).json({
-      errors: [{ msg: 'Account not activated' }]
-    });
+    res.status(400).json({ msg: 'Account not activated' });
   }
 };
