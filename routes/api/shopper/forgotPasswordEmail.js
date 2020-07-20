@@ -11,7 +11,7 @@ const resetPasswordAuth = require('../../../middleware/ResetPasswordAuth');
 // @desc     Get email from frontend
 // @access   Private
 // @return
-router.post('/:email', authShopper, sendPasswordResetEmail);
+router.get('/:email', authShopper, sendPasswordResetEmail);
 
 // @route    POST /reset_password/receive_new_password/:userId/:token
 // @desc     Change password
