@@ -61,6 +61,7 @@ async function removeDummyProduct(dummyProduct) {
 
 async function removeAddedDummyProduct() {
   await Product.findOneAndDelete({ name: dummyProduct.name });
+  await Product.findOneAndDelete({ name: dummyProduct.name });
   await Business.findOneAndDelete({ shopName: business.shopName });
 }
 

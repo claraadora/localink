@@ -26,7 +26,7 @@ async function search(req, res) {
                     maxEdits: 2,
                     maxExpansions: 50
                   },
-                  score: { boost: { value: 1.5 } }
+                  score: { boost: { value: 2 } }
                 }
               },
               {
@@ -37,7 +37,7 @@ async function search(req, res) {
                     maxEdits: 1,
                     maxExpansions: 50
                   },
-                  score: { boost: { value: 1.5 } }
+                  score: { boost: { value: 2 } }
                 }
               },
               {
@@ -48,7 +48,7 @@ async function search(req, res) {
                     maxEdits: 2,
                     maxExpansions: 50
                   },
-                  score: { boost: { value: 1.5 } }
+                  score: { boost: { value: 2 } }
                 }
               },
               {
