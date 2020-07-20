@@ -69,6 +69,7 @@ const sendPasswordResetEmail = async (req, res) => {
       res.status(401).json('Token not valid');
     }
   } catch (error) {
+    console.log('no user w that email');
     res.status(404).json('No user with that email');
   }
   const token = usePasswordHashToMakeToken(user, specificUser);

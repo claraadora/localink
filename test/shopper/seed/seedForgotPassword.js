@@ -4,30 +4,27 @@ const {
 const { getPasswordResetURL } = require('../../../controllers/email/email');
 const mongoose = require('mongoose');
 
-const Business = require('../../../models/Business');
-const User = require('../../../models/User');
+const Shopper = require('../../../models/Shopper');
 
-const newPassword = { password: 'newBusinessPassword' };
+const newPassword = { password: 'newShopperPassword' };
 
 async function getPasswordResetLinkInEmail(email) {
   let specificUser = null;
   let user = null;
 
   try {
-    specificUser = await User.findOne({ email });
+    specificUser = await Shopper.findOne({ email });
 
     if (!specificUser) {
       console.log('Cannot find user with that email');
     }
 
-    user = await Business.findOne({
-      users: mongoose.Types.ObjectId(specificUser._id)
-    });
+    user = specificUser;
   } catch (error) {
     console.log('No user with that email');
   }
   const token = usePasswordHashToMakeToken(user, specificUser);
-  const url = getPasswordResetURL(false, specificUser, token);
+  const url = getPasswordResetURL(true, specificUser, token);
 
   const substring = url.substr(21);
   return substring;

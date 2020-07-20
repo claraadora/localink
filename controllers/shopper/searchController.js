@@ -11,6 +11,7 @@ async function search(req, res) {
   const products = [];
 
   const { search, service } = req.body;
+  const searchSubstring = search.substring(0, search.length - 1);
   db.collection('products')
     .aggregate([
       {
@@ -90,6 +91,13 @@ async function search(req, res) {
                 wildcard: {
                   path: ['name', 'description'],
                   query: search + '*',
+                  allowAnalyzedField: true
+                }
+              },
+              {
+                wildcard: {
+                  path: ['name', 'description'],
+                  query: searchSubstring + '*',
                   allowAnalyzedField: true
                 }
               }
