@@ -12,6 +12,7 @@ import {
   IconButton,
 } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
+import Axios from "axios";
 
 const initialState = {
   shopName: "",
@@ -90,9 +91,19 @@ const ProfileForm = () => {
     // if (errs.length) {
     //   return errs.forEach((err) => this.toast(err, "custom", 2000, toastColor));
     // }
-    console.log(file);
+    let formData = new FormData();
+    const config = {
+      header: { "content-type": "multipart/form-data" },
+    };
+    formData.append("file", file);
 
-    setFormData({ ...formData, avatar: file });
+    Axios.post("/business/profile/upload-avatar", formData, config).then(
+      (response) => {
+        if (response.data.success) {
+          setFormData({ ...formData, avatar: response.data.url });
+        }
+      }
+    );
   };
   return (
     <div className={classes.paper}>
