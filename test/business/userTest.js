@@ -77,7 +77,7 @@ describe('userControllerBusiness', () => {
 
   describe('Test account activation', () => {
     beforeEach(async () => {
-      this.activationLink = await registerAddedUser();
+      this.activationLink = await registerAddedUser(true);
     });
     it('Should set password of new user, role: owner', done => {
       chai
@@ -120,7 +120,44 @@ describe('userControllerBusiness', () => {
         });
         done();
       });
-    // });
+  });
+
+  it('Should send activation email after adding user, role: staff', done => {
+    chai
+      .request(app)
+      .post('/business/user')
+      .set('x-auth-token', firstUserOwnerToken)
+      .send(userStaff)
+      .end(async (error, res) => {
+        assert.equal(error, null, 'error is not null');
+        assert.equal(res.status, 250, 'status is not 200');
+        assert.equal(res.body, 'Email sent successfully');
+        done();
+      });
+  });
+
+  describe('Test account activation', () => {
+    beforeEach(async () => {
+      this.activationLink = await registerAddedUser(false);
+    });
+    it('Should set password of new user, role: owner', done => {
+      chai
+        .request(app)
+        .post(this.activationLink)
+        .send(password)
+        .end(async function (error, res) {
+          assert.equal(error, null, 'error is not null');
+          assert.equal(res.status, 202, 'status is not 202');
+          assert.equal(res.text, 'Password change successful');
+          const user = await User.findOne({ email: userStaff.email });
+          const isMatch = await bcrypt.compare(
+            password.password,
+            user.password
+          );
+          assert.equal(isMatch, true, 'Password not set');
+          done();
+        });
+    });
   });
 
   describe('', () => {

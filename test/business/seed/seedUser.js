@@ -60,8 +60,14 @@ async function addDeactivatedStaff() {
   await businessObj.save();
 }
 
-async function registerAddedUser() {
-  const { role, name, email } = userOwner;
+async function registerAddedUser(isOwner) {
+  let dummyUser = null;
+  if (isOwner) {
+    dummyUser = userOwner;
+  } else {
+    dummyUser = userStaff;
+  }
+  const { role, name, email } = dummyUser;
 
   try {
     const businessObj = await Business.findById(business._id);
