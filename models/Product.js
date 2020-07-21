@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const ProductSchema = new mongoose.Schema({
   shop: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Shop'
+    ref: 'Shop',
+    required: true
   },
   isService: {
     type: Boolean,

@@ -111,7 +111,7 @@ async function removeAddedDummyUsers() {
 
 async function addDummyUsers() {
   try {
-    const businessObj = await new Business(business).save();
+    const businessObj = new Business(business);
     const firstUserOwnerObj = await new User(firstUserOwner);
     firstUserOwnerObj.isAccountActive = true;
     firstUserOwnerObj.password = await hashPassword(firstUserOwnerObj.password);

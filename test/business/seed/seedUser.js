@@ -14,7 +14,7 @@ const {
 const password = { password: userOwner.password };
 
 async function addBusiness() {
-  const businessObj = await new Business(business).save();
+  const businessObj = await new Business(business);
   const firstUserOwnerObj = await new User(firstUserOwner).save();
   firstUserOwnerObj.isAccountActive = true;
   firstUserOwnerObj.password = await hashPassword(firstUserOwnerObj.password);

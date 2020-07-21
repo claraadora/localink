@@ -1,12 +1,15 @@
 const mongoose = require('mongoose');
 
 const BusinessSchema = new mongoose.Schema({
-  users: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User'
-    }
-  ],
+  users: {
+    type: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+      }
+    ],
+    validate: v => Array.isArray(v) && v.length > 0
+  },
   createdAt: {
     type: Date,
     default: Date.now

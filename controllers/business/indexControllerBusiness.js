@@ -14,12 +14,12 @@ async function registerBusiness(req, res) {
   const { shopName, name, email, password } = req.body;
 
   try {
-    let business = await Business.findOne({ email });
-    if (business) {
+    let user = await User.findOne({ email });
+    if (user) {
       return res.status(400).json({ errors: [{ msg: 'User already exists' }] });
     }
 
-    business = new Business({
+    const business = new Business({
       shopName
     });
 
@@ -27,7 +27,7 @@ async function registerBusiness(req, res) {
 
     const pw = await bcrypt.hash(password, salt);
 
-    const user = new User({
+    user = new User({
       name,
       email,
       password: pw,

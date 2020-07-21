@@ -122,27 +122,28 @@ describe('userControllerBusiness', () => {
       });
     // });
   });
-  //describe('test deleting user...', done => {
-  it('Should delete user', done => {
-    chai
-      .request(app)
-      .delete(`/business/user/${firstUserOwner._id}`)
-      .set('x-auth-token', firstUserOwnerToken)
-      .end(async (error, res) => {
-        assert.equal(error, null, 'error is not null');
-        assert.equal(res.status, 200, 'status is not 200');
-        const businessObj = await Business.findById(business._id);
-        const numOfUsers = businessObj.users.length;
-        assert.equal(numOfUsers, 0, 'number of users not 0');
-        const user = await User.findById(firstUserOwner._id);
-        assert.equal(user, null, 'user not deleted');
-        done();
-      });
-  });
 
   describe('', () => {
     beforeEach(addUserOwner);
     afterEach(removeUpdatedUser);
+
+    it('Should delete user', done => {
+      chai
+        .request(app)
+        .delete(`/business/user/${firstUserOwner._id}`)
+        .set('x-auth-token', firstUserOwnerToken)
+        .end(async (error, res) => {
+          assert.equal(error, null, 'error is not null');
+          assert.equal(res.status, 200, 'status is not 200');
+          const businessObj = await Business.findById(business._id);
+          const numOfUsers = businessObj.users.length;
+          assert.equal(numOfUsers, 1, 'number of users not 1');
+          const user = await User.findById(firstUserOwner._id);
+          assert.equal(user, null, 'user not deleted');
+          done();
+        });
+    });
+
     it('Should update user', done => {
       chai
         .request(app)
