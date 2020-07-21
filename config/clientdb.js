@@ -18,38 +18,38 @@ const connectClient = async () => {
       const db = client.db('test');
       //For testing
 
-      // db.collection('users').remove(
-      //   { name: 'test first business owner' },
-      //   { $multi: true }
-      // );
-      // db.collection('users').remove(
-      //   { name: 'test user owner' },
-      //   { $multi: true }
-      // );
-      // db.collection('users').remove(
-      //   { name: 'test user staff' },
-      //   { $multi: true }
-      // );
-      // db.collection('businesses').remove(
-      //   { shopName: 'test create or update profile' },
-      //   { $multi: true }
-      // );
-      // db.collection('businesses').remove(
-      //   { shopName: 'test business first owner, user owner, user staff' },
-      //   { $multi: true }
-      // );
-      // db.collection('shops').remove(
-      //   { shopName: 'test create or update profile' },
-      //   { $multi: true }
-      // );
-      // db.collection('products').remove(
-      //   { image: 'test img url' },
-      //   { $multi: true }
-      // );
-      // db.collection('products').remove(
-      //   { name: 'test product ' },
-      //   { $multi: true }
-      // );
+      db.collection('users').remove(
+        { name: 'test first business owner' },
+        { $multi: true }
+      );
+      db.collection('users').remove(
+        { name: 'test user owner' },
+        { $multi: true }
+      );
+      db.collection('users').remove(
+        { name: 'test user staff' },
+        { $multi: true }
+      );
+      db.collection('businesses').remove(
+        { shopName: 'test create or update profile' },
+        { $multi: true }
+      );
+      db.collection('businesses').remove(
+        { shopName: 'test business first owner, user owner, user staff' },
+        { $multi: true }
+      );
+      db.collection('shops').remove(
+        { shopName: 'test create or update profile' },
+        { $multi: true }
+      );
+      db.collection('products').remove(
+        { image: 'test img url' },
+        { $multi: true }
+      );
+      db.collection('products').remove(
+        { name: 'test product ' },
+        { $multi: true }
+      );
       dbb = db;
     }
   );

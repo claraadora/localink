@@ -33,14 +33,17 @@ const ShopSchema = new mongoose.Schema({
     required: true
   },
   latLng: {
-    lat: {
-      type: Number,
-      required: true
+    type: {
+      lat: {
+        type: Number,
+        required: true
+      },
+      lng: {
+        type: Number,
+        required: true
+      }
     },
-    lng: {
-      type: Number,
-      required: true
-    }
+    required: true
   },
   distance: {
     type: Number

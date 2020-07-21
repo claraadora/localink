@@ -38,7 +38,6 @@ async function removeDummyShopper() {
 }
 
 async function removeAddedDummyShopper() {
-  console.log('adding');
   await Shopper.findOneAndDelete({ email: dummyShopper.email });
 }
 

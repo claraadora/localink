@@ -13,6 +13,7 @@ const dummyProfile = {
     'https://image.shutterstock.com/image-photo/white-transparent-leaf-on-mirror-260nw-1029171697.jpg',
   description: 'testing profile is in db after creating or updating',
   address: '26 Bedok Road',
+  latLng: { lat: 1, lng: 1 },
   promotions: 'current promotions',
   openingHours: '24hours/7',
   contactDetails: '+65 85720931',
@@ -26,6 +27,7 @@ const updatedDummyProfile = {
     'https://image.shutterstock.com/image-photo/white-transparent-leaf-on-mirror-260nw-1029171697.jpg',
   description: 'updated testing profile is in db after creating or updating',
   address: '26 Bedok Road',
+  latLng: { lat: 1, lng: 1 },
   promotions: 'updated current promotions',
   openingHours: 'updated 24hours/7',
   contactDetails: '+updated 65 85720931',
@@ -49,7 +51,8 @@ const newStaffPassword = {
 async function addDummyProfileToBusiness() {
   try {
     const profileFields = {
-      shopName: dummyProfile.shopName
+      shopName: dummyProfile.shopName,
+      latLng: dummyProfile.latLng
     };
     const profile = await Business.findOneAndUpdate(
       { _id: business._id },

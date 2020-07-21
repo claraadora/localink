@@ -14,3 +14,9 @@ require('./shopper/reviewTest');
 require('./shopper/searchTest');
 
 require('./business/modelValidation/businessTest');
+require('./business/modelValidation/userTest');
+require('./business/modelValidation/profileTest');
+require('./business/modelValidation/productTest');
+require('./business/modelValidation/reviewTest');
+
+require('./shopper/modelValidation/shopperTest');
