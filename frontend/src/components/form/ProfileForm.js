@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { createProfile } from "../../actions/seller/profileActions";
 import { useSelector, useDispatch } from "react-redux";
-import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import { borderedTextFieldStylesHook } from "@mui-treasury/styles/textField/bordered";
+import {
+  makeStyles,
+  TextField,
+  Typography,
+  InputLabel,
+  Button,
+  Grid,
+  Avatar,
+  IconButton,
+} from "@material-ui/core";
+import EditIcon from "@material-ui/icons/Edit";
+import { format } from "path";
 
 const initialState = {
   shopName: "",
@@ -21,11 +28,11 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
   avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+    width: theme.spacing(10),
+    height: theme.spacing(10),
   },
   form: {
-    width: "70%",
+    width: "30%",
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -39,8 +46,6 @@ const ProfileForm = () => {
   const loading = useSelector((state) => state.profile.loading);
   const dispatch = useDispatch();
   const classes = useStyles();
-  const inputBaseStyles = borderedTextFieldStylesHook.useInputBase();
-  const inputLabelStyles = borderedTextFieldStylesHook.useInputLabel();
 
   const [formData, setFormData] = useState(initialState);
   const { shopName, description, avatar, address } = formData;
@@ -50,7 +55,6 @@ const ProfileForm = () => {
       const profileData = { ...initialState };
       for (const key in profile) {
         if (key in profileData) profileData[key] = profile[key];
-        console.log("profile dataaaaa " + profileData);
       }
       profileData[shopName] = user.shopName;
       setFormData(profileData);
@@ -67,82 +71,140 @@ const ProfileForm = () => {
     dispatch(createProfile(formData, history, profile ? true : false));
   };
 
+  const onUploadImage = (e) => {
+    const errs = [];
+    const file = e.target.files[0];
+    const types = ["image/png", "image/jpeg", "image/gif"];
+
+    // if (types.every((type) => file.type !== type)) {
+    //   errs.push(`'${file.type} is not a supported format`);
+    // }
+
+    // if (file.size > 150000) {
+    //   errs.push(`'${file.name}' is too large, please pick a smaller file`);
+    // }
+
+    // if (errs.length) {
+    //   return errs.forEach((err) => this.toast(err, "custom", 2000, toastColor));
+    // }
+    console.log(file);
+
+    setFormData({ ...formData, avatar: file });
+  };
   return (
     <div className={classes.paper}>
       <Typography variant="h5" gutterBottom>
         Profile
       </Typography>
       <form className={classes.form} onSubmit={onSubmit}>
-        <TextField
-          required
-          id="shopName"
-          name="shopName"
-          label={"Shop Name"}
-          value={shopName}
-          fullWidth
-          onChange={onChange}
-          autoComplete="shopName"
-          margin={"normal"}
-          InputLabelProps={{ shrink: true, classes: inputLabelStyles }}
-          InputProps={{ classes: inputBaseStyles, disableUnderline: true }}
-        />
-        <TextField
-          required
-          id="description"
-          name="description"
-          label={"Shop Description"}
-          fullWidth
-          onChange={onChange}
-          value={description}
-          autoComplete="description"
-          margin={"normal"}
-          InputLabelProps={{ shrink: true, classes: inputLabelStyles }}
-          InputProps={{ classes: inputBaseStyles, disableUnderline: true }}
-          multiline
-          rows={3}
-          rowsMax={6}
-        />
-        <TextField
-          required
-          id="avatar"
-          name="avatar"
-          label={"Profile Picture"}
-          accept="image/png, image/jpeg"
-          type="file"
-          fullWidth
-          onChange={onChange}
-          value={avatar}
-          autoComplete="avatar"
-          helperText="Upload .jpeg or .png file"
-          margin={"normal"}
-          InputLabelProps={{ shrink: true, classes: inputLabelStyles }}
-          InputProps={{ classes: inputBaseStyles, disableUnderline: true }}
-        />
-        <TextField
-          required
-          id="address"
-          name="address"
-          label={"Business Address"}
-          fullWidth
-          onChange={onChange}
-          value={address}
-          autoComplete="address"
-          margin={"normal"}
-          InputLabelProps={{ shrink: true, classes: inputLabelStyles }}
-          InputProps={{ classes: inputBaseStyles, disableUnderline: true }}
-        />
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
-          className={classes.submit}
-        >
-          Update Profile
-        </Button>
+        <Grid container direction="column" justify="space-between" spacing={2}>
+          <Grid item>
+            <Grid container direction="row" alignItems="flex-end">
+              <Grid item>
+                <Avatar
+                  alt="Localink"
+                  src={avatar.secure_url}
+                  className={classes.avatar}
+                />
+              </Grid>
+              <Grid item>
+                <label htmlFor="image">
+                  <EditIcon fontSize="small" />
+                </label>
+                <input
+                  id="image"
+                  type="file"
+                  accept="image/*"
+                  style={{ display: "none" }}
+                  onChange={onUploadImage}
+                />
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item>
+            <InputLabel>Shop Name</InputLabel>
+            <TextField
+              id="name"
+              placeholder="Shop's name"
+              fullWidth={true}
+              margin="dense"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              variant="outlined"
+              value={shopName}
+              onChange={onChange}
+            />
+          </Grid>
+          <Grid item>
+            <InputLabel>Shop Description</InputLabel>
+            <TextField
+              id="description"
+              placeholder="Shop's description"
+              fullWidth={true}
+              margin="dense"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              variant="outlined"
+              value={description}
+              onChange={onChange}
+              multiline
+              rows={3}
+              rowsMax={6}
+            />
+          </Grid>
+          <Grid item>
+            <InputLabel>Shop Address</InputLabel>
+            <TextField
+              id="address"
+              placeholder="Business address"
+              fullWidth={true}
+              margin="dense"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              variant="outlined"
+              value={address}
+              onChange={onChange}
+              multiline
+              rows={3}
+              rowsMax={6}
+            />
+          </Grid>
+          <Grid item>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contianed"
+              color="primary"
+              className={classes.submit}
+            >
+              Update Profile
+            </Button>
+          </Grid>
+        </Grid>
       </form>
     </div>
   );
 };
 
+{
+  /* <TextField
+required
+id="avatar"
+name="avatar"
+label={"Profile Picture"}
+accept="image/png, image/jpeg"
+type="file"
+fullWidth
+onChange={onChange}
+value={avatar}
+autoComplete="avatar"
+helperText="Upload .jpeg or .png file"
+margin={"normal"}
+InputLabelProps={{ shrink: true, classes: inputLabelStyles }}
+InputProps={{ classes: inputBaseStyles, disableUnderline: true }}
+/> */
+}
 export default ProfileForm;

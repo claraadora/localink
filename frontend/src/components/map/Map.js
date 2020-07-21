@@ -124,7 +124,7 @@ const MapWrapped = withScriptjs(withGoogleMap(Map));
 
 export const LocalinkMap = () => {
   return (
-    <div style={{ width: "100vw", height: "92vh" }}>
+    <div style={{ width: "100%", height: "100%" }}>
       <MapWrapped
         googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
         loadingElement={<div style={{ height: `100%` }} />}

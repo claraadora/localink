@@ -26,6 +26,14 @@ const useStyles = makeStyles({
     width: "22%",
     zIndex: 100,
   },
+  moreInfo: {
+    position: "fixed",
+    top: "20%",
+    right: "12%",
+    height: "78%",
+    width: "22%",
+    zIndex: 100,
+  },
   itineraryList: {
     position: "fixed",
     bottom: "2%",
