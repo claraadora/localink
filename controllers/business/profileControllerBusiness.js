@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const multer = require('multer');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
@@ -114,6 +115,37 @@ async function createOrUpdateProfile(req, res) {
   }
 }
 
+async function uploadAvatar(req, res) {
+  var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, '../../uploads/');
+    },
+    filename: function (req, file, cb) {
+      cb(null, `${Date.now()}_${file.originalname}`);
+    }
+    // fileFilter: (req, file, cb) => {
+    //   const ext = path.extname(file.originalname)
+    //   if (ext !== '.jpg' && ext !== '.png' && ext !== '.mp4') {
+    //     return cb(res.status(400).end('only jpg, png, mp4 is allowed'), false);
+    //   }
+    //   cb(null, true)
+    // }
+  });
+
+  var upload = multer({ storage: storage }).single('file');
+
+  upload(req, res, async err => {
+    if (err) {
+      return res.json({ success: false, err });
+    }
+    const url = res.req.file.path;
+    const shop = await Shop.findOne({ owner: req.user.id });
+    shop.avatar = url;
+    await shop.save();
+    return res.json({ success: true, url });
+  });
+}
+
 async function updateEmail(req, res) {
   const errors = validationResult(req); //converts errors into error object
   if (!errors.isEmpty()) {
@@ -185,6 +217,7 @@ module.exports = {
   getShop,
   getSpecifiedShop,
   createOrUpdateProfile,
+  uploadAvatar,
   updateEmail,
   updatePassword
 };

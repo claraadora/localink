@@ -1,5 +1,4 @@
 const got = require('got');
-const reverseGeocode = require('./geocode');
 
 const URI =
   'https://www.googleapis.com/geolocation/v1/geolocate?key=' +

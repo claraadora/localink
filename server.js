@@ -18,6 +18,9 @@ connectDB();
 // Init Middleware
 app.use(express.json());
 
+//use this to show the image you have in node js server to client (react js)
+app.use('/uploads', express.static('uploads'));
+
 //app.get('/', (req, res) => res.send('API running'));
 
 //Define routes for businesses

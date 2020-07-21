@@ -31,6 +31,15 @@ router.post(
   profileControllerBusiness.createOrUpdateProfile
 );
 
+// @route    POST business/profile/upload-avatar;
+// @desc     Upload shop profile avatar
+// @access   Private, only owner
+router.post(
+  '/upload-avatar',
+  checkBusinessOwner,
+  profileControllerBusiness.uploadAvatar
+);
+
 // @route    POST business/profile/account-settings-email;
 // @desc     Update email (account settings)
 // @access   Private

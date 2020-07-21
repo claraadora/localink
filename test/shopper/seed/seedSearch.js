@@ -17,6 +17,7 @@ const productId8 = new ObjectID();
 const productId9 = new ObjectID();
 const productId10 = new ObjectID();
 const productId11 = new ObjectID();
+const productId12 = new ObjectID();
 
 //test boost
 const dummyProduct1 = {
@@ -142,6 +143,17 @@ const dummyProduct11 = {
   isService: false
 };
 
+const dummyProduct12 = {
+  _id: productId12,
+  shop: dummyProfile._id,
+  name: 'test product service',
+  image: 'test img url',
+  description: 'test description delete',
+  price: 10,
+  stock: 3,
+  isService: true
+};
+
 const allProducts = [
   dummyProduct1,
   dummyProduct2,
@@ -153,12 +165,18 @@ const allProducts = [
   dummyProduct8,
   dummyProduct9,
   dummyProduct10,
-  dummyProduct11
+  dummyProduct11,
+  dummyProduct12
 ];
 
 const searchQuery = {
   search: 'delete',
   service: false
+};
+
+const searchQueryService = {
+  search: 'delete',
+  service: true
 };
 
 async function addDummyProducts() {
@@ -245,6 +263,7 @@ function compare(elem1, elem2) {
 module.exports = {
   allProducts,
   searchQuery,
+  searchQueryService,
   addDummyProducts,
   removeDummyProducts,
   isScoreBoosted,
