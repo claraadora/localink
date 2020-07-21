@@ -10,8 +10,7 @@ const UserSchema = new mongoose.Schema({
     required: true
   },
   password: {
-    type: String,
-    required: true
+    type: String
   },
   role: {
     type: String,
@@ -22,7 +21,8 @@ const UserSchema = new mongoose.Schema({
     default: false
   },
   activated: {
-    type: Boolean
+    type: Boolean,
+    default: true
   }
 });
 

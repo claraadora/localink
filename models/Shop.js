@@ -3,10 +3,12 @@ const mongoose = require('mongoose');
 const ShopSchema = new mongoose.Schema({
   owner: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Business'
+    ref: 'Business',
+    required: true
   },
   shopName: {
-    type: String
+    type: String,
+    required: true
   },
   avatar: {
     type: String
@@ -31,12 +33,17 @@ const ShopSchema = new mongoose.Schema({
     required: true
   },
   latLng: {
-    lat: {
-      type: Number
+    type: {
+      lat: {
+        type: Number,
+        required: true
+      },
+      lng: {
+        type: Number,
+        required: true
+      }
     },
-    lng: {
-      type: Number
-    }
+    required: true
   },
   distance: {
     type: Number

@@ -3,16 +3,9 @@ const chaiHTTP = require('chai-http');
 const assert = chai.assert;
 
 const {
-  business,
-  firstUserOwner,
-  userOwner,
-  userStaff,
   firstUserOwnerToken,
-  userOwnerToken,
-  userStaffToken,
   addDummyUsers,
-  removeDummyUsers,
-  compareToken
+  removeDummyUsers
 } = require('./seed/seed');
 
 const {

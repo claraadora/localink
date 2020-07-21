@@ -11,6 +11,11 @@ const profileControllerBusiness = require('../../../controllers/business/profile
 // @access   Private
 router.get('/me', authBusiness, profileControllerBusiness.getShop);
 
+// @route    GET business/profile/:shop_id
+// @desc     Get specified shop (not profile, profile is business)
+// @access   Private
+router.get('/:shop_id', profileControllerBusiness.getSpecifiedShop);
+
 // @route    POST business/profile;
 // @desc     Create or update user profile
 // @access   Private, only owner
@@ -31,10 +36,7 @@ router.post(
 // @access   Private
 router.post(
   '/account-settings-email',
-  [
-    checkBusinessOwner,
-    check('email', 'Please include a valid email').isEmail()
-  ],
+  [authBusiness, check('email', 'Please include a valid email').isEmail()],
   profileControllerBusiness.updateEmail
 );
 
@@ -44,7 +46,7 @@ router.post(
 router.post(
   '/account-settings-password',
   [
-    checkBusinessOwner,
+    authBusiness,
     check('oldPassword', 'Please enter your existing password').isLength({
       min: 6
     }),

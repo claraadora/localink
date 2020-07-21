@@ -4,22 +4,12 @@ const assert = chai.assert;
 const expect = require('expect');
 const {
   business,
-  firstUserOwner,
-  userOwner,
-  userStaff,
   firstUserOwnerToken,
-  userOwnerToken,
   userStaffToken,
   addDummyUsers,
-  removeDummyUsers,
-  compareToken,
-  getBusinessFromToken,
-  getShopFromToken,
-  clearDB
+  removeDummyUsers
 } = require('./seed/seed');
 const {
-  dummyProfile,
-  updatedDummyProfile,
   addDummyProfileToBusiness,
   deleteDummyShopOfBusiness
 } = require('./seed/seedProfile');
@@ -46,7 +36,7 @@ describe('productControllerBusiness', () => {
   afterEach(deleteDummyShopOfBusiness);
   afterEach(removeDummyUsers);
 
-  it('Should update product and return updated shop', done => {
+  it('Should update product and return updated shop, action by owner', done => {
     chai
       .request(app)
       .post(`/business/product/${dummyProduct._id}`)
@@ -67,7 +57,28 @@ describe('productControllerBusiness', () => {
       });
   });
 
-  it('Should delete product and return updated shop', done => {
+  it('Should update product and return updated shop, action by staff', done => {
+    chai
+      .request(app)
+      .post(`/business/product/${dummyProduct._id}`)
+      .set('x-auth-token', userStaffToken)
+      .send(updatedDummyProduct)
+      .end(async (error, res) => {
+        assert.equal(error, null, 'error is not null');
+        assert.equal(res.status, 200, 'status is not 200');
+        const product = await Product.findById(dummyProduct._id);
+        expect(res => {
+          expect(product).to.include(updatedDummyProduct);
+        });
+        const productInShop = res.body.products[0];
+        expect(res => {
+          expect(productInShop).to.include(dummyProduct);
+        });
+        done();
+      });
+  });
+
+  it('Should delete product and return updated shop, action by owner', done => {
     chai
       .request(app)
       .delete(`/business/product/${dummyProduct._id}`)
@@ -85,11 +96,52 @@ describe('productControllerBusiness', () => {
       });
   });
 
-  it('Should create new product and return updated shop', done => {
+  it('Should delete product and return updated shop, action by staff', done => {
+    chai
+      .request(app)
+      .delete(`/business/product/${dummyProduct._id}`)
+      .set('x-auth-token', userStaffToken)
+      .send({})
+      .end(async (error, res) => {
+        const productArr = res.body.products;
+        const newProductArr = productArr.filter(
+          product => product._id == dummyProduct._id
+        );
+        assert.equal(newProductArr, 0, 'Product in shop not deleted');
+        const product = await Product.findById(dummyProduct._id);
+        assert.equal(product, null, 'Product obj not deleted');
+        done();
+      });
+  });
+
+  it('Should create new product and return updated shop, action by owner', done => {
     chai
       .request(app)
       .post('/business/product')
       .set('x-auth-token', firstUserOwnerToken)
+      .send(dummyProduct)
+      .end(async (error, res) => {
+        assert.equal(error, null, 'error is not null');
+        assert.equal(res.status, 200, 'status is not 200');
+        const shop = await Shop.findOne({ owner: business._id });
+        const newProduct = await Product.findById(shop.products[0]);
+        expect(res => {
+          expect(newProduct).to.include(dummyProduct);
+        });
+        assert.deepEqual(newProduct.shop, shop._id, 'Shop id set incorrectly');
+        const productInShop = res.body.products[0];
+        expect(res => {
+          expect(productInShop).to.include(dummyProduct);
+        });
+        done();
+      });
+  });
+
+  it('Should create new product and return updated shop, action by staff', done => {
+    chai
+      .request(app)
+      .post('/business/product')
+      .set('x-auth-token', userStaffToken)
       .send(dummyProduct)
       .end(async (error, res) => {
         assert.equal(error, null, 'error is not null');

@@ -42,9 +42,11 @@ const sendPasswordResetEmail = async (req, res) => {
   const { email } = req.params;
   let user = null;
   let specificUser = null;
+  let isShopper = null;
 
   try {
     if (req.userType.shopper) {
+      isShopper = true;
       const shopper = await Shopper.findOne({ email });
 
       if (!shopper) {
@@ -53,6 +55,7 @@ const sendPasswordResetEmail = async (req, res) => {
       user = shopper;
       specificUser = shopper;
     } else if (req.userType.business) {
+      isShopper = false;
       specificUser = await User.findOne({ email });
 
       if (!specificUser) {
@@ -66,10 +69,11 @@ const sendPasswordResetEmail = async (req, res) => {
       res.status(401).json('Token not valid');
     }
   } catch (error) {
+    console.log('no user w that email');
     res.status(404).json('No user with that email');
   }
   const token = usePasswordHashToMakeToken(user, specificUser);
-  const url = getPasswordResetURL(specificUser, token);
+  const url = getPasswordResetURL(isShopper, specificUser, token);
   const emailTemplate = resetPasswordTemplate(user, specificUser, url);
 
   const sendEmail = () => {
@@ -78,8 +82,7 @@ const sendPasswordResetEmail = async (req, res) => {
         console.log(error);
         res.status(500).json('Error sending email');
       } else {
-        //   console.log(info);
-        console.log(`**Email sent**`, info.response);
+        //console.log(`**Email sent**`, info.response);
         res.status(250).json('Email sent successfully');
       }
     });
@@ -118,10 +121,15 @@ const receivedNewPassword = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const newPasswordHash = await bcrypt.hash(password, salt);
     await collection.findByIdAndUpdate(user_id, { password: newPasswordHash });
-    res.status(202).json('Password change successful');
+    res.status(202).send('Password change successful');
   } catch (error) {
     res.status(500).json(error);
   }
 };
 
-module.exports = { sendPasswordResetEmail, receivedNewPassword };
+module.exports = {
+  sendPasswordResetEmail,
+  receivedNewPassword,
+  getPasswordResetURL,
+  usePasswordHashToMakeToken
+};

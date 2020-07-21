@@ -3,31 +3,26 @@ const chaiHTTP = require('chai-http');
 const assert = chai.assert;
 const expect = require('expect');
 const {
-  business,
-  firstUserOwner,
-  userOwner,
-  userStaff,
   firstUserOwnerToken,
-  userOwnerToken,
   userStaffToken,
   addDummyUsers,
   removeDummyUsers,
-  compareToken,
-  getBusinessFromToken,
   getUserFromToken,
-  getShopFromToken,
-  clearDB
+  getShopFromToken
 } = require('./seed/seed');
 const {
   dummyProfile,
   updatedDummyProfile,
   newEmail,
   newPassword,
+  newStaffPassword,
   addDummyProfileToBusiness,
   deleteDummyShopOfBusiness
 } = require('./seed/seedProfile');
 
 const bcrypt = require('bcryptjs');
+
+const Shop = require('../../models/Shop');
 
 //Configure chai
 chai.use(chaiHTTP);
@@ -100,6 +95,21 @@ describe('profileControllerBusiness', () => {
         });
     });
 
+    it('Should get and return specified shop', done => {
+      chai
+        .request(app)
+        .get(`/business/profile/${dummyProfile._id}`)
+        .end(async (error, res) => {
+          const shop = await Shop.findById(dummyProfile._id);
+          assert.equal(error, null, 'error is not null');
+          assert.equal(res.status, 200, 'status is not 200');
+          expect(res => {
+            expect(res.body).to.eql(shop);
+          });
+          done();
+        });
+    });
+
     it('Should update and return updated profile if existing profile present', done => {
       chai
         .request(app)
@@ -156,7 +166,7 @@ describe('profileControllerBusiness', () => {
     beforeEach(addDummyProfileToBusiness);
     afterEach(deleteDummyShopOfBusiness);
 
-    it('Should return updated user with updated email', done => {
+    it('Should return updated owner with updated email', done => {
       chai
         .request(app)
         .post('/business/profile/account-settings-email')
@@ -170,7 +180,7 @@ describe('profileControllerBusiness', () => {
         });
     });
 
-    it('Should return unauthorised access, action: update email by staff', done => {
+    it('Should return updated staff with updated email', done => {
       chai
         .request(app)
         .post('/business/profile/account-settings-email')
@@ -178,16 +188,13 @@ describe('profileControllerBusiness', () => {
         .send(newEmail)
         .end(async (error, res) => {
           assert.equal(error, null, 'error is not null');
-          assert.equal(res.status, 403, 'status is not 403');
-          assert.equal(
-            res.body.msg,
-            'authorization denied, only owner has access'
-          );
+          assert.equal(res.status, 200, 'status is not 200');
+          assert.equal(res.body.email, newEmail.email, 'email not updated');
           done();
         });
     });
 
-    it('Should return updated user with updated password', done => {
+    it('Should return updated owner with updated password', done => {
       chai
         .request(app)
         .post('/business/profile/account-settings-password')
@@ -208,19 +215,23 @@ describe('profileControllerBusiness', () => {
         });
     });
 
-    it('Should return unauthorised access, action: update password by staff', done => {
+    it('Should return updated staff with updated password', done => {
       chai
         .request(app)
         .post('/business/profile/account-settings-password')
         .set('x-auth-token', userStaffToken)
-        .send(newPassword)
+        .send(newStaffPassword)
         .end(async (error, res) => {
           assert.equal(error, null, 'error is not null');
-          assert.equal(res.status, 403, 'status is not 403');
-          assert.equal(
-            res.body.msg,
-            'authorization denied, only owner has access'
+          assert.equal(res.status, 200, 'status is not 200');
+          const returnedHashedPassword = (
+            await getUserFromToken(res.body.token)
+          ).password;
+          const isMatch = await bcrypt.compare(
+            newStaffPassword.newPassword,
+            returnedHashedPassword
           );
+          assert.equal(isMatch, true, 'password not updated');
           done();
         });
     });

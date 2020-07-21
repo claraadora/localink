@@ -6,8 +6,15 @@ const {
   hashPassword
 } = require('./seed');
 
+const {
+  getPasswordResetURL,
+  usePasswordHashToMakeToken
+} = require('../../../controllers/email/email.controller');
+
+const password = { password: userOwner.password };
+
 async function addBusiness() {
-  const businessObj = await new Business(business).save();
+  const businessObj = await new Business(business);
   const firstUserOwnerObj = await new User(firstUserOwner).save();
   firstUserOwnerObj.isAccountActive = true;
   firstUserOwnerObj.password = await hashPassword(firstUserOwnerObj.password);
@@ -53,10 +60,55 @@ async function addDeactivatedStaff() {
   await businessObj.save();
 }
 
+async function registerAddedUser(isOwner) {
+  let dummyUser = null;
+  if (isOwner) {
+    dummyUser = userOwner;
+  } else {
+    dummyUser = userStaff;
+  }
+  const { role, name, email } = dummyUser;
+
+  try {
+    const businessObj = await Business.findById(business._id);
+    let user = await User.findOne({ email });
+    if (user) {
+      return res
+        .status(400)
+        .json({ errors: [{ msg: 'User with that email already exists' }] });
+    }
+
+    user = new User({
+      name,
+      email,
+      role,
+      activated: true
+    });
+
+    user.isAccountActive = true;
+
+    await user.save();
+
+    businessObj.users.push(user);
+
+    await businessObj.save();
+
+    const token = usePasswordHashToMakeToken(businessObj, user);
+    const url = getPasswordResetURL(false, user, token);
+    const substring = url.substr(21);
+    return substring;
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+}
+
 module.exports = {
+  password,
   addBusiness,
   addUserOwner,
   updatedUser,
   removeUpdatedUser,
-  addDeactivatedStaff
+  addDeactivatedStaff,
+  registerAddedUser
 };

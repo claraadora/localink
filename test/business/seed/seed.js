@@ -111,7 +111,7 @@ async function removeAddedDummyUsers() {
 
 async function addDummyUsers() {
   try {
-    const businessObj = await new Business(business).save();
+    const businessObj = new Business(business);
     const firstUserOwnerObj = await new User(firstUserOwner);
     firstUserOwnerObj.isAccountActive = true;
     firstUserOwnerObj.password = await hashPassword(firstUserOwnerObj.password);
@@ -231,11 +231,6 @@ async function getShopFromToken(token) {
   return shop;
 }
 
-async function clearDB(businessId, userId) {
-  await Business.findByIdAndDelete(businessId);
-  await User.findByIdAndDelete(userId);
-}
-
 module.exports = {
   business,
   firstUserOwner,
@@ -253,6 +248,5 @@ module.exports = {
   getBusinessFromToken,
   getUserFromToken,
   getShopFromToken,
-  hashPassword,
-  clearDB
+  hashPassword
 };

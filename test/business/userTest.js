@@ -2,6 +2,7 @@ const chai = require('chai');
 const chaiHTTP = require('chai-http');
 const assert = chai.assert;
 const expect = require('expect');
+const bcrypt = require('bcryptjs');
 
 const {
   business,
@@ -9,18 +10,16 @@ const {
   userOwner,
   userStaff,
   firstUserOwnerToken,
-  userOwnerToken,
-  userStaffToken,
-  addDummyUsers,
-  removeAddedDummyUsers,
-  compareToken
+  removeAddedDummyUsers
 } = require('./seed/seed');
 
 const {
+  password,
   addBusiness,
   addUserOwner,
   removeUpdatedUser,
   addDeactivatedStaff,
+  registerAddedUser,
   updatedUser
 } = require('./seed/seedUser');
 
@@ -42,7 +41,7 @@ describe('userControllerBusiness', () => {
       .send(userOwner)
       .end(async (error, res) => {
         assert.equal(error, null, 'error is not null');
-        assert.equal(res.status, 200), 'status is not 200';
+        assert.equal(res.status, 250), 'status is not 200';
         const businessObj = await Business.findById(business._id);
         const addedUser = await User.findById(businessObj.users[1]);
         const dummyUserFields = {
@@ -53,8 +52,51 @@ describe('userControllerBusiness', () => {
         expect(res => {
           expect(addedUser).to.include(dummyUserFields);
         });
+        assert.equal(
+          addedUser.password,
+          undefined,
+          'password is not undefined'
+        );
         done();
       });
+  });
+
+  it('Should send activation email after adding user, role: owner', done => {
+    chai
+      .request(app)
+      .post('/business/user')
+      .set('x-auth-token', firstUserOwnerToken)
+      .send(userOwner)
+      .end(async (error, res) => {
+        assert.equal(error, null, 'error is not null');
+        assert.equal(res.status, 250, 'status is not 200');
+        assert.equal(res.body, 'Email sent successfully');
+        done();
+      });
+  });
+
+  describe('Test account activation', () => {
+    beforeEach(async () => {
+      this.activationLink = await registerAddedUser(true);
+    });
+    it('Should set password of new user, role: owner', done => {
+      chai
+        .request(app)
+        .post(this.activationLink)
+        .send(password)
+        .end(async function (error, res) {
+          assert.equal(error, null, 'error is not null');
+          assert.equal(res.status, 202, 'status is not 202');
+          assert.equal(res.text, 'Password change successful');
+          const user = await User.findOne({ email: userOwner.email });
+          const isMatch = await bcrypt.compare(
+            password.password,
+            user.password
+          );
+          assert.equal(isMatch, true, 'Password not set');
+          done();
+        });
+    });
   });
 
   it('Should create and save new user, role: staff', done => {
@@ -65,7 +107,7 @@ describe('userControllerBusiness', () => {
       .send(userStaff)
       .end(async (error, res) => {
         assert.equal(error, null, 'error is not null');
-        assert.equal(res.status, 200), 'status is not 200';
+        assert.equal(res.status, 250), 'status is not 250';
         const businessObj = await Business.findById(business._id);
         const addedUser = await User.findById(businessObj.users[1]);
         const dummyUserFields = {
@@ -78,29 +120,67 @@ describe('userControllerBusiness', () => {
         });
         done();
       });
-    // });
   });
-  //describe('test deleting user...', done => {
-  it('Should delete user', done => {
+
+  it('Should send activation email after adding user, role: staff', done => {
     chai
       .request(app)
-      .delete(`/business/user/${firstUserOwner._id}`)
+      .post('/business/user')
       .set('x-auth-token', firstUserOwnerToken)
+      .send(userStaff)
       .end(async (error, res) => {
         assert.equal(error, null, 'error is not null');
-        assert.equal(res.status, 200, 'status is not 200');
-        const businessObj = await Business.findById(business._id);
-        const numOfUsers = businessObj.users.length;
-        assert.equal(numOfUsers, 0, 'number of users not 0');
-        const user = await User.findById(firstUserOwner._id);
-        assert.equal(user, null, 'user not deleted');
+        assert.equal(res.status, 250, 'status is not 200');
+        assert.equal(res.body, 'Email sent successfully');
         done();
       });
+  });
+
+  describe('Test account activation', () => {
+    beforeEach(async () => {
+      this.activationLink = await registerAddedUser(false);
+    });
+    it('Should set password of new user, role: owner', done => {
+      chai
+        .request(app)
+        .post(this.activationLink)
+        .send(password)
+        .end(async function (error, res) {
+          assert.equal(error, null, 'error is not null');
+          assert.equal(res.status, 202, 'status is not 202');
+          assert.equal(res.text, 'Password change successful');
+          const user = await User.findOne({ email: userStaff.email });
+          const isMatch = await bcrypt.compare(
+            password.password,
+            user.password
+          );
+          assert.equal(isMatch, true, 'Password not set');
+          done();
+        });
+    });
   });
 
   describe('', () => {
     beforeEach(addUserOwner);
     afterEach(removeUpdatedUser);
+
+    it('Should delete user', done => {
+      chai
+        .request(app)
+        .delete(`/business/user/${firstUserOwner._id}`)
+        .set('x-auth-token', firstUserOwnerToken)
+        .end(async (error, res) => {
+          assert.equal(error, null, 'error is not null');
+          assert.equal(res.status, 200, 'status is not 200');
+          const businessObj = await Business.findById(business._id);
+          const numOfUsers = businessObj.users.length;
+          assert.equal(numOfUsers, 1, 'number of users not 1');
+          const user = await User.findById(firstUserOwner._id);
+          assert.equal(user, null, 'user not deleted');
+          done();
+        });
+    });
+
     it('Should update user', done => {
       chai
         .request(app)

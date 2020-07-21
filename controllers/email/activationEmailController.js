@@ -21,6 +21,29 @@ const getActivationLink = user => {
   return `http://localhost:5000/${uri}`;
 };
 
+const emailActivationTemplateUser = (user, specificUser, url) => {
+  const from = 'Localink' + '<' + process.env.SENDER_EMAIL_LOGIN + '>';
+  //const to = user.email;
+  //For testing
+  const to = process.env.RECEIVER_EMAIL_LOGIN;
+  const subject = 'Localink Account Activation';
+  let recipient = specificUser.name;
+  const html = `
+      <p>Hey ${recipient || specificUser.email},</p>
+      <p>You have been added as a user ${specificUser.role} to ${
+    user.shopName
+  } <p>
+      <p>Here are your registered credentials: <p>
+      <p>Name: ${specificUser.name}<p>
+      <p>Role: ${specificUser.role}<p>
+      <p>Click here to set a password for your localink account:</p>
+      <a href=${url}>${url}</a>
+      <p>If you don’t use this link within 24 hours, it will expire.</p>
+      <p>Have fun with the webpage!</p>
+      <p>–Love, Localink</p>`;
+  return { from, to, subject, html };
+};
+
 const emailActivationTemplate = (user, specificUser, url) => {
   const from = 'Localink' + '<' + process.env.SENDER_EMAIL_LOGIN + '>';
   //const to = user.email;
@@ -49,7 +72,7 @@ const sendEmail = (res, emailTemplate) => {
       console.log(error);
       res.status(500).json('Error sending email');
     } else {
-      console.log(`**Email sent**`, info.response);
+      //console.log(`**Email sent**`, info.response);
       res.status(250).json('Email sent successfully');
     }
   });
@@ -65,7 +88,13 @@ const sendActivationEmail = (user, specificUser, res) => {
   sendEmail(res, emailTemplate);
 };
 
+const sendActivationEmailUser = (user, specificUser, url, res) => {
+  const emailTemplate = emailActivationTemplateUser(user, specificUser, url);
+  sendEmail(res, emailTemplate);
+};
+
 module.exports = {
   getActivationLink,
-  sendActivationEmail
+  sendActivationEmail,
+  sendActivationEmailUser
 };

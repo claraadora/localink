@@ -7,11 +7,7 @@ const { dummyShopper } = require('./seed');
 
 const { profileId } = require('../../business/seed/seedProfile');
 
-const {
-  dummyProductForReview,
-  addDummyProduct,
-  removeDummyProduct
-} = require('../../business/seed/seedProduct');
+const { dummyProductForReview } = require('../../business/seed/seedProduct');
 
 const reviewId = new ObjectID();
 
