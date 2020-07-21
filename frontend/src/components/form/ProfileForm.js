@@ -12,7 +12,6 @@ import {
   IconButton,
 } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
-import { format } from "path";
 
 const initialState = {
   shopName: "",
@@ -55,11 +54,15 @@ const ProfileForm = () => {
       const profileData = { ...initialState };
       for (const key in profile) {
         if (key in profileData) profileData[key] = profile[key];
+        console.log(profile[key]);
       }
-      profileData[shopName] = user.shopName;
       setFormData(profileData);
     }
-  }, [loading, dispatch, profile, shopName, user]);
+
+    if (user) {
+      setFormData({ ...profile, shopName: user.shopName });
+    }
+  }, [loading, dispatch, profile, user]);
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -103,7 +106,7 @@ const ProfileForm = () => {
               <Grid item>
                 <Avatar
                   alt="Localink"
-                  src={avatar.secure_url}
+                  src={avatar}
                   className={classes.avatar}
                 />
               </Grid>

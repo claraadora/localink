@@ -3,6 +3,7 @@ import profileConstants from "../../constants/profileConstants";
 import { setAlert } from "../alertActions";
 import axios from "axios";
 import setAuthToken from "../../utils/setAuthToken";
+import { getCurrentProfile } from "../shopper/profileActions";
 
 export const loadUser = () => async (dispatch) => {
   if (localStorage.token) {
@@ -15,6 +16,8 @@ export const loadUser = () => async (dispatch) => {
       type: authConstants.USER_LOADED,
       payload: res.data,
     });
+
+    dispatch(getCurrentProfile());
   } catch (err) {
     dispatch({
       type: authConstants.AUTH_ERROR,

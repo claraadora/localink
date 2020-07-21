@@ -3,6 +3,7 @@ import profileConstants from "../../constants/profileConstants";
 import { setAlert } from "../alertActions";
 import axios from "axios";
 import setAuthToken from "../../utils/setAuthToken";
+import { getCurrentProfile } from "../seller/profileActions";
 
 export const loadUser = () => async (dispatch) => {
   if (localStorage.token) {
@@ -41,6 +42,7 @@ export const login = ({ email, password }) => async (dispatch) => {
     });
 
     dispatch(loadUser());
+    dispatch(getCurrentProfile());
   } catch (err) {
     const errors = err.response.data.errors;
 
