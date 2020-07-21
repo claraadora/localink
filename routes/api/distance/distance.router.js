@@ -34,6 +34,10 @@ router.post('/start-location', async (req, res) => {
         shop.save();
       }
     });
+    console.log('in distance router');
+    console.log(
+      await Shop.findOne({ shopName: 'test create or update profile' })
+    );
     console.log('Successfully updated distance to shops');
 
     res.status(200).json(location);
