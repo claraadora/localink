@@ -52,8 +52,11 @@ const ProfileForm = () => {
   const [formData, setFormData] = useState(initialState);
   const { shopName, description, avatar, address } = formData;
 
-  const onChange = (e) =>
+  const onChange = (e) => {
+    console.log("change form");
+    console.log(formData);
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   useEffect(() => {
     if (!loading && profile) {
@@ -67,13 +70,15 @@ const ProfileForm = () => {
     if (user) {
       setFormData({ ...profile, shopName: user.shopName });
     }
+    console.log("form");
+    console.log(formData);
   }, [loading, dispatch, profile, user, avatar]);
 
   const onSubmit = (e) => {
     e.preventDefault();
+    console.log("submitted form");
     console.log(formData);
-    // eslint-disable-next-line no-restricted-globals
-    dispatch(createProfile(formData, history, profile ? true : false));
+    dispatch(createProfile(formData, profile ? true : false));
   };
 
   const onUploadImage = (e) => {

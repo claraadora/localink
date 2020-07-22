@@ -23,9 +23,7 @@ export const getCurrentProfile = () => async (dispatch) => {
   }
 };
 
-export const createProfile = (formData, history, edit = false) => async (
-  dispatch
-) => {
+export const createProfile = (formData, edit = false) => async (dispatch) => {
   try {
     const config = {
       headers: {
@@ -36,15 +34,16 @@ export const createProfile = (formData, history, edit = false) => async (
     const res = await axios.post("/business/profile", formData, config);
 
     dispatch({
-      type: profileConstants.GET_PROFILE,
+      type: profileConstants.UPDATE_PROFILE,
       payload: res.data,
     });
 
-    dispatch(setAlert(edit ? "Profile Updated" : "Profile Created", "success"));
-
-    if (!edit) {
-      return <Redirect to="/business/dashboard" />;
+    if (edit) {
+      console.log("edit");
+    } else {
+      console.log("create");
     }
+    // dispatch(setAlert(edit ? "Profile Updated" : "Profile Created", "success"));
   } catch (err) {
     const errors = err.response.data.errors;
 
