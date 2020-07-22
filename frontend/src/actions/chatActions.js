@@ -4,7 +4,8 @@ import { setAlert } from "./alertActions";
 
 export const getChatList = (id, isShopper) => async (dispatch) => {
   try {
-    const res = await axios.get(`/inbox/${id}`);
+    const endpoint = isShopper ? `/inbox/${id}` : `/business/inbox/${id}`;
+    const res = await axios.get(endpoint);
     if (isShopper === false) {
       console.log("HHAHAHHHA");
     }

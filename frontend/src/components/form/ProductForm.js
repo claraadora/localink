@@ -66,16 +66,18 @@ export default function ProductForm() {
     };
     formData.append("file", file);
 
-    Axios.post("/business/product", formData, config).then((response) => {
-      console.log(response);
-      if (response.data.success) {
+    Axios.post("/business/product/create-image", formData, config).then(
+      (response) => {
         console.log(response);
-        setFormData({
-          ...formData,
-          [image]: response.data.url,
-        });
+        if (response.data.success) {
+          console.log(response);
+          setFormData({
+            ...formData,
+            [image]: response.data.url,
+          });
+        }
       }
-    });
+    );
   };
 
   return (
