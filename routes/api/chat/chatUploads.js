@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const authBusiness = require('../../../middleware/business/authBusiness');
-const authShopper = require('../../../middleware/business/authShopper');
+const authShopper = require('../../../middleware/shopper/authShopper');
 const multer = require('multer');
 const path = require('path');
 
-const Shop = require('../../models/Shop');
-const Message = require('../../models/Message');
+const Shop = require('../../../models/Shop');
+const Message = require('../../../models/Message');
 
 // @route    POST business/chat/upload-attachment;
 // @desc     Send attachment: image or video
@@ -34,7 +34,7 @@ router.post('/business/upload-attachment', authBusiness, async (req, res) => {
 // @route    POST /chat/upload-attachment;
 // @desc     Send attachment: image or video
 // @access   Private
-router.post('/business/upload-attachment', authShopper, async (req, res) => {
+router.post('/upload-attachment', authShopper, async (req, res) => {
   const storage = multer.memoryStorage();
   const upload = multer({ storage: storage }).single('file');
 
@@ -53,3 +53,5 @@ router.post('/business/upload-attachment', authShopper, async (req, res) => {
     return res.json({ success: true, url });
   });
 });
+
+module.exports = router;
