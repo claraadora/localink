@@ -99,7 +99,9 @@ const ProfileForm = () => {
 
     Axios.post("/business/profile/upload-avatar", formData, config).then(
       (response) => {
+        console.log(response);
         if (response.data.success) {
+          console.log(response);
           setFormData({ ...formData, avatar: response.data.url });
         }
       }

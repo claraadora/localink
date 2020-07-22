@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import SellerLandingPage from "./pages/seller/LandingPage";
 import SellerLogInPage from "./pages/seller/LogInPage";
 import SellerSignUpPage from "./pages/seller/SignUpPage";
@@ -12,12 +12,12 @@ import ProductTable from "./components/table/ProductTable";
 import ProductForm from "./components/form/ProductForm";
 import ProfileForm from "./components/form/ProfileForm";
 import AccountSettings from "./components/tabs/AccountSettings";
-import { useSelector } from "react-redux";
 import { themeSeller } from "./themeSeller";
 import { ThemeProvider } from "@material-ui/core/styles";
 import ReviewTable from "./components/table/ReviewTable";
 import { updateIsShopper } from "./actions/pageActions";
 import LandingPage from "./pages/seller/LandingPage";
+import { LocalinkDrawer } from "./components/drawer/Drawer";
 
 const useStyles = makeStyles({
   main: {
@@ -36,6 +36,7 @@ const useStyles = makeStyles({
   },
 });
 function AppSeller() {
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(updateIsShopper(false));
@@ -49,6 +50,7 @@ function AppSeller() {
           <SellerNavBar />
         </div>
         <div className={classes.content}>
+          {isAuthenticated && <LocalinkDrawer />}
           <Route exact path="/business/login" component={SellerLogInPage} />
           <Route exact path="/business/signup" component={SellerSignUpPage} />
           <Route exact path="/business/" component={SellerLandingPage} />

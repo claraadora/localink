@@ -228,7 +228,7 @@ export default function ReviewTable() {
   useEffect(() => {
     if (!profile) dispatch(getCurrentProfile());
 
-    if (!loading && profile) {
+    if (!loading && profile && profile.reviews !== undefined) {
       const updatedRows = [];
       profile.reviews.map((review) =>
         updatedRows.push({

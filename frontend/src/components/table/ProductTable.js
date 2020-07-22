@@ -227,7 +227,7 @@ export default function ProductTable() {
   useEffect(() => {
     if (!profile) dispatch(getCurrentProfile());
 
-    if (!loading && profile) {
+    if (!loading && profile && profile.products !== undefined) {
       const updatedRows = [];
       profile.products.map((product) =>
         updatedRows.push({
