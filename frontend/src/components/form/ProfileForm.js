@@ -14,13 +14,6 @@ import {
 import EditIcon from "@material-ui/icons/Edit";
 import Axios from "axios";
 
-const initialState = {
-  shopName: "",
-  description: "",
-  avatar: "",
-  address: "",
-};
-
 const useStyles = makeStyles((theme) => ({
   paper: {
     display: "flex",
@@ -46,16 +39,24 @@ const ProfileForm = () => {
   const loading = useSelector((state) => state.profile.loading);
   const dispatch = useDispatch();
   const classes = useStyles();
+  const initialState = {
+    shopName: "",
+    description: "",
+    avatar: "",
+    address: "",
+  };
 
   const [formData, setFormData] = useState(initialState);
   const { shopName, description, avatar, address } = formData;
 
+  const onChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+
   useEffect(() => {
     if (!loading && profile) {
       const profileData = { ...initialState };
-      for (const key in profile) {
-        if (key in profileData) profileData[key] = profile[key];
-        console.log(profile[key]);
+      for (const key in profileData) {
+        profileData[key] = profile[key];
       }
       setFormData(profileData);
     }
@@ -64,9 +65,6 @@ const ProfileForm = () => {
       setFormData({ ...profile, shopName: user.shopName });
     }
   }, [loading, dispatch, profile, user]);
-
-  const onChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -93,7 +91,7 @@ const ProfileForm = () => {
     // }
     let formData = new FormData();
     const config = {
-      header: { "content-type": "multipart/form-data" },
+      header: { "Content-Type": "multipart/form-data" },
     };
     formData.append("file", file);
 
@@ -141,6 +139,7 @@ const ProfileForm = () => {
             <InputLabel>Shop Name</InputLabel>
             <TextField
               id="name"
+              name="shopName"
               placeholder="Shop's name"
               fullWidth={true}
               margin="dense"
@@ -156,6 +155,7 @@ const ProfileForm = () => {
             <InputLabel>Shop Description</InputLabel>
             <TextField
               id="description"
+              name="description"
               placeholder="Shop's description"
               fullWidth={true}
               margin="dense"
@@ -174,6 +174,7 @@ const ProfileForm = () => {
             <InputLabel>Shop Address</InputLabel>
             <TextField
               id="address"
+              name="address"
               placeholder="Business address"
               fullWidth={true}
               margin="dense"
