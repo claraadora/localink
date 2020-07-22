@@ -16,10 +16,9 @@ connectClient();
 connectDB();
 
 // Init Middleware
-app.use(express.json());
-
-//use this to show the image you have in node js server to client (react js)
-app.use('/uploads', express.static('uploads'));
+//app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb' }));
 
 //app.get('/', (req, res) => res.send('API running'));
 
@@ -38,6 +37,7 @@ app.use(
   '/business/reset_password',
   require('./routes/api/business/forgotPasswordEmail')
 );
+app.use('/business/inbox', require('./routes/api/chat/inboxBusiness'));
 app.use('/new-chat', require('./routes/api/chat/newChat'));
 
 //Define routes for shoppers
@@ -58,43 +58,6 @@ app.use(
   '/account-activation',
   require('./routes/api/shopper/accountActivation')
 );
-
-// const multer = require('multer');
-// var storage = multer.diskStorage({
-//   destination: function (req, file, cb) {
-//     cb(null, 'uploads/');
-//   },
-//   filename: function (req, file, cb) {
-//     cb(null, `${Date.now()}_${file.originalname}`);
-//   }
-// fileFilter: (req, file, cb) => {
-//   const ext = path.extname(file.originalname)
-//   if (ext !== '.jpg' && ext !== '.png' && ext !== '.mp4') {
-//     return cb(res.status(400).end('only jpg, png, mp4 is allowed'), false);
-//   }
-//   cb(null, true)
-// }
-//});
-
-// const upload = multer({ storage: storage }).single('file');
-// const checkBusinessOwner = require('./middleware/business/CheckBusinessOwner');
-// app.post(
-//   '/business/profile/upload-avatar',
-//   checkBusinessOwner,
-//   async (req, res) => {
-//     upload(req, res, async err => {
-//       if (err) {
-//         return res.json({ success: false, err });
-//       }
-//       const url = `http://localhost:3000/${res.req.file.path}`;
-
-//       const shop = await Shop.findOne({ owner: req.user.id });
-//       shop.avatar = url;
-//       await shop.save();
-//       return res.json({ success: true, url });
-//     });
-//   }
-// );
 
 //Define chat route
 const server = require('http').createServer(app);

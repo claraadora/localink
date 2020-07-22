@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const { validationResult } = require('express-validator');
+const path = require('path');
 
 const Business = require('../../models/Business');
 const Shop = require('../../models/Shop');
@@ -61,7 +62,6 @@ async function createOrUpdateProfile(req, res) {
   }
   const {
     shopName,
-    avatar,
     description,
     address,
     distance,
@@ -84,7 +84,6 @@ async function createOrUpdateProfile(req, res) {
 
     const shopFields = {
       shopName,
-      avatar,
       description,
       promotions,
       openingHours,
@@ -116,29 +115,20 @@ async function createOrUpdateProfile(req, res) {
 }
 
 async function uploadAvatar(req, res) {
-  var storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, 'uploads/');
-    },
-    filename: function (req, file, cb) {
-      cb(null, `${Date.now()}_${file.originalname}`);
-    }
-    // fileFilter: (req, file, cb) => {
-    //   const ext = path.extname(file.originalname)
-    //   if (ext !== '.jpg' && ext !== '.png' && ext !== '.mp4') {
-    //     return cb(res.status(400).end('only jpg, png, mp4 is allowed'), false);
-    //   }
-    //   cb(null, true)
-    // }
-  });
-
+  const storage = multer.memoryStorage();
   const upload = multer({ storage: storage }).single('file');
 
   upload(req, res, async err => {
     if (err) {
       return res.json({ success: false, err });
     }
-    const url = `http://localhost:3000/${res.req.file.path}`;
+    const image = {
+      contentType: path.extname(req.file.originalname),
+      data: req.file.buffer
+    };
+    const url = `data:image/${image.contentType};base64,${image.data.toString(
+      'base64'
+    )}`;
     const shop = await Shop.findOne({ owner: req.user.id });
     shop.avatar = url;
     await shop.save();
