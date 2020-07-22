@@ -72,8 +72,6 @@ async function createOrUpdateProfile(req, res) {
   } = req.body;
 
   try {
-    console.log('in profileController');
-    console.log(address);
     const coordinates = await geocode(address);
     const latLng = {
       lat: coordinates.lat,
@@ -117,38 +115,36 @@ async function createOrUpdateProfile(req, res) {
   }
 }
 
-// async function uploadAvatar(req, res) {
-//   console.log('inside upload avatar');
-//   var storage = multer.diskStorage({
-//     destination: function (req, file, cb) {
-//       cb(null, '../../uploads');
-//     },
-//     filename: function (req, file, cb) {
-//       cb(null, `${Date.now()}_${file.originalname}`);
-//     }
-//     // fileFilter: (req, file, cb) => {
-//     //   const ext = path.extname(file.originalname)
-//     //   if (ext !== '.jpg' && ext !== '.png' && ext !== '.mp4') {
-//     //     return cb(res.status(400).end('only jpg, png, mp4 is allowed'), false);
-//     //   }
-//     //   cb(null, true)
-//     // }
-//   });
+async function uploadAvatar(req, res) {
+  var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'uploads/');
+    },
+    filename: function (req, file, cb) {
+      cb(null, `${Date.now()}_${file.originalname}`);
+    }
+    // fileFilter: (req, file, cb) => {
+    //   const ext = path.extname(file.originalname)
+    //   if (ext !== '.jpg' && ext !== '.png' && ext !== '.mp4') {
+    //     return cb(res.status(400).end('only jpg, png, mp4 is allowed'), false);
+    //   }
+    //   cb(null, true)
+    // }
+  });
 
-//   var upload = multer({ storage: storage }).single('file');
+  const upload = multer({ storage: storage }).single('file');
 
-//   upload(req, res, async err => {
-//     console.log(err);
-//     if (err) {
-//       return res.json({ success: false, err });
-//     }
-//     const url = res.req.file.path;
-//     const shop = await Shop.findOne({ owner: req.user.id });
-//     shop.avatar = url;
-//     await shop.save();
-//     return res.json({ success: true, url });
-//   });
-// }
+  upload(req, res, async err => {
+    if (err) {
+      return res.json({ success: false, err });
+    }
+    const url = `http://localhost:3000/${res.req.file.path}`;
+    const shop = await Shop.findOne({ owner: req.user.id });
+    shop.avatar = url;
+    await shop.save();
+    return res.json({ success: true, url });
+  });
+}
 
 async function updateEmail(req, res) {
   const errors = validationResult(req); //converts errors into error object
@@ -221,7 +217,7 @@ module.exports = {
   getShop,
   getSpecifiedShop,
   createOrUpdateProfile,
-  //uploadAvatar,
+  uploadAvatar,
   updateEmail,
   updatePassword
 };

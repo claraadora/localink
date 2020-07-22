@@ -59,47 +59,42 @@ app.use(
   require('./routes/api/shopper/accountActivation')
 );
 
-const multer = require('multer');
-var storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/');
-  },
-  filename: function (req, file, cb) {
-    cb(null, `${Date.now()}_${file.originalname}`);
-  }
-  // fileFilter: (req, file, cb) => {
-  //   const ext = path.extname(file.originalname)
-  //   if (ext !== '.jpg' && ext !== '.png' && ext !== '.mp4') {
-  //     return cb(res.status(400).end('only jpg, png, mp4 is allowed'), false);
-  //   }
-  //   cb(null, true)
-  // }
-});
+// const multer = require('multer');
+// var storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, 'uploads/');
+//   },
+//   filename: function (req, file, cb) {
+//     cb(null, `${Date.now()}_${file.originalname}`);
+//   }
+// fileFilter: (req, file, cb) => {
+//   const ext = path.extname(file.originalname)
+//   if (ext !== '.jpg' && ext !== '.png' && ext !== '.mp4') {
+//     return cb(res.status(400).end('only jpg, png, mp4 is allowed'), false);
+//   }
+//   cb(null, true)
+// }
+//});
 
-var upload = multer({ storage: storage }).single('file');
-const checkBusinessOwner = require('./middleware/business/CheckBusinessOwner');
-app.post(
-  '/business/profile/upload-avatar',
-  checkBusinessOwner,
-  async (req, res) => {
-    console.log('inside upload avatar');
+// const upload = multer({ storage: storage }).single('file');
+// const checkBusinessOwner = require('./middleware/business/CheckBusinessOwner');
+// app.post(
+//   '/business/profile/upload-avatar',
+//   checkBusinessOwner,
+//   async (req, res) => {
+//     upload(req, res, async err => {
+//       if (err) {
+//         return res.json({ success: false, err });
+//       }
+//       const url = `http://localhost:3000/${res.req.file.path}`;
 
-    upload(req, res, async err => {
-      console.log(err);
-      if (err) {
-        return res.json({ success: false, err });
-      }
-      const url = `http://localhost:3000/${res.req.file.path}`;
-      console.log(url);
-      console.log(req.user.id);
-      const shop = await Shop.findOne({ owner: req.user.id });
-      console.log(shop);
-      shop.avatar = url;
-      await shop.save();
-      return res.json({ success: true, url });
-    });
-  }
-);
+//       const shop = await Shop.findOne({ owner: req.user.id });
+//       shop.avatar = url;
+//       await shop.save();
+//       return res.json({ success: true, url });
+//     });
+//   }
+// );
 
 //Define chat route
 const server = require('http').createServer(app);
