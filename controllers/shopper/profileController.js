@@ -2,8 +2,32 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const { validationResult } = require('express-validator');
+const multer = require('multer');
+const path = require('path');
 
 const Shopper = require('../../models/Shopper');
+
+async function uploadAvatar(req, res) {
+  const storage = multer.memoryStorage();
+  const upload = multer({ storage: storage }).single('file');
+
+  upload(req, res, async err => {
+    if (err) {
+      return res.json({ success: false, err });
+    }
+    const image = {
+      contentType: path.extname(req.file.originalname),
+      data: req.file.buffer
+    };
+    const url = `data:image/${image.contentType};base64,${image.data.toString(
+      'base64'
+    )}`;
+    const shopper = await Shopper.findById(req.user.id);
+    shopper.avatar = url;
+    await shopper.save();
+    return res.json({ success: true, url });
+  });
+}
 
 async function updateEmail(req, res) {
   const errors = validationResult(req); //converts errors into error object
@@ -78,4 +102,4 @@ async function updatePassword(req, res) {
   }
 }
 
-module.exports = { updateEmail, updatePassword };
+module.exports = { uploadAvatar, updateEmail, updatePassword };

@@ -5,6 +5,11 @@ const { check } = require('express-validator');
 
 const profileController = require('../../../controllers/shopper/profileController');
 
+// @route    POST profile/upload-avatar;
+// @desc     Upload shopper profile avatar
+// @access   Private, only owner
+router.post('/upload-avatar', authShopper, profileController.uploadAvatar);
+
 // @route    POST /profile/account-settings-email;
 // @desc     Update email (account settings)
 // @access   Private
