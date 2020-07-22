@@ -1,4 +1,6 @@
 const { validationResult } = require('express-validator');
+const path = require('path');
+const multer = require('multer');
 
 const Shop = require('../../models/Shop');
 const Product = require('../../models/Product');
@@ -25,14 +27,35 @@ async function createProduct(req, res) {
     const newProduct = new Product({
       shop: shop.id,
       name,
-      image,
       description,
       price,
       stock,
-      isService
+      isService,
+      image
+    });
+
+    const storage = multer.memoryStorage();
+    const upload = multer({ storage: storage }).single('file');
+
+    upload(req, res, async err => {
+      console.log('upload triggered');
+      if (err) {
+        return res.json({ msg: err });
+      }
+      const image = {
+        contentType: path.extname(req.file.originalname),
+        data: req.file.buffer
+      };
+      console.log(image);
+      const url = `data:image/${image.contentType};base64,${image.data.toString(
+        'base64'
+      )}`;
+
+      newProduct.image = url;
     });
 
     await newProduct.save();
+    console.log(newProduct);
 
     shop.products.unshift(newProduct);
 
@@ -52,13 +75,35 @@ async function updateProduct(req, res) {
     return res.status(400).json({ errors: errors.array() });
   }
   const { name, image, description, price, stock, isService } = req.body;
+
+  let imageURL = image;
+
+  upload(req, res, async err => {
+    if (err) {
+      return res.json({ msg: err });
+    }
+    if (req.file) {
+      console.log('something was uploaded');
+      const image = {
+        contentType: path.extname(req.file.originalname),
+        data: req.file.buffer
+      };
+      console.log(image);
+      const url = `data:image/${image.contentType};base64,${image.data.toString(
+        'base64'
+      )}`;
+
+      imageURL = url;
+    }
+  });
+
   const productFields = {
     name,
-    image,
     description,
     price,
     stock,
-    isService
+    isService,
+    image: imageURL
   };
 
   try {

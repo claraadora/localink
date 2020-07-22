@@ -62,7 +62,6 @@ async function createOrUpdateProfile(req, res) {
   }
   const {
     shopName,
-    avatar,
     description,
     address,
     distance,
@@ -85,7 +84,6 @@ async function createOrUpdateProfile(req, res) {
 
     const shopFields = {
       shopName,
-      avatar,
       description,
       promotions,
       openingHours,
