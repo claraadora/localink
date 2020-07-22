@@ -66,7 +66,7 @@ export default function ProductForm() {
     };
     formData.append("file", file);
 
-    Axios.post("/business/product/create-image", formData, config).then(
+    Axios.post("/business/product/upload-image", formData, config).then(
       (response) => {
         console.log(response);
         if (response.data.success) {
