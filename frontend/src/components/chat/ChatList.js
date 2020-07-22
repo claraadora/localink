@@ -14,7 +14,7 @@ export const LocalinkChatList = (props) => {
     setActiveChat(chat.activeChat);
   }, [chat]);
 
-  if (chatList.length === 0) {
+  if (chat && chat.chatList.length === 0) {
     return null;
   } else {
     return (

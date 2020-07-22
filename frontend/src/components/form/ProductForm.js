@@ -59,10 +59,7 @@ export default function ProductForm() {
   };
 
   const onUploadImage = (e) => {
-    const errs = [];
     const file = e.target.files[0];
-    const types = ["image/png", "image/jpeg", "image/gif"];
-
     let formData = new FormData();
     const config = {
       header: { "Content-Type": "multipart/form-data" },

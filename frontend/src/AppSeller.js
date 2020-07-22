@@ -18,6 +18,7 @@ import ReviewTable from "./components/table/ReviewTable";
 import { updateIsShopper } from "./actions/pageActions";
 import LandingPage from "./pages/seller/LandingPage";
 import { LocalinkDrawer } from "./components/drawer/Drawer";
+import { ChatPage } from "./pages/ChatPage";
 
 const useStyles = makeStyles({
   main: {
@@ -76,6 +77,7 @@ function AppSeller() {
           />
           <Route exact path="/business/product/add" component={ProductForm} />
           <Route exact path="/business/review" component={ReviewTable} />
+          <Route exact path="/business/chat" component={ChatPage} />
         </div>
       </div>
     </ThemeProvider>

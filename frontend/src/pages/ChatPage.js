@@ -15,6 +15,7 @@ export const ChatPage = (props) => {
   const isShopper = useSelector((state) => state.page.isShopper);
   const user = useSelector((state) => state.auth.user);
   const loading = useSelector((state) => state.chat.loading);
+  const chat = useSelector((state) => state.chat);
 
   useEffect(() => {
     socket.on("Output Chat Message", (messageFromBackEnd) => {

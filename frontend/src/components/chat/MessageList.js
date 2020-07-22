@@ -82,7 +82,7 @@ export const LocalinkMessageList = (props) => {
   };
 
   if (chatList.length === 0 || msgList === null) {
-    return null;
+    return <h1>No messages to show</h1>;
   } else {
     return (
       <Paper className={classes.paper}>
