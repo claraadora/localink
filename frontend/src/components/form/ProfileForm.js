@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { createProfile } from "../../actions/seller/profileActions";
+import {
+  createProfile,
+  getCurrentProfile,
+} from "../../actions/seller/profileActions";
 import { useSelector, useDispatch } from "react-redux";
 import {
   makeStyles,
@@ -64,7 +67,7 @@ const ProfileForm = () => {
     if (user) {
       setFormData({ ...profile, shopName: user.shopName });
     }
-  }, [loading, dispatch, profile, user]);
+  }, [loading, dispatch, profile, user, avatar]);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -100,7 +103,11 @@ const ProfileForm = () => {
         console.log(response);
         if (response.data.success) {
           console.log(response);
-          setFormData({ ...formData, avatar: response.data.url });
+          setFormData({
+            ...formData,
+            [avatar]: response.data.url,
+          });
+          dispatch(getCurrentProfile());
         }
       }
     );
