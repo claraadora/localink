@@ -73,8 +73,9 @@ export default function ProductForm() {
           console.log(response);
           setFormData({
             ...formData,
-            [image]: response.data.url,
+            image: response.data.url,
           });
+          console.log(formData);
         }
       }
     );

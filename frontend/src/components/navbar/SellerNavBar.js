@@ -83,9 +83,6 @@ export default function SellerNavBar() {
                 >
                   <AccountCircle />
                 </IconButton>
-                <Button component={Link} to="/chat">
-                  Chat
-                </Button>
               </Grid>
               <Menu
                 id="menu-appbar"

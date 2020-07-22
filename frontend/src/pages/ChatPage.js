@@ -7,6 +7,7 @@ import { Grid } from "@material-ui/core";
 import { themeChat } from "../themeChat";
 import io from "socket.io-client";
 import { getChatList, afterPostMessage } from "../actions/chatActions";
+import profileConstants from "../constants/profileConstants";
 
 const socket = io("http://localhost:5000");
 
@@ -14,6 +15,7 @@ export const ChatPage = (props) => {
   const dispatch = useDispatch();
   const isShopper = useSelector((state) => state.page.isShopper);
   const user = useSelector((state) => state.auth.user);
+  const profile = useSelector((state) => state.profile.profile);
   const loading = useSelector((state) => state.chat.loading);
   const chat = useSelector((state) => state.chat);
 
@@ -27,7 +29,7 @@ export const ChatPage = (props) => {
   }, [dispatch, isShopper, user._id]);
 
   useEffect(() => {
-    dispatch(getChatList(user._id, isShopper));
+    dispatch(getChatList(isShopper ? user._id : profile._id, isShopper));
   }, [user, loading, dispatch, isShopper]);
 
   return (

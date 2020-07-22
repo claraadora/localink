@@ -9,6 +9,7 @@ export const getChatList = (id, isShopper) => async (dispatch) => {
     if (isShopper === false) {
       console.log("HHAHAHHHA");
     }
+    console.log("id" + id);
 
     if (res.data.length > 0) {
       dispatch(setCurrActive(res.data[0][isShopper ? "shop" : "shopper"]));
