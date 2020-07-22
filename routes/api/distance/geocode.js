@@ -5,8 +5,11 @@ const APIkey = 'key=' + process.env.GOOGLE_MAPS_API_KEY;
 
 module.exports = async function geocode(addr) {
   try {
+    console.log('inside geocode');
+    console.log(addr);
     const address = 'address=' + convertSpaceToPlus(addr);
     const URI = frontURI + address + '&' + APIkey;
+    console.log(URI);
     const response = await got(URI);
     const results = JSON.parse(response.body).results;
     const latLng = results[0].geometry.location;

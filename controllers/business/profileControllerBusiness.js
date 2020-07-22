@@ -71,30 +71,32 @@ async function createOrUpdateProfile(req, res) {
     delivery
   } = req.body;
 
-  const coordinates = await geocode(address);
-  const latLng = {
-    lat: coordinates.lat,
-    lng: coordinates.lng
-  };
-
-  const profileFields = {
-    shopName
-  };
-
-  const shopFields = {
-    shopName,
-    avatar,
-    description,
-    promotions,
-    openingHours,
-    contactDetails,
-    delivery,
-    address,
-    latLng,
-    distance
-  };
-
   try {
+    console.log('in profileController');
+    console.log(address);
+    const coordinates = await geocode(address);
+    const latLng = {
+      lat: coordinates.lat,
+      lng: coordinates.lng
+    };
+
+    const profileFields = {
+      shopName
+    };
+
+    const shopFields = {
+      shopName,
+      avatar,
+      description,
+      promotions,
+      openingHours,
+      contactDetails,
+      delivery,
+      address,
+      latLng,
+      distance
+    };
+
     // Using upsert option (creates new doc if no match is found):
     let profile = await Business.findOneAndUpdate(
       { _id: req.user.id },
