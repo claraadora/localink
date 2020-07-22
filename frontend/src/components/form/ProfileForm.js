@@ -67,7 +67,7 @@ const ProfileForm = () => {
       setFormData(profileData);
     }
 
-    if (user) {
+    if (shopName === "" && user) {
       setFormData({ ...profile, shopName: user.shopName });
     }
     console.log("form");
