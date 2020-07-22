@@ -1,13 +1,22 @@
 import React, { useState } from "react";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-import TextField from "@material-ui/core/TextField";
-import { makeStyles } from "@material-ui/core/styles";
+import {
+  Button,
+  Typography,
+  TextField,
+  makeStyles,
+  Grid,
+  Avatar,
+  InputLabel,
+  InputAdornment,
+} from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import { addProduct } from "../../actions/seller/profileActions";
+import EditIcon from "@material-ui/icons/Edit";
+import Axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
+    margin: theme.spacing(5),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -15,9 +24,11 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
+    width: theme.spacing(20),
+    height: theme.spacing(20),
   },
   form: {
-    width: "70%", // Fix IE 11 issue.
+    width: "100%",
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -47,80 +58,147 @@ export default function ProductForm() {
     dispatch(addProduct(formData, history));
   };
 
+  const onUploadImage = (e) => {
+    const errs = [];
+    const file = e.target.files[0];
+    const types = ["image/png", "image/jpeg", "image/gif"];
+
+    let formData = new FormData();
+    const config = {
+      header: { "Content-Type": "multipart/form-data" },
+    };
+    formData.append("file", file);
+
+    Axios.post("/business/product", formData, config).then((response) => {
+      console.log(response);
+      if (response.data.success) {
+        console.log(response);
+        setFormData({
+          ...formData,
+          [image]: response.data.url,
+        });
+      }
+    });
+  };
+
   return (
-    <div className={classes.paper}>
-      <Typography variant="h6" gutterBottom>
+    <Grid
+      container
+      direction="column"
+      justify="center"
+      alignItems="center"
+      style={{ height: "100%", width: "100%" }}
+      spacing={5}
+    >
+      <Typography variant="h5" gutterBottom align="center">
         Add Product
       </Typography>
-      <form className={classes.form} onSubmit={onSubmit}>
-        <TextField
-          required
-          id="name"
-          name="name"
-          label="Name of product"
-          fullWidth
-          onChange={onChange}
-          autoComplete="name"
-          variant="outlined"
-          margin="normal"
-          autoFocus
-          value={name}
-        />
-        <TextField
-          required
-          id="image"
-          name="image"
-          label="Image"
-          fullWidth
-          onChange={onChange}
-          autoComplete="image"
-          variant="outlined"
-          margin="normal"
-          value={image}
-          autoFocus
-        />
-
-        <TextField
-          required
-          id="description"
-          name="description"
-          label="Product Description"
-          fullWidth
-          onChange={onChange}
-          autoComplete="description"
-          variant="outlined"
-          margin="normal"
-          value={description}
-          multiline
-          rows={3}
-          maxRows={5}
-          autoFocus
-        />
-
-        <TextField
-          id="price"
-          name="price"
-          label="Price"
-          fullWidth
-          onChange={onChange}
-          autoComplete="price"
-          variant="outlined"
-          margin="normal"
-          value={price}
-          required
-          autoFocus
-        />
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
-          className={classes.submit}
-          onSubmit={onSubmit}
-        >
-          Add Product
-        </Button>
-      </form>
-    </div>
+      <Grid item container xs={4}>
+        <form onSubmit={onSubmit} className={classes.form}>
+          <Grid
+            item
+            container
+            direction="column"
+            justify="space-between"
+            alignItems="flex-start"
+            spacing={2}
+          >
+            <Grid item container direction="row" xs={12}>
+              <Grid container direction="row" alignItems="flex-end" xs={12}>
+                <Grid item>
+                  <Avatar
+                    alt={name !== "" ? name : "Localink"}
+                    src={image}
+                    className={classes.avatar}
+                    variant="square"
+                  />
+                </Grid>
+                <Grid item>
+                  <label htmlFor="image">
+                    <EditIcon fontSize="small" />
+                  </label>
+                  <input
+                    id="image"
+                    type="file"
+                    accept="image/*"
+                    style={{ display: "none" }}
+                    onChange={onUploadImage}
+                  />
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid item container xs={12}>
+              <InputLabel>Product Name</InputLabel>
+              <TextField
+                id="name"
+                name="name"
+                placeholder="Product name"
+                fullWidth={true}
+                margin="dense"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                variant="outlined"
+                value={name}
+                onChange={onChange}
+              />
+            </Grid>
+            <Grid item container xs={12}>
+              <InputLabel>Product Description</InputLabel>
+              <TextField
+                id="description"
+                name="description"
+                placeholder="Description of Product"
+                fullWidth={true}
+                margin="dense"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                variant="outlined"
+                value={description}
+                onChange={onChange}
+                multiline
+                rows={5}
+                rowsMax={6}
+              />
+            </Grid>
+            <Grid item container xs={12}>
+              <InputLabel>Product Price</InputLabel>
+              <TextField
+                id="price"
+                name="price"
+                placeholder="Product Price"
+                fullWidth={true}
+                margin="dense"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                variant="outlined"
+                value={price}
+                onChange={onChange}
+                multiline
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">$</InputAdornment>
+                  ),
+                }}
+              />
+            </Grid>
+            <Grid item container xs={12}>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+                onSubmit={onSubmit}
+              >
+                Add Product
+              </Button>
+            </Grid>
+          </Grid>
+        </form>
+      </Grid>
+    </Grid>
   );
 }

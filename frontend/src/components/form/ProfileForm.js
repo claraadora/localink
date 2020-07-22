@@ -53,8 +53,6 @@ const ProfileForm = () => {
   const { shopName, description, avatar, address } = formData;
 
   const onChange = (e) => {
-    console.log("change form");
-    console.log(formData);
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -70,14 +68,10 @@ const ProfileForm = () => {
     if (shopName === "" && user) {
       setFormData({ ...profile, shopName: user.shopName });
     }
-    console.log("form");
-    console.log(formData);
   }, [loading, dispatch, profile, user, avatar]);
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log("submitted form");
-    console.log(formData);
     dispatch(createProfile(formData, profile ? true : false));
   };
 
