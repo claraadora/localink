@@ -21,6 +21,15 @@ router.post(
   productControllerBusiness.createProduct
 );
 
+// @route    POST business/product/create-image;
+// @desc     Upload product image
+// @access   Private
+router.post(
+  '/create-image',
+  authBusiness,
+  productControllerBusiness.firstUploadProductImage
+);
+
 // @route    POST business/product/:product_id;
 // @desc     Update product
 // @access   Private
@@ -28,6 +37,15 @@ router.post(
   '/:product_id',
   [checkObjectId('product_id'), authBusiness],
   productControllerBusiness.updateProduct
+);
+
+// @route    POST business/product/update-image/:product_id
+// @desc     Upload product image
+// @access   Private
+router.post(
+  '/update-image/:product_id',
+  authBusiness,
+  productControllerBusiness.subsequentUploadProductImage
 );
 
 // @route    GET business/product

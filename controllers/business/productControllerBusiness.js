@@ -38,7 +38,7 @@ async function createProduct(req, res) {
     const upload = multer({ storage: storage }).single('file');
 
     upload(req, res, async err => {
-      console.log('upload triggered');
+      console.log('upload embedded triggered');
       if (err) {
         return res.json({ msg: err });
       }
@@ -55,7 +55,6 @@ async function createProduct(req, res) {
     });
 
     await newProduct.save();
-    console.log(newProduct);
 
     shop.products.unshift(newProduct);
 
@@ -67,6 +66,27 @@ async function createProduct(req, res) {
     console.error(err.message);
     res.status(500).send('Server Error');
   }
+}
+
+async function firstUploadProductImage(req, res) {
+  const storage = multer.memoryStorage();
+  const upload = multer({ storage: storage }).single('file');
+
+  upload(req, res, async err => {
+    if (err) {
+      return res.json({ msg: err });
+    }
+    const image = {
+      contentType: path.extname(req.file.originalname),
+      data: req.file.buffer
+    };
+    console.log(image);
+    const url = `data:image/${image.contentType};base64,${image.data.toString(
+      'base64'
+    )}`;
+
+    return res.json({ success: true, url });
+  });
 }
 
 async function updateProduct(req, res) {
@@ -124,6 +144,32 @@ async function updateProduct(req, res) {
   }
 }
 
+async function subsequentUploadProductImage(req, res) {
+  const productId = req.params.product_id;
+
+  const storage = multer.memoryStorage();
+  const upload = multer({ storage: storage }).single('file');
+
+  upload(req, res, async err => {
+    if (err) {
+      return res.json({ msg: err });
+    }
+    const image = {
+      contentType: path.extname(req.file.originalname),
+      data: req.file.buffer
+    };
+    console.log(image);
+    const url = `data:image/${image.contentType};base64,${image.data.toString(
+      'base64'
+    )}`;
+
+    const product = await Product.findById(productId);
+    product.image = url;
+    await product.save();
+    return res.json({ success: true, url });
+  });
+}
+
 async function allProductsOfBusiness(req, res) {
   try {
     //const business = await Business.findById(req.params.business_id);
@@ -165,7 +211,9 @@ async function deleteProduct(req, res) {
 
 module.exports = {
   createProduct,
+  firstUploadProductImage,
   updateProduct,
+  subsequentUploadProductImage,
   allProductsOfBusiness,
   deleteProduct
 };
