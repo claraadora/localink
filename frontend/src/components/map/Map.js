@@ -131,6 +131,7 @@ export const LocalinkMap = () => {
         containerElement={<div style={{ height: `100%` }} />}
         mapElement={<div style={{ height: `100%` }} />}
       />
+      {console.log("key" + process.env.REACT_APP_GOOGLE_MAPS_API_KEY)}
     </div>
   );
 };
