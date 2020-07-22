@@ -34,26 +34,6 @@ async function createProduct(req, res) {
       image
     });
 
-    const storage = multer.memoryStorage();
-    const upload = multer({ storage: storage }).single('file');
-
-    upload(req, res, async err => {
-      console.log('upload embedded triggered');
-      if (err) {
-        return res.json({ msg: err });
-      }
-      const image = {
-        contentType: path.extname(req.file.originalname),
-        data: req.file.buffer
-      };
-      console.log(image);
-      const url = `data:image/${image.contentType};base64,${image.data.toString(
-        'base64'
-      )}`;
-
-      newProduct.image = url;
-    });
-
     await newProduct.save();
 
     shop.products.unshift(newProduct);
@@ -68,7 +48,8 @@ async function createProduct(req, res) {
   }
 }
 
-async function firstUploadProductImage(req, res) {
+async function uploadProductImage(req, res) {
+  console.log(' upload image');
   const storage = multer.memoryStorage();
   const upload = multer({ storage: storage }).single('file');
 
@@ -95,35 +76,13 @@ async function updateProduct(req, res) {
     return res.status(400).json({ errors: errors.array() });
   }
   const { name, image, description, price, stock, isService } = req.body;
-
-  let imageURL = image;
-
-  upload(req, res, async err => {
-    if (err) {
-      return res.json({ msg: err });
-    }
-    if (req.file) {
-      console.log('something was uploaded');
-      const image = {
-        contentType: path.extname(req.file.originalname),
-        data: req.file.buffer
-      };
-      console.log(image);
-      const url = `data:image/${image.contentType};base64,${image.data.toString(
-        'base64'
-      )}`;
-
-      imageURL = url;
-    }
-  });
-
   const productFields = {
     name,
+    image,
     description,
     price,
     stock,
-    isService,
-    image: imageURL
+    isService
   };
 
   try {
@@ -142,32 +101,6 @@ async function updateProduct(req, res) {
     console.error(err.message);
     res.status(500).send('Server Error');
   }
-}
-
-async function subsequentUploadProductImage(req, res) {
-  const productId = req.params.product_id;
-
-  const storage = multer.memoryStorage();
-  const upload = multer({ storage: storage }).single('file');
-
-  upload(req, res, async err => {
-    if (err) {
-      return res.json({ msg: err });
-    }
-    const image = {
-      contentType: path.extname(req.file.originalname),
-      data: req.file.buffer
-    };
-    console.log(image);
-    const url = `data:image/${image.contentType};base64,${image.data.toString(
-      'base64'
-    )}`;
-
-    const product = await Product.findById(productId);
-    product.image = url;
-    await product.save();
-    return res.json({ success: true, url });
-  });
 }
 
 async function allProductsOfBusiness(req, res) {
@@ -211,9 +144,8 @@ async function deleteProduct(req, res) {
 
 module.exports = {
   createProduct,
-  firstUploadProductImage,
+  uploadProductImage,
   updateProduct,
-  subsequentUploadProductImage,
   allProductsOfBusiness,
   deleteProduct
 };
