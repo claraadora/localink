@@ -89,8 +89,11 @@ app.post(
       if (err) {
         return res.json({ success: false, err });
       }
-      const url = res.req.file.path;
+      const url = `http://localhost:3000/${res.req.file.path}`;
+      console.log(url);
+      console.log(req.user.id);
       const shop = await Shop.findOne({ owner: req.user.id });
+      console.log(shop);
       shop.avatar = url;
       await shop.save();
       return res.json({ success: true, url });
