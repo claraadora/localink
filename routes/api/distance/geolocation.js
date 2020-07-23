@@ -11,7 +11,9 @@ const geolocation = async () => {
   console.log(URI);
   const { body } = await got.post(URI, {
     json: {
-      homeMobileCountryCode: 65
+      homeMobileCountryCode: 525,
+      homeMobileNetwordCode: 02,
+      considerIp: 'true'
     },
     responseType: 'json'
   });
