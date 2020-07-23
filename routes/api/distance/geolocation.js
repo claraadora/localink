@@ -2,7 +2,7 @@ const got = require('got');
 // const fetch = require('node-fetch');
 
 const URI =
-  'https://www.googleapis.com/geolocation/v1/geolocate?key=' +
+  'https://www.googleapis.com/geolocation/v1/geolocate?components=country:SG&key=' +
   process.env.GOOGLE_MAPS_API_KEY;
 
 const geolocation = async () => {
