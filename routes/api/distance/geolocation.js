@@ -5,6 +5,7 @@ const URI =
   process.env.GOOGLE_MAPS_API_KEY;
 
 const geolocation = async () => {
+  console.log(URI);
   const { body } = await got.post(URI, {
     json: {
       homeMobileCountryCode: 525

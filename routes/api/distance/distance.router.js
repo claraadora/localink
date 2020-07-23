@@ -15,6 +15,8 @@ router.post('/start-location', async (req, res) => {
   let location = null;
   if (currentLocation === true) {
     location = await getCurrentLocation();
+    console.log('here');
+    console.log(location);
   } else {
     location = await geocode(startLocation);
   }
