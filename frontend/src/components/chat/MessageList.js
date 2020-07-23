@@ -76,12 +76,14 @@ export const LocalinkMessageList = (props) => {
       receiverId,
       isShopper,
     });
-    msgList.push(obj);
-    setMsgList(msgList);
+    // msgList.push(obj);
+    // setMsgList(msgList);
     setTextInput("");
     console.log("afterPostMessage");
     console.log(obj);
-    dispatch(afterPostMessage(obj, isShopper));
+    dispatch(
+      afterPostMessage({ messageFromBackEnd: obj, isShopper: isShopperState })
+    );
   };
 
   if (chatList.length === 0 || msgList === null) {

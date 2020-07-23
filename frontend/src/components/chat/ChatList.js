@@ -21,9 +21,9 @@ export const LocalinkChatList = (props) => {
       <ChatList>
         {chatList.length > 0 &&
           chatList.map((chatItem) => {
-            const [_id, shopName, message_list] = [
+            const [_id, name, message_list] = [
               isShopper ? chatItem.shop : chatItem.shopper,
-              chatItem.shopName,
+              isShopper ? chatItem.shopName : chatItem.shopperName,
               chatItem.message_list,
             ];
             const len = message_list.length;
@@ -31,7 +31,7 @@ export const LocalinkChatList = (props) => {
               <LocalinkChatListItem
                 isActive={activeChat === _id}
                 _id={_id}
-                name={shopName}
+                name={name}
                 timestamp={len > 0 ? message_list[len - 1].date : null}
                 message={len > 0 ? message_list[len - 1].message : null}
               />
