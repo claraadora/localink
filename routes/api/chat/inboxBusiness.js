@@ -38,7 +38,7 @@ router.get('/:shop_id', async (req, res) => {
         },
         {
           $group: {
-            _id: '$shop', //group messages by same shop id
+            _id: '$shopper', //group messages by same shop id
             messageList: { $push: '$message' },
             shopper: { $first: '$shopper' },
             shop: { $first: '$shop' }
