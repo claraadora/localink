@@ -5,6 +5,11 @@ const { check } = require('express-validator');
 
 const profileController = require('../../../controllers/shopper/profileController');
 
+// @route    GET /profile/me
+// @desc     Get current users profile
+// @access   Private
+router.get('/me', authShopper, profileController.getShopper);
+
 // @route    POST profile/upload-avatar;
 // @desc     Upload shopper profile avatar
 // @access   Private, only owner
