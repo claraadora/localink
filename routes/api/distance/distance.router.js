@@ -31,13 +31,11 @@ router.post('/start-location', async (req, res) => {
       if (shop.latLng.lat && shop.latLng.lng) {
         //remove in future
         shop.distance = await getDistance(location, shop.latLng);
-        shop.save();
+        console.log(shop.distance);
+        await shop.save();
       }
     });
     console.log('in distance router');
-    console.log(
-      await Shop.findOne({ shopName: 'test create or update profile' })
-    );
     console.log('Successfully updated distance to shops');
 
     res.status(200).json(location);
