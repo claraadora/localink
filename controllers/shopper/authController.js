@@ -118,7 +118,8 @@ async function facebookSignUpOrLogin(req, res) {
   const urlGraphFacebook = `https://graph.facebook.com/v2.11/${userID}/?fields=id,name,email&access_token=${accessToken}`;
   console.log(urlGraphFacebook);
   let response = await got(urlGraphFacebook);
-  response = response.json();
+  response = JSON.parse(response.body);
+  console.log(response);
 
   const { email, name } = response;
   try {

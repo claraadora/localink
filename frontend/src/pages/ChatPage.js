@@ -9,7 +9,7 @@ import io from 'socket.io-client';
 import { getChatList, afterPostMessage } from '../actions/chatActions';
 import profileConstants from '../constants/profileConstants';
 
-const socket = io('https://pristine-big-bend-88828.herokuapp.com/');
+const socket = io('https://pristine-big-bend-88828.herokuapp.com');
 
 export const ChatPage = props => {
   const dispatch = useDispatch();
