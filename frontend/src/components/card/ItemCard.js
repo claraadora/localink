@@ -7,6 +7,8 @@ import {
 } from "../../actions/shopper/itineraryActions";
 import { useSelector, useDispatch } from "react-redux";
 import { addChatItem } from "../../actions/chatActions";
+import { fetchShop } from "../../actions/shopper/catalogueActions";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,6 +41,7 @@ export const ItemCard = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const auth = useSelector((state) => state.auth);
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const history = useHistory();
 
   const handlePopoverOpen = (event) => {
     console.log("WHERE");
@@ -47,6 +50,12 @@ export const ItemCard = (props) => {
 
   const handlePopoverClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleFetchShop = () => {
+    let shopId = data.shop_docs[0]._id;
+    dispatch(fetchShop(shopId));
+    history.push(`/catalogue/${shopId}`);
   };
 
   const open = Boolean(anchorEl);
@@ -107,6 +116,9 @@ export const ItemCard = (props) => {
                   Ask Seller
                 </Button>
               ) : null}
+              <Button size="small" onClick={handleFetchShop}>
+                Go to Shop
+              </Button>
             </Grid>
           </Grid>
           <Grid item xs={2}>
