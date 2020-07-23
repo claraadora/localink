@@ -27,7 +27,9 @@ export const chat = (state = initialState, action) => {
             chatItem[payload.isShopper ? "shop" : "shopper"] ===
             state.activeChat
           ) {
-            chatItem.message_list.push(payload.messageFromBackEnd.message);
+            console.log("payload");
+            console.log(payload);
+            chatItem.message_list.push(payload);
           }
           return chatItem;
         }),

@@ -3,8 +3,12 @@ import { useSelector } from "react-redux";
 import { MessageGroup, Message, MessageText, Bubble } from "@livechat/ui-kit";
 
 export const LocalinkMessageListItem = (props) => {
-  const id = useSelector((state) => state.auth.user._id);
+  const isShopper = useSelector((state) => state.page.isShopper);
+  const id = useSelector((state) =>
+    isShopper ? state.auth.user._id : state.profile.profile._id
+  );
   //TODO CHANGE BACK TIME
+  console.log(props);
   return (
     <MessageGroup onlyFirstWithMeta>
       <Message

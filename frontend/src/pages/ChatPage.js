@@ -21,16 +21,16 @@ export const ChatPage = (props) => {
 
   useEffect(() => {
     socket.on("Output Chat Message", (messageFromBackEnd) => {
-      if (messageFromBackEnd.userId !== user._id) {
+      if (messageFromBackEnd.userId !== (isShopper ? user._id : profile._id)) {
         dispatch(afterPostMessage({ messageFromBackEnd, isShopper }));
       }
     });
     return () => socket.disconnect();
-  }, [dispatch, isShopper, user._id]);
+  }, [dispatch, isShopper, user._id, profile]);
 
   useEffect(() => {
     dispatch(getChatList(isShopper ? user._id : profile._id, isShopper));
-  }, [user, loading, dispatch, isShopper]);
+  }, [user, profile, loading, dispatch, isShopper]);
 
   return (
     <ThemeProvider theme={themeChat}>

@@ -6,14 +6,15 @@ export const getChatList = (id, isShopper) => async (dispatch) => {
   try {
     const endpoint = isShopper ? `/inbox/${id}` : `/business/inbox/${id}`;
     const res = await axios.get(endpoint);
+
     if (isShopper === false) {
       console.log("HHAHAHHHA");
     }
-    console.log("id" + id);
 
     if (res.data.length > 0) {
       dispatch(setCurrActive(res.data[0][isShopper ? "shop" : "shopper"]));
     }
+
     dispatch({
       type: chatConstants.GET_CHAT,
       payload: res.data,

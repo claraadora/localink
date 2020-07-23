@@ -22,6 +22,7 @@ const useStyles = makeStyles({
 export const LocalinkMessageList = (props) => {
   const chat = useSelector((state) => state.chat);
   const user = useSelector((state) => state.auth.user);
+  const profile = useSelector((state) => state.profile.profile);
   const isShopperState = useSelector((state) => state.page.isShopper);
   const [activeChat, setActiveChat] = useState(chat.activeChat);
   const [chatList, setChatList] = useState(chat.chatList);
@@ -46,8 +47,8 @@ export const LocalinkMessageList = (props) => {
 
   const handleSubmit = (e) => {
     let momentObj = moment();
-    let username = user.name;
-    let userId = user._id;
+    let username = isShopperState ? user.name : user.shopName;
+    let userId = isShopperState ? user._id : profile._id;
     let time = {
       sameDay: momentObj.format("h:mm a"),
       sameElse: momentObj.format("Do MMMM YYYY h:mm a"),
@@ -59,11 +60,11 @@ export const LocalinkMessageList = (props) => {
     let message = textInput;
 
     const obj = {
-      userId,
-      username,
-      message,
-      time,
-      type,
+      userId: userId,
+      username: username,
+      message: message,
+      time: time,
+      type: type,
     };
 
     props.socket.emit("Input Chat Message", {
@@ -78,6 +79,8 @@ export const LocalinkMessageList = (props) => {
     msgList.push(obj);
     setMsgList(msgList);
     setTextInput("");
+    console.log("afterPostMessage");
+    console.log(obj);
     dispatch(afterPostMessage(obj, isShopper));
   };
 
