@@ -76,7 +76,7 @@ describe('indexControllerBusiness', () => {
         .end(async function (error, res) {
           assert.equal(error, null, 'error is not null');
           assert.equal(res.status, 200, 'status is not 200');
-          assert.equal(res.text, 'Activated account successfully');
+          assert.equal(res.body.msg, 'Activated account successfully');
           done();
         });
     });

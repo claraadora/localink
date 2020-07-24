@@ -38,19 +38,19 @@ describe('test product model', () => {
     });
   });
 
-  it('product object should be invalid if isService is empty', done => {
-    const productFields = {
-      shop: dummyProfile._id,
-      name: 'product name',
-      image: 'image url',
-      price: 10
-    };
-    const product = new Product(productFields);
-    product.validate(error => {
-      expect(error.errors.isService).to.exist;
-      done();
-    });
-  });
+  // it('product object should be invalid if isService is empty', done => {
+  //   const productFields = {
+  //     shop: dummyProfile._id,
+  //     name: 'product name',
+  //     image: 'image url',
+  //     price: 10
+  //   };
+  //   const product = new Product(productFields);
+  //   product.validate(error => {
+  //     expect(error.errors.isService).to.exist;
+  //     done();
+  //   });
+  // });
 
   it('product object should be invalid if isService is in wrong type', done => {
     const productFields = {

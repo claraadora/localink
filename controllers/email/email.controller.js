@@ -50,7 +50,9 @@ const sendPasswordResetEmail = async (req, res) => {
       const shopper = await Shopper.findOne({ email });
 
       if (!shopper) {
-        res.status(401).json({ msg: 'Cannot find user with that email' });
+        res
+          .status(401)
+          .json({ errors: [{ msg: 'Cannot find user with that email' }] });
       }
       user = shopper;
       specificUser = shopper;
@@ -59,18 +61,20 @@ const sendPasswordResetEmail = async (req, res) => {
       specificUser = await User.findOne({ email });
 
       if (!specificUser) {
-        res.status(401).json({ msg: 'Cannot find user with that email' });
+        res
+          .status(401)
+          .json({ errors: [{ msg: 'Cannot find user with that email' }] });
       }
 
       user = await Business.findOne({
         users: mongoose.Types.ObjectId(specificUser.id)
       });
     } else {
-      res.status(401).json('Token not valid');
+      res.status(401).json({ errors: [{ msg: 'Token not valid' }] });
     }
   } catch (error) {
     console.log('no user w that email');
-    res.status(404).json('No user with that email');
+    res.status(404).json({ errors: [{ msg: 'No user with that email' }] });
   }
   const token = usePasswordHashToMakeToken(user, specificUser);
   const url = getPasswordResetURL(isShopper, specificUser, token);
@@ -80,7 +84,7 @@ const sendPasswordResetEmail = async (req, res) => {
     transported.sendMail(emailTemplate, (error, info) => {
       if (error) {
         console.log(error);
-        res.status(500).json('Error sending email');
+        res.status(500).json({ errors: [{ msg: 'Error sending email' }] });
       } else {
         //console.log(`**Email sent**`, info.response);
         res.status(250).json('Email sent successfully');

@@ -14,7 +14,7 @@ const connectClient = async () => {
       if (error) {
         console.log('sww: ' + error);
       }
-      console.log('MongoDB client connected...');
+      //console.log('MongoDB client connected...');
       const db = client.db('test');
       //For testing
 

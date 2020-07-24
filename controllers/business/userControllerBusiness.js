@@ -46,7 +46,7 @@ async function addUserToBusiness(req, res) {
     sendActivationEmailUser(business, user, url, res);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server error');
+    res.status(500).json({ errors: [{ msg: 'Server error' }] });
   }
 }
 
@@ -64,7 +64,7 @@ async function deleteUser(req, res) {
   } catch (err) {
     console.error(err.message);
 
-    res.status(500).send('Server Error');
+    res.status(500).json({ errors: [{ msg: 'Server error' }] });
   }
 }
 
@@ -84,7 +84,7 @@ async function editUser(req, res) {
     res.status(200).json(user);
   } catch (error) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).json({ errors: [{ msg: 'Server error' }] });
   }
 }
 
@@ -96,7 +96,7 @@ async function activateOrDeactivateUser(req, res) {
     res.status(200).json('successfully changed user activation status');
   } catch (error) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).json({ errors: [{ msg: 'Server error' }] });
   }
 }
 

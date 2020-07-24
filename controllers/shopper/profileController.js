@@ -12,13 +12,15 @@ async function getShopper(req, res) {
     let shopper = await Shopper.findById(req.user.id);
 
     if (!shopper) {
-      return res.status(400).json({ msg: "Shopper's profile not found" });
+      return res
+        .status(400)
+        .json({ errors: [{ msg: "Shopper's profile not found" }] });
     }
 
     res.status(200).json(shopper);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).json({ errors: [{ msg: 'Server Error' }] });
   }
 }
 
@@ -63,7 +65,7 @@ async function updateEmail(req, res) {
     res.status(200).json(shopper);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server error');
+    res.status(500).json({ errors: [{ msg: 'Server error' }] });
   }
 }
 
@@ -113,7 +115,7 @@ async function updatePassword(req, res) {
     );
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server error');
+    res.status(500).json({ errors: [{ msg: 'Server error' }] });
   }
 }
 

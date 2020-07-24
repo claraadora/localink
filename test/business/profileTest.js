@@ -72,7 +72,7 @@ describe('profileControllerBusiness', () => {
           assert.equal(res.status, 403, 'status is not 403');
           assert.exists(res.body, 'Returned shop either null or undefined');
           assert.equal(
-            res.body.msg,
+            res.body.errors[0].msg,
             'authorization denied, only owner has access'
           );
           done();
@@ -138,7 +138,7 @@ describe('profileControllerBusiness', () => {
           assert.equal(res.status, 403, 'status is not 403');
           assert.exists(res.body, 'Returned shop either null or undefined');
           assert.equal(
-            res.body.msg,
+            res.body.errors[0].msg,
             'authorization denied, only owner has access'
           );
           done();

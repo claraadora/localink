@@ -30,7 +30,7 @@ async function getShop(req, res) {
     res.status(200).json(shop);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).json({ errors: [{ msg: 'Server error' }] });
   }
 }
 
@@ -51,7 +51,7 @@ async function getSpecifiedShop(req, res) {
     res.status(200).json(shop);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).json({ errors: [{ msg: 'Server error' }] });
   }
 }
 
@@ -110,7 +110,7 @@ async function createOrUpdateProfile(req, res) {
     res.json(shop);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).json({ errors: [{ msg: 'Server error' }] });
   }
 }
 
@@ -153,7 +153,7 @@ async function updateEmail(req, res) {
     res.status(200).json(user);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server error');
+    res.status(500).json({ errors: [{ msg: 'Server error' }] });
   }
 }
 
@@ -199,7 +199,7 @@ async function updatePassword(req, res) {
     );
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server error');
+    res.status(500).json({ errors: [{ msg: 'Server error' }] });
   }
 }
 

@@ -44,7 +44,7 @@ async function createProduct(req, res) {
     res.json(shop);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).json({ errors: [{ msg: 'Server error' }] });
   }
 }
 
@@ -55,7 +55,7 @@ async function uploadProductImage(req, res) {
 
   upload(req, res, async err => {
     if (err) {
-      return res.json({ msg: err });
+      return res.json({ errors: [{ msg: err }] });
     }
     const image = {
       contentType: path.extname(req.file.originalname),
@@ -99,7 +99,7 @@ async function updateProduct(req, res) {
     res.json(shop);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).json({ errors: [{ msg: 'Server error' }] });
   }
 }
 
@@ -113,7 +113,7 @@ async function allProductsOfBusiness(req, res) {
     res.json(shop.products);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).json({ errors: [{ msg: 'Server error' }] });
   }
 }
 
@@ -122,14 +122,14 @@ async function deleteProduct(req, res) {
     const product = await Product.findById(req.params.product_id);
 
     if (!product) {
-      return res.status(401).json({ msg: 'Product not found' });
+      return res.status(401).json({ errors: [{ msg: 'Product not found' }] });
     }
 
     let shop = await Shop.findById(product.shop);
 
     // Check user
     if (shop.owner.toString() !== req.user.id) {
-      return res.status(401).json({ msg: 'User not authorized' });
+      return res.status(401).json({ errors: [{ msg: 'User not authorized' }] });
     }
 
     await product.remove();
@@ -138,7 +138,7 @@ async function deleteProduct(req, res) {
   } catch (err) {
     console.error(err.message);
 
-    res.status(500).send('Server Error');
+    res.status(500).json({ errors: [{ msg: 'Server error' }] });
   }
 }
 

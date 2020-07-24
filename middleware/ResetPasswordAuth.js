@@ -9,7 +9,9 @@ module.exports = async function (req, res, next) {
   const { user_id, token } = req.params;
 
   if (!token) {
-    return res.status(401).json({ msg: 'No token, authorization denied' });
+    return res
+      .status(401)
+      .json({ errors: [{ msg: 'No token, authorization denied' }] });
   }
 
   try {
@@ -21,7 +23,7 @@ module.exports = async function (req, res, next) {
       const shopper = await Shopper.findById(user_id);
 
       if (!shopper) {
-        res.status(401).json({ msg: 'Token is not valid' });
+        res.status(401).json({ errors: [{ msg: 'Token is not valid' }] });
       } else {
         user = shopper;
         password = shopper.password;
@@ -36,7 +38,7 @@ module.exports = async function (req, res, next) {
     const secret = password + '-' + user.createdAt;
     jwt.verify(token, secret, async (error, decoded) => {
       if (error) {
-        return res.status(401).json({ msg: 'Link is not valid' });
+        return res.status(401).json({ errors: [{ msg: 'Link is not valid' }] });
       } else {
         if (decoded.business) {
           req.user = decoded.business;
@@ -48,6 +50,6 @@ module.exports = async function (req, res, next) {
     });
   } catch (error) {
     console.error('something wrong with reset password auth middleware');
-    res.status(500).json({ msg: 'Server Error' });
+    res.status(500).json({ errors: [{ msg: 'Server Error' }] });
   }
 };
