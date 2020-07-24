@@ -1,47 +1,72 @@
 import React, { useState } from "react";
-import { Paper, Typography, Button, Grid } from "@material-ui/core";
+import { Paper, Typography, IconButton, Grid, Avatar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { teal } from "@material-ui/core/colors";
-import { useSelector, useDispatch } from "react-redux";
 import { loadRoute } from "../../actions/shopper/searchActions";
+import NavigationIcon from "@material-ui/icons/Navigation";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   header: {
-    backgroundColor: teal[50],
     width: "100%",
     display: "flex",
-    padding: "0px 0px 0px 0px",
+    padding: "0.5% 0.5% 0.5% 0.5%",
   },
-});
+  avatar: {
+    width: theme.spacing(12),
+    height: theme.spacing(12),
+  },
+}));
 
-export const ShopfrontHeader = () => {
-  const currShop = useSelector((state) => state.search.currShop);
+export const ShopfrontHeader = (props) => {
   const classes = useStyles();
-  const dispatch = useDispatch();
-  if (itineraryItems.length === 0) {
-    return null;
-  } else {
-    console.log(currShop);
-    return (
-      <Paper className={classes.header}>
+
+  return (
+    <Paper className={classes.header}>
+      <Grid container direction="row" alignItems="center" justify="center">
+        <Grid item md={1} />
         <Grid
+          item
           container
           direction="row"
-          justify="space-around"
-          alignItems="center"
+          justify="center"
+          spacing={1}
+          md={7}
         >
-          <Grid item xs={1} />
-          <Grid item xs={2}>
-            <Typography variant="h6">Shop</Typography>
+          <Grid item>
+            <Avatar
+              src={props.avatar}
+              alt={props.name}
+              className={classes.avatar}
+            />
           </Grid>
-          <Grid item xs={7} />
-          <Grid item xs={2}>
-            <Button onClick={() => dispatch(loadRoute())}>
-              <Typography variant="body2">Calculate Routes</Typography>
-            </Button>
+          <Grid item container direction="column" md={10}>
+            <Grid item>
+              <Typography variant="h4" gutterButtom>
+                {props.name}
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Typography variant="h7">{props.description}</Typography>
+            </Grid>
           </Grid>
         </Grid>
-      </Paper>
-    );
-  }
+        <Grid item container direction="row" alignItems="center" md={3}>
+          <Grid item container direction="row" alignItems="center">
+            <Grid item>
+              <Typography variant="h7">📍Location: {props.address}</Typography>
+            </Grid>
+            <Grid item>
+              <IconButton>
+                <NavigationIcon />
+              </IconButton>
+            </Grid>
+          </Grid>
+          <Grid item>
+            <Typography variant="h7">⭐ Ratings: {props.ratings}</Typography>
+          </Grid>
+        </Grid>
+        <Grid item md={1} />
+      </Grid>
+    </Paper>
+  );
 };

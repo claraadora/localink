@@ -2,13 +2,11 @@ import React, { useState } from "react";
 import {
   Button,
   TextField,
-  FormControlLabel,
-  Checkbox,
   Link,
   Grid,
   Typography,
-  Container,
   Divider,
+  Avatar,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { setAlert } from "../../actions/alertActions";
@@ -20,21 +18,20 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import GoogleLogin from "react-google-login";
-import FacebookLogin from "react-facebook-login";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(8),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.primary.main,
   },
   form: {
-    width: "100%", // Fix IE 11 issue.
+    width: "50%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -100,120 +97,118 @@ export default function SignUpPage() {
   }
 
   return (
-    <Container component="main" maxWidth="xs">
-      <div className={classes.paper}>
-        <Typography component="h1" variant="h5">
-          Sign Up
-        </Typography>
-        <form className={classes.form} onSubmit={onSubmit}>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="name"
-            label="Full Name"
-            name="name"
-            autoComplete="name"
-            onChange={onChange}
-            autoFocus
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            onChange={onChange}
-            autoFocus
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            onChange={onChange}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password2"
-            label="Confirm Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            onChange={onChange}
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
+    <Grid
+      container
+      direction="column"
+      justify="center"
+      alignItems="center"
+      style={{ height: "100%", width: "100%" }}
+      spacing={5}
+    >
+      <Grid item>
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
             Sign Up
-          </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
+          </Typography>
+          <form className={classes.form} onSubmit={onSubmit}>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="name"
+              label="Full Name"
+              name="name"
+              autoComplete="name"
+              onChange={onChange}
+              autoFocus
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              onChange={onChange}
+              autoFocus
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              onChange={onChange}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="password2"
+              label="Confirm Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              onChange={onChange}
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              Sign Up
+            </Button>
+            <Grid container>
+              <Grid item xs>
+                <Link href="#" variant="body2">
+                  Forgot password?
+                </Link>
+              </Grid>
+              <Grid item>
+                <Link href="#" variant="body2">
+                  {"Have an account? Login"}
+                </Link>
+              </Grid>
             </Grid>
-            <Grid item>
-              <Link href="#" variant="body2">
-                {"Have an account? Login"}
-              </Link>
+            <Grid item container="row" alignItems="center">
+              <Grid item xs={5}>
+                <Divider />
+              </Grid>
+              <Grid item xs={1} container="row" justify="center">
+                <body>or</body>
+              </Grid>
+              <Grid item xs={6}>
+                <Divider />
+              </Grid>
             </Grid>
-          </Grid>
-          <Grid item container="row" alignItems="center">
-            <Grid item xs={5}>
-              <Divider />
+            <Grid container direction="row" justify="center">
+              <Grid item>
+                <GoogleLogin
+                  clientId="56020081309-ndum5jd4ltace1utokr28brbrtjkjhb9.apps.googleusercontent.com"
+                  buttonText="Sign up with Google"
+                  onSuccess={responseGoogle}
+                  onFailure={responseGoogle}
+                  cookiePolicy={"single_host_origin"}
+                  className={classes.buttonGoogle}
+                />
+              </Grid>
             </Grid>
-            <Grid item xs={1}>
-              <body>or</body>
-            </Grid>
-            <Grid item xs={6}>
-              <Divider />
-            </Grid>
-          </Grid>
-          <Grid container direction="row" justify="center">
-            <Grid item xs={6}>
-              <GoogleLogin
-                clientId="56020081309-ndum5jd4ltace1utokr28brbrtjkjhb9.apps.googleusercontent.com"
-                buttonText="Sign up with Google"
-                onSuccess={responseGoogle}
-                onFailure={responseGoogle}
-                cookiePolicy={"single_host_origin"}
-                className={classes.buttonGoogle}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <FacebookLogin
-                appId="2626284940958184"
-                autoLoad={false}
-                callback={responseFacebook}
-                cssClass={classes.buttonFacebook}
-                textButton="&nbsp;&nbsp;Sign up with Facebook"
-                icon="fa-facebook"
-              />
-            </Grid>
-          </Grid>
-        </form>
-      </div>
-    </Container>
+          </form>
+        </div>
+      </Grid>
+    </Grid>
   );
 }

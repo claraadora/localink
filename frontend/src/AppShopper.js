@@ -8,7 +8,7 @@ import ShopperProfilePage from "./pages/shopper/ProfilePage";
 import ShopperCataloguePage from "./pages/shopper/CataloguePage";
 import ChatPage from "./pages/ChatPage";
 import ShopperNavBar from "./components/navbar/ShopperNavBar";
-// import Alert from "./components/Alert";
+import LocalinkAlert from "./components/Alert";
 import { Route } from "react-router-dom";
 import { Grid, makeStyles } from "@material-ui/core";
 import { theme } from "./theme";
@@ -27,12 +27,16 @@ const useStyles = makeStyles({
     width: "100%",
     display: "flex",
     flexDirection: "column",
+    alignItems: "center",
   },
   navBar: {
     width: "100%",
   },
 });
 
+const getLast = (str) => {
+  return str.substring(str.lastIndexOf("/") + 1);
+};
 function AppShopper() {
   let location = useLocation();
   const dispatch = useDispatch();
@@ -48,11 +52,17 @@ function AppShopper() {
           <ShopperNavBar isSearchPage={location.pathname === "/search"} />
         </div>
         <div className={classes.content}>
+          <LocalinkAlert />
           <Route exact path="/login" component={ShopperLogInPage} />
           <Route exact path="/signup" component={ShopperSignUpPage} />
           <Route exact path="/search" component={ShopperSearchPage} />
           <Route exact path="/profile" component={ShopperProfilePage} />
-          <Route path="/catalogue" component={ShopperCataloguePage} />
+          <Route
+            path="/catalogue"
+            render={() => (
+              <ShopperCataloguePage shopId={getLast(location.pathname)} />
+            )}
+          />
           <Route exact path="/chat" component={ChatPage} />
           <Route exact path="/" component={ShopperLandingPage} />
         </div>

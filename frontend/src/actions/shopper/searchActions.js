@@ -115,3 +115,10 @@ export const updateUserLocation = (currentLocation, startLocation) => async (
     });
   }
 };
+
+export const setTravelMode = (travelMode) => (dispatch) => {
+  dispatch({
+    type: searchConstants.SET_TRAVEL_MODE,
+    payload: travelMode,
+  });
+};

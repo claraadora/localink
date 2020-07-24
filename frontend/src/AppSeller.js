@@ -5,7 +5,7 @@ import SellerLogInPage from "./pages/seller/LogInPage";
 import SellerSignUpPage from "./pages/seller/SignUpPage";
 import SellerDashboardPage from "./pages/seller/DashboardPage";
 import SellerNavBar from "./components/navbar/SellerNavBar";
-import Alert from "./components/Alert";
+import LocalinkAlert from "./components/Alert";
 import { Route } from "react-router-dom";
 import { Grid, makeStyles } from "@material-ui/core";
 import ProductTable from "./components/table/ProductTable";
@@ -35,6 +35,11 @@ const useStyles = makeStyles({
   navBar: {
     width: "100%",
   },
+  alert: {
+    position: "absolute",
+    top: "100px",
+    width: "100%",
+  },
 });
 function AppSeller() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -49,6 +54,9 @@ function AppSeller() {
       <div className={classes.main}>
         <div className={classes.navBar}>
           <SellerNavBar />
+        </div>
+        <div className={classes.alert}>
+          <LocalinkAlert />
         </div>
         <div className={classes.content}>
           {isAuthenticated && <LocalinkDrawer />}

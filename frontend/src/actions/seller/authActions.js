@@ -16,6 +16,8 @@ export const loadUser = () => async (dispatch) => {
       type: authConstants.USER_LOADED,
       payload: res.data,
     });
+
+    dispatch(setAlert("User loaded successfully", "success"));
   } catch (err) {
     dispatch({
       type: authConstants.AUTH_ERROR,
@@ -31,8 +33,6 @@ export const login = ({ email, password }) => async (dispatch) => {
   };
 
   const body = JSON.stringify({ email, password });
-  console.log("body" + body);
-
   try {
     const res = await axios.post("/business/auth", body, config); // api/auth
 
@@ -66,8 +66,6 @@ export const signup = ({ name, shopName, email, password }) => async (
     },
   };
   const body = JSON.stringify({ name, shopName, email, password });
-  console.log("here" + body);
-  console.log(shopName);
 
   try {
     const res = await axios.post("/business", body, config); // api/users

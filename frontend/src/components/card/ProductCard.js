@@ -9,9 +9,6 @@ import { Avatar, CardMedia } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    maxWidth: 345,
-  },
   media: {
     height: 0,
     paddingTop: "56.25%", // 16:9
@@ -19,33 +16,39 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ProductCard = (props) => {
-  const {
-    shopName,
-    shopAvatar,
-    productImage,
-    productDescription,
-    productPrice,
-    productRating,
-    shopDistance,
-  } = props;
+  const product = props.product;
+  console.log(product);
+  const [name, description, image, price, stock, isService] = [
+    product.name,
+    product.description,
+    product.image,
+    product.price,
+    product.stock,
+    product.isService,
+  ];
   const classes = useStyles();
 
   return (
-    <Card className={classes.root}>
-      <CardHeader avatar={<Avatar src={shopAvatar} />} title={shopName} />
-      <CardMedia className={classes.media} image={productImage} />
+    <Card>
+      <CardMedia className={classes.media} image={image} />
       <CardContent>
-        <Typography variant="body2" component="p">
-          {productDescription}
+        <Typography noWrap gutterBottom variant="body1" component="h2">
+          {name}
+        </Typography>
+        <Typography
+          noWrap
+          gutterBottom
+          variant="body2"
+          color="textSecondary"
+          component="p"
+        >
+          {description}
         </Typography>
         <Typography variant="body2" component="p">
-          {productPrice}
+          {`💲 Price: $ ${price}`}
         </Typography>
         <Typography variant="body2" component="p">
-          {productRating}
-        </Typography>
-        <Typography variant="body2" component="p">
-          {shopDistance}
+          {`📈 Stock: ${stock === undefined ? "Not Available" : stock}`}
         </Typography>
       </CardContent>
       <CardActions>

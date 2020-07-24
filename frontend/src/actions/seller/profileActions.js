@@ -43,7 +43,7 @@ export const createProfile = (formData, edit = false) => async (dispatch) => {
     } else {
       console.log("create");
     }
-    // dispatch(setAlert(edit ? "Profile Updated" : "Profile Created", "success"));
+    dispatch(setAlert(edit ? "Profile Updated" : "Profile Created", "success"));
   } catch (err) {
     const errors = err.response.data.errors;
 
