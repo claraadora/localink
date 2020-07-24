@@ -13,10 +13,11 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import MyLocationIcon from "@material-ui/icons/MyLocation";
 import { useDispatch } from "react-redux";
 import { updateUserLocation } from "../../actions/shopper/searchActions";
+import { yellow, green } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
   startButton: {
-    background: `linear-gradient(45deg, ${theme.palette.primary.main} 30%, ${theme.palette.secondary.main} 90%)`,
+    background: `linear-gradient(to bottom right, ${green[400]}, ${yellow[400]})`,
     border: 0,
     borderRadius: 3,
     boxShadow: "0 3px 5px 2px rgba(10, 107, 11, .3)",
