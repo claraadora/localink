@@ -24,14 +24,6 @@ const CataloguePage = (props) => {
     }
   }, [dispatch, catalogueSelector]);
 
-  const makeProductCard = (product) => {
-    return (
-      <Grid item xs={12} sm={2}>
-        <ProductCard {...product} />
-      </Grid>
-    );
-  };
-
   if (shop === null) {
     return null;
   } else {
@@ -49,9 +41,9 @@ const CataloguePage = (props) => {
       <Grid
         container
         direction="column"
-        justify="center"
-        alignItems="center"
-        style={{ height: "100%" }}
+        justify="flex-start"
+        alignItems="flex-start"
+        style={{ width: "100%" }}
         spacing={2}
       >
         <Grid item container>
@@ -63,10 +55,14 @@ const CataloguePage = (props) => {
             ratings={ratings}
           />
         </Grid>
-        <Grid item container direction="row" md={10}>
+        <Grid item container>
           <Grid item md={2} />
-          <Grid item container md={8}>
-            {productList.map((product) => makeProductCard(product))}
+          <Grid item container md={8} spacing={2}>
+            {products.map((product) => (
+              <Grid item container md={2}>
+                <ProductCard product={product} />
+              </Grid>
+            ))}
           </Grid>
           <Grid item md={2} />
         </Grid>

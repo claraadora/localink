@@ -1,42 +1,71 @@
 import React, { useState } from "react";
-import { Paper, Typography, Button, Grid, Avatar } from "@material-ui/core";
+import { Paper, Typography, IconButton, Grid, Avatar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { teal } from "@material-ui/core/colors";
 import { loadRoute } from "../../actions/shopper/searchActions";
+import NavigationIcon from "@material-ui/icons/Navigation";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   header: {
-    backgroundColor: teal[50],
     width: "100%",
     display: "flex",
-    padding: "0px 0px 0px 0px",
+    padding: "0.5% 0.5% 0.5% 0.5%",
   },
-});
+  avatar: {
+    width: theme.spacing(12),
+    height: theme.spacing(12),
+  },
+}));
 
 export const ShopfrontHeader = (props) => {
   const classes = useStyles();
 
   return (
     <Paper className={classes.header}>
-      <Grid container direction="column">
-        <Grid item container direction="row">
+      <Grid container direction="row" alignItems="center" justify="center">
+        <Grid item md={1} />
+        <Grid
+          item
+          container
+          direction="row"
+          justify="center"
+          spacing={1}
+          md={7}
+        >
           <Grid item>
-            <Avatar src={props.avatar} alt={props.name} />
+            <Avatar
+              src={props.avatar}
+              alt={props.name}
+              className={classes.avatar}
+            />
           </Grid>
-          <Grid item container direction="column">
+          <Grid item container direction="column" md={10}>
             <Grid item>
-              <Typography variant="h5" gutterButtom>
+              <Typography variant="h4" gutterButtom>
                 {props.name}
               </Typography>
             </Grid>
             <Grid item>
-              <Typography variant="h7">{props.address}</Typography>
+              <Typography variant="h7">{props.description}</Typography>
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid item container direction="row" alignItems="center" md={3}>
+          <Grid item container direction="row" alignItems="center">
+            <Grid item>
+              <Typography variant="h7">📍Location: {props.address}</Typography>
+            </Grid>
+            <Grid item>
+              <IconButton>
+                <NavigationIcon />
+              </IconButton>
             </Grid>
           </Grid>
           <Grid item>
-            <Typography variant="h7">{props.description}</Typography>
+            <Typography variant="h7">⭐ Ratings: {props.ratings}</Typography>
           </Grid>
         </Grid>
+        <Grid item md={1} />
       </Grid>
     </Paper>
   );
