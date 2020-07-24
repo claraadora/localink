@@ -33,6 +33,9 @@ const useStyles = makeStyles({
   },
 });
 
+const getLast = (str) => {
+  return str.substring(str.lastIndexOf("/") + 1);
+};
 function AppShopper() {
   let location = useLocation();
   const dispatch = useDispatch();
@@ -52,7 +55,12 @@ function AppShopper() {
           <Route exact path="/signup" component={ShopperSignUpPage} />
           <Route exact path="/search" component={ShopperSearchPage} />
           <Route exact path="/profile" component={ShopperProfilePage} />
-          <Route path="/catalogue" component={ShopperCataloguePage} />
+          <Route
+            path="/catalogue"
+            render={() => (
+              <ShopperCataloguePage shopId={getLast(location.pathname)} />
+            )}
+          />
           <Route exact path="/chat" component={ChatPage} />
           <Route exact path="/" component={ShopperLandingPage} />
         </div>
