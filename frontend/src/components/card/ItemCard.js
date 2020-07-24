@@ -103,7 +103,7 @@ export const ItemCard = (props) => {
                   setIsAdded(!isAdded);
                 }}
               >
-                {isAdded ? "Remove from Itinerary" : "Add to Itinerary"}
+                {isAdded ? "Remove" : "Add to Itinerary"}
               </Button>
               {isAuthenticated ? (
                 <Button

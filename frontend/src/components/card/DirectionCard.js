@@ -25,7 +25,7 @@ export const DirectionCard = (props) => {
       style={{ ...props.style, padding: "10px 0px 2px 0px" }}
     >
       <Grid container direction="column" spacing={2}>
-        <Grid
+        {/* <Grid
           item
           container
           direction="row"
@@ -45,31 +45,27 @@ export const DirectionCard = (props) => {
                 : trimString(props.content.start_address, 18)}
             </Typography>
           </Grid>
-        </Grid>
-        {!props.last
-          ? props.content.steps.map((step, index) => {
-              return (
-                <Grid item container direction="row" spacing={1}>
-                  <Grid item xs={1} />
-                  <Grid item xs={1}>
-                    {index + 1}
-                  </Grid>
-                  <Grid item xs={8}>
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: `${step.instructions}`,
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Typography variant="body2">
-                      {step.distance.text}
-                    </Typography>
-                  </Grid>
-                </Grid>
-              );
-            })
-          : null}
+        </Grid> */}
+        {props.content.map((step, index) => {
+          return (
+            <Grid item container direction="row" spacing={1}>
+              <Grid item xs={1} />
+              <Grid item xs={1}>
+                {index + 1}
+              </Grid>
+              <Grid item xs={8}>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: `${step.instructions}`,
+                  }}
+                />
+              </Grid>
+              <Grid item xs={2}>
+                <Typography variant="body2">{step.distance.text}</Typography>
+              </Grid>
+            </Grid>
+          );
+        })}
       </Grid>
     </Card>
   );

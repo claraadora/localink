@@ -50,9 +50,9 @@ const useStyles = makeStyles({
   },
   directionList: {
     position: "fixed",
-    top: "90px",
-    right: "15px",
-    height: "684px",
+    top: "20%",
+    right: "2%",
+    height: "78%",
     width: "22%",
     zIndex: 100,
   },
