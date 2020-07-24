@@ -8,7 +8,7 @@ import ShopperProfilePage from "./pages/shopper/ProfilePage";
 import ShopperCataloguePage from "./pages/shopper/CataloguePage";
 import ChatPage from "./pages/ChatPage";
 import ShopperNavBar from "./components/navbar/ShopperNavBar";
-// import Alert from "./components/Alert";
+import LocalinkAlert from "./components/Alert";
 import { Route } from "react-router-dom";
 import { Grid, makeStyles } from "@material-ui/core";
 import { theme } from "./theme";
@@ -51,6 +51,9 @@ function AppShopper() {
           <ShopperNavBar isSearchPage={location.pathname === "/search"} />
         </div>
         <div className={classes.content}>
+          <div style={{ left: "50%" }}>
+            <LocalinkAlert />
+          </div>
           <Route exact path="/login" component={ShopperLogInPage} />
           <Route exact path="/signup" component={ShopperSignUpPage} />
           <Route exact path="/search" component={ShopperSearchPage} />
