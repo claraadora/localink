@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { LocalinkMap } from "../../components/map/Map";
 import { ItineraryList } from "../../components/list/ItineraryList";
 import { ItineraryHeader } from "../../components/header/ItineraryHeader";
+import { Itinerary } from "../../components/listWithHeader/Itinerary";
 import { LocationList } from "../../components/list/LocationList";
 import { DirectionList } from "../../components/list/DirectionList";
 import { makeStyles } from "@material-ui/core/styles";

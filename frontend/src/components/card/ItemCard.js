@@ -93,6 +93,7 @@ export const ItemCard = (props) => {
             <Grid item>
               <Button
                 size="small"
+                disabled={loading}
                 onClick={() => {
                   dispatch(
                     isAdded
@@ -106,6 +107,7 @@ export const ItemCard = (props) => {
               </Button>
               {isAuthenticated ? (
                 <Button
+                  disabled={loading}
                   size="small"
                   onClick={() =>
                     dispatch(
@@ -116,7 +118,7 @@ export const ItemCard = (props) => {
                   Ask Seller
                 </Button>
               ) : null}
-              <Button size="small" onClick={handleFetchShop}>
+              <Button size="small" onClick={handleFetchShop} disabled={loading}>
                 Go to Shop
               </Button>
             </Grid>
