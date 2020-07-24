@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { addChatItem } from "../../actions/chatActions";
 import { fetchShop } from "../../actions/shopper/catalogueActions";
 import { useHistory } from "react-router-dom";
+import Skeleton from "react-loading-skeleton";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,10 +20,6 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.secondary,
   },
 }));
-
-function trimString(word, maxLength) {
-  return word <= maxLength ? word : word.substring(0, maxLength - 3) + "...";
-}
 
 function trimDistance(distance) {
   if (distance > 1000) {
@@ -42,6 +39,7 @@ export const ItemCard = (props) => {
   const auth = useSelector((state) => state.auth);
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const history = useHistory();
+  const loading = useSelector((state) => state.search.loading);
 
   const handlePopoverOpen = (event) => {
     console.log("WHERE");
@@ -76,18 +74,20 @@ export const ItemCard = (props) => {
       >
         <Grid container direction="row" alignItems="center">
           <Grid item xs={1} />
-          <Grid item xs={9} container direction="column" justify="center">
-            <Grid item>
-              <Typography variant="h6">{trimString(data.name, 25)}</Typography>
-            </Grid>
-            <Grid item>
-              <Typography variant="body2">
-                {data.shop_docs[0].shopName}
+          <Grid item xs={8} container direction="row" alignItems="center">
+            <Grid item md={11}>
+              <Typography noWrap variant="h6">
+                {!loading ? data.name : <Skeleton />}
               </Typography>
             </Grid>
-            <Grid item>
-              <Typography variant="body2">
-                {data.shop_docs[0].address}
+            <Grid item md={11}>
+              <Typography noWrap variant="body2">
+                {!loading ? data.shop_docs[0].shopName : <Skeleton />}
+              </Typography>
+            </Grid>
+            <Grid item md={11}>
+              <Typography noWrap variant="body2">
+                {!loading ? data.shop_docs[0].address : <Skeleton />}
               </Typography>
             </Grid>
             <Grid item>
@@ -123,13 +123,18 @@ export const ItemCard = (props) => {
           </Grid>
           <Grid item xs={2}>
             <Typography variant="body2" component="p">
-              {sortedBy === "price"
-                ? `$${data.price}`
-                : sortedBy === "ratings"
-                ? Math.round(data.shop_docs[0].ratings * 10) / 10
-                : trimDistance(data.shop_docs[0].distance)}
+              {loading ? (
+                <Skeleton />
+              ) : sortedBy === "price" ? (
+                `$${data.price}`
+              ) : sortedBy === "ratings" ? (
+                Math.round(data.shop_docs[0].ratings * 10) / 10
+              ) : (
+                trimDistance(data.shop_docs[0].distance)
+              )}
             </Typography>
           </Grid>
+          <Grid item xs={1} />
         </Grid>
       </Card>
     </div>

@@ -20,36 +20,30 @@ export const LocationList = () => {
     setAnchorEl(null);
   };
 
-  if (loading) {
-    return (
-      <Skeleton animation="wave" variant="rect" height="100%" width="100%" />
-    );
-  } else {
-    return (
-      <AutoSizer>
-        {({ height, width }) => (
-          <List
-            className="List"
-            height={height}
-            itemCount={productArray.length}
-            itemSize={125}
-            width={width}
-          >
-            {({ index, style }) => {
-              return (
-                <div>
-                  <ItemCard
-                    style={style}
-                    content={productArray[index]}
-                    onMouseEnter={handlePopoverOpen}
-                    onMouseLeave={handlePopoverClose}
-                  />
-                </div>
-              );
-            }}
-          </List>
-        )}
-      </AutoSizer>
-    );
-  }
+  return (
+    <AutoSizer>
+      {({ height, width }) => (
+        <List
+          className="List"
+          height={height}
+          itemCount={loading ? 7 : productArray.length}
+          itemSize={110}
+          width={width}
+        >
+          {({ index, style }) => {
+            return (
+              <div>
+                <ItemCard
+                  style={style}
+                  content={productArray[index]}
+                  onMouseEnter={handlePopoverOpen}
+                  onMouseLeave={handlePopoverClose}
+                />
+              </div>
+            );
+          }}
+        </List>
+      )}
+    </AutoSizer>
+  );
 };
