@@ -4,6 +4,7 @@ import searchConstants from "../../constants/searchConstants";
 import { dynamicSort } from "../../utils/sort";
 
 export const loadSearch = (search, service) => async (dispatch) => {
+  dispatch(setRenderLocation());
   try {
     const config = {
       headers: {
@@ -12,10 +13,6 @@ export const loadSearch = (search, service) => async (dispatch) => {
     };
     const body = JSON.stringify({ search, service });
     const res = await axios.post("/search", body, config);
-
-    dispatch({
-      type: searchConstants.CLEAR_SEARCH,
-    });
 
     dispatch({
       type: searchConstants.SEARCH_REQUEST,
@@ -39,6 +36,8 @@ export const loadSearch = (search, service) => async (dispatch) => {
 };
 
 export const loadRoute = () => (dispatch) => {
+  dispatch(setRenderRoute());
+
   dispatch({
     type: searchConstants.CLEAR_SEARCH,
   });
@@ -120,5 +119,17 @@ export const setTravelMode = (travelMode) => (dispatch) => {
   dispatch({
     type: searchConstants.SET_TRAVEL_MODE,
     payload: travelMode,
+  });
+};
+
+export const setRenderRoute = () => (dispatch) => {
+  dispatch({
+    type: searchConstants.SET_RENDER_ROUTE,
+  });
+};
+
+export const setRenderLocation = () => (dispatch) => {
+  dispatch({
+    type: searchConstants.SET_RENDER_LOCATION,
   });
 };

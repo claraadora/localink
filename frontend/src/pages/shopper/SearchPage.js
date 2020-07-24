@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { LocalinkMap } from "../../components/map/Map";
 import { ItineraryList } from "../../components/list/ItineraryList";
 import { ItineraryHeader } from "../../components/header/ItineraryHeader";
@@ -66,18 +66,26 @@ const useStyles = makeStyles({
 
 function SearchPage() {
   const classes = useStyles();
-  const renderRoute = useSelector((state) => state.search.renderRoute);
+  const search = useSelector((state) => state.search);
+  const [renderRoute, setRenderRoute] = useState(search.renderRoute);
+  const [renderLocation, setRenderLocation] = useState(search.renderLocation);
+
+  useEffect(() => {
+    setRenderRoute(search.renderRoute);
+    setRenderLocation(search.renderLocation);
+  }, [search]);
 
   return (
     <div className={classes.root}>
       <div className={classes.map}>
         <LocalinkMap />
       </div>
-      {renderRoute ? (
+      {renderRoute && (
         <div className={classes.directionList}>
           <DirectionList />
         </div>
-      ) : (
+      )}
+      {renderLocation && (
         <div className={classes.locationList}>
           <LocationList />
         </div>
