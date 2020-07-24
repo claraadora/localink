@@ -8,6 +8,7 @@ const initialState = {
   directionSteps: [],
   error: {},
   userLocation: null,
+  travelMode: "DRIVING",
 };
 
 export default function (state = initialState, action) {
@@ -63,6 +64,11 @@ export default function (state = initialState, action) {
       return {
         ...state,
         userLocation: payload,
+      };
+    case searchConstants.SET_TRAVEL_MODE:
+      return {
+        ...state,
+        travelMode: payload,
       };
     default:
       return state;
