@@ -112,103 +112,118 @@ const ProfileForm = () => {
     );
   };
   return (
-    <div className={classes.paper}>
-      <Typography variant="h5" gutterBottom>
-        Profile
-      </Typography>
-      <form className={classes.form} onSubmit={onSubmit}>
-        <Grid container direction="column" justify="space-between" spacing={2}>
-          <Grid item>
-            <Grid container direction="row" alignItems="flex-end">
+    <Grid
+      container
+      direction="column"
+      justify="center"
+      style={{ height: "100%" }}
+      spacing={5}
+    >
+      <Grid item>
+        <div className={classes.paper}>
+          <Typography variant="h5" gutterBottom>
+            Profile
+          </Typography>
+          <form className={classes.form} onSubmit={onSubmit}>
+            <Grid
+              container
+              direction="column"
+              justify="space-between"
+              spacing={2}
+            >
               <Grid item>
-                <Avatar
-                  alt="Localink"
-                  src={avatar}
-                  className={classes.avatar}
+                <Grid container direction="row" alignItems="flex-end">
+                  <Grid item>
+                    <Avatar
+                      alt="Localink"
+                      src={avatar}
+                      className={classes.avatar}
+                    />
+                  </Grid>
+                  <Grid item>
+                    <label htmlFor="image">
+                      <EditIcon fontSize="small" />
+                    </label>
+                    <input
+                      id="image"
+                      type="file"
+                      accept="image/*"
+                      style={{ display: "none" }}
+                      onChange={onUploadImage}
+                    />
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item>
+                <InputLabel>Shop Name</InputLabel>
+                <TextField
+                  id="name"
+                  name="shopName"
+                  placeholder="Shop's name"
+                  fullWidth={true}
+                  margin="dense"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  variant="outlined"
+                  value={shopName}
+                  onChange={onChange}
                 />
               </Grid>
               <Grid item>
-                <label htmlFor="image">
-                  <EditIcon fontSize="small" />
-                </label>
-                <input
-                  id="image"
-                  type="file"
-                  accept="image/*"
-                  style={{ display: "none" }}
-                  onChange={onUploadImage}
+                <InputLabel>Shop Description</InputLabel>
+                <TextField
+                  id="description"
+                  name="description"
+                  placeholder="Shop's description"
+                  fullWidth={true}
+                  margin="dense"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  variant="outlined"
+                  value={description}
+                  onChange={onChange}
+                  multiline
+                  rows={3}
+                  rowsMax={6}
                 />
+              </Grid>
+              <Grid item>
+                <InputLabel>Shop Address</InputLabel>
+                <TextField
+                  id="address"
+                  name="address"
+                  placeholder="Business address"
+                  fullWidth={true}
+                  margin="dense"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  variant="outlined"
+                  value={address}
+                  onChange={onChange}
+                  multiline
+                  rows={3}
+                  rowsMax={6}
+                />
+              </Grid>
+              <Grid item>
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                >
+                  Update Profile
+                </Button>
               </Grid>
             </Grid>
-          </Grid>
-          <Grid item>
-            <InputLabel>Shop Name</InputLabel>
-            <TextField
-              id="name"
-              name="shopName"
-              placeholder="Shop's name"
-              fullWidth={true}
-              margin="dense"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              variant="outlined"
-              value={shopName}
-              onChange={onChange}
-            />
-          </Grid>
-          <Grid item>
-            <InputLabel>Shop Description</InputLabel>
-            <TextField
-              id="description"
-              name="description"
-              placeholder="Shop's description"
-              fullWidth={true}
-              margin="dense"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              variant="outlined"
-              value={description}
-              onChange={onChange}
-              multiline
-              rows={3}
-              rowsMax={6}
-            />
-          </Grid>
-          <Grid item>
-            <InputLabel>Shop Address</InputLabel>
-            <TextField
-              id="address"
-              name="address"
-              placeholder="Business address"
-              fullWidth={true}
-              margin="dense"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              variant="outlined"
-              value={address}
-              onChange={onChange}
-              multiline
-              rows={3}
-              rowsMax={6}
-            />
-          </Grid>
-          <Grid item>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contianed"
-              color="primary"
-              className={classes.submit}
-            >
-              Update Profile
-            </Button>
-          </Grid>
-        </Grid>
-      </form>
-    </div>
+          </form>
+        </div>
+      </Grid>
+    </Grid>
   );
 };
 

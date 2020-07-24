@@ -27,6 +27,7 @@ const useStyles = makeStyles({
     width: "100%",
     display: "flex",
     flexDirection: "column",
+    alignItems: "center",
   },
   navBar: {
     width: "100%",
@@ -51,9 +52,7 @@ function AppShopper() {
           <ShopperNavBar isSearchPage={location.pathname === "/search"} />
         </div>
         <div className={classes.content}>
-          <div style={{ left: "50%" }}>
-            <LocalinkAlert />
-          </div>
+          <LocalinkAlert />
           <Route exact path="/login" component={ShopperLogInPage} />
           <Route exact path="/signup" component={ShopperSignUpPage} />
           <Route exact path="/search" component={ShopperSearchPage} />
