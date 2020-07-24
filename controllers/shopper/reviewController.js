@@ -39,7 +39,7 @@ async function createReview(req, res) {
     res.json(shop);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).json({ errors: [{ msg: 'Server error' }] });
   }
 }
 
@@ -54,7 +54,7 @@ async function getBusinessReviews(req, res) {
     res.json(shop.reviews);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).json({ errors: [{ msg: 'Server error' }] });
   }
 }
 

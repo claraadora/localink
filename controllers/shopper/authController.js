@@ -14,7 +14,7 @@ async function getUserByToken(req, res) {
     res.json(shopper);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).json({ errors: [{ msg: 'Server Error' }] });
   }
 }
 
@@ -56,7 +56,7 @@ async function login(req, res) {
     );
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server error');
+    res.status(500).json({ errors: [{ msg: 'Server Error' }] });
   }
 }
 
@@ -104,11 +104,13 @@ async function googleSignUpOrLogin(req, res) {
       );
     } else {
       console.log('error logging in with google');
-      res.status(500).send('error logging in with google');
+      res
+        .status(500)
+        .json({ errors: [{ msg: 'error logging in with google' }] });
     }
   } catch (error) {
     console.error(err.message);
-    res.status(500).send('Server error');
+    res.status(500).json({ errors: [{ msg: 'Server Error' }] });
   }
 }
 
@@ -159,7 +161,7 @@ async function facebookSignUpOrLogin(req, res) {
     );
   } catch (error) {
     console.error(err.message);
-    res.status(500).send('Server error');
+    res.status(500).json({ errors: [{ msg: 'Server error' }] });
   }
 }
 

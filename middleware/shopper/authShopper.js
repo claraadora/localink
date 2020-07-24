@@ -7,19 +7,25 @@ module.exports = function (req, res, next) {
 
   // Check if no token
   if (!token) {
-    return res.status(401).json({ msg: 'No token, authorization denied' });
+    return res
+      .status(401)
+      .json({ errors: [{ msg: 'No token, authorization denied' }] });
   }
 
   // Verify shopper token
   try {
     jwt.verify(token, config.get('jwtSecret'), async (error, decoded) => {
       if (error) {
-        return res.status(401).json({ msg: 'Token is not valid' });
+        return res
+          .status(401)
+          .json({ errors: [{ msg: 'Token is not valid' }] });
       } else {
         if (decoded.business) {
           return res
             .status(401)
-            .json({ msg: 'Passed a business token to a shopper account' });
+            .json({
+              errors: [{ msg: 'Passed a business token to a shopper account' }]
+            });
         } else {
           req.user = decoded.shopper;
           req.userType = decoded;
@@ -29,6 +35,6 @@ module.exports = function (req, res, next) {
     });
   } catch (err) {
     console.error('something wrong with auth middleware');
-    res.status(500).json({ msg: 'Server Error' });
+    res.status(500).json({ errors: [{ msg: 'Server Error' }] });
   }
 };

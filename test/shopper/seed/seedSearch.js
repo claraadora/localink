@@ -214,7 +214,7 @@ function isScoreBoosted(productArr) {
       product._id === productId3.toString()
     );
   });
-  console.log(arr);
+  //console.log(arr);
   const matchTitle1 = arr.find(product => product._id === productId1.toString())
     .score;
   const matchDescr = arr.find(product => product._id === productId2.toString())

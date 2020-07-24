@@ -70,7 +70,7 @@ const sendEmail = (res, emailTemplate) => {
   transported.sendMail(emailTemplate, (error, info) => {
     if (error) {
       console.log(error);
-      res.status(500).json('Error sending email');
+      res.status(500).json({ errors: [{ msg: 'Error sending email' }] });
     } else {
       //console.log(`**Email sent**`, info.response);
       res.status(250).json('Email sent successfully');

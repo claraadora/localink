@@ -15,8 +15,6 @@ router.post('/start-location', async (req, res) => {
   let location = null;
   if (currentLocation === true) {
     location = await getCurrentLocation();
-    console.log('here');
-    console.log(location);
   } else {
     location = await geocode(startLocation);
   }
@@ -26,24 +24,23 @@ router.post('/start-location', async (req, res) => {
     //   { latLng: location },
     //   { new: true }
     // );
-    console.log('Successfully updated location of shopper');
+
+    //console.log('Successfully updated location of shopper');
 
     const allShops = await Shop.find();
     allShops.forEach(async shop => {
       if (shop.latLng.lat && shop.latLng.lng) {
         //remove in future
         shop.distance = await getDistance(location, shop.latLng);
-        console.log(shop.distance);
         await shop.save();
       }
     });
-    console.log('in distance router');
-    console.log('Successfully updated distance to shops');
+    //console.log('Successfully updated distance to shops');
 
     res.status(200).json(location);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).json({ errors: [{ msg: 'Server Error' }] });
   }
 });
 

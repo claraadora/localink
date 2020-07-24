@@ -21,6 +21,15 @@ router.post(
   productControllerBusiness.createProduct
 );
 
+// @route    POST business/product/:product_id
+// @desc     Update product
+// @access   Private
+router.post(
+  '/:product_id',
+  authBusiness,
+  productControllerBusiness.updateProduct
+);
+
 // @route    POST business/product/upload-image;
 // @desc     Upload product image
 // @access   Private

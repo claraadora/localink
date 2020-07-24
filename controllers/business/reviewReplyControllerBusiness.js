@@ -8,7 +8,7 @@ async function reviewReply(req, res) {
     res.status(200).json('Sent review reply successfully');
   } catch (error) {
     console.log(error.message);
-    res.status(500).json('Server error');
+    res.status(500).json({ errors: [{ msg: 'Server error' }] });
   }
 }
 

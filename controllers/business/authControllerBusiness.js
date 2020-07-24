@@ -15,7 +15,7 @@ async function getUserByToken(req, res) {
     res.json(business);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).json({ errors: [{ msg: 'Server Error' }] });
   }
 }
 
@@ -60,7 +60,7 @@ async function login(req, res) {
     );
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server error');
+    res.status(500).json({ errors: [{ msg: 'Server error' }] });
   }
 }
 
