@@ -30,50 +30,25 @@ router.post('/start-location/:shopper_id', async (req, res) => {
     //console.log('Successfully updated location of shopper');
 
     const allShops = await Shop.find();
-    allShops.forEach(async shop => {
-      let key = null;
+    allShops.forEach(async s => {
+      let shop = s;
       if (shop.latLng.lat && shop.latLng.lng) {
         const dist = await getDistance(location, shop.latLng);
-        //remove in future
-        console.log(shop.distance);
-        const found = shop.distance.find(obj => {
-          const distObj = Object.keys(obj).find(key => {
-            console.log(shopper_id);
-            return key == shopper_id;
-          });
-          key = Object.keys(distObj)[0];
-          console.log(key);
-          return distObj ? distObj.distance : 'null';
-        });
-        console.log('found:');
-        console.log(found);
-        if (found == 'null') {
-          console.log('not found');
-          const distObj = {
-            [shopper_id]: dist
-          };
-          shop.distance.push(distObj);
-          await shop.save();
-          console.log(shop);
-        } else {
-          shop.distance.forEach(obj => {
-            if (obj.shopper_id == key) {
-              obj.distance = dist;
-            }
-          });
-        }
 
-        //console.log(shop.distance);
+        shop.distance = shop.distance.filter(obj => {
+          return obj && !obj[shopper_id];
+        });
+
+        // shop.distance = arr;
+        await shop.save();
+
+        const distObj = {
+          [shopper_id]: dist
+        };
+        shop.distance.push(distObj);
+        await shop.save();
       }
-      // console.log(
-      //   shop.distance.find(shopper => {
-      //     console.log(shopper.shopper_id);
-      //     console.log(shopper_id);
-      //     return shopper.shopper_id == shopper_id;
-      //   }).distance
-      // );
     });
-    //console.log('Successfully updated distance to shops');
 
     res.status(200).json(location);
   } catch (err) {
