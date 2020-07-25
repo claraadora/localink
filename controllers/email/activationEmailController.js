@@ -23,9 +23,9 @@ const getActivationLink = user => {
 
 const emailActivationTemplateUser = (user, specificUser, url) => {
   const from = 'Localink' + '<' + process.env.SENDER_EMAIL_LOGIN + '>';
-  //const to = user.email;
+  const to = user.email;
   //For testing
-  const to = process.env.RECEIVER_EMAIL_LOGIN;
+  //const to = process.env.RECEIVER_EMAIL_LOGIN;
   const subject = 'Localink Account Activation';
   let recipient = specificUser.name;
   const html = `
@@ -46,9 +46,9 @@ const emailActivationTemplateUser = (user, specificUser, url) => {
 
 const emailActivationTemplate = (user, specificUser, url) => {
   const from = 'Localink' + '<' + process.env.SENDER_EMAIL_LOGIN + '>';
-  //const to = user.email;
+  const to = user.users[0].email;
   //For testing
-  const to = process.env.RECEIVER_EMAIL_LOGIN;
+  //const to = process.env.RECEIVER_EMAIL_LOGIN;
   const subject = 'Localink Account Activation';
   let recipient = null;
   if (user === specificUser) {

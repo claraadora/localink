@@ -15,7 +15,7 @@ async function registerBusiness(req, res) {
 
   try {
     let user = await User.findOne({ email });
-    if (user) {
+    if (user && user.isAccountActive) {
       return res.status(400).json({ errors: [{ msg: 'User already exists' }] });
     }
 

@@ -14,7 +14,7 @@ async function registerShopper(req, res) {
 
   try {
     let shopper = await Shopper.findOne({ email });
-    if (shopper) {
+    if (shopper && shopper.isAccountActive) {
       return res.status(400).json({ errors: [{ msg: 'User already exists' }] });
     }
 

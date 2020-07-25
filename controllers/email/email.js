@@ -29,8 +29,9 @@ const getPasswordResetURL = (isShopper, user, token) => {
 
 const resetPasswordTemplate = (user, businessUser, url) => {
   const from = 'Localink' + '<' + process.env.SENDER_EMAIL_LOGIN + '>';
-  //const to = user.email;
-  const to = process.env.RECEIVER_EMAIL_LOGIN;
+  const to = user.email;
+  //For testing
+  //const to = process.env.RECEIVER_EMAIL_LOGIN;
   const subject = 'Localink Password Reset';
   let recipient = null;
   if (user === businessUser) {
@@ -51,8 +52,9 @@ const resetPasswordTemplate = (user, businessUser, url) => {
 
 const uriEmailTemplate = (shopper, url) => {
   const from = 'Localink' + '<' + process.env.SENDER_EMAIL_LOGIN + '>';
-  //const to = shopper.email;
-  const to = process.env.RECEIVER_EMAIL_LOGIN;
+  const to = shopper.email;
+  // For testing
+  //const to = process.env.RECEIVER_EMAIL_LOGIN;
   const subject = 'Localink Mobile Google Map GPS Navigation Link';
   const html = `
     <p>Hey ${shopper.name || shopper.email},</p>
