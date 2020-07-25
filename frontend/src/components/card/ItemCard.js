@@ -58,7 +58,6 @@ export const ItemCard = (props) => {
 
   const handleFetchShop = () => {
     let shopId = data.shop_docs[0]._id;
-    dispatch(fetchShop(shopId));
     history.push(`/catalogue/${shopId}`);
   };
 

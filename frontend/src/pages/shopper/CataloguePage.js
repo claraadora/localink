@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ProductCard from "../../components/card/ProductCard";
-import { Grid, Typography } from "@material-ui/core";
+import { Grid, CircularProgress } from "@material-ui/core";
 import productList from "../../sample/productList.json";
 import { useSelector, useDispatch } from "react-redux";
 import { ShopfrontHeader } from "../../components/header/ShopfrontHeader";
@@ -11,21 +11,29 @@ const CataloguePage = (props) => {
   const dispatch = useDispatch();
   const catalogueSelector = useSelector((state) => state.catalogue);
   const [shop, setShop] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const loading = catalogueSelector.loading;
 
   useEffect(() => {
     dispatch(fetchShop(props.shopId));
   }, []);
 
   useEffect(() => {
-    if (catalogueSelector !== null) {
-      setLoading(catalogueSelector.loading);
-      setShop(catalogueSelector.currShop);
-    }
+    setShop(catalogueSelector.currShop);
   }, [dispatch, catalogueSelector]);
 
-  if (shop === null) {
-    return null;
+  if (loading) {
+    return (
+      <Grid
+        container
+        justify="center"
+        alignItems="center"
+        style={{ height: "100%", width: "100%" }}
+      >
+        <Grid item>
+          <CircularProgress />
+        </Grid>
+      </Grid>
+    );
   } else {
     const currShop = shop.data;
     const [name, description, address, avatar, ratings, products] = [
@@ -36,6 +44,19 @@ const CataloguePage = (props) => {
       currShop.ratings,
       currShop.products,
     ];
+
+    if (loading) {
+      return (
+        <Grid
+          container
+          justify="center"
+          alignItemes="center"
+          style={{ height: "100%", width: "100%" }}
+        >
+          <CircularProgress />
+        </Grid>
+      );
+    }
 
     return (
       <Grid

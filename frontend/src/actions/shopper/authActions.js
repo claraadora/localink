@@ -136,7 +136,13 @@ export const signup = ({ name, email, password }) => async (dispatch) => {
       type: authConstants.SIGNUP_SUCCESS,
       payload: res.data, // token
     });
-    dispatch(loadUser());
+
+    dispatch(
+      setAlert(
+        "Sign up successful. An activation link has been sent to your email.",
+        "success"
+      )
+    );
   } catch (err) {
     console.log(err);
     const errors = err.response.data.errors;
