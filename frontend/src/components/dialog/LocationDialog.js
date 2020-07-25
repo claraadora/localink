@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import IconButton from "@material-ui/core/IconButton";
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
@@ -11,7 +11,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import MyLocationIcon from "@material-ui/icons/MyLocation";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateUserLocation } from "../../actions/shopper/searchActions";
 import { yellow, green } from "@material-ui/core/colors";
 
@@ -37,9 +37,14 @@ export const LocationDialog = () => {
   const [open, setOpen] = React.useState(true);
   const [manualAdd, setManualAdd] = React.useState(false);
   const [manualLocation, setManualLocation] = React.useState(null);
+  const [shopperId, setShopperId] = useState(null);
+  const auth = useSelector((state) => state.auth);
   const classes = useStyles();
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    if (auth && auth.user) setShopperId(auth.user._id);
+  });
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -59,12 +64,12 @@ export const LocationDialog = () => {
   const handleSubmitAddManual = () => {
     setOpen(false);
     setManualAdd(false);
-    dispatch(updateUserLocation(false, manualLocation));
+    dispatch(updateUserLocation(false, manualLocation, shopperId));
   };
 
   const handleTrack = () => {
     setOpen(false);
-    dispatch(updateUserLocation(true, null));
+    dispatch(updateUserLocation(true, null, shopperId));
   };
 
   return (
