@@ -20,6 +20,7 @@ import LandingPage from "./pages/seller/LandingPage";
 import { LocalinkDrawer } from "./components/drawer/Drawer";
 import { ChatPage } from "./pages/ChatPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 
 const useStyles = makeStyles({
   main: {
@@ -91,6 +92,10 @@ function AppSeller() {
             exact
             path="/business/forgot-password"
             component={ForgotPasswordPage}
+          />
+          <Route
+            path="/business/reset-password"
+            component={ResetPasswordPage}
           />
         </div>
       </div>

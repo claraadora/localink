@@ -166,9 +166,18 @@ export const changeEmail = ({ email }) => async (dispatch) => {
   }
 };
 
-export const forgotPassword = (email) => async (dispatch) => {
+export const forgotPassword = (email, isShopper) => async (dispatch) => {
+  const body = {
+    email: email,
+    isShopper: isShopper,
+  };
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
   try {
-    const res = await axios.get(`/reset_password/${email}`);
+    const res = await axios.post(`/reset_password/${email}`, body, config);
 
     dispatch({
       type: authConstants.FORGOT_PASSWORD,
@@ -188,3 +197,5 @@ export const forgotPassword = (email) => async (dispatch) => {
     });
   }
 };
+
+export const resetPassword = (password) => async (dispatch) => {};

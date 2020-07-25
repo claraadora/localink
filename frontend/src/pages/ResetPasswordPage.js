@@ -14,7 +14,7 @@ import { signup } from "../actions/seller/authActions";
 import { useSelector, useDispatch } from "react-redux";
 import { Redirect } from "react-router-dom";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import { forgotPassword } from "../actions/shopper/authActions";
+import { resetPassword } from "../actions/seller/authActions";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -37,13 +37,18 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ForgetPasswordPage() {
   const classes = useStyles();
-  const [email, setEmail] = useState("");
-  const isShopper = useSelector((state) => state.page.isShopper);
+  const [password1, setPassword1] = useState("");
+  const [password2, setPassword2] = useState("");
   const dispatch = useDispatch();
+  const isShopper = useSelector((state) => state.page.isShopper);
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    dispatch(forgotPassword(email, isShopper));
+    if (password1 !== password2) {
+      dispatch(setAlert("Passwords do not match."));
+    } else {
+      dispatch(resetPassword(password1));
+    }
   };
   return (
     <Grid
@@ -71,12 +76,23 @@ export default function ForgetPasswordPage() {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              onChange={(e) => setEmail(e.target.value)}
-              value={email}
+              id="password1"
+              label="New Password"
+              name="password1"
+              onChange={(e) => setPassword1(e.target.value)}
+              value={password1}
+              autoFocus
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="password2"
+              label="Confirm New Password"
+              name="password2"
+              onChange={(e) => setPassword2(e.target.value)}
+              value={password2}
               autoFocus
             />
             <Button
@@ -86,7 +102,7 @@ export default function ForgetPasswordPage() {
               color="primary"
               className={classes.submit}
             >
-              Continue
+              Reset Password
             </Button>
           </form>
         </div>
