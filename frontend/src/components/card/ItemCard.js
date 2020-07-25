@@ -10,6 +10,7 @@ import { addChatItem } from "../../actions/chatActions";
 import { fetchShop } from "../../actions/shopper/catalogueActions";
 import { useHistory } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
+import itinerary from "../../reducers/itineraryReducers";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,13 +35,12 @@ export const ItemCard = (props) => {
   const data = props.content;
   const dispatch = useDispatch();
   const sortedBy = useSelector((state) => state.search.sortedBy);
-  const [isAdded, setIsAdded] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const auth = useSelector((state) => state.auth);
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const history = useHistory();
   const loading = useSelector((state) => state.search.loading);
-
+  const itineraryItems = useSelector((state) => state.itinerary.itineraryArray);
   const handlePopoverOpen = (event) => {
     console.log("WHERE");
     setAnchorEl(event.currentTarget);
@@ -95,15 +95,15 @@ export const ItemCard = (props) => {
                 size="small"
                 disabled={loading}
                 onClick={() => {
-                  dispatch(
-                    isAdded
-                      ? removeFromItinerary(data._id)
-                      : addToItinerary(data)
-                  );
-                  setIsAdded(!isAdded);
+                  if (itineraryItems.includes(data)) {
+                    console.log("included");
+                    dispatch(removeFromItinerary(data._id));
+                  } else {
+                    dispatch(addToItinerary(data));
+                  }
                 }}
               >
-                {isAdded ? "Remove" : "Add to Itinerary"}
+                {itineraryItems.includes(data) ? "Remove" : "Add to Itinerary"}
               </Button>
               {isAuthenticated ? (
                 <Button
