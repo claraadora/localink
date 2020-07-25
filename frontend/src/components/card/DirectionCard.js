@@ -25,47 +25,71 @@ export const DirectionCard = (props) => {
       style={{ ...props.style, padding: "10px 0px 2px 0px" }}
     >
       <Grid container direction="column" spacing={2}>
-        {/* <Grid
+        <Grid
           item
           container
           direction="row"
-          spacing={1}
           className={classes.header}
+          alignItems="center"
+          justify="center"
+          spacing={1}
         >
-          <Grid item xs={1} />
           <Grid item>
             <Typography variant="h6">
               {String.fromCharCode(65 + props.nth)}
             </Typography>
           </Grid>
-          <Grid item>
-            <Typography variant="h6">
-              {props.last
-                ? props.content
-                : trimString(props.content.start_address, 18)}
+          <Grid
+            item
+            md={4}
+            style={{ overflow: "hidden", textOverflow: "ellipsis" }}
+          >
+            <Typography noWrap variant="subtitle1">
+              {props.leg.start_address}
             </Typography>
           </Grid>
-        </Grid> */}
-        {props.content.map((step, index) => {
-          return (
-            <Grid item container direction="row" spacing={1}>
-              <Grid item xs={1} />
-              <Grid item xs={1}>
-                {index + 1}
-              </Grid>
-              <Grid item xs={8}>
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: `${step.instructions}`,
-                  }}
-                />
-              </Grid>
-              <Grid item xs={2}>
-                <Typography variant="body2">{step.distance.text}</Typography>
-              </Grid>
-            </Grid>
-          );
-        })}
+          <Grid item>
+            <Typography variant="h6">➡️</Typography>
+          </Grid>
+          <Grid item>
+            <Typography variant="h6">
+              {String.fromCharCode(65 + props.nth + 1)}
+            </Typography>
+          </Grid>
+          <Grid
+            item
+            md={4}
+            style={{ overflow: "hidden", textOverflow: "ellipsis" }}
+          >
+            <Typography noWrap variant="subtitle1">
+              {props.leg.end_address}
+            </Typography>
+          </Grid>
+        </Grid>
+        {props.last
+          ? null
+          : props.leg.steps.map((step, index) => {
+              return (
+                <Grid item container direction="row" spacing={1}>
+                  <Grid item xs={1} />
+                  <Grid item xs={1}>
+                    {index + 1}
+                  </Grid>
+                  <Grid item xs={8}>
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: `${step.instructions}`,
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={2}>
+                    <Typography variant="body2">
+                      {step.distance.text}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              );
+            })}
       </Grid>
     </Card>
   );

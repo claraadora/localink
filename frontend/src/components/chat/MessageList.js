@@ -8,7 +8,7 @@ import {
 } from "@livechat/ui-kit";
 import { useSelector, useDispatch } from "react-redux";
 import { LocalinkMessageListItem } from "./MessageListItem";
-import { Paper, makeStyles } from "@material-ui/core";
+import { Paper, makeStyles, CircularProgress } from "@material-ui/core";
 import moment from "moment";
 import { getChatById } from "../../utils/chat";
 import { afterPostMessage } from "../../actions/chatActions";
@@ -86,8 +86,8 @@ export const LocalinkMessageList = (props) => {
     );
   };
 
-  if (chatList.length === 0 || msgList === null) {
-    return <h1>No messages to show</h1>;
+  if (chat.loading) {
+    return <CircularProgress />;
   } else {
     return (
       <Paper className={classes.paper}>

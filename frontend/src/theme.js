@@ -50,7 +50,7 @@ export const theme = createMuiTheme({
     subtitle1: {
       fontFamily: '"Metropolis", sans-serif',
       fontWeight: "normal",
-      fontSize: "0.6875rem",
+      fontSize: "0.7875rem",
     },
     body1: {
       fontFamily: '"Metropolis", sans-serif',

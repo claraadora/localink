@@ -29,6 +29,7 @@ function Map() {
   const products = searchSelector.productArray;
   const userLocation = searchSelector.userLocation;
   const [markers, setMarkers] = useState([]);
+  const [markerKeys, setMarkerKeys] = useState([]);
 
   // Route
   const itineraryStops = itinerarySelector.itineraryArray;
@@ -42,6 +43,9 @@ function Map() {
   const mapRef = useRef();
   const selectedPolyline = useRef();
 
+  useEffect(() => {
+    setMarkerKeys([]);
+  }, [products]);
   useEffect(() => {
     const latLng = itineraryStops.map((product) => product.shop_docs[0].latLng);
     if (userLocation !== null) {
@@ -78,20 +82,21 @@ function Map() {
         (response, status) => {
           if (status === "OK") {
             setDirections(response);
-            console.log(directions);
+            dispatch(loadDirectionSteps(response.routes[0]));
           } else {
             console.error(`error fetching directions ${response}`);
           }
         }
       );
     }
-  }, [stops, travelMode]);
+  }, [stops, waypoints, travelMode]);
 
-  useEffect(() => {
-    if (renderRoute) {
-      dispatch(loadDirectionSteps(directions.routes[0].legs[0]));
-    }
-  }, [renderRoute, directions, travelMode]);
+  // useEffect(() => {
+  //   if (renderRoute) {
+  //     console.log(directions.routes[0].legs[0]);
+  //     dispatch(loadDirectionSteps(directions.routes[0].legs[0]));
+  //   }
+  // }, [renderRoute, directions, travelMode]);
 
   return (
     <GoogleMap
@@ -104,13 +109,8 @@ function Map() {
       {/**RENDER ALL PRODUCT MARKERS*/}
       {!renderRoute &&
         products.length > 0 &&
-        products.map((product) => {
-          return (
-            <Marker
-              key={createKey(product.shop_docs[0].latLng)}
-              position={product.shop_docs[0].latLng}
-            />
-          );
+        products.map((product, index) => {
+          return <Marker key={index} position={product.shop_docs[0].latLng} />;
         })}
       {/**RENDER ROUTE*/}
       {renderRoute && stops && directions && (

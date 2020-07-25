@@ -7,25 +7,33 @@ import { useSelector } from "react-redux";
 export const DirectionList = () => {
   const search = useSelector((state) => state.search);
   const renderRoute = useSelector((state) => state.search.renderRoute);
-  const [steps, setSteps] = useState(search.directionSteps.steps);
-
+  const [legs, setLegs] = useState(search.directionSteps.legs);
+  const [itemSizes, setItemSizes] = useState([]);
   useEffect(() => {
-    setSteps(search.directionSteps.steps);
+    let tempLegs = search.directionSteps.legs;
+    let temp = [];
+
+    setLegs(tempLegs);
+
+    for (let i = 0; i < tempLegs.length; i++) {
+      temp.push(tempLegs[i].steps.length * 55);
+    }
+
+    setItemSizes(temp);
   }, [search]);
 
-  const getItemSize = () => {
-    const numOfSteps = steps.length;
-    return (numOfSteps + 1) * 53;
+  const getItemSize = (index) => {
+    return itemSizes[index];
   };
 
-  if (renderRoute && steps) {
+  if (renderRoute && legs) {
     return (
       <AutoSizer>
         {({ height, width }) => (
           <List
             className="List"
             height={height}
-            itemCount={1}
+            itemCount={legs.length}
             itemSize={getItemSize}
             width={width}
           >
@@ -33,8 +41,12 @@ export const DirectionList = () => {
               return (
                 <DirectionCard
                   style={style}
-                  content={steps}
-                  last={false}
+                  leg={
+                    index < legs.length
+                      ? legs[index]
+                      : legs[legs.length - 1].end_address
+                  }
+                  last={index < legs.length ? false : true}
                   nth={index}
                   id={`direction-list-${index}`}
                 />
