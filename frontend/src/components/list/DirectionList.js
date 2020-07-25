@@ -7,30 +7,25 @@ import { useSelector } from "react-redux";
 export const DirectionList = () => {
   const search = useSelector((state) => state.search);
   const renderRoute = useSelector((state) => state.search.renderRoute);
-  const [dirSteps, setDirSteps] = useState(search.directionSteps);
+  const [steps, setSteps] = useState(search.directionSteps.steps);
 
   useEffect(() => {
-    console.log("changed");
-    setDirSteps(search.directionSteps);
+    setSteps(search.directionSteps.steps);
   }, [search]);
 
-  const getItemSize = (index) => {
-    if (index < dirSteps.length) {
-      const numOfSteps = dirSteps[index].steps.length;
-      return (numOfSteps + 1) * 53;
-    } else {
-      return 30;
-    }
+  const getItemSize = () => {
+    const numOfSteps = steps.length;
+    return (numOfSteps + 1) * 53;
   };
 
-  if (renderRoute && dirSteps && dirSteps.length > 0) {
+  if (renderRoute && steps) {
     return (
       <AutoSizer>
         {({ height, width }) => (
           <List
             className="List"
             height={height}
-            itemCount={dirSteps.length + 1}
+            itemCount={1}
             itemSize={getItemSize}
             width={width}
           >
@@ -38,12 +33,8 @@ export const DirectionList = () => {
               return (
                 <DirectionCard
                   style={style}
-                  content={
-                    index < dirSteps.length
-                      ? dirSteps[index]
-                      : dirSteps[dirSteps.length - 1].end_address
-                  }
-                  last={index < dirSteps.length ? false : true}
+                  content={steps}
+                  last={false}
                   nth={index}
                   id={`direction-list-${index}`}
                 />

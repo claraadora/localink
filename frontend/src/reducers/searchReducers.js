@@ -4,11 +4,12 @@ const initialState = {
   productArray: [],
   loading: true,
   sortedBy: "distance",
-  renderRoute: false,
   directionSteps: [],
   error: {},
   userLocation: null,
   travelMode: "DRIVING",
+  renderLocation: false,
+  renderRoute: false,
 };
 
 export default function (state = initialState, action) {
@@ -27,7 +28,6 @@ export default function (state = initialState, action) {
         ...state,
         error: {},
         loading: false,
-        renderRoute: true,
       };
     case searchConstants.LOAD_DIRECTION_STEPS:
     case searchConstants.UPDATE_DIRECTION_STEPS:
@@ -35,7 +35,6 @@ export default function (state = initialState, action) {
         ...state,
         error: {},
         loading: false,
-        renderRoute: true,
         directionSteps: payload,
       };
     case searchConstants.REORDER_SEARCH:
@@ -69,6 +68,20 @@ export default function (state = initialState, action) {
       return {
         ...state,
         travelMode: payload,
+      };
+    case searchConstants.SET_RENDER_LOCATION:
+      return {
+        ...state,
+        renderLocation: true,
+        renderRoute: false,
+        loading: true,
+      };
+    case searchConstants.SET_RENDER_ROUTE:
+      return {
+        ...state,
+        renderLocation: false,
+        renderRoute: true,
+        loading: true,
       };
     default:
       return state;

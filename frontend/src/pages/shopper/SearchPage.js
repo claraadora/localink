@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { LocalinkMap } from "../../components/map/Map";
 import { ItineraryList } from "../../components/list/ItineraryList";
 import { ItineraryHeader } from "../../components/header/ItineraryHeader";
+import { Itinerary } from "../../components/listWithHeader/Itinerary";
 import { LocationList } from "../../components/list/LocationList";
 import { DirectionList } from "../../components/list/DirectionList";
 import { makeStyles } from "@material-ui/core/styles";
@@ -49,9 +50,9 @@ const useStyles = makeStyles({
   },
   directionList: {
     position: "fixed",
-    top: "90px",
-    right: "15px",
-    height: "684px",
+    top: "20%",
+    right: "2%",
+    height: "78%",
     width: "22%",
     zIndex: 100,
   },
@@ -66,18 +67,26 @@ const useStyles = makeStyles({
 
 function SearchPage() {
   const classes = useStyles();
-  const renderRoute = useSelector((state) => state.search.renderRoute);
+  const search = useSelector((state) => state.search);
+  const [renderRoute, setRenderRoute] = useState(search.renderRoute);
+  const [renderLocation, setRenderLocation] = useState(search.renderLocation);
+
+  useEffect(() => {
+    setRenderRoute(search.renderRoute);
+    setRenderLocation(search.renderLocation);
+  }, [search]);
 
   return (
     <div className={classes.root}>
       <div className={classes.map}>
         <LocalinkMap />
       </div>
-      {renderRoute ? (
+      {renderRoute && (
         <div className={classes.directionList}>
           <DirectionList />
         </div>
-      ) : (
+      )}
+      {renderLocation && (
         <div className={classes.locationList}>
           <LocationList />
         </div>

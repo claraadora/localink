@@ -35,30 +35,24 @@ function Map() {
   const [stops, setStops] = useState(null);
   const [waypoints, setWaypoints] = useState([]);
   const [directions, setDirections] = useState(null);
-  const [travelMode, setTravelMode] = useState("DRIVING");
+  const [travelMode, setTravelMode] = useState(searchSelector.travelMode);
   const renderRoute = useSelector((state) => state.search.renderRoute);
 
   // Refs
   const mapRef = useRef();
   const selectedPolyline = useRef();
 
-  const onClick = () => {
-    console.log("CLICKED" + selectedPolyline.current);
-  };
-
   useEffect(() => {
     const latLng = itineraryStops.map((product) => product.shop_docs[0].latLng);
     if (userLocation !== null) {
-      latLng.push(userLocation);
+      latLng.unshift(userLocation);
     }
-
     setStops(latLng);
-    console.log(latLng.length + "length");
 
     if (latLng.length > 2) {
       const temp = [];
       latLng.map((stop, index) => {
-        if (index !== 0 && index !== stops.length - 1) {
+        if (index !== 0 && index !== latLng.length - 1) {
           temp.push({
             location: stop,
             stopover: true,
@@ -91,7 +85,13 @@ function Map() {
         }
       );
     }
-  }, [stops, renderRoute, travelMode]);
+  }, [stops, travelMode]);
+
+  useEffect(() => {
+    if (renderRoute) {
+      dispatch(loadDirectionSteps(directions.routes[0].legs[0]));
+    }
+  }, [renderRoute, directions, travelMode]);
 
   return (
     <GoogleMap

@@ -8,6 +8,7 @@ import NavigationIcon from "@material-ui/icons/Navigation";
 import { Paper, IconButton, Grid } from "@material-ui/core";
 import { loadRoute } from "../../actions/shopper/searchActions";
 import { mergeClasses } from "@material-ui/styles";
+import { ItineraryHeader } from "../header/ItineraryHeader";
 
 const grid = 8;
 const reorder = (list, startIndex, endIndex) => {
@@ -30,7 +31,7 @@ const getListStyle = (isDraggingOver) => ({
   background: isDraggingOver ? lightGreen[100] : lightBlue[50],
   display: "flex",
   overflow: "auto",
-  width: "95%",
+  width: "100%",
 });
 
 // const getButtonStyle = (isDraggingOver) => ({
@@ -66,7 +67,15 @@ export const ItineraryList = () => {
     setItinerary(items);
   };
   return (
-    <Paper>
+    <Grid
+      container
+      direction="column"
+      style={{ height: "100%", width: "100%" }}
+      spacing={1}
+    >
+      <Grid item container>
+        <ItineraryHeader />
+      </Grid>
       <Grid item>
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId="droppable" direction="horizontal">
@@ -103,13 +112,6 @@ export const ItineraryList = () => {
           </Droppable>
         </DragDropContext>
       </Grid>
-      <Grid item>
-        {itineraryItems.length > 0 ? (
-          <IconButton onClick={() => dispatch(loadRoute())}>
-            <NavigationIcon fontSize="large" />
-          </IconButton>
-        ) : null}
-      </Grid>
-    </Paper>
+    </Grid>
   );
 };
