@@ -41,13 +41,12 @@ const usePasswordHashToMakeToken = (user, specificUser) => {
 
 const sendPasswordResetEmail = async (req, res) => {
   const { email } = req.params;
+  const { isShopper } = req.body;
   let user = null;
   let specificUser = null;
-  let isShopper = null;
 
   try {
-    if (req.userType.shopper) {
-      isShopper = true;
+    if (isShopper) {
       const shopper = await Shopper.findOne({ email });
 
       if (!shopper) {
@@ -57,8 +56,7 @@ const sendPasswordResetEmail = async (req, res) => {
       }
       user = shopper;
       specificUser = shopper;
-    } else if (req.userType.business) {
-      isShopper = false;
+    } else {
       specificUser = await User.findOne({ email });
 
       if (!specificUser) {
@@ -70,13 +68,12 @@ const sendPasswordResetEmail = async (req, res) => {
       user = await Business.findOne({
         users: mongoose.Types.ObjectId(specificUser.id)
       });
-    } else {
-      res.status(401).json({ errors: [{ msg: 'Token not valid' }] });
     }
   } catch (error) {
     console.log('no user w that email');
     res.status(404).json({ errors: [{ msg: 'No user with that email' }] });
   }
+
   const token = usePasswordHashToMakeToken(user, specificUser);
   const url = getPasswordResetURL(isShopper, specificUser, token);
   const emailTemplate = resetPasswordTemplate(user, specificUser, url);
