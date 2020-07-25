@@ -45,9 +45,11 @@ const ShopSchema = new mongoose.Schema({
     },
     required: true
   },
-  distance: {
-    type: Number
-  },
+  distance: [
+    {
+      type: mongoose.Schema.Types.Mixed
+    }
+  ],
   ratings: {
     type: Number
   },

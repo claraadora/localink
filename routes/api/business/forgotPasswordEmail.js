@@ -14,12 +14,12 @@ const resetPasswordAuth = require('../../../middleware/ResetPasswordAuth');
 // @return
 router.post('/:email', sendPasswordResetEmail);
 
-// @route    POST business/reset_password/receive_new_password/:userId/:token
+// @route    POST business/reset_password/:token/:user_id
 // @desc     Change password
 // @access   Private, only owner
 // @return
 router.post(
-  '/receive_new_password/:user_id/:token',
+  '/:token/:user_id',
   [
     resetPasswordAuth,
     check(

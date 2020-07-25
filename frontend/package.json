@@ -12,7 +12,6 @@
     "@reach/combobox": "^0.10.3",
     "@react-google-maps/api": "^1.9.5",
     "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "axios": "^0.19.2",
     "bcryptjs": "^2.4.3",
@@ -70,7 +69,9 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@testing-library/react": "^9.5.0"
+  },
   "proxy": "http://localhost:5000",
   "secure": false
 }
