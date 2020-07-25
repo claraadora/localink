@@ -58,6 +58,7 @@ app.use(
   '/account-activation',
   require('./routes/api/shopper/accountActivation')
 );
+app.use('', require('./routes/api/shopper/routing'));
 
 //Define chat route
 app.use('', require('./routes/api/chat/chatUploads'));

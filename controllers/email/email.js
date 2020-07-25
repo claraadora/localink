@@ -49,4 +49,23 @@ const resetPasswordTemplate = (user, businessUser, url) => {
   return { from, to, subject, html };
 };
 
-module.exports = { transported, getPasswordResetURL, resetPasswordTemplate };
+const uriEmailTemplate = (shopper, url) => {
+  const from = 'Localink' + '<' + process.env.SENDER_EMAIL_LOGIN + '>';
+  //const to = shopper.email;
+  const to = process.env.RECEIVER_EMAIL_LOGIN;
+  const subject = 'Localink Mobile Google Map GPS Navigation Link';
+  const html = `
+    <p>Hey ${shopper.name || shopper.email},</p>
+    <p>Here is the Google Map GPS Navigation Link that you requested for:</p>
+    <a href=${url}>${url}</a>
+    <p>Have fun with the webpage!</p>
+    <p>–Love, Localink</p>`;
+  return { from, to, subject, html };
+};
+
+module.exports = {
+  transported,
+  getPasswordResetURL,
+  resetPasswordTemplate,
+  uriEmailTemplate
+};
