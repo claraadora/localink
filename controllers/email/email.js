@@ -11,18 +11,10 @@ const transported = nodemailer.createTransport({
 
 const getPasswordResetURL = (isShopper, user, token) => {
   if (isShopper) {
-    return (
-      'http://localhost:5000/reset_password/receive_new_password/' +
-      user._id +
-      '/' +
-      token
-    );
+    return 'http://localhost:3000/reset_password/' + token + '/' + user._id;
   } else {
     return (
-      'http://localhost:5000/business/reset_password/receive_new_password/' +
-      user._id +
-      '/' +
-      token
+      'http://localhost:3000/business/reset_password/' + token + '/' + user._id
     );
   }
 };
