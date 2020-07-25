@@ -6,7 +6,7 @@ import { Redirect } from "react-router-dom";
 
 export const getCurrentProfile = () => async (dispatch) => {
   try {
-    const res = await axios.get("/business/profile/me");
+    const res = await axios.get("/profile/me");
 
     dispatch({
       type: profileConstants.GET_PROFILE,
