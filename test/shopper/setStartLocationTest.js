@@ -50,7 +50,7 @@ describe("test setting shopper's start location", () => {
           expect(res.body).to.eql(currLocation);
         });
         const shop = await Shop.findById(profileId);
-        //console.log(shop);
+        console.log(shop);
         const latLng = await geocode(shop.address);
         const dist = await getDistance(res.body, latLng);
         assert.equal(dist, shop.distance);
@@ -72,7 +72,7 @@ describe("test setting shopper's start location", () => {
           expect(res.body).to.eql(currLocation);
         });
         const shop = await Shop.findById(profileId);
-        //console.log(shop);
+        console.log(shop);
         const latLng = await geocode(shop.address);
         const dist = await getDistance(res.body, latLng);
         assert.equal(dist, shop.distance);

@@ -3,7 +3,8 @@ const jwt = require('jsonwebtoken');
 const {
   transported,
   getPasswordResetURL,
-  resetPasswordTemplate
+  resetPasswordTemplate,
+  uriEmailTemplate
 } = require('./email');
 
 const mongoose = require('mongoose');
@@ -94,6 +95,21 @@ const sendPasswordResetEmail = async (req, res) => {
   sendEmail();
 };
 
+const sendURIEmail = async (req, res) => {
+  const { uri } = req.body;
+  const shopper = await Shopper.findById(req.user.id);
+  const emailTemplate = uriEmailTemplate(shopper, uri);
+  transported.sendMail(emailTemplate, (error, info) => {
+    if (error) {
+      console.log(error);
+      res.status(500).json({ errors: [{ msg: 'Error sending email' }] });
+    } else {
+      //console.log(`**Email sent**`, info.response);
+      res.status(250).json('Email sent successfully');
+    }
+  });
+};
+
 const receivedNewPassword = async (req, res) => {
   const { user_id, token } = req.params;
   const { password } = req.body;
@@ -135,5 +151,6 @@ module.exports = {
   sendPasswordResetEmail,
   receivedNewPassword,
   getPasswordResetURL,
-  usePasswordHashToMakeToken
+  usePasswordHashToMakeToken,
+  sendURIEmail
 };

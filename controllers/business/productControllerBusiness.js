@@ -49,6 +49,7 @@ async function createProduct(req, res) {
 }
 
 async function uploadProductImage(req, res) {
+  console.log('inside upload product image');
   console.log(' upload image');
   const storage = multer.memoryStorage();
   const upload = multer({ storage: storage }).single('file');
@@ -71,6 +72,7 @@ async function uploadProductImage(req, res) {
 }
 
 async function updateProduct(req, res) {
+  console.log('in update Product');
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
