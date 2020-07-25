@@ -3,7 +3,7 @@ import { ThemeProvider } from "@livechat/ui-kit";
 import { LocalinkChatList } from "../components/chat/ChatList";
 import { LocalinkMessageList } from "../components/chat/MessageList";
 import { useDispatch, useSelector } from "react-redux";
-import { Grid, makeStyles } from "@material-ui/core";
+import { Grid, makeStyles, CircularProgress } from "@material-ui/core";
 import { themeChat } from "../themeChat";
 import io from "socket.io-client";
 import { getChatList, afterPostMessage } from "../actions/chatActions";
@@ -55,6 +55,21 @@ export const ChatPage = (props) => {
   useEffect(() => {
     dispatch(getChatList(isShopper ? user._id : profile._id, isShopper));
   }, [user, profile, loading, dispatch, isShopper]);
+
+  if (loading) {
+    return (
+      <Grid
+        container
+        justify="center"
+        alignItems="center"
+        style={{ height: "100%", width: "100%" }}
+      >
+        <Grid item>
+          <CircularProgress />
+        </Grid>
+      </Grid>
+    );
+  }
 
   return (
     <ThemeProvider theme={themeChat}>

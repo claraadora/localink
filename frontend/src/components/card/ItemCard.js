@@ -10,7 +10,7 @@ import { addChatItem } from "../../actions/chatActions";
 import { fetchShop } from "../../actions/shopper/catalogueActions";
 import { useHistory } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
-import itinerary from "../../reducers/itineraryReducers";
+import { red, green } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,6 +19,12 @@ const useStyles = makeStyles((theme) => ({
   title: {
     fontSize: 14,
     color: theme.palette.secondary,
+  },
+  button: {
+    backgroundColor: green[100],
+  },
+  removeButton: {
+    backgroundColor: red[100],
   },
 }));
 
@@ -90,38 +96,6 @@ export const ItemCard = (props) => {
                 {!loading ? data.shop_docs[0].address : <Skeleton />}
               </Typography>
             </Grid>
-            <Grid item>
-              <Button
-                size="small"
-                disabled={loading}
-                onClick={() => {
-                  if (itineraryItems.includes(data)) {
-                    console.log("included");
-                    dispatch(removeFromItinerary(data._id));
-                  } else {
-                    dispatch(addToItinerary(data));
-                  }
-                }}
-              >
-                {itineraryItems.includes(data) ? "Remove" : "Add to Itinerary"}
-              </Button>
-              {isAuthenticated ? (
-                <Button
-                  disabled={loading}
-                  size="small"
-                  onClick={() =>
-                    dispatch(
-                      addChatItem(data.shop_docs[0]._id, auth.user._id, true)
-                    )
-                  }
-                >
-                  Ask Seller
-                </Button>
-              ) : null}
-              <Button size="small" onClick={handleFetchShop} disabled={loading}>
-                Go to Shop
-              </Button>
-            </Grid>
           </Grid>
           <Grid item xs={2}>
             <Typography variant="body2" component="p">
@@ -137,6 +111,62 @@ export const ItemCard = (props) => {
             </Typography>
           </Grid>
           <Grid item xs={1} />
+        </Grid>
+        <Grid container direction="row" spacing={1}>
+          <Grid item md={1} />
+          <Grid item md={4}>
+            <Button
+              size="small"
+              disabled={loading}
+              variant="contained"
+              className={
+                itineraryItems.includes(data)
+                  ? classes.removeButton
+                  : classes.button
+              }
+              onClick={() => {
+                if (itineraryItems.includes(data)) {
+                  console.log("included");
+                  dispatch(removeFromItinerary(data._id));
+                } else {
+                  dispatch(addToItinerary(data));
+                }
+              }}
+            >
+              {itineraryItems.includes(data)
+                ? "Remove Item"
+                : "Add to Itinerary"}
+            </Button>
+          </Grid>
+          {isAuthenticated && (
+            <Grid item md={3}>
+              <Button
+                disabled={loading}
+                size="small"
+                variant="contained"
+                className={classes.button}
+                onClick={() =>
+                  dispatch(
+                    addChatItem(data.shop_docs[0]._id, auth.user._id, true)
+                  )
+                }
+              >
+                Ask Seller
+              </Button>
+            </Grid>
+          )}
+          <Grid item md={3}>
+            <Button
+              size="small"
+              onClick={handleFetchShop}
+              disabled={loading}
+              variant="contained"
+              className={classes.button}
+            >
+              Go to Shop
+            </Button>
+          </Grid>
+          <Grid item md={1} />
         </Grid>
       </Card>
     </div>

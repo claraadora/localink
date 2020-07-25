@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   TextField,
   Link,
   Grid,
   Typography,
-  Divider,
   Avatar,
+  CircularProgress,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { setAlert } from "../actions/alertActions";
@@ -41,13 +41,22 @@ export default function ForgetPasswordPage(props) {
   const [password2, setPassword2] = useState("");
   const dispatch = useDispatch();
   const isShopper = useSelector((state) => state.page.isShopper);
+  const loading = useSelector((state) => state.auth.loading);
+  const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    if (isLoading && !loading) {
+      setIsLoading(false);
+      setPassword1("");
+      setPassword2("");
+    }
+  }, [loading]);
   const onSubmit = async (e) => {
     e.preventDefault();
     if (password1 !== password2) {
       dispatch(setAlert("Passwords do not match."));
     } else {
-      console.log(props.segment);
+      setIsLoading(true);
       dispatch(resetPassword(password1, props.segment));
     }
   };
@@ -62,6 +71,7 @@ export default function ForgetPasswordPage(props) {
     >
       <Grid item>
         <div className={classes.paper}>
+          {isLoading && <CircularProgress />}
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
           </Avatar>
