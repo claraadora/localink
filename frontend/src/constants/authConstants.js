@@ -23,6 +23,7 @@ const authConstants = {
   CHANGE_EMAIL_FAILURE: "USER_EMAIL_CHANGE_FAILURE",
 
   FORGOT_PASSWORD: "FORGOT_PASSWORD",
+  RESET_PASSWORD: "RESET_PASSWROD",
 };
 
 export default authConstants;

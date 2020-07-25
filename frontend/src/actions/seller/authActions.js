@@ -198,4 +198,33 @@ export const forgotPassword = (email, isShopper) => async (dispatch) => {
   }
 };
 
-export const resetPassword = (password) => async (dispatch) => {};
+export const resetPassword = (password, segment) => async (dispatch) => {
+  const body = {
+    password: password,
+  };
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  try {
+    const endpoint = `/reset_password/${segment}`;
+    console.log("endpoint" + endpoint);
+    const res = await axios.post(endpoint, body, config);
+
+    dispatch({
+      type: authConstants.RESET_PASSWORD,
+    });
+    dispatch(setAlert("Reset password success.", "success"));
+  } catch (err) {
+    const errors = err.response.data.errors;
+    console.log(errors);
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, "error")));
+    }
+
+    dispatch({
+      type: authConstants.AUTH_ERROR,
+    });
+  }
+};

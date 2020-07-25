@@ -44,6 +44,11 @@ const useStyles = makeStyles({
 const getLast = (str) => {
   return str.substring(str.lastIndexOf("/") + 1);
 };
+
+const getLastTwo = (str) => {
+  const arr = str.split("/");
+  return `${arr[2]}/${arr[3]}`;
+};
 function AppShopper() {
   let location = useLocation();
   const dispatch = useDispatch();
@@ -77,8 +82,9 @@ function AppShopper() {
           <Route exact path="/forgot-password" component={ForgotPasswordPage} />
           <Route
             path="/reset-password"
-            component={ResetPasswordPage}
-            userId={getLast(location.pathname)}
+            render={() => (
+              <ResetPasswordPage segment={getLastTwo(location.pathname)} />
+            )}
           />
         </div>
       </div>
