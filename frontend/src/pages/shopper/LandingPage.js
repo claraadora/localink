@@ -41,8 +41,8 @@ function LandingPage() {
         </Typography>
       </Grid>
       <Grid item>
-        <Button className={classes.startButton} component={Link} to="/search">
-          Start searching now!
+        <Button className={classes.startButton} component={Link} to="/signup">
+          Join Now!
         </Button>
       </Grid>
     </Grid>
