@@ -5,6 +5,7 @@ const initialState = {
   activeChat: null,
   loading: true,
   error: {},
+  renderChat: false,
 };
 
 export const chat = (state = initialState, action) => {
@@ -37,6 +38,11 @@ export const chat = (state = initialState, action) => {
       };
     case chatConstants.ADD_CHAT_ITEM:
       return { state };
+    case chatConstants.RENDER_CHAT:
+      return {
+        ...state,
+        renderChat: true,
+      };
     default:
       return state;
   }

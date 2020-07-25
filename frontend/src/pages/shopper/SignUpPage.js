@@ -75,9 +75,6 @@ export default function SignUpPage() {
     dispatch(loginWithGoogle(response));
   };
 
-  const responseFacebook = (response) => {
-    dispatch(loginWithFacebook(response));
-  };
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -103,7 +100,6 @@ export default function SignUpPage() {
       justify="center"
       alignItems="center"
       style={{ height: "100%", width: "100%" }}
-      spacing={5}
     >
       <Grid item>
         <div className={classes.paper}>

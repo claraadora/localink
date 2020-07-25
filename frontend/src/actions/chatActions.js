@@ -3,13 +3,10 @@ import chatConstants from "../constants/chatConstants";
 import { setAlert } from "./alertActions";
 
 export const getChatList = (id, isShopper) => async (dispatch) => {
+  dispatch(renderChat());
   try {
     const endpoint = isShopper ? `/inbox/${id}` : `/business/inbox/${id}`;
     const res = await axios.get(endpoint);
-
-    if (isShopper === false) {
-      console.log("HHAHAHHHA");
-    }
 
     if (res.data.length > 0) {
       dispatch(setCurrActive(res.data[0][isShopper ? "shop" : "shopper"]));
@@ -67,6 +64,12 @@ export const addChatItem = (shopId, shopperId, isShopper) => async (
       type: chatConstants.CHAT_ERROR,
     });
   }
+};
+
+export const renderChat = () => (dispatch) => {
+  dispatch({
+    type: chatConstants.RENDER_CHAT,
+  });
 };
 
 export const afterPostMessage = (data) => (dispatch) => {

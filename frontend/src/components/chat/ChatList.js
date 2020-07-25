@@ -31,6 +31,7 @@ export const LocalinkChatList = (props) => {
               <LocalinkChatListItem
                 isActive={activeChat === _id}
                 _id={_id}
+                key={_id}
                 name={name}
                 timestamp={len > 0 ? message_list[len - 1].date : null}
                 message={len > 0 ? message_list[len - 1].message : null}

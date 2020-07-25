@@ -5,17 +5,20 @@ import {
   TextInput,
   SendButton,
   TextComposer,
+  FixedWrapper,
 } from "@livechat/ui-kit";
 import { useSelector, useDispatch } from "react-redux";
 import { LocalinkMessageListItem } from "./MessageListItem";
-import { Paper, makeStyles, CircularProgress } from "@material-ui/core";
+import { Paper, Grid, makeStyles } from "@material-ui/core";
 import moment from "moment";
 import { getChatById } from "../../utils/chat";
 import { afterPostMessage } from "../../actions/chatActions";
 
 const useStyles = makeStyles({
-  paper: {
+  root: {
     backgroundColor: "#000000",
+    padding: "1.5em",
+    flex: "100%",
   },
 });
 
@@ -86,27 +89,68 @@ export const LocalinkMessageList = (props) => {
     );
   };
 
-  if (chat.loading) {
-    return <CircularProgress />;
+  if (chatList.length === 0 || msgList === null) {
+    return <h1>No messages to show</h1>;
   } else {
     return (
-      <Paper className={classes.paper}>
-        <MessageList active>
-          {msgList.map((msg, index) => {
-            return <LocalinkMessageListItem data={msg} key={index} />;
-          })}
-        </MessageList>
-        <TextComposer
-          value={textInput}
-          onChange={(e) => setTextInput(e.target.value)}
-          onSend={handleSubmit}
-        >
-          <Row align="center">
-            <TextInput fill />
-            <SendButton fit />
-          </Row>
-        </TextComposer>
-      </Paper>
+      <Grid
+        item
+        container
+        direction="column"
+        style={{ height: "100%", width: "100%" }}
+      >
+        <Grid item md={10} style={{ overflow: "hidden", width: "75vw" }}>
+          <MessageList
+            active
+            style={{
+              flex: "100%",
+              width: "100%",
+            }}
+          >
+            {msgList.map((msg, index) => {
+              return (
+                <Grid item>
+                  <LocalinkMessageListItem data={msg} key={index} />
+                </Grid>
+              );
+            })}
+          </MessageList>
+        </Grid>
+        <Grid item>
+          <TextComposer
+            value={textInput}
+            onChange={(e) => setTextInput(e.target.value)}
+            onSend={handleSubmit}
+          >
+            <Row align="center">
+              <TextInput fill />
+              <SendButton fit />
+            </Row>
+          </TextComposer>
+        </Grid>
+      </Grid>
     );
+    // <div>
+    //   <Grid item md={10} style={{ overflow: "hidden", width: "100%" }}>
+    //     <MessageList active>
+    //       {msgList.map((msg, index) => {
+    //         return <LocalinkMessageListItem data={msg} key={index} />;
+    //       })}
+    //     </MessageList>
+    //   </Grid>
+    //   <Grid item md={2}>
+    //     <TextComposer
+    //       value={textInput}
+    //       onChange={(e) => setTextInput(e.target.value)}
+    //       onSend={handleSubmit}
+    //     >
+    //       <Row align="center">
+    //         <TextInput fill />
+    //         <SendButton fit />
+    //       </Row>
+    //     </TextComposer>
+    //   </Grid>
+    // </div>
+    // );
   }
 };
