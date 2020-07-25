@@ -16,6 +16,7 @@ import { ThemeProvider } from "@material-ui/core/styles";
 import { useLocation } from "react-router-dom";
 import { updateIsShopper } from "./actions/pageActions";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 
 const useStyles = makeStyles({
   main: {
@@ -74,6 +75,11 @@ function AppShopper() {
           <Route exact path="/chat" component={ChatPage} />
           <Route exact path="/" component={ShopperLandingPage} />
           <Route exact path="/forgot-password" component={ForgotPasswordPage} />
+          <Route
+            path="/reset-password"
+            component={ResetPasswordPage}
+            userId={getLast(location.pathname)}
+          />
         </div>
       </div>
     </ThemeProvider>
