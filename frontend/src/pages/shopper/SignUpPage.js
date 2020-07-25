@@ -16,7 +16,7 @@ import {
   loginWithFacebook,
 } from "../../actions/shopper/authActions";
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link as RouterLink } from "react-router-dom";
 import GoogleLogin from "react-google-login";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 
@@ -168,13 +168,8 @@ export default function SignUpPage() {
               Sign Up
             </Button>
             <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link component={RouterLink} to="/login" variant="body2">
                   {"Have an account? Login"}
                 </Link>
               </Grid>

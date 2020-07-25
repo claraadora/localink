@@ -5,6 +5,7 @@ const initialState = {
   isAuthenticated: null,
   loading: true,
   user: null,
+  emailSent: false,
 };
 
 export const auth = (state = initialState, action) => {
@@ -46,6 +47,12 @@ export const auth = (state = initialState, action) => {
         ...state,
         error: payload,
         loading: false,
+      };
+    case authConstants.FORGOT_PASSWORD:
+      return {
+        ...state,
+        loading: false,
+        emailSent: true,
       };
     default:
       return state;

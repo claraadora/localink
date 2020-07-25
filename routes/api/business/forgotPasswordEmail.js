@@ -1,31 +1,31 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { check } = require('express-validator');
+const { check } = require("express-validator");
 const {
   sendPasswordResetEmail,
-  receivedNewPassword
-} = require('../../../controllers/email/email.controller');
-const authBusiness = require('../../../middleware/business/authBusiness');
-const resetPasswordAuth = require('../../../middleware/ResetPasswordAuth');
+  receivedNewPassword,
+} = require("../../../controllers/email/email.controller");
+const authBusiness = require("../../../middleware/business/authBusiness");
+const resetPasswordAuth = require("../../../middleware/ResetPasswordAuth");
 
 // @route    POST business/reset_password/:email
 // @desc     Get email from frontend
 // @access   Private, only owner
 // @return
-router.get('/:email', authBusiness, sendPasswordResetEmail);
+router.get("/:email", sendPasswordResetEmail);
 
 // @route    POST business/reset_password/receive_new_password/:userId/:token
 // @desc     Change password
 // @access   Private, only owner
 // @return
 router.post(
-  '/receive_new_password/:user_id/:token',
+  "/receive_new_password/:user_id/:token",
   [
     resetPasswordAuth,
     check(
-      'password',
-      'Please enter a password with 6 or more characters'
-    ).isLength({ min: 6 })
+      "password",
+      "Please enter a password with 6 or more characters"
+    ).isLength({ min: 6 }),
   ],
   receivedNewPassword
 );

@@ -12,7 +12,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { setAlert } from "../../actions/alertActions";
 import { signup } from "../../actions/seller/authActions";
 import { useSelector, useDispatch } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link as RouterLink } from "react-router-dom";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 
 const useStyles = makeStyles((theme) => ({
@@ -157,13 +157,12 @@ export default function SignUpPage() {
               Sign Up
             </Button>
             <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link
+                  component={RouterLink}
+                  to="/business/login"
+                  variant="body2"
+                >
                   {"Have an account? Login"}
                 </Link>
               </Grid>

@@ -165,3 +165,26 @@ export const changeEmail = ({ email }) => async (dispatch) => {
     });
   }
 };
+
+export const forgotPassword = (email) => async (dispatch) => {
+  try {
+    const res = await axios.get(`/reset_password/${email}`);
+
+    dispatch({
+      type: authConstants.FORGOT_PASSWORD,
+    });
+    dispatch(
+      setAlert("An email to reset password has been sent to you.", "success")
+    );
+  } catch (err) {
+    const errors = err.response.data.errors;
+    console.log(errors);
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, "error")));
+    }
+
+    dispatch({
+      type: authConstants.AUTH_ERROR,
+    });
+  }
+};

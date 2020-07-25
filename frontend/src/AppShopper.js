@@ -15,6 +15,7 @@ import { theme } from "./theme";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { useLocation } from "react-router-dom";
 import { updateIsShopper } from "./actions/pageActions";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 
 const useStyles = makeStyles({
   main: {
@@ -30,6 +31,11 @@ const useStyles = makeStyles({
     alignItems: "center",
   },
   navBar: {
+    width: "100%",
+  },
+  alert: {
+    position: "absolute",
+    top: "100px",
     width: "100%",
   },
 });
@@ -51,8 +57,10 @@ function AppShopper() {
         <div className={classes.navBar}>
           <ShopperNavBar isSearchPage={location.pathname === "/search"} />
         </div>
-        <div className={classes.content}>
+        <div className={classes.alert}>
           <LocalinkAlert />
+        </div>
+        <div className={classes.content}>
           <Route exact path="/login" component={ShopperLogInPage} />
           <Route exact path="/signup" component={ShopperSignUpPage} />
           <Route exact path="/search" component={ShopperSearchPage} />
@@ -65,6 +73,7 @@ function AppShopper() {
           />
           <Route exact path="/chat" component={ChatPage} />
           <Route exact path="/" component={ShopperLandingPage} />
+          <Route exact path="/forgot-password" component={ForgotPasswordPage} />
         </div>
       </div>
     </ThemeProvider>
