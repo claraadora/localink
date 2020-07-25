@@ -21,6 +21,7 @@ import { LocalinkDrawer } from "./components/drawer/Drawer";
 import { ChatPage } from "./pages/ChatPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
+import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles({
   main: {
@@ -43,9 +44,17 @@ const useStyles = makeStyles({
     width: "100%",
   },
 });
+
+const getLastTwo = (str) => {
+  const arr = str.split("/");
+  return `${arr[2]}/${arr[3]}`;
+};
+
 function AppSeller() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const dispatch = useDispatch();
+  let location = useLocation();
+
   useEffect(() => {
     dispatch(updateIsShopper(false));
   }, [dispatch]);
@@ -94,8 +103,10 @@ function AppSeller() {
             component={ForgotPasswordPage}
           />
           <Route
-            path="/business/reset-password"
-            component={ResetPasswordPage}
+            path="/reset_password"
+            render={() => (
+              <ResetPasswordPage segment={getLastTwo(location.pathname)} />
+            )}
           />
         </div>
       </div>

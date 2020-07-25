@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.primary.main,
   },
   form: {
-    width: "100%", // Fix IE 11 issue.
+    width: "80%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ForgetPasswordPage() {
+export default function ForgetPasswordPage(props) {
   const classes = useStyles();
   const [password1, setPassword1] = useState("");
   const [password2, setPassword2] = useState("");
@@ -47,7 +47,8 @@ export default function ForgetPasswordPage() {
     if (password1 !== password2) {
       dispatch(setAlert("Passwords do not match."));
     } else {
-      dispatch(resetPassword(password1));
+      console.log(props.segment);
+      dispatch(resetPassword(password1, props.segment));
     }
   };
   return (
@@ -82,6 +83,7 @@ export default function ForgetPasswordPage() {
               onChange={(e) => setPassword1(e.target.value)}
               value={password1}
               autoFocus
+              type="password"
             />
             <TextField
               variant="outlined"
@@ -94,6 +96,7 @@ export default function ForgetPasswordPage() {
               onChange={(e) => setPassword2(e.target.value)}
               value={password2}
               autoFocus
+              type="password"
             />
             <Button
               type="submit"
