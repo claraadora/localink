@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   TextField,
@@ -7,6 +7,7 @@ import {
   Typography,
   Divider,
   Avatar,
+  CircularProgress,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { setAlert } from "../actions/alertActions";
@@ -40,9 +41,19 @@ export default function ForgetPasswordPage() {
   const [email, setEmail] = useState("");
   const isShopper = useSelector((state) => state.page.isShopper);
   const dispatch = useDispatch();
+  const loading = useSelector((state) => state.auth.loading);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (isLoading && !loading) {
+      setIsLoading(false);
+      setEmail("");
+    }
+  }, [loading]);
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     dispatch(forgotPassword(email, isShopper));
   };
   return (
@@ -56,6 +67,7 @@ export default function ForgetPasswordPage() {
     >
       <Grid item>
         <div className={classes.paper}>
+          {isLoading && <CircularProgress />}
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
           </Avatar>

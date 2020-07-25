@@ -54,6 +54,11 @@ export const auth = (state = initialState, action) => {
         loading: false,
         emailSent: true,
       };
+    case authConstants.RESET_PASSWORD:
+      return {
+        ...state,
+        loading: false,
+      };
     default:
       return state;
   }
