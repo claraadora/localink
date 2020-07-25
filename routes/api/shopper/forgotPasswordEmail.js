@@ -17,10 +17,6 @@ router.post('/:email', sendPasswordResetEmail);
 // @desc     Change password
 // @access   Private, only owner
 // @return
-router.post(
-  '/receive_new_password/:token/:user_id',
-  resetPasswordAuth,
-  receivedNewPassword
-);
+router.post('/:token/:user_id', resetPasswordAuth, receivedNewPassword);
 
 module.exports = router;
