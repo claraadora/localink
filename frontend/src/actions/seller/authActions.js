@@ -126,10 +126,7 @@ export const changePassword = ({ oldPassword, newPassword }) => async (
       payload: res.data,
     });
 
-    dispatch({
-      type: authConstants.USER_LOADED,
-      payload: res.data,
-    });
+    dispatch(setAlert("Changed password successfully"));
   } catch (err) {
     const errors = err.response.data.errors;
 
@@ -162,10 +159,7 @@ export const changeEmail = ({ email }) => async (dispatch) => {
       payload: res.data,
     });
 
-    dispatch({
-      type: authConstants.USER_LOADED,
-      payload: res.data,
-    });
+    dispatch(setAlert("Changed email successfully"));
   } catch (err) {
     const errors = err.response.data.errors;
 

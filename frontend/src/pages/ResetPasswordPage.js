@@ -76,11 +76,9 @@ export default function ForgetPasswordPage(props) {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Forgot your password?
+            Reset your Password
           </Typography>
-          <Typography component="h6">
-            Please enter the email that you want to reset the password.
-          </Typography>
+          <Typography component="h6">Please provide a new password</Typography>
           <form className={classes.form} onSubmit={onSubmit}>
             <TextField
               variant="outlined"
