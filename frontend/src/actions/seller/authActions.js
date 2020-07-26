@@ -332,4 +332,5 @@ export const changeActiveStatus = (userId) => async (dispatch) => {
       type: authConstants.PROFILE_ERROR,
     });
   }
+  dispatch(setBackLoading());
 };

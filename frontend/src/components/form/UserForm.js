@@ -44,7 +44,7 @@ const roles = [
   },
 ];
 
-export default function ProductForm() {
+export default function UserForm() {
   const classes = useStyles();
 
   const [formData, setFormData] = useState({

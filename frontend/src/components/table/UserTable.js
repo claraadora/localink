@@ -9,7 +9,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
-import Toolbar from "@material-ui/core/Toolbar";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
@@ -166,11 +166,18 @@ export default function UserTable() {
   const [rows, setRows] = useState([]);
   const [role, setRole] = useState(null);
   const user = useSelector((state) => state.auth.user);
+  const [users, setUsers] = useState(user.users);
   const loading = useSelector((state) => state.auth.loading);
   const dispatch = useDispatch();
   const profile = useSelector((state) => state.profile.profile);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    if (isLoading && !loading) {
+      setIsLoading(false);
+    }
+    setUsers(user.users);
+    console.log(user.users);
     if (user && user.users !== undefined) {
       const updatedRows = [];
       user.users.map((user) =>
@@ -178,14 +185,32 @@ export default function UserTable() {
           name: user.name,
           email: user.email,
           role: user.role,
-          status: user.activated,
+          status: user.isAccountActive,
+          _id: user._id,
+        })
+      );
+      setRows(updatedRows);
+      console.log("here");
+    }
+  }, [loading]);
+
+  useEffect(() => {
+    setUsers(user.users);
+    if (user && user.users !== undefined) {
+      const updatedRows = [];
+      user.users.map((user) =>
+        updatedRows.push({
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          status: user.isAccountActive,
           _id: user._id,
         })
       );
       setRows(updatedRows);
       setRole(user.users[0].role);
     }
-  }, [dispatch, loading, user]);
+  }, [dispatch, loading, users, user]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -221,6 +246,7 @@ export default function UserTable() {
           Manage Users
         </Typography>
       </Grid>
+      {isLoading && <CircularProgress />}
       <Grid item>
         <Paper>
           <TableContainer>
@@ -269,9 +295,10 @@ export default function UserTable() {
                                 <DeleteIcon />
                               </IconButton>
                               <IconButton
-                                onClick={() =>
-                                  dispatch(changeActiveStatus(row._id))
-                                }
+                                onClick={() => {
+                                  setIsLoading(true);
+                                  dispatch(changeActiveStatus(row._id));
+                                }}
                               >
                                 {row.status ? (
                                   <BlockIcon
