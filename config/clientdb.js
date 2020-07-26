@@ -18,8 +18,12 @@ const connectClient = async () => {
       const db = client.db('test');
       //For testing
 
-      // db.collection('users').remove(
-      //   { name: 'test first business owner' },
+      // db.collection('shoppers').remove(
+      //   { email: 'oliviajjohansen@yahoo.com' },
+      //   { $multi: true }
+      // );
+      // db.collection('shoppers').remove(
+      //   { email: 'oliviajjohansen@gmail.com' },
       //   { $multi: true }
       // );
       // db.collection('users').remove(

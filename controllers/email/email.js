@@ -1,16 +1,39 @@
 const nodemailer = require('nodemailer');
-const e = require('express');
+const express = require('express');
+const { google } = require('googleapis');
+const OAuth2 = google.auth.OAuth2;
 
-const transported = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
-  service: process.env.EMAIL_SERVICE,
-  port: process.env.PORT,
-  secure: false,
-  auth: {
-    user: process.env.SENDER_EMAIL_LOGIN,
-    pass: process.env.SENDER_EMAIL_PASSWORD
-  }
-});
+const getTransported = async () => {
+  const oauth2Client = new OAuth2(
+    process.env.GOOGLE_CLIENT_ID, // ClientID
+    process.env.GOOGLE_CLIENT_SECRET, // Client Secret
+    'https://developers.google.com/oauthplayground' // Redirect URL
+  );
+
+  oauth2Client.setCredentials({
+    refresh_token: process.env.GOOGLE_REFRESH_TOKEN
+  });
+  const accessToken = await oauth2Client.getAccessToken();
+  console.log('ATATTA');
+  console.log(accessToken.token);
+  const transported = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    //service: process.env.EMAIL_SERVICE,
+    port: process.env.PORT,
+    secure: true,
+    auth: {
+      type: 'OAuth2',
+      user: process.env.SENDER_EMAIL_LOGIN,
+      cliendId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
+      accessToken: accessToken.token
+      // pass: process.env.SENDER_EMAIL_PASSWORD
+    }
+  });
+
+  return transported;
+};
 
 const getPasswordResetURL = (isShopper, user, token) => {
   if (isShopper) {
@@ -63,7 +86,7 @@ const uriEmailTemplate = (shopper, url) => {
 };
 
 module.exports = {
-  transported,
+  getTransported,
   getPasswordResetURL,
   resetPasswordTemplate,
   uriEmailTemplate

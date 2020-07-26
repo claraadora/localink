@@ -43,7 +43,7 @@ async function addUserToBusiness(req, res) {
 
     const token = usePasswordHashToMakeToken(business, user);
     const url = getPasswordResetURL(false, user, token);
-    sendActivationEmailUser(business, user, url, res);
+    await sendActivationEmailUser(business, user, url, res);
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ errors: [{ msg: 'Server error' }] });

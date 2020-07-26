@@ -10,6 +10,7 @@ async function activateAccount(req, res) {
       .status(403)
       .json({ errors: [{ msg: 'Invalid activation link' }] });
   }
+  console.log(shopper);
   shopper.isAccountActive = true;
   await shopper.save();
   res.status(200).send('Activated account successfully');

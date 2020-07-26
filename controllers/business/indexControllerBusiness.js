@@ -41,7 +41,7 @@ async function registerBusiness(req, res) {
 
     await business.save();
 
-    sendActivationEmail(business, user, res);
+    await sendActivationEmail(business, user, res);
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ errors: [{ msg: 'Server error' }] });
