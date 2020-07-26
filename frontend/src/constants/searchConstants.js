@@ -12,6 +12,7 @@ const searchConstants = {
   SET_RENDER_LOCATION: "SET_RENDER_LOCATION",
   UPDATE_STOPS: "UPDATE_STOPS",
   UPDATE_NAV_LINK: "UPDATE_NAV_LINK",
+  SEND_NAV_LINK: "SEND_NAV_LINK",
 };
 
 export default searchConstants;

@@ -4,6 +4,9 @@ const profileConstants = {
   PROFILE_ERROR: "PROFILE_ERROR",
   CLEAR_PROFILE: "ClEAR_PROFILE",
   UPDATE_PROFILE: "UPDATE_PROFILE",
+
+  ADD_USER: "ADD_USER",
+  ADD_USER_ERROR: "ADD_USER_ERROR",
 };
 
 export default profileConstants;

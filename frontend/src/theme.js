@@ -60,6 +60,14 @@ export const theme = createMuiTheme({
       letterSpacing: "normal",
       color: grey[900],
     },
+    tooltip: {
+      fontFamily: '"Metropolis", sans-serif',
+      fontWeight: "normal",
+      fontSize: "0.3rem",
+      letterSpacing: "normal",
+      textTransform: "none",
+      color: grey[900],
+    },
     button: {
       fontFamily: '"Metropolis", sans-serif',
       fontWeight: 500,

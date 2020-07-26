@@ -15,8 +15,10 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
 import { useSelector, useDispatch } from "react-redux";
-import { getCurrentProfile } from "../../actions/seller/profileActions";
-import { changeActiveStatus } from "../../actions/seller/authActions";
+import {
+  changeActiveStatus,
+  deleteUser,
+} from "../../actions/seller/authActions";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { lightBlue, red, green } from "@material-ui/core/colors";
@@ -278,7 +280,7 @@ export default function UserTable() {
                           padding="none"
                           align="center"
                         >
-                          {row.name}
+                          {index === 0 ? "A" : "B"}
                         </TableCell>
                         <TableCell align="center">{row.email}</TableCell>
                         <TableCell align="center">{row.role}</TableCell>
@@ -292,7 +294,12 @@ export default function UserTable() {
                                 <EditIcon />
                               </IconButton>
                               <IconButton>
-                                <DeleteIcon />
+                                <DeleteIcon
+                                  onClick={() => {
+                                    setIsLoading(true);
+                                    dispatch(deleteUser(row._id));
+                                  }}
+                                />
                               </IconButton>
                               <IconButton
                                 onClick={() => {

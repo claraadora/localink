@@ -125,3 +125,33 @@ export const deleteProduct = (id) => async (dispatch) => {
     });
   }
 };
+
+export const addUser = (data) => async (dispatch) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  const body = JSON.stringify(data);
+
+  try {
+    const res = await axios.post("/business/user", body, config);
+    dispatch({
+      type: profileConstants.ADD_USER,
+      payload: res,
+    });
+
+    dispatch(setAlert("User added.", "success"));
+  } catch (err) {
+    const errors = err.response.data.errors;
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, "error")));
+    }
+    console.log(errors);
+
+    dispatch({
+      type: profileConstants.ADD_USER_ERROR,
+    });
+  }
+};
