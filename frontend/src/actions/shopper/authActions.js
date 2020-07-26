@@ -223,10 +223,7 @@ export const forgotPassword = (email, isShopper) => async (dispatch) => {
     },
   };
   try {
-    const endpoint = isShopper
-      ? ""
-      : "business" + "/reset_password/" + `${email}`;
-    const res = await axios.post(endpoint, body, config);
+    const res = await axios.post(`/reset_password/${email}`, body, config);
 
     dispatch({
       type: authConstants.FORGOT_PASSWORD,
@@ -248,9 +245,7 @@ export const forgotPassword = (email, isShopper) => async (dispatch) => {
   dispatch(setBackLoading());
 };
 
-export const resetPassword = (password, segment, isShopper) => async (
-  dispatch
-) => {
+export const resetPassword = (password, segment) => async (dispatch) => {
   const body = {
     password: password,
   };
@@ -260,8 +255,7 @@ export const resetPassword = (password, segment, isShopper) => async (
     },
   };
   try {
-    const endpoint =
-      (isShopper ? "" : "/business") + `/reset_password/${segment}`;
+    const endpoint = `/reset_password/${segment}`;
     console.log("endpoint" + endpoint);
     const res = await axios.post(endpoint, body, config);
 

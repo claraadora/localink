@@ -47,8 +47,13 @@ const useStyles = makeStyles({
   }
 });
 
+<<<<<<< HEAD
 const getLastTwo = str => {
   const arr = str.split('/');
+=======
+const getLastTwo = (str) => {
+  const arr = str.split("/");
+>>>>>>> 0473c3bc005d56d88e70b70859f0bf2c88ab15db
   return `${arr[3]}/${arr[4]}`;
 };
 
