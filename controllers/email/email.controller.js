@@ -1,10 +1,10 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const {
-  transported,
   getPasswordResetURL,
   resetPasswordTemplate,
-  uriEmailTemplate
+  uriEmailTemplate,
+  getTransported
 } = require('./email');
 
 const mongoose = require('mongoose');
@@ -78,7 +78,8 @@ const sendPasswordResetEmail = async (req, res) => {
   const url = getPasswordResetURL(isShopper, specificUser, token);
   const emailTemplate = resetPasswordTemplate(user, specificUser, url);
 
-  const sendEmail = () => {
+  const sendEmail = async () => {
+    const transported = await getTransported();
     transported.sendMail(emailTemplate, (error, info) => {
       if (error) {
         console.log(error);
@@ -96,6 +97,7 @@ const sendURIEmail = async (req, res) => {
   const { uri } = req.body;
   const shopper = await Shopper.findById(req.user.id);
   const emailTemplate = uriEmailTemplate(shopper, uri);
+  const transported = await getTransported();
   transported.sendMail(emailTemplate, (error, info) => {
     if (error) {
       console.log(error);

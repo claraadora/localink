@@ -1,6 +1,6 @@
 const cryptoRandomString = require('crypto-random-string');
 const CryptoJS = require('crypto-js');
-const { transported } = require('./email');
+const { getTransported } = require('./email');
 
 const getActivationLink = user => {
   console.log('get activation link in aec');
@@ -71,8 +71,9 @@ const emailActivationTemplate = (user, specificUser, url) => {
   return { from, to, subject, html };
 };
 
-const sendEmail = (res, emailTemplate) => {
+const sendEmail = async (res, emailTemplate) => {
   console.log('send email finally ');
+  const transported = await getTransported();
   transported.sendMail(emailTemplate, (error, info) => {
     if (error) {
       console.log('here');
@@ -85,7 +86,7 @@ const sendEmail = (res, emailTemplate) => {
   });
 };
 
-const sendActivationEmail = (user, specificUser, res, transported) => {
+const sendActivationEmail = async (user, specificUser, res, transported) => {
   console.log('send activation email');
   const activationLink = getActivationLink(specificUser);
   const emailTemplate = emailActivationTemplate(
@@ -93,12 +94,12 @@ const sendActivationEmail = (user, specificUser, res, transported) => {
     specificUser,
     activationLink
   );
-  sendEmail(res, emailTemplate, transported);
+  await sendEmail(res, emailTemplate, transported);
 };
 
-const sendActivationEmailUser = (user, specificUser, url, res) => {
+const sendActivationEmailUser = async (user, specificUser, url, res) => {
   const emailTemplate = emailActivationTemplateUser(user, specificUser, url);
-  sendEmail(res, emailTemplate);
+  await sendEmail(res, emailTemplate);
 };
 
 module.exports = {
