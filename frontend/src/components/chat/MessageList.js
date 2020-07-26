@@ -135,6 +135,20 @@ export const LocalinkMessageList = (props) => {
           receiverId,
           isShopper,
         });
+
+        const obj = {
+          userId: userId,
+          username: username,
+          message: message,
+          time: time,
+          type: type,
+        };
+        dispatch(
+          afterPostMessage({
+            messageFromBackEnd: obj,
+            isShopper: isShopperState,
+          })
+        );
       }
     });
   };
