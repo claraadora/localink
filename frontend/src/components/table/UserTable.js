@@ -18,6 +18,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getCurrentProfile } from "../../actions/seller/profileActions";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
+import { lightBlue } from "@material-ui/core/colors";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -50,16 +51,17 @@ const headCells = [
     id: "name",
     numeric: false,
     disablePadding: false,
-    label: "Name of Product",
+    label: "Name",
   },
   {
-    id: "description",
+    id: "email",
     numeric: false,
     disablePadding: false,
-    label: "Description",
+    label: "Email",
   },
-  { id: "price", numeric: false, disablePadding: false, label: "Price" },
-  { id: "actions", disablePadding: false, label: "Actions" },
+  { id: "role", numeric: false, disablePadding: false, label: "Role" },
+  { id: "status", numeric: false, disablePadding: false, label: "Status" },
+  { id: "actions", numeric: false, disablePadding: false, label: "Actions" },
 ];
 
 function EnhancedTableHead(props) {
@@ -69,7 +71,7 @@ function EnhancedTableHead(props) {
   };
 
   return (
-    <TableHead>
+    <TableHead className={classes.root}>
       <TableRow>
         {headCells.map((headCell) => (
           <TableCell
@@ -117,29 +119,9 @@ const useToolbarStyles = makeStyles((theme) => ({
   },
 }));
 
-const EnhancedTableToolbar = (props) => {
-  const classes = useToolbarStyles();
-  const { numSelected } = props;
-
-  return (
-    <Toolbar className={clsx(classes.root)}>
-      <Typography
-        className={classes.title}
-        variant="h6"
-        id="tableTitle"
-        component="div"
-      >
-        Product Overview
-      </Typography>
-    </Toolbar>
-  );
-};
-
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex",
-    marginLeft: 240,
-    marginTop: 100,
+    backgroundColor: lightBlue[50],
   },
   paper: {
     marginTop: theme.spacing(8),
@@ -164,7 +146,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ProductTable() {
+export default function UserTable() {
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("price");
@@ -172,27 +154,24 @@ export default function ProductTable() {
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [rows, setRows] = useState([]);
-  const profile = useSelector((state) => state.profile.profile);
-  const loading = useSelector((state) => state.profile.loading);
+  const user = useSelector((state) => state.auth.user);
+  const loading = useSelector((state) => state.auth.loading);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!profile) dispatch(getCurrentProfile());
-
-    if (!loading && profile && profile.products !== undefined) {
+    if (user && user.users !== undefined) {
       const updatedRows = [];
-      profile.products.map((product) =>
+      user.users.map((user) =>
         updatedRows.push({
-          name: product.name,
-          description: product.description,
-          price: product.price,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          status: user.activated,
         })
       );
       setRows(updatedRows);
     }
-  }, [dispatch, loading, profile]);
-
-  console.log("rows = " + rows);
+  }, [dispatch, loading, user]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -209,96 +188,93 @@ export default function ProductTable() {
     setPage(0);
   };
 
-  const handleChangeDense = (event) => {
-    setDense(event.target.checked);
-  };
-
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
   console.log("this is rendered");
   return (
-    <div className={classes.paper}>
-      <Paper className={classes.paper}>
-        <EnhancedTableToolbar />
-        <TableContainer>
-          <Table
-            className={classes.table}
-            aria-labelledby="tableTitle"
-            size={dense ? "small" : "medium"}
-            aria-label="enhanced table"
-          >
-            <EnhancedTableHead
-              classes={classes}
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={handleRequestSort}
-              rowCount={rows.length}
-            />
-            <TableBody>
-              {stableSort(rows, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  const labelId = `enhanced-table-checkbox-${index}`;
+    <Grid
+      container
+      direction="column"
+      justify="center"
+      style={{ height: "100%" }}
+      spacing={5}
+      alignItems="center"
+    >
+      <Grid item md={1} />
+      <Grid item>
+        <Typography variant="h5" gutterBottom>
+          Manage Users
+        </Typography>
+      </Grid>
+      <Grid item>
+        <Paper>
+          <TableContainer>
+            <Table
+              className={classes.table}
+              aria-labelledby="tableTitle"
+              size={dense ? "small" : "medium"}
+              aria-label="enhanced table"
+            >
+              <EnhancedTableHead
+                classes={classes}
+                order={order}
+                orderBy={orderBy}
+                onRequestSort={handleRequestSort}
+                rowCount={rows.length}
+              />
+              <TableBody>
+                {stableSort(rows, getComparator(order, orderBy))
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row, index) => {
+                    const labelId = `enhanced-table-checkbox-${index}`;
 
-                  return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={row.name}
-                    >
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="none"
-                        align="center"
-                      >
-                        {row.name}
-                      </TableCell>
-                      <TableCell align="center">{row.description}</TableCell>
-                      <TableCell align="center">${row.price}</TableCell>
-                      <TableCell align="center">
-                        <Grid
-                          container
-                          direction="row"
-                          justify="center"
-                          alignItems="center"
+                    return (
+                      <TableRow tabIndex={-1} key={row.name}>
+                        <TableCell
+                          component="th"
+                          id={labelId}
+                          scope="row"
+                          padding="none"
+                          align="center"
                         >
-                          <Grid item md={6}>
-                            <IconButton>
-                              <EditIcon />
-                            </IconButton>
-                          </Grid>
-                          <Grid item md={6}>
-                            <IconButton>
-                              <DeleteIcon />
-                            </IconButton>
-                          </Grid>
-                        </Grid>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-        />
-      </Paper>
-    </div>
+                          {row.name}
+                        </TableCell>
+                        <TableCell align="center">{row.email}</TableCell>
+                        <TableCell align="center">{row.role}</TableCell>
+                        <TableCell align="center">
+                          {row.status ? "Active" : "Non-active"}
+                        </TableCell>
+                        <TableCell align="center">
+                          <IconButton>
+                            <EditIcon />
+                          </IconButton>
+                          <IconButton>
+                            <DeleteIcon />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                {emptyRows > 0 && (
+                  <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
+                    <TableCell colSpan={6} />
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={rows.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onChangePage={handleChangePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+          />
+        </Paper>
+      </Grid>
+    </Grid>
   );
 }

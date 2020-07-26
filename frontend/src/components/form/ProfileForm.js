@@ -119,6 +119,7 @@ const ProfileForm = () => {
       style={{ height: "100%" }}
       spacing={5}
     >
+      <Grid item md={1} />
       <Grid item>
         <div className={classes.paper}>
           <Typography variant="h5" gutterBottom>

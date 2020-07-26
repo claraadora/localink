@@ -9,8 +9,10 @@ import LocalinkAlert from "./components/Alert";
 import { Route } from "react-router-dom";
 import { Grid, makeStyles } from "@material-ui/core";
 import ProductTable from "./components/table/ProductTable";
+import UserTable from "./components/table/UserTable";
 import ProductForm from "./components/form/ProductForm";
 import ProfileForm from "./components/form/ProfileForm";
+import UserForm from "./components/form/UserForm";
 import AccountSettings from "./components/tabs/AccountSettings";
 import { themeSeller } from "./themeSeller";
 import { ThemeProvider } from "@material-ui/core/styles";
@@ -84,11 +86,13 @@ function AppSeller() {
             path="/business/product/manage"
             component={ProductTable}
           />
+          <Route exact path="/business/users/manage" component={UserTable} />
           <Route
             exact
             path="/business/account/profile"
             component={ProfileForm}
           />
+          <Route exact path="/business/users/add" component={UserForm} />
           <Route
             exact
             path="/business/account/settings"
