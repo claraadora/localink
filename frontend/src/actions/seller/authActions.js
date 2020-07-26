@@ -257,7 +257,7 @@ export const addUser = (data) => async (dispatch) => {
     const res = await axios.post("/business/user", body, config);
     dispatch({
       type: authConstants.ADD_USER,
-      payload: res,
+      payload: data,
     });
 
     dispatch(setAlert("User added.", "success"));
