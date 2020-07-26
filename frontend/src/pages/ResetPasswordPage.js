@@ -14,7 +14,7 @@ import { signup } from "../actions/seller/authActions";
 import { useSelector, useDispatch } from "react-redux";
 import { Redirect } from "react-router-dom";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import { resetPassword } from "../actions/seller/authActions";
+import { resetPassword } from "../actions/shopper/authActions";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -57,7 +57,7 @@ export default function ForgetPasswordPage(props) {
       dispatch(setAlert("Passwords do not match."));
     } else {
       setIsLoading(true);
-      dispatch(resetPassword(password1, props.segment));
+      dispatch(resetPassword(password1, props.segment, isShopper));
     }
   };
   return (
@@ -76,11 +76,9 @@ export default function ForgetPasswordPage(props) {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Forgot your password?
+            Reset your Password
           </Typography>
-          <Typography component="h6">
-            Please enter the email that you want to reset the password.
-          </Typography>
+          <Typography component="h6">Please provide a new password</Typography>
           <form className={classes.form} onSubmit={onSubmit}>
             <TextField
               variant="outlined"
