@@ -5,6 +5,7 @@ const { sendActivationEmail } = require('../email/activationEmailController');
 const Shopper = require('../../models/Shopper');
 
 async function registerShopper(req, res) {
+  console.log('here2222');
   const errors = validationResult(req); //converts errors into error object
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -33,6 +34,7 @@ async function registerShopper(req, res) {
     await shopper.save();
     console.log('saved shopper');
     console.log(shopper);
+    console.log('here');
 
     sendActivationEmail(shopper, shopper, res);
   } catch (err) {

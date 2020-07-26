@@ -77,11 +77,11 @@ const sendEmail = (res, emailTemplate) => {
     if (error) {
       console.log('here');
       console.log(error);
-      console.log(info);
       res.status(500).json({ errors: [{ msg: 'Error sending email' }] });
     } else {
       res.status(250).json('Email sent successfully');
     }
+    transported.close();
   });
 };
 

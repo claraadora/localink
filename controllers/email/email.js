@@ -2,6 +2,7 @@ const nodemailer = require('nodemailer');
 const express = require('express');
 const { google } = require('googleapis');
 const OAuth2 = google.auth.OAuth2;
+const xoauth2 = require('xoauth2');
 
 console.log(process.env.EMAIL_SERVICE);
 console.log(process.env.PORT);
@@ -23,25 +24,39 @@ oauth2Client.setCredentials({
 
 const accessToken = oauth2Client.getAccessToken();
 
+// const transported = nodemailer.createTransport({
+//   service: 'Gmail',
+//   auth: {
+//     xoauth2: {
+//       user: process.env.SENDER_EMAIL_LOGIN, // Your gmail address.
+//       // Not @developer.gserviceaccount.com
+//       clientId: process.env.GOOGLE_CLIENT_ID,
+//       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+//       refreshToken:
+//         '1//04uv4zOaeJDkNCgYIARAAGAQSNwF-L9IrpLbKsJyh5n2oR9JirNmLl6DA7Yjj2Q1GbP6DVx-S6TfB2SeP54_oyuK-lp5QmBSAAJM'
+//     }
+//   }
+// });
+
 const transported = nodemailer.createTransport({
-  //host: 'smtp.gmail.com',
-  service: process.env.EMAIL_SERVICE,
+  host: 'smtp.gmail.com',
+  //service: process.env.EMAIL_SERVICE,
+  service: 'gmail',
   // port: process.env.PORT,
   // secure: true,
   auth: {
-    type: 'OAuth2',
+    // type: 'OAuth2',
     user: process.env.SENDER_EMAIL_LOGIN,
-    cliendId: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    refreshToken:
-      '1//04uv4zOaeJDkNCgYIARAAGAQSNwF-L9IrpLbKsJyh5n2oR9JirNmLl6DA7Yjj2Q1GbP6DVx-S6TfB2SeP54_oyuK-lp5QmBSAAJM',
-    accessToken:
-      'ya29.a0AfH6SMBKCz3nMOrn1xUi1GR7XggO91rAq25PKFb4mRSufmpZHzk7G-bgNTPs5_4I9DxE_ovUd5EuVhvBk-lTJS_KMXTXE7N-TdRqZfMGxYgV8gJKGQCmivFCI2CdWXcVubx3YRDvqxocS-ta8aVmUYHH_zYW1m4pwhE'
-    // pass: process.env.SENDER_EMAIL_PASSWORD
-  },
-  tls: {
-    rejectUnauthorized: false
+    // cliendId: process.env.GOOGLE_CLIENT_ID,
+    // clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    // refreshToken:
+    //   '1//04uv4zOaeJDkNCgYIARAAGAQSNwF-L9IrpLbKsJyh5n2oR9JirNmLl6DA7Yjj2Q1GbP6DVx-S6TfB2SeP54_oyuK-lp5QmBSAAJM'
+    // accessToken: accessToken
+    pass: process.env.SENDER_EMAIL_PASSWORD
   }
+  // tls: {
+  //   rejectUnauthorized: false
+  // }
 });
 
 const getPasswordResetURL = (isShopper, user, token) => {
@@ -84,7 +99,7 @@ const resetPasswordTemplate = (user, businessUser, url) => {
     <p>If you don’t use this link within 1 hour, it will expire.</p>
     <p>Have fun with the webpage!</p>
     <p>–Love, Localink</p>`;
-  return { from, to, subject, html };
+  return { from, to, subject, generateTextFromHTML: true, html };
 };
 
 const uriEmailTemplate = (shopper, url) => {
