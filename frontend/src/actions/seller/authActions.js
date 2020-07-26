@@ -1,4 +1,5 @@
 import authConstants from "../../constants/authConstants";
+import profileConstants from "../../constants/profileConstants";
 import { setAlert } from "../alertActions";
 import axios from "axios";
 import setAuthToken from "../../utils/setAuthToken";
@@ -100,7 +101,7 @@ export const signup = ({ name, shopName, email, password }) => async (
 //Defines the definite success of logout action
 export const logout = () => (dispatch) => {
   dispatch({ type: authConstants.LOGOUT });
-  dispatch({ type: authConstants.CLEAR_PROFILE });
+  dispatch({ type: profileConstants.CLEAR_PROFILE });
   dispatch(setBackLoading());
 };
 
@@ -262,7 +263,7 @@ export const addUser = (data) => async (dispatch) => {
     const res = await axios.post("/business/user", body, config);
     dispatch({
       type: authConstants.ADD_USER,
-      payload: data,
+      payload: res,
     });
 
     dispatch(setAlert("User added.", "success"));
@@ -274,7 +275,7 @@ export const addUser = (data) => async (dispatch) => {
     console.log(errors);
 
     dispatch({
-      type: authConstants.PROFILE_ERROR,
+      type: profileConstants.PROFILE_ERROR,
     });
   }
   dispatch(setBackLoading());

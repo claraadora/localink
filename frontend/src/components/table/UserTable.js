@@ -280,7 +280,7 @@ export default function UserTable() {
                           padding="none"
                           align="center"
                         >
-                          {row.name}
+                          {index === 0 ? "A" : "B"}
                         </TableCell>
                         <TableCell align="center">{row.email}</TableCell>
                         <TableCell align="center">{row.role}</TableCell>

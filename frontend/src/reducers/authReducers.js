@@ -85,6 +85,11 @@ export const auth = (state = initialState, action) => {
           }),
         },
       };
+    case authConstants.ADD_USER:
+      return {
+        ...state,
+        loading: false,
+      };
     case authConstants.DELETE_USER:
       return {
         ...state,

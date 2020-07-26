@@ -9,7 +9,7 @@ import {
   MenuItem,
 } from "@material-ui/core";
 import { useDispatch } from "react-redux";
-import { addUser } from "../../actions/seller/authActions";
+import { addUser } from "../../actions/seller/profileActions";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -46,19 +46,17 @@ const roles = [
 
 export default function UserForm() {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
     name: "",
-    image: "",
-    description: "",
-    price: "",
+    email: "",
+    role: "staff",
   });
   const { name, email, role } = formData;
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
-
-  const dispatch = useDispatch();
 
   const onSubmit = async (e) => {
     e.preventDefault();
