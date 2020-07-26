@@ -108,6 +108,10 @@ function Map() {
       defaultOptions={{ disableDefaultUI: true }}
       ref={mapRef}
     >
+      {/**RENDER USER CURRENT LOCATION */}
+      {userLocation !== "" && (
+        <Marker key="userlocation" position={userLocation} />
+      )}
       {/**RENDER ALL PRODUCT MARKERS*/}
       {!renderRoute &&
         products.length > 0 &&

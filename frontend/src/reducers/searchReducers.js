@@ -12,6 +12,7 @@ const initialState = {
   renderRoute: false,
   stops: [],
   navLink: null,
+  sentLink: false,
 };
 
 export default function (state = initialState, action) {
@@ -90,10 +91,27 @@ export default function (state = initialState, action) {
         ...state,
         stops: payload,
       };
+    case searchConstants.SEND_NAV_LINK:
+      return {
+        ...state,
+        loading: false,
+        sentLink: true,
+      };
     case searchConstants.UPDATE_NAV_LINK:
       return {
         ...state,
         navLink: payload,
+      };
+    case "SET_BACK_LOADING":
+      return {
+        ...state,
+        loading: true,
+      };
+    case "SET_BACK_LOADING_NAV_LINK":
+      return {
+        ...state,
+        loading: true,
+        sentLink: false,
       };
     default:
       return state;

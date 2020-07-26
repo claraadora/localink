@@ -20,13 +20,16 @@ import {
   sendNavLink,
 } from "../../actions/shopper/searchActions";
 import { setAlert } from "../../actions/alertActions";
+import { CircularProgress } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   button: {
     backgroundColor: green[400],
+    "&:hover": {
+      backgroundColor: green[300],
+    },
     border: 0,
     borderRadius: 3,
-    boxShadow: "0 3px 5px 2px rgba(10, 107, 11, .3)",
     color: "white",
     height: 35,
     width: 403,
@@ -44,10 +47,19 @@ export const NavLinkDialog = () => {
   const navLink = useSelector((state) => state.search.navLink);
   const [copied, setCopied] = useState(false);
   const auth = useSelector((state) => state.auth);
+  const sentLink = useSelector((state) => state.search.sentLink);
   const stops = useSelector((state) => state.search.stops);
   const travelMode = useSelector((state) => state.search.travelMode);
   const classes = useStyles();
   const dispatch = useDispatch();
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (isLoading && sentLink) {
+      setIsLoading(false);
+    }
+  }, [sentLink]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -80,10 +92,21 @@ export const NavLinkDialog = () => {
             View the routes on your mobile phone!
           </DialogContentText>
           <Grid container direction="column">
+            {isLoading && (
+              <>
+                <Grid item md={1} />
+                <Grid item container justify="center" alignItems="center">
+                  <CircularProgress />
+                </Grid>
+                <Grid item md={1} />
+              </>
+            )}
             <Grid item container justify="center" alignItems="center">
               <CopyToClipboard
                 text={navLink}
-                onCopy={() => dispatch(setAlert("Link copied", "success"))}
+                onCopy={() => {
+                  dispatch(setAlert("Link copied", "success"));
+                }}
               >
                 <Button className={classes.button}>
                   <Typography align="center" variant="body2">
@@ -105,7 +128,10 @@ export const NavLinkDialog = () => {
             </Grid>
             <Grid item container justify="center" alignItems="center">
               <Button
-                onClick={() => dispatch(sendNavLink())}
+                onClick={() => {
+                  setIsLoading(true);
+                  dispatch(sendNavLink(navLink));
+                }}
                 className={classes.button}
               >
                 <Typography align="center" variant="body2">
