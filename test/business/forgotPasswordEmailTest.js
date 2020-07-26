@@ -32,8 +32,8 @@ describe('forgotPasswordEmailController', () => {
   it('Should send email with password reset link', done => {
     chai
       .request(app)
-      .get(`/business/reset_password/${userOwner.email}`)
-      .set('x-auth-token', userOwnerToken)
+      .post(`/business/reset_password/${userOwner.email}`)
+      .send({ isShopper: false })
       .end(async function (error, res) {
         assert.equal(error, null, 'error is not null');
         assert.equal(res.status, 250, 'status is not 250');

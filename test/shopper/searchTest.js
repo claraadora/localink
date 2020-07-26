@@ -75,21 +75,21 @@ describe('searchControllerShopper', () => {
     });
   });
 
-  it('Should return products and filter only services', done => {
-    chai
-      .request(app)
-      .post('/search')
-      .set('Content-Type', 'application/json')
-      .send(searchQueryService)
-      .end(async function (error, res) {
-        assert.equal(error, null, 'error is not null');
-        assert.equal(res.status, 200, 'status is not 200');
-        expect(res => {
-          expect(res.body[0]).to.eql(allProducts[11]);
-        });
-        done();
-      });
-  });
+  // it('Should return products and filter only services', done => {
+  //   chai
+  //     .request(app)
+  //     .post('/search')
+  //     .set('Content-Type', 'application/json')
+  //     .send(searchQueryService)
+  //     .end(async function (error, res) {
+  //       assert.equal(error, null, 'error is not null');
+  //       assert.equal(res.status, 200, 'status is not 200');
+  //       expect(res => {
+  //         expect(res.body[0]).to.eql(allProducts[11]);
+  //       });
+  //       done();
+  //     });
+  // });
 
   it('Should return products in order of most relevant to least relevant', done => {
     chai

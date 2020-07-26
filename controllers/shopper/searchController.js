@@ -106,11 +106,6 @@ async function search(req, res) {
         }
       },
       {
-        $match: {
-          isService: service
-        }
-      },
-      {
         $lookup: {
           from: 'shops',
           localField: 'shop',

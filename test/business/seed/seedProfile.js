@@ -39,12 +39,12 @@ const newEmail = {
 };
 
 const newPassword = {
-  oldPassword: firstUserOwner.email,
+  oldPassword: firstUserOwner.password,
   newPassword: 'testbusinessOwner@yahoo.com'
 };
 
 const newStaffPassword = {
-  oldPassword: userStaff.email,
+  oldPassword: userStaff.password,
   newPassword: 'testUserStaff@yahoo.com'
 };
 

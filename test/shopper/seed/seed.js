@@ -14,7 +14,7 @@ const shopperId = new ObjectID();
 const dummyShopper = {
   _id: shopperId,
   name: 'test shopper',
-  email: 'testshopper@yahoo.com',
+  email: process.env.RECEIVER_EMAIL_LOGIN,
   password: 'testshopper@yahoo.com'
 };
 

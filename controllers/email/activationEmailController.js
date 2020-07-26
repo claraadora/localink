@@ -23,9 +23,9 @@ const getActivationLink = user => {
 
 const emailActivationTemplateUser = (user, specificUser, url) => {
   const from = 'Localink' + '<' + process.env.SENDER_EMAIL_LOGIN + '>';
-  const to = user.email;
   //For testing
   //const to = process.env.RECEIVER_EMAIL_LOGIN;
+  const to = specificUser.email;
   const subject = 'Localink Account Activation';
   let recipient = specificUser.name;
   const html = `
@@ -46,14 +46,16 @@ const emailActivationTemplateUser = (user, specificUser, url) => {
 
 const emailActivationTemplate = (user, specificUser, url) => {
   const from = 'Localink' + '<' + process.env.SENDER_EMAIL_LOGIN + '>';
-  const to = user.users[0].email;
   //For testing
   //const to = process.env.RECEIVER_EMAIL_LOGIN;
+  let to = null;
   const subject = 'Localink Account Activation';
   let recipient = null;
   if (user === specificUser) {
+    to = user.email;
     recipient = user.name;
   } else {
+    to = user.users[0].email;
     recipient = user.shopName;
   }
   const html = `
@@ -72,7 +74,6 @@ const sendEmail = (res, emailTemplate) => {
       console.log(error);
       res.status(500).json({ errors: [{ msg: 'Error sending email' }] });
     } else {
-      //console.log(`**Email sent**`, info.response);
       res.status(250).json('Email sent successfully');
     }
   });

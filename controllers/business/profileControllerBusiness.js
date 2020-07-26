@@ -171,6 +171,7 @@ async function updatePassword(req, res) {
     const isMatch = await bcrypt.compare(oldPassword, user.password);
 
     if (!isMatch) {
+      console.log('invalid cred');
       return res.status(400).json({ errors: [{ msg: 'Invalid Credentials' }] });
     }
 

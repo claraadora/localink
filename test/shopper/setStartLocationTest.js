@@ -14,7 +14,11 @@ const {
   customStartLocation
 } = require('./seed/seedStartLocation');
 
-const { addDummyShopper, removeDummyShopper } = require('./seed/seed');
+const {
+  dummyShopper,
+  addDummyShopper,
+  removeDummyShopper
+} = require('./seed/seed');
 
 const { addDummyUsers, removeDummyUsers } = require('../business/seed/seed');
 
@@ -39,7 +43,7 @@ describe("test setting shopper's start location", () => {
   it('should get current location and set distance to shop', done => {
     chai
       .request(app)
-      .post('/start-location')
+      .post(`/start-location/${dummyShopper._id}`)
       .set('Content-Type', 'application/json')
       .send(setCurrentLocation)
       .end(async (error, res) => {
@@ -50,10 +54,12 @@ describe("test setting shopper's start location", () => {
           expect(res.body).to.eql(currLocation);
         });
         const shop = await Shop.findById(profileId);
-        console.log(shop);
         const latLng = await geocode(shop.address);
         const dist = await getDistance(res.body, latLng);
-        assert.equal(dist, shop.distance);
+        const saved = await shop.distance.filter(obj => {
+          return obj && obj[dummyShopper._id];
+        })[0][dummyShopper._id];
+        assert.equal(dist, saved);
         done();
       });
   });
@@ -61,7 +67,7 @@ describe("test setting shopper's start location", () => {
   it('should get input location and set distance to shop', done => {
     chai
       .request(app)
-      .post('/start-location')
+      .post(`/start-location/${dummyShopper._id}`)
       .set('Content-Type', 'application/json')
       .send(customStartLocation)
       .end(async (error, res) => {
@@ -72,10 +78,12 @@ describe("test setting shopper's start location", () => {
           expect(res.body).to.eql(currLocation);
         });
         const shop = await Shop.findById(profileId);
-        console.log(shop);
         const latLng = await geocode(shop.address);
         const dist = await getDistance(res.body, latLng);
-        assert.equal(dist, shop.distance);
+        const saved = await shop.distance.filter(obj => {
+          return obj && obj[dummyShopper._id];
+        })[0][dummyShopper._id];
+        assert.equal(dist, saved);
         done();
       });
   });

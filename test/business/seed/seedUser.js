@@ -95,7 +95,9 @@ async function registerAddedUser(isOwner) {
 
     const token = usePasswordHashToMakeToken(businessObj, user);
     const url = getPasswordResetURL(false, user, token);
-    const substring = url.substr(21);
+    let substring = url.substr(21);
+    substring = substring.replace('-', '_');
+
     return substring;
   } catch (err) {
     console.error(err.message);
