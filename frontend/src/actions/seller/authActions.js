@@ -1,5 +1,4 @@
 import authConstants from "../../constants/authConstants";
-import profileConstants from "../../constants/profileConstants";
 import { setAlert } from "../alertActions";
 import axios from "axios";
 import setAuthToken from "../../utils/setAuthToken";
@@ -101,7 +100,7 @@ export const signup = ({ name, shopName, email, password }) => async (
 //Defines the definite success of logout action
 export const logout = () => (dispatch) => {
   dispatch({ type: authConstants.LOGOUT });
-  dispatch({ type: profileConstants.CLEAR_PROFILE });
+  dispatch({ type: authConstants.CLEAR_PROFILE });
   dispatch(setBackLoading());
 };
 
@@ -248,4 +247,90 @@ export const setBackLoading = () => (dispatch) => {
   dispatch({
     type: authConstants.SET_BACK_LOADING,
   });
+};
+
+export const addUser = (data) => async (dispatch) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  const body = JSON.stringify(data);
+
+  try {
+    const res = await axios.post("/business/user", body, config);
+    dispatch({
+      type: authConstants.ADD_USER,
+      payload: data,
+    });
+
+    dispatch(setAlert("User added.", "success"));
+  } catch (err) {
+    const errors = err.response.data.errors;
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, "error")));
+    }
+    console.log(errors);
+
+    dispatch({
+      type: authConstants.PROFILE_ERROR,
+    });
+  }
+};
+
+export const deleteUser = (id) => async (dispatch) => {
+  try {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const res = await axios.delete(`/business/user/${id}`, config);
+
+    dispatch({
+      type: authConstants.DELETE_USER,
+      payload: res.data,
+    });
+
+    dispatch(setAlert("User deleted.", "success"));
+  } catch (err) {
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, "error")));
+    }
+
+    dispatch({
+      type: authConstants.PROFILE_ERROR,
+      payload: {
+        msg: err.response.statusText,
+        status: err.response.status,
+      },
+    });
+  }
+};
+
+export const changeActiveStatus = (userId) => async (dispatch) => {
+  try {
+    const res = await axios.get(`/business/user/${userId}`);
+    dispatch({
+      type: authConstants.CHANGE_ACTIVE_STATUS,
+      payload: userId,
+    });
+
+    dispatch(setAlert("Active status changed.", "success"));
+  } catch (err) {
+    const errors = err.response.data.errors;
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, "error")));
+    }
+    console.log(errors);
+
+    dispatch({
+      type: authConstants.PROFILE_ERROR,
+    });
+  }
+  dispatch(setBackLoading());
 };

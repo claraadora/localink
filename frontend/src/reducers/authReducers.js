@@ -4,7 +4,9 @@ const initialState = {
   token: localStorage.getItem("token"),
   isAuthenticated: null,
   loading: true,
-  user: null,
+  user: {
+    users: [],
+  },
   emailSent: false,
 };
 
@@ -68,6 +70,20 @@ export const auth = (state = initialState, action) => {
       return {
         ...state,
         loading: true,
+      };
+    case authConstants.CHANGE_ACTIVE_STATUS:
+      return {
+        ...state,
+        loading: false,
+        user: {
+          users: state.user.users.map((user) => {
+            if (user._id === payload) {
+              const bool = user.isAccountActive;
+              user.isAccountActive = !bool;
+            }
+            return user;
+          }),
+        },
       };
     default:
       return state;
