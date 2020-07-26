@@ -61,7 +61,7 @@ app.use(
 app.use('', require('./routes/api/shopper/routing'));
 
 //Define chat route
-app.use('', require('./routes/api/chat/chatUploads'));
+app.use('/chat', require('./routes/api/chat/chatUploads'));
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 const chatRoute = require('./routes/api/chat/chat')(io);
