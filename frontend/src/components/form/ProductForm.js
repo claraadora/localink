@@ -13,6 +13,7 @@ import { useDispatch } from "react-redux";
 import { addProduct } from "../../actions/seller/profileActions";
 import EditIcon from "@material-ui/icons/Edit";
 import Axios from "axios";
+import product from "../../utils/product.png";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -108,7 +109,7 @@ export default function ProductForm() {
                 <Grid item>
                   <Avatar
                     alt={name !== "" ? name : "Localink"}
-                    src={image}
+                    src={image === "" ? product : image}
                     className={classes.avatar}
                     variant="square"
                   />
