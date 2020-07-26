@@ -20,6 +20,11 @@ export const auth = (state = initialState, action) => {
         user: payload,
       };
     case authConstants.SIGNUP_SUCCESS:
+      return {
+        ...state,
+        ...payload,
+        loading: false,
+      };
     case authConstants.LOGIN_SUCCESS:
     case authConstants.CHANGE_PASSWORD_SUCCESS:
     case authConstants.CHANGE_EMAIL_SUCCESS:
@@ -58,6 +63,11 @@ export const auth = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
+      };
+    case authConstants.SET_BACK_LOADING:
+      return {
+        ...state,
+        loading: true,
       };
     default:
       return state;

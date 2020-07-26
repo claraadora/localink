@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -7,7 +7,7 @@ import { Link as RouterLink } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, CircularProgress } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../actions/shopper/authActions";
 import { Redirect } from "react-router-dom";
@@ -40,14 +40,24 @@ export default function LogInPage() {
   const { email, password } = formData;
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const [isLoading, setIsLoading] = useState(false);
+  const loading = useSelector((state) => state.auth.loading);
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     dispatch(login({ email, password }));
   };
+
+  useEffect(() => {
+    if (isLoading && !loading) {
+      setIsLoading(false);
+      setFormData({ email: "", password: "" });
+    }
+  }, [loading]);
 
   if (isAuthenticated) {
     return <Redirect to="/search" />;
@@ -64,6 +74,7 @@ export default function LogInPage() {
     >
       <Grid item>
         <div className={classes.paper}>
+          {isLoading && <CircularProgress />}
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
           </Avatar>

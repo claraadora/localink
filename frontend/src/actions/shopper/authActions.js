@@ -18,10 +18,13 @@ export const loadUser = () => async (dispatch) => {
     });
 
     dispatch(getCurrentProfile());
+
+    dispatch(setAlert("Welcome! 🙌", "success"));
   } catch (err) {
     dispatch({
       type: authConstants.AUTH_ERROR,
     });
+    dispatch(setBackLoading());
   }
 };
 //Encompasses request, success, and failure during logins.
@@ -42,6 +45,8 @@ export const login = ({ email, password }) => async (dispatch) => {
       payload: res.data,
     });
 
+    dispatch(setAlert("Welcome 🙌", "success"));
+
     dispatch(loadUser());
   } catch (err) {
     const errors = err.response.data.errors;
@@ -53,6 +58,8 @@ export const login = ({ email, password }) => async (dispatch) => {
     dispatch({
       type: authConstants.LOGIN_FAILURE,
     });
+
+    dispatch(setBackLoading());
   }
 };
 
@@ -85,41 +92,11 @@ export const loginWithGoogle = (response) => async (dispatch) => {
     dispatch({
       type: authConstants.LOGIN_FAILURE,
     });
+
+    dispatch(setBackLoading());
   }
 };
 
-export const loginWithFacebook = (response) => async (dispatch) => {
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  };
-  const accessToken = response.accessToken;
-  const userID = response.userID;
-
-  const body = JSON.stringify({ accessToken, userID });
-
-  try {
-    const res = await axios.post("/auth/facebook-login ", body, config); // api/auth
-
-    dispatch({
-      type: authConstants.LOGIN_SUCCESS,
-      payload: res.data,
-    });
-
-    dispatch(loadUser());
-  } catch (err) {
-    const errors = err.response.data.errors;
-
-    if (errors) {
-      errors.forEach((error) => dispatch(setAlert(error.msg, "error")));
-    }
-
-    dispatch({
-      type: authConstants.LOGIN_FAILURE,
-    });
-  }
-};
 //Register user
 export const signup = ({ name, email, password }) => async (dispatch) => {
   const config = {
@@ -154,6 +131,7 @@ export const signup = ({ name, email, password }) => async (dispatch) => {
       type: authConstants.SIGNUP_FAILURE,
     });
   }
+  dispatch(setBackLoading());
 };
 
 //Defines the definite success of logout action
@@ -197,6 +175,7 @@ export const changePassword = ({ oldPassword, newPassword }) => async (
       type: authConstants.CHANGE_PASSWORD_FAILURE,
     });
   }
+  dispatch(setBackLoading());
 };
 
 export const changeEmail = ({ email }) => async (dispatch) => {
@@ -264,4 +243,11 @@ export const forgotPassword = (email, isShopper) => async (dispatch) => {
       type: authConstants.AUTH_ERROR,
     });
   }
+  dispatch(setBackLoading());
+};
+
+export const setBackLoading = () => (dispatch) => {
+  dispatch({
+    type: authConstants.SET_BACK_LOADING,
+  });
 };

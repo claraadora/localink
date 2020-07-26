@@ -17,7 +17,7 @@ export const loadUser = () => async (dispatch) => {
       payload: res.data,
     });
 
-    dispatch(setAlert("User loaded successfully", "success"));
+    dispatch(setAlert("Welcome! 🙌", "success"));
   } catch (err) {
     dispatch({
       type: authConstants.AUTH_ERROR,

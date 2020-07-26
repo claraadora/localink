@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   TextField,
@@ -7,12 +7,13 @@ import {
   Typography,
   Divider,
   Avatar,
+  CircularProgress,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { setAlert } from "../../actions/alertActions";
 import { signup } from "../../actions/seller/authActions";
 import { useSelector, useDispatch } from "react-redux";
-import { Redirect, Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 
 const useStyles = makeStyles((theme) => ({
@@ -46,6 +47,21 @@ export default function SignUpPage() {
   const { name, shopName, email, password, password2 } = formData;
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const loading = useSelector((state) => state.auth.loading);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (isLoading && !loading) {
+      setIsLoading(false);
+      setFormData({
+        name: "",
+        shopName: "",
+        email: "",
+        password: "",
+        password2: "",
+      });
+    }
+  }, [loading]);
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -56,13 +72,10 @@ export default function SignUpPage() {
       console.log("Passwords do not match");
       dispatch(setAlert("Passwords do not match", "danger"));
     } else {
+      setIsLoading(true);
       dispatch(signup({ name, shopName, email, password }));
     }
   };
-
-  if (isAuthenticated) {
-    return <Redirect to="/business/dashboard" />;
-  }
 
   return (
     <Grid
@@ -75,6 +88,7 @@ export default function SignUpPage() {
     >
       <Grid item>
         <div className={classes.paper}>
+          {isLoading && <CircularProgress />}
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
           </Avatar>
