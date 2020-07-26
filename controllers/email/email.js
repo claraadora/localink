@@ -2,7 +2,10 @@ const nodemailer = require('nodemailer');
 const e = require('express');
 
 const transported = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
   service: process.env.EMAIL_SERVICE,
+  port: process.env.PORT,
+  secure: false,
   auth: {
     user: process.env.SENDER_EMAIL_LOGIN_USER,
     pass: process.env.SENDER_EMAIL_PASSWORD

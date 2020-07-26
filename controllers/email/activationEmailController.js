@@ -3,6 +3,7 @@ const CryptoJS = require('crypto-js');
 const { transported } = require('./email');
 
 const getActivationLink = user => {
+  console.log('get activation link in aec');
   const randomActivationCode = cryptoRandomString({ length: 10 });
   const activeExpires = Date.now() + 24 * 3600 * 1000;
   const data = {
@@ -45,6 +46,7 @@ const emailActivationTemplateUser = (user, specificUser, url) => {
 };
 
 const emailActivationTemplate = (user, specificUser, url) => {
+  console.log('email activation template');
   const from = 'Localink' + '<' + process.env.SENDER_EMAIL_LOGIN + '>';
   //For testing
   //const to = process.env.RECEIVER_EMAIL_LOGIN;
@@ -80,6 +82,7 @@ const sendEmail = (res, emailTemplate) => {
 };
 
 const sendActivationEmail = (user, specificUser, res) => {
+  console.log('send activation email');
   const activationLink = getActivationLink(specificUser);
   const emailTemplate = emailActivationTemplate(
     user,
