@@ -24,8 +24,8 @@ export const loadUser = () => async (dispatch) => {
     dispatch({
       type: authConstants.AUTH_ERROR,
     });
-    dispatch(setBackLoading());
   }
+  dispatch(setBackLoading());
 };
 //Encompasses request, success, and failure during logins.
 export const login = ({ email, password }) => async (dispatch) => {
@@ -92,9 +92,8 @@ export const loginWithGoogle = (response) => async (dispatch) => {
     dispatch({
       type: authConstants.LOGIN_FAILURE,
     });
-
-    dispatch(setBackLoading());
   }
+  dispatch(setBackLoading());
 };
 
 //Register user
@@ -138,6 +137,7 @@ export const signup = ({ name, email, password }) => async (dispatch) => {
 export const logout = () => (dispatch) => {
   dispatch({ type: authConstants.LOGOUT });
   dispatch({ type: profileConstants.CLEAR_PROFILE });
+  dispatch(setBackLoading());
 };
 
 export const changePassword = ({ oldPassword, newPassword }) => async (
@@ -211,6 +211,7 @@ export const changeEmail = ({ email }) => async (dispatch) => {
       type: authConstants.CHANGE_EMAIL_FAILURE,
     });
   }
+  dispatch(setBackLoading());
 };
 
 export const forgotPassword = (email, isShopper) => async (dispatch) => {

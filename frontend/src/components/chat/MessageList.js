@@ -6,14 +6,17 @@ import {
   SendButton,
   TextComposer,
   FixedWrapper,
+  IconButton,
 } from "@livechat/ui-kit";
 import { useSelector, useDispatch } from "react-redux";
 import { LocalinkMessageListItem } from "./MessageListItem";
-import { Paper, Grid, makeStyles, Typography } from "@material-ui/core";
+import { Paper, Grid, makeStyles, Typography, iCon } from "@material-ui/core";
 import moment from "moment";
 import { getChatById } from "../../utils/chat";
 import { afterPostMessage } from "../../actions/chatActions";
-
+import Dropzone from "react-dropzone";
+import AttachFileIcon from "@material-ui/icons/AttachFile";
+import Axios from "axios";
 const useStyles = makeStyles({
   root: {
     backgroundColor: "#000000",
@@ -33,8 +36,14 @@ export const LocalinkMessageList = (props) => {
   const [textInput, setTextInput] = useState("");
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.chat.loading);
-
+  const [messagesEnd, setMessagesEnd] = useState(null);
   const classes = useStyles();
+
+  useEffect(() => {
+    if (messagesEnd !== null) {
+      messagesEnd.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messagesEnd]);
   useEffect(() => {
     setChatList(chat.chatList);
     setActiveChat(chat.activeChat);
@@ -80,14 +89,54 @@ export const LocalinkMessageList = (props) => {
       receiverId,
       isShopper,
     });
-    // msgList.push(obj);
-    // setMsgList(msgList);
     setTextInput("");
-    console.log("afterPostMessage");
-    console.log(obj);
     dispatch(
       afterPostMessage({ messageFromBackEnd: obj, isShopper: isShopperState })
     );
+  };
+
+  const onUploadImage = (e) => {
+    const file = e.target.files[0];
+    let formData = new FormData();
+    const config = {
+      header: { "Content-Type": "multipart/form-data" },
+    };
+    formData.append("file", file);
+
+    Axios.post(
+      isShopperState
+        ? "/chat/upload-attachment"
+        : "/business/chat/upload-attachment",
+      formData,
+      config
+    ).then((response) => {
+      if (response.data.success) {
+        let momentObj = moment();
+
+        let userId = isShopperState ? user._id : profile._id;
+        let username = isShopperState ? user.name : user.shopName;
+        let message = response.data.url;
+        let time = {
+          sameDay: momentObj.format("h:mm a"),
+          sameElse: momentObj.format("Do MMMM YYYY h:mm a"),
+          unformatted: momentObj,
+        };
+        let type = "image";
+        let receiverId = activeChat;
+        let isShopper = isShopperState ? "true" : "false";
+
+        console.log(message);
+        props.socket.emit("Input Chat Message", {
+          userId,
+          username,
+          message,
+          time,
+          type,
+          receiverId,
+          isShopper,
+        });
+      }
+    });
   };
 
   if (!loading && (chatList.length === 0 || msgList === null)) {
@@ -130,6 +179,14 @@ export const LocalinkMessageList = (props) => {
                 </Grid>
               );
             })}
+            {
+              <div
+                ref={(el) => {
+                  setMessagesEnd(el);
+                }}
+                style={{ float: "left", clear: "both" }}
+              />
+            }
           </MessageList>
         </Grid>
         <Grid item>
@@ -139,6 +196,18 @@ export const LocalinkMessageList = (props) => {
             onSend={handleSubmit}
           >
             <Row align="center">
+              <div>
+                <label for="image">
+                  <AttachFileIcon />
+                </label>
+                <input
+                  id="image"
+                  type="file"
+                  accept="image/*"
+                  style={{ display: "none" }}
+                  onChange={onUploadImage}
+                />
+              </div>
               <TextInput fill />
               <SendButton fit />
             </Row>

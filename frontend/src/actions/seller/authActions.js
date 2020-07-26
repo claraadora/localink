@@ -23,6 +23,7 @@ export const loadUser = () => async (dispatch) => {
       type: authConstants.AUTH_ERROR,
     });
   }
+  dispatch(setBackLoading());
 };
 //Encompasses request, success, and failure during logins.
 export const login = ({ email, password }) => async (dispatch) => {
@@ -53,6 +54,8 @@ export const login = ({ email, password }) => async (dispatch) => {
     dispatch({
       type: authConstants.LOGIN_FAILURE,
     });
+
+    dispatch(setBackLoading());
   }
 };
 
@@ -92,12 +95,14 @@ export const signup = ({ name, shopName, email, password }) => async (
       type: authConstants.SIGNUP_FAILURE,
     });
   }
+  dispatch(setBackLoading());
 };
 
 //Defines the definite success of logout action
 export const logout = () => (dispatch) => {
   dispatch({ type: authConstants.LOGOUT });
   dispatch({ type: profileConstants.CLEAR_PROFILE });
+  dispatch(setBackLoading());
 };
 
 export const changePassword = ({ oldPassword, newPassword }) => async (
@@ -135,6 +140,7 @@ export const changePassword = ({ oldPassword, newPassword }) => async (
       type: authConstants.CHANGE_PASSWORD_FAILURE,
     });
   }
+  dispatch(setBackLoading());
 };
 
 export const changeEmail = ({ email }) => async (dispatch) => {
@@ -170,6 +176,7 @@ export const changeEmail = ({ email }) => async (dispatch) => {
       type: authConstants.CHANGE_EMAIL_FAILURE,
     });
   }
+  dispatch(setBackLoading());
 };
 
 export const forgotPassword = (email, isShopper) => async (dispatch) => {
@@ -202,6 +209,7 @@ export const forgotPassword = (email, isShopper) => async (dispatch) => {
       type: authConstants.AUTH_ERROR,
     });
   }
+  dispatch(setBackLoading());
 };
 
 export const resetPassword = (password, segment) => async (dispatch) => {
@@ -233,4 +241,11 @@ export const resetPassword = (password, segment) => async (dispatch) => {
       type: authConstants.AUTH_ERROR,
     });
   }
+  dispatch(setBackLoading());
+};
+
+export const setBackLoading = () => (dispatch) => {
+  dispatch({
+    type: authConstants.SET_BACK_LOADING,
+  });
 };
