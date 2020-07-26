@@ -21,14 +21,6 @@ router.post('/start-location/:shopper_id', async (req, res) => {
     location = await geocode(startLocation);
   }
   try {
-    // let shopper = await Shopper.findOneAndUpdate(
-    //   { _id: req.user.id },
-    //   { latLng: location },
-    //   { new: true }
-    // );
-
-    //console.log('Successfully updated location of shopper');
-
     const allShops = await Shop.find();
     allShops.forEach(async s => {
       let shop = s;
@@ -56,5 +48,25 @@ router.post('/start-location/:shopper_id', async (req, res) => {
     res.status(500).json({ errors: [{ msg: 'Server Error' }] });
   }
 });
+
+// // @route    POST start-location
+// // @desc     Get the start location, update shopper's location
+// // @access   Private
+// // @return   User
+// router.post('/remove-start-location/:shopper_id', async (req, res) => {
+//   try {
+//     const allShops = await Shop.find();
+//     allShops.forEach(shop => {
+//       shop.distance = shop.distance.filter(obj => {
+//         return obj && !obj[shopper_id];
+//       });
+//       await shop.save();
+//     });
+//     res.status(200).json('successful');
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({ errors: [{ msg: 'Server Error' }] });
+//   }
+// });
 
 module.exports = router;
