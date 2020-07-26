@@ -61,8 +61,8 @@ export const updateDirectionSteps = (directionStep) => (dispatch) => {
   });
 };
 
-export const reorderSearch = (sortBy, order, items) => (dispatch) => {
-  const sortedSearch = items.sort(dynamicSort(sortBy, order));
+export const reorderSearch = (sortBy, order, items, id) => (dispatch) => {
+  const sortedSearch = items.sort(dynamicSort(sortBy, order, id));
   dispatch({
     type: searchConstants.REORDER_SEARCH,
     payload: {
@@ -133,5 +133,39 @@ export const setRenderRoute = () => (dispatch) => {
 export const setRenderLocation = () => (dispatch) => {
   dispatch({
     type: searchConstants.SET_RENDER_LOCATION,
+  });
+};
+
+export const updateStops = (stops) => (dispatch) => {
+  dispatch({
+    type: searchConstants.UPDATE_STOPS,
+    payload: stops,
+  });
+};
+
+export const createNavLink = (stops, travelMode) => (dispatch) => {
+  const URI = `https://www.google.com/maps/dir/?api=1&dir_action=navigate&travelMode=${travelMode}&`;
+
+  const len = stops.length;
+  const startLocation = `origin=${stops[0].lat},${stops[0].lng}&`;
+  const endLocation = `destination=${stops[len - 1].lat},${stops[len - 1].lng}`;
+  let waypoints = len <= 2 ? "" : "&waypoints=";
+
+  if (len > 2) {
+    for (let i = 1; i < len - 1; i++) {
+      waypoints = waypoints.concat(`${stops[i].lat},${stops[i].lng}`);
+      console.log(`${stops[i].lat},${stops[i].lng}`);
+      console.log(waypoints);
+
+      if (i !== len - 2) {
+        waypoints = waypoints.concat("|");
+      }
+    }
+  }
+  const finalURI = URI + startLocation + endLocation + waypoints;
+
+  dispatch({
+    type: searchConstants.UPDATE_NAV_LINK,
+    payload: finalURI,
   });
 };

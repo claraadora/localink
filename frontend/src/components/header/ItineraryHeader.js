@@ -3,7 +3,7 @@ import { Paper, Typography, IconButton, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { teal } from "@material-ui/core/colors";
 import { useSelector, useDispatch } from "react-redux";
-import { loadRoute } from "../../actions/shopper/searchActions";
+import { loadRoute, createNavLink } from "../../actions/shopper/searchActions";
 import NavigationIcon from "@material-ui/icons/Navigation";
 
 const useStyles = makeStyles({
@@ -17,6 +17,8 @@ const useStyles = makeStyles({
 
 export const ItineraryHeader = () => {
   const itineraryItems = useSelector((state) => state.itinerary.itineraryArray);
+  const stops = useSelector((state) => state.search.stops);
+  const travelMode = useSelector((state) => state.search.travelMode);
   const classes = useStyles();
   const dispatch = useDispatch();
   if (itineraryItems.length === 0) {
@@ -37,6 +39,11 @@ export const ItineraryHeader = () => {
         {itineraryItems.length > 0 ? (
           <Grid item>
             <IconButton onClick={() => dispatch(loadRoute())}>
+              <NavigationIcon fontSize="medium" />
+            </IconButton>
+            <IconButton
+              onClick={() => dispatch(createNavLink(stops, travelMode))}
+            >
               <NavigationIcon fontSize="medium" />
             </IconButton>
           </Grid>

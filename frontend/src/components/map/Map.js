@@ -13,6 +13,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { teal } from "@material-ui/core/colors";
 import {
   loadDirectionSteps,
+  updateStops,
   updateDirectionSteps,
 } from "../../actions/shopper/searchActions";
 
@@ -52,6 +53,7 @@ function Map() {
       latLng.unshift(userLocation);
     }
     setStops(latLng);
+    dispatch(updateStops(latLng));
 
     if (latLng.length > 2) {
       const temp = [];

@@ -28,11 +28,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function trimDistance(distance) {
-  if (distance > 1000) {
-    return `${Math.round(distance / 1000)} km`;
+function getAndTrimDistance(distanceArr, id) {
+  const distance = distanceArr.filter((obj) => {
+    console.log(obj);
+    return obj && obj[id];
+  })[0][id];
+  console.log(distance);
+  console.log(id);
+
+  if (distance === undefined) {
+    return null;
   } else {
-    return `${distance} m`;
+    if (distance > 1000) {
+      return `${Math.round(distance / 1000)} km`;
+    } else {
+      return `${distance} m`;
+    }
   }
 }
 
@@ -105,7 +116,7 @@ export const ItemCard = (props) => {
               ) : sortedBy === "ratings" ? (
                 Math.round(data.shop_docs[0].ratings * 10) / 10
               ) : (
-                trimDistance(data.shop_docs[0].distance)
+                getAndTrimDistance(data.shop_docs[0].distance, auth.user._id)
               )}
             </Typography>
           </Grid>

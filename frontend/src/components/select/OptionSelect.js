@@ -20,6 +20,7 @@ export const OptionSelect = () => {
   const [sortBy, setSortBy] = useState("priceAsc");
   const productArray = useSelector((state) => state.search.productArray);
   const classes = useStyles();
+  const auth = useSelector((state) => state.auth);
 
   //Calculate Distance
   const search = useSelector((state) => state.search);
@@ -36,7 +37,7 @@ export const OptionSelect = () => {
   };
 
   const handleSort = (sortBy, order) => {
-    return dispatch(reorderSearch(sortBy, order, productArray));
+    return dispatch(reorderSearch(sortBy, order, productArray, auth.user._id));
   };
 
   return (

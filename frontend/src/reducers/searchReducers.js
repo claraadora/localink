@@ -3,13 +3,15 @@ import searchConstants from "../constants/searchConstants";
 const initialState = {
   productArray: [],
   loading: true,
-  sortedBy: "distance",
+  sortedBy: "price",
   directionSteps: [],
   error: {},
   userLocation: null,
   travelMode: "DRIVING",
   renderLocation: false,
   renderRoute: false,
+  stops: [],
+  navLink: null,
 };
 
 export default function (state = initialState, action) {
@@ -82,6 +84,16 @@ export default function (state = initialState, action) {
         renderLocation: false,
         renderRoute: true,
         loading: true,
+      };
+    case searchConstants.UPDATE_STOPS:
+      return {
+        ...state,
+        stops: payload,
+      };
+    case searchConstants.UPDATE_NAV_LINK:
+      return {
+        ...state,
+        navLink: payload,
       };
     default:
       return state;
