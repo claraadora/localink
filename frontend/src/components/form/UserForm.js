@@ -9,7 +9,7 @@ import {
   MenuItem,
 } from "@material-ui/core";
 import { useDispatch } from "react-redux";
-import { addUser } from "../../actions/seller/profileActions";
+import { addUser } from "../../actions/seller/authActions";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -35,12 +35,12 @@ const useStyles = makeStyles((theme) => ({
 
 const roles = [
   {
-    value: "Staff",
-    label: "Staff",
+    value: "staff",
+    label: "staff",
   },
   {
-    value: "Owner",
-    label: "Owner",
+    value: "owner",
+    label: "owner",
   },
 ];
 

@@ -16,10 +16,14 @@ import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
 import { useSelector, useDispatch } from "react-redux";
 import { getCurrentProfile } from "../../actions/seller/profileActions";
+import { changeActiveStatus } from "../../actions/seller/authActions";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { lightBlue } from "@material-ui/core/colors";
+import { lightBlue, red, green } from "@material-ui/core/colors";
+import CheckIcon from "@material-ui/icons/Check";
+import BlockIcon from "@material-ui/icons/Block";
 
+//
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -144,6 +148,12 @@ const useStyles = makeStyles((theme) => ({
     top: 20,
     width: 1,
   },
+  block: {
+    color: red[300],
+  },
+  allow: {
+    color: green[500],
+  },
 }));
 
 export default function UserTable() {
@@ -154,9 +164,11 @@ export default function UserTable() {
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [rows, setRows] = useState([]);
+  const [role, setRole] = useState(null);
   const user = useSelector((state) => state.auth.user);
   const loading = useSelector((state) => state.auth.loading);
   const dispatch = useDispatch();
+  const profile = useSelector((state) => state.profile.profile);
 
   useEffect(() => {
     if (user && user.users !== undefined) {
@@ -167,9 +179,11 @@ export default function UserTable() {
           email: user.email,
           role: user.role,
           status: user.activated,
+          _id: user._id,
         })
       );
       setRows(updatedRows);
+      setRole(user.users[0].role);
     }
   }, [dispatch, loading, user]);
 
@@ -246,12 +260,35 @@ export default function UserTable() {
                           {row.status ? "Active" : "Non-active"}
                         </TableCell>
                         <TableCell align="center">
-                          <IconButton>
-                            <EditIcon />
-                          </IconButton>
-                          <IconButton>
-                            <DeleteIcon />
-                          </IconButton>
+                          {role === "owner" ? (
+                            <div>
+                              <IconButton>
+                                <EditIcon />
+                              </IconButton>
+                              <IconButton>
+                                <DeleteIcon />
+                              </IconButton>
+                              <IconButton
+                                onClick={() =>
+                                  dispatch(changeActiveStatus(row._id))
+                                }
+                              >
+                                {row.status ? (
+                                  <BlockIcon
+                                    className={classes.block}
+                                    disabled={index === 0}
+                                  />
+                                ) : (
+                                  <CheckIcon
+                                    className={classes.allow}
+                                    disabled={index === 0}
+                                  />
+                                )}
+                              </IconButton>
+                            </div>
+                          ) : (
+                            "Not Permitted"
+                          )}
                         </TableCell>
                       </TableRow>
                     );

@@ -69,6 +69,17 @@ export const auth = (state = initialState, action) => {
         ...state,
         loading: true,
       };
+    case authConstants.CHANGE_ACTIVE_STATUS:
+      return {
+        ...state,
+        user: state.user.users.map((user) => {
+          if (user._id === payload) {
+            const bool = user.isAccountActive;
+            user.isAccountActive = !bool;
+            return user;
+          }
+        }),
+      };
     default:
       return state;
   }
