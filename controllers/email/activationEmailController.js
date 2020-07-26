@@ -1,6 +1,6 @@
 const cryptoRandomString = require('crypto-random-string');
 const CryptoJS = require('crypto-js');
-const { transported } = require('./email');
+const { getTransported } = require('./email');
 
 const getActivationLink = user => {
   console.log('get activation link in aec');
@@ -50,6 +50,10 @@ const emailActivationTemplate = (user, specificUser, url) => {
   console.log(process.env.EMAIL_SERVICE);
   console.log(process.env.PORT);
   console.log(process.env.SENDER_EMAIL_LOGIN_USER);
+  console.log(process.env.GOOGLE_CLIENT_ID);
+  console.log(process.env.GOOGLE_CLIENT_SECRET);
+  console.log(process.env.GOOGLE_REFRESH_TOKEN);
+
   const from = 'Localink' + '<' + process.env.SENDER_EMAIL_LOGIN + '>';
   //For testing
   //const to = process.env.RECEIVER_EMAIL_LOGIN;
@@ -73,7 +77,8 @@ const emailActivationTemplate = (user, specificUser, url) => {
   return { from, to, subject, html };
 };
 
-const sendEmail = (res, emailTemplate) => {
+const sendEmail = async (res, emailTemplate) => {
+  const transported = await getTransported();
   transported.sendMail(emailTemplate, (error, info) => {
     if (error) {
       console.log('here');
@@ -85,7 +90,7 @@ const sendEmail = (res, emailTemplate) => {
   });
 };
 
-const sendActivationEmail = (user, specificUser, res) => {
+const sendActivationEmail = async (user, specificUser, res) => {
   console.log('send activation email');
   const activationLink = getActivationLink(specificUser);
   const emailTemplate = emailActivationTemplate(
@@ -93,12 +98,12 @@ const sendActivationEmail = (user, specificUser, res) => {
     specificUser,
     activationLink
   );
-  sendEmail(res, emailTemplate);
+  await sendEmail(res, emailTemplate);
 };
 
-const sendActivationEmailUser = (user, specificUser, url, res) => {
+const sendActivationEmailUser = async (user, specificUser, url, res) => {
   const emailTemplate = emailActivationTemplateUser(user, specificUser, url);
-  sendEmail(res, emailTemplate);
+  await sendEmail(res, emailTemplate);
 };
 
 module.exports = {

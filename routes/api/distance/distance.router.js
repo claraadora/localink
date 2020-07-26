@@ -30,9 +30,11 @@ router.post('/start-location/:shopper_id', async (req, res) => {
 
       const dist = await getDistance(location, shop.latLng);
 
-      shop.distance = await shop.distance.filter(obj => {
-        return obj && !obj[shopper_id];
-      });
+      shop.distance = shop.distance
+        ? await shop.distance.filter(obj => {
+            return obj && !obj[shopper_id];
+          })
+        : [];
 
       const distObj = {
         [shopper_id]: dist
