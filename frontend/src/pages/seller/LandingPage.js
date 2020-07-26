@@ -33,8 +33,9 @@ function LandingPage() {
       justify="center"
       alignItems="center"
       style={{ height: "100%" }}
-      spacing={5}
+      spacing={7}
     >
+      <Grid item md={1} />
       <Grid item>
         <Typography variant="h2" color="textPrimary" gutterBottom>
           Linking you to your potential customers!
