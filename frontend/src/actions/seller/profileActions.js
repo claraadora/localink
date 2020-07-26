@@ -126,24 +126,93 @@ export const deleteProduct = (id) => async (dispatch) => {
   }
 };
 
-/* edit product
-post to /business/product/id
-*/
+export const addUser = (data) => async (dispatch) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
 
-/* change email 
-post to /business/profile/account-settings-email
-*/
+  const body = JSON.stringify(data);
 
-/* change password 
-post to /business/profile/account-settings-password
-*/
+  try {
+    const res = await axios.post("/business/user", body, config);
+    dispatch({
+      type: profileConstants.ADD_USER,
+      payload: res,
+    });
 
-/* create reviews 
-post /review
-*/
+    dispatch(setAlert("User added.", "success"));
+  } catch (err) {
+    const errors = err.response.data.errors;
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, "error")));
+    }
+    console.log(errors);
 
-/* search --> i need to pass query
-post /search
-*/
+    dispatch({
+      type: profileConstants.PROFILE_ERROR,
+    });
+  }
+};
 
-//mongodb+srv://<username>:<password>@cluster0-fs9b0.mongodb.net/test?retryWrites=true&w=majority
+export const deleteUser = (id) => async (dispatch) => {
+  try {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const res = await axios.delete(`/business/user/${id}`, config);
+
+    dispatch({
+      type: profileConstants.DELETE_USER,
+      payload: res.data,
+    });
+
+    dispatch(setAlert("User deleted.", "success"));
+  } catch (err) {
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, "error")));
+    }
+
+    dispatch({
+      type: profileConstants.PROFILE_ERROR,
+      payload: {
+        msg: err.response.statusText,
+        status: err.response.status,
+      },
+    });
+  }
+};
+
+export const changeActiveStatus = () => async (dispatch) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  try {
+    // const res = await axios.post("/business/user", body, config);
+    // dispatch({
+    //   type: profileConstants.ADD_USER,
+    //   payload: res,
+    // });
+
+    dispatch(setAlert("User added.", "success"));
+  } catch (err) {
+    const errors = err.response.data.errors;
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, "error")));
+    }
+    console.log(errors);
+
+    dispatch({
+      type: profileConstants.PROFILE_ERROR,
+    });
+  }
+};

@@ -79,6 +79,22 @@ const drawerItems = {
       ],
     },
     {
+      name: "users",
+      label: "Users",
+      items: [
+        {
+          name: "manageUsers",
+          label: "Manage Users",
+          link: "/business/users/manage",
+        },
+        {
+          name: "addUsers",
+          label: "Add User",
+          link: "/business/users/add",
+        },
+      ],
+    },
+    {
       name: "review",
       label: "Reviews",
       items: [

@@ -5,15 +5,11 @@ import {
   TextField,
   makeStyles,
   Grid,
-  Avatar,
   InputLabel,
-  InputAdornment,
+  MenuItem,
 } from "@material-ui/core";
 import { useDispatch } from "react-redux";
-import { addProduct } from "../../actions/seller/profileActions";
-import EditIcon from "@material-ui/icons/Edit";
-import Axios from "axios";
-import product from "../../utils/product.png";
+import { addUser } from "../../actions/seller/profileActions";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -37,6 +33,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const roles = [
+  {
+    value: "Staff",
+    label: "Staff",
+  },
+  {
+    value: "Owner",
+    label: "Owner",
+  },
+];
+
 export default function ProductForm() {
   const classes = useStyles();
 
@@ -46,7 +53,7 @@ export default function ProductForm() {
     description: "",
     price: "",
   });
-  const { name, image, description, price } = formData;
+  const { name, email, role } = formData;
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -55,31 +62,7 @@ export default function ProductForm() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    // eslint-disable-next-line no-restricted-globals
-    dispatch(addProduct(formData, history));
-  };
-
-  const onUploadImage = (e) => {
-    const file = e.target.files[0];
-    let formData = new FormData();
-    const config = {
-      header: { "Content-Type": "multipart/form-data" },
-    };
-    formData.append("file", file);
-
-    Axios.post("/business/product/upload-image", formData, config).then(
-      (response) => {
-        console.log(response);
-        if (response.data.success) {
-          console.log(response);
-          setFormData({
-            ...formData,
-            image: response.data.url,
-          });
-          console.log(formData);
-        }
-      }
-    );
+    dispatch(addUser(formData));
   };
 
   return (
@@ -92,7 +75,7 @@ export default function ProductForm() {
       spacing={5}
     >
       <Typography variant="h5" gutterBottom align="center">
-        Add Product
+        Add User
       </Typography>
       <Grid item container xs={4}>
         <form onSubmit={onSubmit} className={classes.form}>
@@ -104,36 +87,12 @@ export default function ProductForm() {
             alignItems="flex-start"
             spacing={2}
           >
-            <Grid item container direction="row" xs={12}>
-              <Grid container direction="row" alignItems="flex-end" xs={12}>
-                <Grid item>
-                  <Avatar
-                    alt={name !== "" ? name : "Localink"}
-                    src={image === "" ? product : image}
-                    className={classes.avatar}
-                    variant="square"
-                  />
-                </Grid>
-                <Grid item>
-                  <label htmlFor="image">
-                    <EditIcon fontSize="small" />
-                  </label>
-                  <input
-                    id="image"
-                    type="file"
-                    accept="image/*"
-                    style={{ display: "none" }}
-                    onChange={onUploadImage}
-                  />
-                </Grid>
-              </Grid>
-            </Grid>
             <Grid item container xs={12}>
-              <InputLabel>Product Name</InputLabel>
+              <InputLabel>Name</InputLabel>
               <TextField
                 id="name"
                 name="name"
-                placeholder="Product name"
+                placeholder="Name"
                 fullWidth={true}
                 margin="dense"
                 InputLabelProps={{
@@ -145,45 +104,40 @@ export default function ProductForm() {
               />
             </Grid>
             <Grid item container xs={12}>
-              <InputLabel>Product Description</InputLabel>
+              <InputLabel>Email</InputLabel>
               <TextField
-                id="description"
-                name="description"
-                placeholder="Description of Product"
+                id="email"
+                name="email"
+                placeholder="New user's email"
                 fullWidth={true}
                 margin="dense"
                 InputLabelProps={{
                   shrink: true,
                 }}
                 variant="outlined"
-                value={description}
+                value={email}
                 onChange={onChange}
-                multiline
-                rows={5}
-                rowsMax={6}
               />
             </Grid>
             <Grid item container xs={12}>
-              <InputLabel>Product Price</InputLabel>
+              <InputLabel>Role</InputLabel>
               <TextField
-                id="price"
-                name="price"
-                placeholder="Product Price"
+                id="role"
+                name="role"
+                select
+                value={role}
+                onChange={onChange}
+                variant="outlined"
                 fullWidth={true}
                 margin="dense"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                variant="outlined"
-                value={price}
-                onChange={onChange}
-                multiline
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">$</InputAdornment>
-                  ),
-                }}
-              />
+                placeholder="New user's role"
+              >
+                {roles.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
             </Grid>
             <Grid item container xs={12}>
               <Button
@@ -194,7 +148,7 @@ export default function ProductForm() {
                 className={classes.submit}
                 onSubmit={onSubmit}
               >
-                Add Product
+                Add User
               </Button>
             </Grid>
           </Grid>
