@@ -24,7 +24,7 @@ describe('indexControllerBusiness', () => {
         .send(registerCredentials)
         .end(async function (error, res) {
           assert.equal(error, null, 'error is not null');
-          assert.equal(res.status, 250, 'status is not 200');
+          assert.equal(res.status, 250, 'status is not 250');
           const user = await User.findOne({ email: registerCredentials.email });
           const business = await Business.findOne({
             users: mongoose.Types.ObjectId(user.id)

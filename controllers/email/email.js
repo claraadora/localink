@@ -2,9 +2,12 @@ const nodemailer = require('nodemailer');
 const e = require('express');
 
 const transported = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
   service: process.env.EMAIL_SERVICE,
+  port: process.env.PORT,
+  secure: false,
   auth: {
-    user: process.env.SENDER_EMAIL_LOGIN_USER,
+    user: process.env.SENDER_EMAIL_LOGIN,
     pass: process.env.SENDER_EMAIL_PASSWORD
   }
 });
@@ -21,14 +24,16 @@ const getPasswordResetURL = (isShopper, user, token) => {
 
 const resetPasswordTemplate = (user, businessUser, url) => {
   const from = 'Localink' + '<' + process.env.SENDER_EMAIL_LOGIN + '>';
-  const to = user.email;
   //For testing
   //const to = process.env.RECEIVER_EMAIL_LOGIN;
+  let to = null;
   const subject = 'Localink Password Reset';
   let recipient = null;
   if (user === businessUser) {
+    to = user.email;
     recipient = user.name;
   } else {
+    to = businessUser.email;
     recipient = businessUser.name;
   }
   const html = `
@@ -44,9 +49,9 @@ const resetPasswordTemplate = (user, businessUser, url) => {
 
 const uriEmailTemplate = (shopper, url) => {
   const from = 'Localink' + '<' + process.env.SENDER_EMAIL_LOGIN + '>';
-  const to = shopper.email;
   // For testing
   //const to = process.env.RECEIVER_EMAIL_LOGIN;
+  const to = shopper.email;
   const subject = 'Localink Mobile Google Map GPS Navigation Link';
   const html = `
     <p>Hey ${shopper.name || shopper.email},</p>

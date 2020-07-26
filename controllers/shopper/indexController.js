@@ -15,9 +15,11 @@ async function registerShopper(req, res) {
   try {
     let shopper = await Shopper.findOne({ email });
     if (shopper && shopper.isAccountActive) {
+      console.log(shopper.isAccountActive);
+      console.log(shopper);
       return res.status(400).json({ errors: [{ msg: 'User already exists' }] });
     }
-
+    console.log('shopper does not exist');
     shopper = new Shopper({
       name,
       email,
@@ -29,6 +31,8 @@ async function registerShopper(req, res) {
     shopper.password = await bcrypt.hash(password, salt);
 
     await shopper.save();
+    console.log('saved shopper');
+    console.log(shopper);
 
     sendActivationEmail(shopper, shopper, res);
   } catch (err) {

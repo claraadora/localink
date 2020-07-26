@@ -24,7 +24,7 @@ const business = {
 const firstUserOwner = {
   _id: firstUserOwnerId,
   name: 'test first business owner',
-  email: 'testBO@yahoo.com',
+  email: process.env.RECEIVER_EMAIL_LOGIN,
   password: 'testBO@yahoo.com',
   role: 'owner',
   activated: true
@@ -34,7 +34,7 @@ const firstUserOwner = {
 const userOwner = {
   _id: userOwnerId,
   name: 'test user owner',
-  email: 'testUO@yahoo.com',
+  email: process.env.RECEIVER_EMAIL_LOGIN2,
   password: 'testUO@yahoo.com',
   role: 'owner',
   activated: true

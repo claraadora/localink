@@ -6,6 +6,9 @@ const getCurrentLocation = require('./geolocation');
 const geocode = require('./geocode');
 const getDistance = require('../distance/distance');
 
+const { profileId } = require('../../../test/business/seed/seedProfile');
+const Shop = require('../../../models/Shop');
+
 // @route    POST start-location
 // @desc     Get the start location, update shopper's location
 // @access   Private
@@ -24,23 +27,25 @@ router.post('/start-location/:shopper_id', async (req, res) => {
     const allShops = await Shop.find();
     allShops.forEach(async s => {
       let shop = s;
-      if (shop.latLng.lat && shop.latLng.lng) {
-        const dist = await getDistance(location, shop.latLng);
 
-        shop.distance = shop.distance.filter(obj => {
-          return obj && !obj[shopper_id];
-        });
+      const dist = await getDistance(location, shop.latLng);
 
-        // shop.distance = arr;
-        await shop.save();
+      shop.distance = await shop.distance.filter(obj => {
+        return obj && !obj[shopper_id];
+      });
 
-        const distObj = {
-          [shopper_id]: dist
-        };
-        shop.distance.push(distObj);
-        await shop.save();
-      }
+      const distObj = {
+        [shopper_id]: dist
+      };
+
+      await shop.distance.push(distObj);
+
+      await shop.save();
+      // console.log('1');
+      // console.log(await Shop.findById(profileId));
     });
+
+    await Shop.findById(profileId);
 
     res.status(200).json(location);
   } catch (err) {
