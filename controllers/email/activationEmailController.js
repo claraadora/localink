@@ -78,6 +78,7 @@ const emailActivationTemplate = (user, specificUser, url) => {
 };
 
 const sendEmail = async (res, emailTemplate) => {
+  console.log('send email');
   const transported = await getTransported();
   transported.sendMail(emailTemplate, (error, info) => {
     if (error) {
@@ -90,7 +91,7 @@ const sendEmail = async (res, emailTemplate) => {
   });
 };
 
-const sendActivationEmail = async (user, specificUser, res) => {
+const sendActivationEmail = (user, specificUser, res) => {
   console.log('send activation email');
   const activationLink = getActivationLink(specificUser);
   const emailTemplate = emailActivationTemplate(
@@ -98,7 +99,7 @@ const sendActivationEmail = async (user, specificUser, res) => {
     specificUser,
     activationLink
   );
-  await sendEmail(res, emailTemplate);
+  sendEmail(res, emailTemplate);
 };
 
 const sendActivationEmailUser = async (user, specificUser, url, res) => {

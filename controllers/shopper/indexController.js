@@ -34,7 +34,7 @@ async function registerShopper(req, res) {
     console.log('saved shopper');
     console.log(shopper);
 
-    await sendActivationEmail(shopper, shopper, res);
+    sendActivationEmail(shopper, shopper, res);
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ errors: [{ msg: 'Server error' }] });
