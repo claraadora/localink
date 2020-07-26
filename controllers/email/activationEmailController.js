@@ -1,6 +1,6 @@
 const cryptoRandomString = require('crypto-random-string');
 const CryptoJS = require('crypto-js');
-const { transported } = require('./email');
+const { getTransported } = require('./email');
 
 const getActivationLink = user => {
   console.log('get activation link in aec');
@@ -19,7 +19,7 @@ const getActivationLink = user => {
   if (user.role) {
     uri = 'business/' + uri;
   }
-  return `http://localhost:5000/${uri}`;
+  return `https://pristine-big-bend-88828.herokuapp.com/${uri}`;
 };
 
 const emailActivationTemplateUser = (user, specificUser, url) => {
@@ -71,21 +71,22 @@ const emailActivationTemplate = (user, specificUser, url) => {
   return { from, to, subject, html };
 };
 
-const sendEmail = (res, emailTemplate) => {
+const sendEmail = async (res, emailTemplate) => {
   console.log('send email finally ');
+  const transported = await getTransported();
   transported.sendMail(emailTemplate, (error, info) => {
     if (error) {
       console.log('here');
       console.log(error);
-      console.log(info);
       res.status(500).json({ errors: [{ msg: 'Error sending email' }] });
     } else {
       res.status(250).json('Email sent successfully');
     }
+    transported.close();
   });
 };
 
-const sendActivationEmail = (user, specificUser, res, transported) => {
+const sendActivationEmail = async (user, specificUser, res, transported) => {
   console.log('send activation email');
   const activationLink = getActivationLink(specificUser);
   const emailTemplate = emailActivationTemplate(
@@ -93,12 +94,12 @@ const sendActivationEmail = (user, specificUser, res, transported) => {
     specificUser,
     activationLink
   );
-  sendEmail(res, emailTemplate, transported);
+  await sendEmail(res, emailTemplate, transported);
 };
 
-const sendActivationEmailUser = (user, specificUser, url, res) => {
+const sendActivationEmailUser = async (user, specificUser, url, res) => {
   const emailTemplate = emailActivationTemplateUser(user, specificUser, url);
-  sendEmail(res, emailTemplate);
+  await sendEmail(res, emailTemplate);
 };
 
 module.exports = {

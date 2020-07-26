@@ -51,7 +51,7 @@ router.post(
 );
 
 //activate and deactivate user
-// @route    POST /business/user/:user_id
+// @route    GET /business/user/:user_id
 // @desc     Edit user of existing business
 // @access   Public
 // @return   User token
