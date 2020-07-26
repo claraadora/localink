@@ -24,6 +24,8 @@ const authConstants = {
 
   FORGOT_PASSWORD: "FORGOT_PASSWORD",
   RESET_PASSWORD: "RESET_PASSWROD",
+
+  SET_BACK_LOADING: "SET_BACK_LOADING",
 };
 
 export default authConstants;

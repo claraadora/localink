@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   TextField,
@@ -7,6 +7,7 @@ import {
   Typography,
   Divider,
   Avatar,
+  CircularProgress,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { setAlert } from "../../actions/alertActions";
@@ -16,7 +17,7 @@ import {
   loginWithFacebook,
 } from "../../actions/shopper/authActions";
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect, Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import GoogleLogin from "react-google-login";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 
@@ -36,17 +37,6 @@ const useStyles = makeStyles((theme) => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
-  },
-  buttonFacebook: {
-    width: "165px",
-    height: "42px",
-    borderRadius: "4px",
-    background: "#3b5998",
-    color: "white",
-    border: "0px transparent",
-    textAlign: "center",
-    margin: "5px",
-    display: "inline-block",
   },
   buttonGoogle: {
     width: "165px",
@@ -74,6 +64,20 @@ export default function SignUpPage() {
   const responseGoogle = (response) => {
     dispatch(loginWithGoogle(response));
   };
+  const loading = useSelector((state) => state.auth.loading);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (isLoading && !loading) {
+      setIsLoading(false);
+      setFormData({
+        name: "",
+        email: "",
+        password: "",
+        password2: "",
+      });
+    }
+  }, [loading]);
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -83,15 +87,10 @@ export default function SignUpPage() {
     if (password !== password2) {
       dispatch(setAlert("Passwords do not match", "danger"));
     } else {
+      setIsLoading(true);
       dispatch(signup({ name, email, password }));
     }
   };
-
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-
-  if (isAuthenticated) {
-    return <Redirect to="/search" />;
-  }
 
   return (
     <Grid
@@ -103,6 +102,7 @@ export default function SignUpPage() {
     >
       <Grid item>
         <div className={classes.paper}>
+          {isLoading && <CircularProgress />}
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
           </Avatar>
@@ -118,6 +118,7 @@ export default function SignUpPage() {
               id="name"
               label="Full Name"
               name="name"
+              value={name}
               autoComplete="name"
               onChange={onChange}
               autoFocus
@@ -130,6 +131,7 @@ export default function SignUpPage() {
               id="email"
               label="Email Address"
               name="email"
+              value={email}
               autoComplete="email"
               onChange={onChange}
               autoFocus
@@ -142,6 +144,7 @@ export default function SignUpPage() {
               name="password"
               label="Password"
               type="password"
+              value={password}
               id="password"
               autoComplete="current-password"
               onChange={onChange}
@@ -152,6 +155,7 @@ export default function SignUpPage() {
               required
               fullWidth
               name="password2"
+              value={password2}
               label="Confirm Password"
               type="password"
               id="password"
