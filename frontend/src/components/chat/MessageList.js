@@ -9,7 +9,7 @@ import {
 } from "@livechat/ui-kit";
 import { useSelector, useDispatch } from "react-redux";
 import { LocalinkMessageListItem } from "./MessageListItem";
-import { Paper, Grid, makeStyles } from "@material-ui/core";
+import { Paper, Grid, makeStyles, Typography } from "@material-ui/core";
 import moment from "moment";
 import { getChatById } from "../../utils/chat";
 import { afterPostMessage } from "../../actions/chatActions";
@@ -32,6 +32,7 @@ export const LocalinkMessageList = (props) => {
   const [msgList, setMsgList] = useState(null);
   const [textInput, setTextInput] = useState("");
   const dispatch = useDispatch();
+  const loading = useSelector((state) => state.chat.loading);
 
   const classes = useStyles();
   useEffect(() => {
@@ -89,8 +90,23 @@ export const LocalinkMessageList = (props) => {
     );
   };
 
-  if (chatList.length === 0 || msgList === null) {
-    return <h1>No messages to show</h1>;
+  if (!loading && (chatList.length === 0 || msgList === null)) {
+    return (
+      <Grid
+        container
+        direction="column"
+        justify="center"
+        alignItems="center"
+        style={{ height: "100%" }}
+        spacing={5}
+      >
+        <Grid item>
+          <Typography variant="h5" color="textPrimary" gutterBottom>
+            No messages
+          </Typography>
+        </Grid>
+      </Grid>
+    );
   } else {
     return (
       <Grid

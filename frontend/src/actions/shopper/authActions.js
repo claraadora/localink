@@ -45,7 +45,7 @@ export const login = ({ email, password }) => async (dispatch) => {
       payload: res.data,
     });
 
-    dispatch(setAlert("Login successful, user loaded 🙌", "success"));
+    dispatch(setAlert("Welcome 🙌", "success"));
 
     dispatch(loadUser());
   } catch (err) {
