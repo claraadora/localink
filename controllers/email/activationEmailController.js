@@ -3,7 +3,6 @@ const CryptoJS = require('crypto-js');
 const { getTransported } = require('./email');
 
 const getActivationLink = user => {
-  console.log('get activation link in aec');
   const randomActivationCode = cryptoRandomString({ length: 10 });
   const activeExpires = Date.now() + 24 * 3600 * 1000;
   const data = {
@@ -73,7 +72,6 @@ const sendEmail = async (res, emailTemplate) => {
   const transported = await getTransported();
   transported.sendMail(emailTemplate, (error, info) => {
     if (error) {
-      console.log('here');
       console.log(error);
       res.status(500).json({ errors: [{ msg: 'Error sending email' }] });
     } else {

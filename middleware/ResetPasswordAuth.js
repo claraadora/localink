@@ -7,6 +7,8 @@ const Shopper = require('../models/Shopper');
 
 module.exports = async function (req, res, next) {
   const { user_id, token } = req.params;
+  console.log(user_id);
+  console.log(token);
 
   if (!token) {
     return res

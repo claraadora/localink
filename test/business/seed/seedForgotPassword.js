@@ -29,7 +29,7 @@ async function getPasswordResetLinkInEmail(email) {
   const token = usePasswordHashToMakeToken(user, specificUser);
   const url = getPasswordResetURL(false, specificUser, token);
 
-  let substring = url.substr(21);
+  let substring = url.substr(45);
   substring = substring.replace('-', '_');
   return substring;
 }

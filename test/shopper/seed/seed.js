@@ -117,7 +117,7 @@ async function registerShopper() {
 
   await shopper.save();
 
-  const substring = getActivationLink(shopper).substr(21);
+  const substring = getActivationLink(shopper).substr(45);
   return substring;
 }
 

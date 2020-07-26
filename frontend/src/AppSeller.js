@@ -49,7 +49,7 @@ const useStyles = makeStyles({
 
 const getLastTwo = str => {
   const arr = str.split('/');
-  return `${arr[2]}/${arr[3]}`;
+  return `${arr[3]}/${arr[4]}`;
 };
 
 function AppSeller() {

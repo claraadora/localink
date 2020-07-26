@@ -80,7 +80,7 @@ async function registerUser() {
 
   await business.save();
 
-  const substring = getActivationLink(user).substr(21);
+  const substring = getActivationLink(user).substr(45);
   return substring;
 }
 
