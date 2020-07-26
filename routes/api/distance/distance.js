@@ -19,7 +19,14 @@ module.exports = async function getDistance(start, end) {
       APIkey;
     const { body } = await got(URI);
     const distanceMatrix = JSON.parse(body);
-    return distanceMatrix.rows[0].elements[0].distance.value;
+    let dist = null;
+    try {
+      dist = distanceMatrix.rows[0].elements[0].distance.value;
+    } catch (error) {
+      dist = -1;
+    }
+
+    return dist;
   } catch (error) {
     console.log(error);
   }
