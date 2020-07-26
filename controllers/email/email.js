@@ -3,6 +3,13 @@ const express = require('express');
 const { google } = require('googleapis');
 const OAuth2 = google.auth.OAuth2;
 
+console.log(process.env.EMAIL_SERVICE);
+console.log(process.env.PORT);
+console.log(process.env.SENDER_EMAIL_LOGIN_USER);
+console.log(process.env.GOOGLE_CLIENT_ID);
+console.log(process.env.GOOGLE_CLIENT_SECRET);
+console.log(process.env.GOOGLE_REFRESH_TOKEN);
+
 const oauth2Client = new OAuth2(
   process.env.GOOGLE_CLIENT_ID, // ClientID
   process.env.GOOGLE_CLIENT_SECRET, // Client Secret
@@ -10,7 +17,8 @@ const oauth2Client = new OAuth2(
 );
 
 oauth2Client.setCredentials({
-  refresh_token: process.env.GOOGLE_REFRESH_TOKEN
+  refresh_token:
+    '1//04uv4zOaeJDkNCgYIARAAGAQSNwF-L9IrpLbKsJyh5n2oR9JirNmLl6DA7Yjj2Q1GbP6DVx-S6TfB2SeP54_oyuK-lp5QmBSAAJM'
 });
 
 const accessToken = oauth2Client.getAccessToken();
@@ -25,9 +33,10 @@ const transported = nodemailer.createTransport({
     user: process.env.SENDER_EMAIL_LOGIN,
     cliendId: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
+    refreshToken:
+      '1//04uv4zOaeJDkNCgYIARAAGAQSNwF-L9IrpLbKsJyh5n2oR9JirNmLl6DA7Yjj2Q1GbP6DVx-S6TfB2SeP54_oyuK-lp5QmBSAAJM',
     accessToken:
-      'ya29.a0AfH6SMBTXtZaePI5ENm94Ll2eoVy_NKaomCWaK5Lzj6EOD33RnTXbuEumESwyP2V6vY-pZLyxCm2mCayvhIv2lPz9KVZRjRcWmIoo1FX1DtT4ndukIlNYHBPRQDqKiCTNpZEDUnytdNOGz6XhOLuVUlT8PyFBtUcBOM'
+      'ya29.a0AfH6SMBKCz3nMOrn1xUi1GR7XggO91rAq25PKFb4mRSufmpZHzk7G-bgNTPs5_4I9DxE_ovUd5EuVhvBk-lTJS_KMXTXE7N-TdRqZfMGxYgV8gJKGQCmivFCI2CdWXcVubx3YRDvqxocS-ta8aVmUYHH_zYW1m4pwhE'
     // pass: process.env.SENDER_EMAIL_PASSWORD
   },
   tls: {

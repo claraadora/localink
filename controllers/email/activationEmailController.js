@@ -47,12 +47,6 @@ const emailActivationTemplateUser = (user, specificUser, url) => {
 
 const emailActivationTemplate = (user, specificUser, url) => {
   console.log('email activation template');
-  console.log(process.env.EMAIL_SERVICE);
-  console.log(process.env.PORT);
-  console.log(process.env.SENDER_EMAIL_LOGIN_USER);
-  console.log(process.env.GOOGLE_CLIENT_ID);
-  console.log(process.env.GOOGLE_CLIENT_SECRET);
-  console.log(process.env.GOOGLE_REFRESH_TOKEN);
 
   const from = 'Localink' + '<' + process.env.SENDER_EMAIL_LOGIN + '>';
   //For testing
