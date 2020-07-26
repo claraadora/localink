@@ -25,9 +25,18 @@ async function addUserToBusiness(req, res) {
         .status(400)
         .json({ errors: [{ msg: 'User with that email already exists' }] });
     } else if (user && !user.isAccountActive) {
-      return res
-        .status(400)
-        .json({ errors: [{ msg: 'User has not activated account' }] });
+      const arr = business.users.filter(u => u._id == user._id);
+      console.log(arr);
+      if (arr.length == 0) {
+        console.log('user not in this business');
+        return res
+          .status(400)
+          .json({ errors: [{ msg: 'User with that email already exists' }] });
+      } else {
+        return res
+          .status(400)
+          .json({ errors: [{ msg: 'User has not activated account' }] });
+      }
     }
 
     user = new User({

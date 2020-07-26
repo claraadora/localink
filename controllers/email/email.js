@@ -1,15 +1,6 @@
 const nodemailer = require('nodemailer');
-const express = require('express');
 const { google } = require('googleapis');
 const OAuth2 = google.auth.OAuth2;
-const xoauth2 = require('xoauth2');
-
-console.log(process.env.EMAIL_SERVICE);
-console.log(process.env.PORT);
-console.log(process.env.SENDER_EMAIL_LOGIN_USER);
-console.log(process.env.GOOGLE_CLIENT_ID);
-console.log(process.env.GOOGLE_CLIENT_SECRET);
-console.log(process.env.GOOGLE_REFRESH_TOKEN);
 
 const getTransported = async () => {
   const oauth2Client = new OAuth2(
@@ -24,8 +15,6 @@ const getTransported = async () => {
   });
 
   const accessToken = await oauth2Client.getAccessToken();
-  console.log('AT');
-  console.log(accessToken.token);
 
   const transported = nodemailer.createTransport({
     host: 'smtp.gmail.com',

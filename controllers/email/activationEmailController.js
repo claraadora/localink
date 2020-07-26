@@ -46,8 +46,6 @@ const emailActivationTemplateUser = (user, specificUser, url) => {
 };
 
 const emailActivationTemplate = (user, specificUser, url) => {
-  console.log('email activation template');
-
   const from = 'Localink' + '<' + process.env.SENDER_EMAIL_LOGIN + '>';
   //For testing
   //const to = process.env.RECEIVER_EMAIL_LOGIN;
@@ -72,7 +70,6 @@ const emailActivationTemplate = (user, specificUser, url) => {
 };
 
 const sendEmail = async (res, emailTemplate) => {
-  console.log('send email finally ');
   const transported = await getTransported();
   transported.sendMail(emailTemplate, (error, info) => {
     if (error) {
@@ -87,7 +84,6 @@ const sendEmail = async (res, emailTemplate) => {
 };
 
 const sendActivationEmail = async (user, specificUser, res, transported) => {
-  console.log('send activation email');
   const activationLink = getActivationLink(specificUser);
   const emailTemplate = emailActivationTemplate(
     user,

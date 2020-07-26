@@ -59,7 +59,7 @@ async function login(req, res) {
     );
   } catch (err) {
     console.error(err.message);
-    res.status(500).json({ errors: [{ msg: 'Server Error' }] });
+    res.status(500).json({ errors: [{ msg: 'Invalid credentials' }] });
   }
 }
 

@@ -70,7 +70,7 @@ const sendPasswordResetEmail = async (req, res) => {
       });
     }
   } catch (error) {
-    console.log('no user w that email');
+    console.log('no user with that email');
     res.status(404).json({ errors: [{ msg: 'No user with that email' }] });
   }
 
