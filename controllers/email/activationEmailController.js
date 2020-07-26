@@ -1,6 +1,6 @@
 const cryptoRandomString = require('crypto-random-string');
 const CryptoJS = require('crypto-js');
-const { getTransported } = require('./email');
+const { transported } = require('./email');
 
 const getActivationLink = user => {
   console.log('get activation link in aec');
@@ -47,12 +47,6 @@ const emailActivationTemplateUser = (user, specificUser, url) => {
 
 const emailActivationTemplate = (user, specificUser, url) => {
   console.log('email activation template');
-  console.log(process.env.EMAIL_SERVICE);
-  console.log(process.env.PORT);
-  console.log(process.env.SENDER_EMAIL_LOGIN_USER);
-  console.log(process.env.GOOGLE_CLIENT_ID);
-  console.log(process.env.GOOGLE_CLIENT_SECRET);
-  console.log(process.env.GOOGLE_REFRESH_TOKEN);
 
   const from = 'Localink' + '<' + process.env.SENDER_EMAIL_LOGIN + '>';
   //For testing
@@ -77,13 +71,13 @@ const emailActivationTemplate = (user, specificUser, url) => {
   return { from, to, subject, html };
 };
 
-const sendEmail = async (res, emailTemplate) => {
-  console.log('send email');
-  const transported = await getTransported();
+const sendEmail = (res, emailTemplate) => {
+  console.log('send email finally ');
   transported.sendMail(emailTemplate, (error, info) => {
     if (error) {
       console.log('here');
       console.log(error);
+      console.log(info);
       res.status(500).json({ errors: [{ msg: 'Error sending email' }] });
     } else {
       res.status(250).json('Email sent successfully');
@@ -91,7 +85,7 @@ const sendEmail = async (res, emailTemplate) => {
   });
 };
 
-const sendActivationEmail = (user, specificUser, res) => {
+const sendActivationEmail = (user, specificUser, res, transported) => {
   console.log('send activation email');
   const activationLink = getActivationLink(specificUser);
   const emailTemplate = emailActivationTemplate(
@@ -99,12 +93,12 @@ const sendActivationEmail = (user, specificUser, res) => {
     specificUser,
     activationLink
   );
-  sendEmail(res, emailTemplate);
+  sendEmail(res, emailTemplate, transported);
 };
 
-const sendActivationEmailUser = async (user, specificUser, url, res) => {
+const sendActivationEmailUser = (user, specificUser, url, res) => {
   const emailTemplate = emailActivationTemplateUser(user, specificUser, url);
-  await sendEmail(res, emailTemplate);
+  sendEmail(res, emailTemplate);
 };
 
 module.exports = {

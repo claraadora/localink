@@ -3,37 +3,46 @@ const express = require('express');
 const { google } = require('googleapis');
 const OAuth2 = google.auth.OAuth2;
 
-const getTransported = async () => {
-  const oauth2Client = new OAuth2(
-    process.env.GOOGLE_CLIENT_ID, // ClientID
-    process.env.GOOGLE_CLIENT_SECRET, // Client Secret
-    'https://developers.google.com/oauthplayground' // Redirect URL
-  );
+console.log(process.env.EMAIL_SERVICE);
+console.log(process.env.PORT);
+console.log(process.env.SENDER_EMAIL_LOGIN_USER);
+console.log(process.env.GOOGLE_CLIENT_ID);
+console.log(process.env.GOOGLE_CLIENT_SECRET);
+console.log(process.env.GOOGLE_REFRESH_TOKEN);
 
-  oauth2Client.setCredentials({
-    refresh_token: process.env.GOOGLE_REFRESH_TOKEN
-  });
-  const accessToken = await oauth2Client.getAccessToken();
-  console.log('ATATTA');
-  console.log(accessToken.token);
-  const transported = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    //service: process.env.EMAIL_SERVICE,
-    port: process.env.PORT,
-    secure: true,
-    auth: {
-      type: 'OAuth2',
-      user: process.env.SENDER_EMAIL_LOGIN,
-      cliendId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
-      accessToken: accessToken.token
-      // pass: process.env.SENDER_EMAIL_PASSWORD
-    }
-  });
+const oauth2Client = new OAuth2(
+  process.env.GOOGLE_CLIENT_ID, // ClientID
+  process.env.GOOGLE_CLIENT_SECRET, // Client Secret
+  'https://developers.google.com/oauthplayground' // Redirect URL
+);
 
-  return transported;
-};
+oauth2Client.setCredentials({
+  refresh_token:
+    '1//04uv4zOaeJDkNCgYIARAAGAQSNwF-L9IrpLbKsJyh5n2oR9JirNmLl6DA7Yjj2Q1GbP6DVx-S6TfB2SeP54_oyuK-lp5QmBSAAJM'
+});
+
+const accessToken = oauth2Client.getAccessToken();
+
+const transported = nodemailer.createTransport({
+  //host: 'smtp.gmail.com',
+  service: process.env.EMAIL_SERVICE,
+  // port: process.env.PORT,
+  // secure: true,
+  auth: {
+    type: 'OAuth2',
+    user: process.env.SENDER_EMAIL_LOGIN,
+    cliendId: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    refreshToken:
+      '1//04uv4zOaeJDkNCgYIARAAGAQSNwF-L9IrpLbKsJyh5n2oR9JirNmLl6DA7Yjj2Q1GbP6DVx-S6TfB2SeP54_oyuK-lp5QmBSAAJM',
+    accessToken:
+      'ya29.a0AfH6SMBKCz3nMOrn1xUi1GR7XggO91rAq25PKFb4mRSufmpZHzk7G-bgNTPs5_4I9DxE_ovUd5EuVhvBk-lTJS_KMXTXE7N-TdRqZfMGxYgV8gJKGQCmivFCI2CdWXcVubx3YRDvqxocS-ta8aVmUYHH_zYW1m4pwhE'
+    // pass: process.env.SENDER_EMAIL_PASSWORD
+  },
+  tls: {
+    rejectUnauthorized: false
+  }
+});
 
 const getPasswordResetURL = (isShopper, user, token) => {
   if (isShopper) {
@@ -86,7 +95,7 @@ const uriEmailTemplate = (shopper, url) => {
 };
 
 module.exports = {
-  getTransported,
+  transported,
   getPasswordResetURL,
   resetPasswordTemplate,
   uriEmailTemplate
