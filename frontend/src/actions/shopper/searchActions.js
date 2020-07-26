@@ -169,3 +169,39 @@ export const createNavLink = (stops, travelMode) => (dispatch) => {
     payload: finalURI,
   });
 };
+
+export const sendNavLink = (link) => async (dispatch) => {
+  try {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const body = JSON.stringify({
+      uri: link,
+    });
+    const res = await axios.post(`/final-route/`, body, config);
+
+    dispatch({
+      type: searchConstants.SEND_NAV_LINK,
+    });
+
+    dispatch(
+      setAlert("The navigation link has been sent to your email", "success")
+    );
+  } catch (err) {
+    console.log(err);
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, "error")));
+    }
+    dispatch({
+      type: searchConstants.SEARCH_ERROR,
+      payload: {
+        msg: err.response.statusText,
+        status: err.response.status,
+      },
+    });
+  }
+};

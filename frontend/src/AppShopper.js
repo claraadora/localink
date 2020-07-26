@@ -38,6 +38,13 @@ const useStyles = makeStyles({
     position: "absolute",
     top: "100px",
     width: "100%",
+    zIndex: 10000000,
+  },
+  searchAlert: {
+    position: "fixed",
+    top: "20%",
+    width: "100%",
+    zIndex: 10000000,
   },
 });
 
@@ -63,7 +70,13 @@ function AppShopper() {
         <div className={classes.navBar}>
           <ShopperNavBar isSearchPage={location.pathname === "/search"} />
         </div>
-        <div className={classes.alert}>
+        <div
+          className={
+            location.pathname === "/search"
+              ? classes.searchAlert
+              : classes.alert
+          }
+        >
           <LocalinkAlert />
         </div>
         <div className={classes.content}>

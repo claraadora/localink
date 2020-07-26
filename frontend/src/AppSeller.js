@@ -107,7 +107,7 @@ function AppSeller() {
             component={ForgotPasswordPage}
           />
           <Route
-            path="/business/reset_password"
+            path="/business/reset-password"
             render={() => (
               <ResetPasswordPage segment={getLastTwo(location.pathname)} />
             )}
