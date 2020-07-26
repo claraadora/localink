@@ -277,6 +277,7 @@ export const addUser = (data) => async (dispatch) => {
       type: authConstants.PROFILE_ERROR,
     });
   }
+  dispatch(setBackLoading());
 };
 
 export const deleteUser = (id) => async (dispatch) => {
@@ -291,7 +292,7 @@ export const deleteUser = (id) => async (dispatch) => {
 
     dispatch({
       type: authConstants.DELETE_USER,
-      payload: res.data,
+      payload: id,
     });
 
     dispatch(setAlert("User deleted.", "success"));
@@ -310,6 +311,7 @@ export const deleteUser = (id) => async (dispatch) => {
       },
     });
   }
+  dispatch(setBackLoading());
 };
 
 export const changeActiveStatus = (userId) => async (dispatch) => {
