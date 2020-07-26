@@ -1,6 +1,7 @@
 const validateActivationToken = require('../email/validateActivationToken');
 
 async function activateAccount(req, res) {
+  console.log('in activate accout');
   const email = validateActivationToken(req, res);
 
   const shopper = await Shopper.findOne({ email });

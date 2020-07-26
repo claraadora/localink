@@ -76,6 +76,7 @@ const emailActivationTemplate = (user, specificUser, url) => {
 const sendEmail = (res, emailTemplate) => {
   transported.sendMail(emailTemplate, (error, info) => {
     if (error) {
+      console.log('here');
       console.log(error);
       res.status(500).json({ errors: [{ msg: 'Error sending email' }] });
     } else {
