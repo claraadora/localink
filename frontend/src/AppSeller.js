@@ -47,15 +47,9 @@ const useStyles = makeStyles({
   },
 });
 
-<<<<<<< HEAD
-const getLastTwo = str => {
-  const arr = str.split('/');
-  return `${arr[3]}/${arr[4]}`;
-=======
 const getLastTwo = (str) => {
   const arr = str.split("/");
-  return `${arr[2]}/${arr[3]}`;
->>>>>>> 74d14ae1019485388a9f89942d2865edc676fdab
+  return `${arr[3]}/${arr[4]}`;
 };
 
 function AppSeller() {
