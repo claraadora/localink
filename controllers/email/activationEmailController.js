@@ -19,7 +19,7 @@ const getActivationLink = user => {
   if (user.role) {
     uri = 'business/' + uri;
   }
-  return `http://localhost:5000/${uri}`;
+  return `https://pristine-big-bend-88828.herokuapp.com/${uri}`;
 };
 
 const emailActivationTemplateUser = (user, specificUser, url) => {

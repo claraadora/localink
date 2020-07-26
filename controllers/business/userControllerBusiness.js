@@ -20,10 +20,14 @@ async function addUserToBusiness(req, res) {
   try {
     const business = await Business.findById(req.user.id);
     let user = await User.findOne({ email });
-    if (user) {
+    if (user && user.isAccountnActive) {
       return res
         .status(400)
         .json({ errors: [{ msg: 'User with that email already exists' }] });
+    } else if (user && !user.isAccountActive) {
+      return res
+        .status(400)
+        .json({ errors: [{ msg: 'User has not activated account' }] });
     }
 
     user = new User({

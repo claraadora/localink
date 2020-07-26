@@ -46,10 +46,18 @@ const transported = nodemailer.createTransport({
 
 const getPasswordResetURL = (isShopper, user, token) => {
   if (isShopper) {
-    return 'http://localhost:3000/reset-password/' + token + '/' + user._id;
+    return (
+      'https://pristine-big-bend-88828.herokuapp.com/reset-password/' +
+      token +
+      '/' +
+      user._id
+    );
   } else {
     return (
-      'http://localhost:3000/business/reset-password/' + token + '/' + user._id
+      'https://pristine-big-bend-88828.herokuapp.com/business/reset-password/' +
+      token +
+      '/' +
+      user._id
     );
   }
 };
