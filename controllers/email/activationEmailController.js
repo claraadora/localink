@@ -47,6 +47,9 @@ const emailActivationTemplateUser = (user, specificUser, url) => {
 
 const emailActivationTemplate = (user, specificUser, url) => {
   console.log('email activation template');
+  console.log(process.env.EMAIL_SERVICE);
+  console.log(process.env.PORT);
+  console.log(process.env.SENDER_EMAIL_LOGIN_USER);
   const from = 'Localink' + '<' + process.env.SENDER_EMAIL_LOGIN + '>';
   //For testing
   //const to = process.env.RECEIVER_EMAIL_LOGIN;
