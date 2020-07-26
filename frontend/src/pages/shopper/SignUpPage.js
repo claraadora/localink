@@ -102,10 +102,13 @@ export default function SignUpPage() {
     >
       <Grid item>
         <div className={classes.paper}>
-          {isLoading && <CircularProgress />}
-          <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
-          </Avatar>
+          {isLoading ? (
+            <CircularProgress />
+          ) : (
+            <Avatar className={classes.avatar}>
+              <LockOutlinedIcon />
+            </Avatar>
+          )}
           <Typography component="h1" variant="h5">
             Sign Up
           </Typography>
