@@ -223,7 +223,10 @@ export const forgotPassword = (email, isShopper) => async (dispatch) => {
     },
   };
   try {
-    const res = await axios.post(`/reset_password/${email}`, body, config);
+    const endpoint = isShopper
+      ? ""
+      : "business" + "/reset_password/" + `${email}`;
+    const res = await axios.post(endpoint, body, config);
 
     dispatch({
       type: authConstants.FORGOT_PASSWORD,
@@ -231,6 +234,41 @@ export const forgotPassword = (email, isShopper) => async (dispatch) => {
     dispatch(
       setAlert("An email to reset password has been sent to you.", "success")
     );
+  } catch (err) {
+    const errors = err.response.data.errors;
+    console.log(errors);
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, "error")));
+    }
+
+    dispatch({
+      type: authConstants.AUTH_ERROR,
+    });
+  }
+  dispatch(setBackLoading());
+};
+
+export const resetPassword = (password, segment, isShopper) => async (
+  dispatch
+) => {
+  const body = {
+    password: password,
+  };
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  try {
+    const endpoint =
+      (isShopper ? "" : "/business") + `/reset_password/${segment}`;
+    console.log("endpoint" + endpoint);
+    const res = await axios.post(endpoint, body, config);
+
+    dispatch({
+      type: authConstants.RESET_PASSWORD,
+    });
+    dispatch(setAlert("Reset password success.", "success"));
   } catch (err) {
     const errors = err.response.data.errors;
     console.log(errors);
