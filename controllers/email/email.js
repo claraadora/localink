@@ -3,37 +3,37 @@ const express = require('express');
 const { google } = require('googleapis');
 const OAuth2 = google.auth.OAuth2;
 
-const getTransported = async () => {
-  const oauth2Client = new OAuth2(
-    process.env.GOOGLE_CLIENT_ID, // ClientID
-    process.env.GOOGLE_CLIENT_SECRET, // Client Secret
-    'https://developers.google.com/oauthplayground' // Redirect URL
-  );
+const oauth2Client = new OAuth2(
+  process.env.GOOGLE_CLIENT_ID, // ClientID
+  process.env.GOOGLE_CLIENT_SECRET, // Client Secret
+  'https://developers.google.com/oauthplayground' // Redirect URL
+);
 
-  oauth2Client.setCredentials({
-    refresh_token: process.env.GOOGLE_REFRESH_TOKEN
-  });
-  const accessToken = await oauth2Client.getAccessToken();
-  console.log('ATATTA');
-  console.log(accessToken.token);
-  const transported = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    //service: process.env.EMAIL_SERVICE,
-    port: process.env.PORT,
-    secure: true,
-    auth: {
-      type: 'OAuth2',
-      user: process.env.SENDER_EMAIL_LOGIN,
-      cliendId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
-      accessToken: accessToken.token
-      // pass: process.env.SENDER_EMAIL_PASSWORD
-    }
-  });
+oauth2Client.setCredentials({
+  refresh_token: process.env.GOOGLE_REFRESH_TOKEN
+});
 
-  return transported;
-};
+const accessToken = oauth2Client.getAccessToken();
+
+const transported = nodemailer.createTransport({
+  //host: 'smtp.gmail.com',
+  service: process.env.EMAIL_SERVICE,
+  // port: process.env.PORT,
+  // secure: true,
+  auth: {
+    type: 'OAuth2',
+    user: process.env.SENDER_EMAIL_LOGIN,
+    cliendId: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
+    accessToken:
+      'ya29.a0AfH6SMBTXtZaePI5ENm94Ll2eoVy_NKaomCWaK5Lzj6EOD33RnTXbuEumESwyP2V6vY-pZLyxCm2mCayvhIv2lPz9KVZRjRcWmIoo1FX1DtT4ndukIlNYHBPRQDqKiCTNpZEDUnytdNOGz6XhOLuVUlT8PyFBtUcBOM'
+    // pass: process.env.SENDER_EMAIL_PASSWORD
+  },
+  tls: {
+    rejectUnauthorized: false
+  }
+});
 
 const getPasswordResetURL = (isShopper, user, token) => {
   if (isShopper) {
@@ -86,7 +86,7 @@ const uriEmailTemplate = (shopper, url) => {
 };
 
 module.exports = {
-  getTransported,
+  transported,
   getPasswordResetURL,
   resetPasswordTemplate,
   uriEmailTemplate
