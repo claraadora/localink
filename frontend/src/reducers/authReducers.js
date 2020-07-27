@@ -79,8 +79,8 @@ export const auth = (state = initialState, action) => {
         user: {
           users: state.user.users.map((user) => {
             if (user._id === payload) {
-              const bool = user.isAccountActive;
-              user.isAccountActive = !bool;
+              const bool = user.activated;
+              user.activated = !bool;
             }
             return user;
           }),
