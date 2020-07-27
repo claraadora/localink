@@ -50,12 +50,14 @@ describe('forgotPasswordEmailController', () => {
         .set('Content-Type', 'application/json')
         .send(newPassword)
         .end(async function (error, res) {
+          console.log('b3');
           assert.equal(error, null, 'error is not null');
           assert.equal(res.status, 202, 'status is not 200');
           assert.equal(res.text, 'Password change successful');
           const updatedHashedPassword = (
             await Shopper.findOne({ email: dummyShopper.email })
           ).password;
+
           const isMatch = await bcrypt.compare(
             newPassword.password,
             updatedHashedPassword
