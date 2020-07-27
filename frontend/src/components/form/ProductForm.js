@@ -56,18 +56,19 @@ export default function ProductForm() {
   const onSubmit = async (e) => {
     e.preventDefault();
     // eslint-disable-next-line no-restricted-globals
-    dispatch(addProduct(formData, history));
+    console.log(formData);
+    dispatch(addProduct(formData));
   };
 
   const onUploadImage = (e) => {
     const file = e.target.files[0];
-    let formData = new FormData();
+    let form = new FormData();
     const config = {
       header: { "Content-Type": "multipart/form-data" },
     };
-    formData.append("file", file);
+    form.append("file", file);
 
-    Axios.post("/business/product/upload-image", formData, config).then(
+    Axios.post("/business/product/upload-image", form, config).then(
       (response) => {
         console.log(response);
         if (response.data.success) {

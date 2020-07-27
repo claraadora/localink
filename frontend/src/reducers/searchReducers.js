@@ -70,7 +70,6 @@ export default function (state = initialState, action) {
     case searchConstants.SET_TRAVEL_MODE:
       return {
         ...state,
-        travelMode: payload,
       };
     case searchConstants.SET_RENDER_LOCATION:
       return {

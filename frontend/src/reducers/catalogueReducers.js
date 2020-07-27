@@ -17,24 +17,24 @@ export default function (state = initialState, action) {
         loading: false,
       };
     case catalogueConstants.FETCH_SHOP_ERROR:
-    case "CATALOGUE_ERROR":
+    case catalogueConstants.ADD_REVIEW_ERROR:
       return {
         ...state,
         error: payload,
         currShop: null,
         loading: false,
       };
-    case "ADD_REVIEW":
-      let temp = state.currShop.reviews;
+    case catalogueConstants.ADD_REVIEW:
+      let temp = state.currShop.data.reviews;
       temp.push(payload);
 
+      console.log(temp);
       return {
         ...state,
         loading: false,
-        error: payload,
         currShop: {
           ...state.currShop,
-          reviews: temp,
+          data: { ...state.currShop.data, reviews: temp },
         },
       };
     default:

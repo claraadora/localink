@@ -40,6 +40,11 @@ export default function ChangePasswordForm() {
   const onSubmit = async (e) => {
     e.preventDefault();
     dispatch(changePassword({ oldPassword, newPassword }));
+    setFormData({
+      oldPassword: "",
+      newPassword: "",
+      newPassword2: "",
+    });
   };
 
   return (
@@ -57,6 +62,7 @@ export default function ChangePasswordForm() {
           autoComplete="email"
           autoFocus
           value={oldPassword}
+          type="password"
         />
         <TextField
           variant="outlined"
@@ -69,6 +75,7 @@ export default function ChangePasswordForm() {
           onChange={onChange}
           autoComplete="newPassword"
           value={newPassword}
+          type="password"
           autoFocus
         />
         <TextField
@@ -81,6 +88,7 @@ export default function ChangePasswordForm() {
           name="newPassword2"
           onChange={onChange}
           autoComplete="newPassword2"
+          type="password"
           value={newPassword2}
           autoFocus
         />

@@ -18,6 +18,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { getCurrentProfile } from "../../actions/seller/profileActions";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
+import { deleteProduct } from "../../actions/seller/profileActions";
+import { lightBlue } from "@material-ui/core/colors";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -69,7 +71,7 @@ function EnhancedTableHead(props) {
   };
 
   return (
-    <TableHead>
+    <TableHead className={classes.root}>
       <TableRow>
         {headCells.map((headCell) => (
           <TableCell
@@ -117,29 +119,9 @@ const useToolbarStyles = makeStyles((theme) => ({
   },
 }));
 
-const EnhancedTableToolbar = (props) => {
-  const classes = useToolbarStyles();
-  const { numSelected } = props;
-
-  return (
-    <Toolbar className={clsx(classes.root)}>
-      <Typography
-        className={classes.title}
-        variant="h6"
-        id="tableTitle"
-        component="div"
-      >
-        Product Overview
-      </Typography>
-    </Toolbar>
-  );
-};
-
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex",
-    marginLeft: 240,
-    marginTop: 100,
+    backgroundColor: lightBlue[50],
   },
   paper: {
     marginTop: theme.spacing(8),
@@ -186,6 +168,7 @@ export default function ProductTable() {
           name: product.name,
           description: product.description,
           price: product.price,
+          _id: product._id,
         })
       );
       setRows(updatedRows);
@@ -209,96 +192,108 @@ export default function ProductTable() {
     setPage(0);
   };
 
-  const handleChangeDense = (event) => {
-    setDense(event.target.checked);
-  };
-
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
   console.log("this is rendered");
   return (
-    <div className={classes.paper}>
-      <Paper className={classes.paper}>
-        <EnhancedTableToolbar />
-        <TableContainer>
-          <Table
-            className={classes.table}
-            aria-labelledby="tableTitle"
-            size={dense ? "small" : "medium"}
-            aria-label="enhanced table"
-          >
-            <EnhancedTableHead
-              classes={classes}
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={handleRequestSort}
-              rowCount={rows.length}
-            />
-            <TableBody>
-              {stableSort(rows, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  const labelId = `enhanced-table-checkbox-${index}`;
+    <Grid
+      container
+      direction="column"
+      justify="center"
+      style={{ minHeight: "100%" }}
+      spacing={5}
+      alignItems="center"
+    >
+      <Grid item md={1} />
+      <Grid item>
+        <Typography variant="h5" gutterBottom>
+          Product Overview
+        </Typography>
+      </Grid>
+      <Grid item>
+        <div>
+          <Paper>
+            <TableContainer>
+              <Table
+                className={classes.table}
+                aria-labelledby="tableTitle"
+                size="small"
+              >
+                <EnhancedTableHead
+                  classes={classes}
+                  order={order}
+                  orderBy={orderBy}
+                  onRequestSort={handleRequestSort}
+                  rowCount={rows.length}
+                />
+                <TableBody>
+                  {stableSort(rows, getComparator(order, orderBy))
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row, index) => {
+                      const labelId = `enhanced-table-checkbox-${index}`;
 
-                  return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={row.name}
-                    >
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="none"
-                        align="center"
-                      >
-                        {row.name}
-                      </TableCell>
-                      <TableCell align="center">{row.description}</TableCell>
-                      <TableCell align="center">${row.price}</TableCell>
-                      <TableCell align="center">
-                        <Grid
-                          container
-                          direction="row"
-                          justify="center"
-                          alignItems="center"
-                        >
-                          <Grid item md={6}>
-                            <IconButton>
-                              <EditIcon />
-                            </IconButton>
-                          </Grid>
-                          <Grid item md={6}>
-                            <IconButton>
-                              <DeleteIcon />
-                            </IconButton>
-                          </Grid>
-                        </Grid>
-                      </TableCell>
+                      return (
+                        <TableRow hover tabIndex={-1} key={row.name}>
+                          <TableCell
+                            component="th"
+                            id={labelId}
+                            scope="row"
+                            padding="none"
+                            align="center"
+                          >
+                            {row.name}
+                          </TableCell>
+                          <TableCell align="center">
+                            {row.description}
+                          </TableCell>
+                          <TableCell align="center">${row.price}</TableCell>
+                          <TableCell align="center">
+                            <Grid
+                              container
+                              direction="row"
+                              justify="center"
+                              alignItems="center"
+                            >
+                              <Grid item md={6}>
+                                <IconButton>
+                                  <EditIcon />
+                                </IconButton>
+                              </Grid>
+                              <Grid item md={6}>
+                                <IconButton>
+                                  <DeleteIcon
+                                    onClick={() => {
+                                      dispatch(deleteProduct(row._id));
+                                    }}
+                                  />
+                                </IconButton>
+                              </Grid>
+                            </Grid>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  {emptyRows > 0 && (
+                    <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
+                      <TableCell colSpan={6} />
                     </TableRow>
-                  );
-                })}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-        />
-      </Paper>
-    </div>
+                  )}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <TablePagination
+              rowsPerPageOptions={[5, 10]}
+              component="div"
+              count={rows.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onChangePage={handleChangePage}
+              onChangeRowsPerPage={handleChangeRowsPerPage}
+            />
+          </Paper>
+        </div>
+      </Grid>
+    </Grid>
   );
 }

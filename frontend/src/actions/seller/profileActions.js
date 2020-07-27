@@ -60,7 +60,7 @@ export const createProfile = (formData, edit = false) => async (dispatch) => {
   }
 };
 
-export const addProduct = (formData, history) => async (dispatch) => {
+export const addProduct = (formData) => async (dispatch) => {
   try {
     const config = {
       headers: {

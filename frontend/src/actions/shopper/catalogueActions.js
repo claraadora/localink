@@ -27,19 +27,22 @@ export const addReview = (description, image, rating, shopId) => async (
       "Content-Type": "application/json",
     },
   };
-  const body = JSON.stringify({ description, image, rating, shopId });
+  const body = JSON.stringify({ description, image, rating });
 
   try {
-    const res = await axios.post("/review", body, config);
-
-    console.log(res);
+    const res = await axios.post(`/review/${shopId}`, body, config);
     dispatch({
       type: "ADD_REVIEW",
-      payload: res.data,
+      payload: { description, image, rating },
     });
-
     dispatch(setAlert("Add review successful.", "success"));
   } catch (err) {
+    const errors = err.response.data.errors;
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, "error")));
+    }
+    console.log(errors);
+
     dispatch({
       type: "CATALOGUE_ERROR",
     });
