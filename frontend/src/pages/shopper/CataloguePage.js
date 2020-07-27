@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ProductCard from "../../components/card/ProductCard";
 import ReviewCard from "../../components/card/ReviewCard";
+import ReviewForm from "../../components/form/ReviewForm";
 import {
   Grid,
   CircularProgress,
@@ -103,6 +104,7 @@ const CataloguePage = (props) => {
               >
                 <Tab label="All Products" {...a11yProps(0)} />
                 <Tab label="Reviews" {...a11yProps(1)} />
+                <Tab label="Add Review" {...a11yProps(2)} />
               </Tabs>
             </AppBar>
           </Grid>
@@ -133,6 +135,24 @@ const CataloguePage = (props) => {
                     <ReviewCard review={review} />
                   </Grid>
                 ))}
+              </Grid>
+              <Grid item md={2} />
+            </Grid>
+          </TabPanel>
+
+          {/** ADD REVIEW */}
+          <TabPanel value={value} index={2}>
+            <Grid item container style={{ width: "100vw" }}>
+              <Grid item md={2} />
+              <Grid
+                item
+                container
+                md={8}
+                spacing={2}
+                alignItems="center"
+                justify="center"
+              >
+                <ReviewForm />
               </Grid>
               <Grid item md={2} />
             </Grid>
