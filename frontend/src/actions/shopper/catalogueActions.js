@@ -27,12 +27,8 @@ export const addReview = (description, image, rating, shopId) => async (
       "Content-Type": "application/json",
     },
   };
-  console.log(description);
-  console.log(image);
-  console.log(rating);
-  console.log(shopId);
   const body = JSON.stringify({ description, image, rating, shopId });
-  console.log(body);
+
   try {
     const res = await axios.post("/review", body, config);
 
