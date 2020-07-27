@@ -127,17 +127,10 @@ export const changePassword = ({
 
     dispatch({
       type: authConstants.CHANGE_PASSWORD_SUCCESS,
-<<<<<<< HEAD
       payload: res.data
     });
 
     dispatch(setAlert('Changed password successfully'));
-=======
-      payload: res.data,
-    });
-
-    dispatch(setAlert("Changed password successfully"));
->>>>>>> 346303a60073d7c31c39ced09fe26281cecc10a1
   } catch (err) {
     const errors = err.response.data.errors;
 
@@ -167,17 +160,10 @@ export const changeEmail = ({ email }) => async dispatch => {
 
     dispatch({
       type: authConstants.CHANGE_EMAIL_SUCCESS,
-<<<<<<< HEAD
       payload: res.data
     });
 
     dispatch(setAlert('Changed email successfully'));
-=======
-      payload: res.data,
-    });
-
-    dispatch(setAlert("Changed email successfully"));
->>>>>>> 346303a60073d7c31c39ced09fe26281cecc10a1
   } catch (err) {
     const errors = err.response.data.errors;
 
@@ -275,11 +261,7 @@ export const addUser = data => async dispatch => {
     const res = await axios.post('/business/user', body, config);
     dispatch({
       type: authConstants.ADD_USER,
-<<<<<<< HEAD
-      payload: res
-=======
-      payload: data,
->>>>>>> 346303a60073d7c31c39ced09fe26281cecc10a1
+      payload: data
     });
 
     dispatch(setAlert('User added.', 'success'));
