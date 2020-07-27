@@ -21,7 +21,7 @@ router.post(
   [
     authRequired,
     [
-      check('email', 'Please include a valid email').isEmail(),
+      //check('email', 'Please include a valid email').isEmail(),
       check('password', 'Password is required').exists()
     ]
   ],

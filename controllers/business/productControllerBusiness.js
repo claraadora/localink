@@ -18,7 +18,12 @@ async function createProduct(req, res) {
 
     if (!shop) {
       return res.status(403).json({
-        msg: 'shop not found, please create shop first before adding products'
+        errors: [
+          {
+            msg:
+              'shop not found, please create shop first before adding products'
+          }
+        ]
       });
     }
 
