@@ -1,24 +1,25 @@
-const { validationResult } = require('express-validator');
-
-const Shop = require('../../models/Shop');
-const Shopper = require('../../models/Shopper');
-const Product = require('../../models/Product');
-const Review = require('../../models/Review');
+const { validationResult } = require("express-validator");
+const path = require("path");
+const multer = require("multer");
+const Shop = require("../../models/Shop");
+const Shopper = require("../../models/Shopper");
+const Product = require("../../models/Product");
+const Review = require("../../models/Review");
 
 async function uploadReviewImage(req, res) {
   const storage = multer.memoryStorage();
-  const upload = multer({ storage: storage }).single('file');
+  const upload = multer({ storage: storage }).single("file");
 
-  upload(req, res, async err => {
+  upload(req, res, async (err) => {
     if (err) {
       return res.json({ success: false, err });
     }
     const image = {
       contentType: path.extname(req.file.originalname),
-      data: req.file.buffer
+      data: req.file.buffer,
     };
     const url = `data:image/${image.contentType};base64,${image.data.toString(
-      'base64'
+      "base64"
     )}`;
 
     return res.json({ success: true, url });
@@ -38,7 +39,7 @@ async function createReview(req, res) {
       shop: shop,
       image: req.body.image,
       description: req.body.description,
-      rating: req.body.rating
+      rating: req.body.rating,
     });
 
     await newReview.save();
@@ -52,26 +53,26 @@ async function createReview(req, res) {
 
     await shop.save();
 
-    shop = await shop.populate('reviews').execPopulate();
+    shop = await shop.populate("reviews").execPopulate();
     res.json(shop);
   } catch (err) {
     console.error(err.message);
-    res.status(500).json({ errors: [{ msg: 'Server error' }] });
+    res.status(500).json({ errors: [{ msg: "Server error" }] });
   }
 }
 
 async function getBusinessReviews(req, res) {
   try {
     const shop = await Shop.findOne({
-      owner: req.params.business_id
+      owner: req.params.business_id,
     }).populate({
-      path: 'reviews',
-      model: 'Review'
+      path: "reviews",
+      model: "Review",
     });
     res.json(shop.reviews);
   } catch (err) {
     console.error(err.message);
-    res.status(500).json({ errors: [{ msg: 'Server error' }] });
+    res.status(500).json({ errors: [{ msg: "Server error" }] });
   }
 }
 
