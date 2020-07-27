@@ -1,4 +1,5 @@
 import authConstants from "../constants/authConstants";
+import { setAlert } from "../constants/alertConstants";
 
 const initialState = {
   token: localStorage.getItem("token"),

@@ -113,7 +113,7 @@ export default function ForgetPasswordPage(props) {
               color="primary"
               className={classes.submit}
             >
-              Reset Password
+              Set New Password
             </Button>
           </form>
         </div>
