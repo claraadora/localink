@@ -161,7 +161,7 @@ export default function ProductTable() {
   useEffect(() => {
     if (!profile) dispatch(getCurrentProfile());
 
-    if (!loading && profile && profile.products !== undefined) {
+    if (profile && profile.products !== undefined) {
       const updatedRows = [];
       profile.products.map((product) =>
         updatedRows.push({
@@ -201,7 +201,6 @@ export default function ProductTable() {
       container
       direction="column"
       justify="center"
-      style={{ minHeight: "100%" }}
       spacing={5}
       alignItems="center"
     >
@@ -231,41 +230,21 @@ export default function ProductTable() {
                   {stableSort(rows, getComparator(order, orderBy))
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => {
-                      const labelId = `enhanced-table-checkbox-${index}`;
-
                       return (
-                        <TableRow hover tabIndex={-1} key={row.name}>
-                          <TableCell
-                            component="th"
-                            id={labelId}
-                            scope="row"
-                            padding="none"
-                            align="center"
-                          >
-                            {row.name}
-                          </TableCell>
+                        <TableRow key={row.name}>
+                          <TableCell align="center">{row.name}</TableCell>
                           <TableCell align="center">
                             {row.description}
                           </TableCell>
                           <TableCell align="center">${row.price}</TableCell>
                           <TableCell align="center">
-                            <Grid
-                              container
-                              direction="row"
-                              justify="center"
-                              alignItems="center"
-                            >
-                              <Grid item md={6}></Grid>
-                              <Grid item md={6}>
-                                <IconButton>
-                                  <DeleteIcon
-                                    onClick={() => {
-                                      dispatch(deleteProduct(row._id));
-                                    }}
-                                  />
-                                </IconButton>
-                              </Grid>
-                            </Grid>
+                            <IconButton>
+                              <DeleteIcon
+                                onClick={() => {
+                                  dispatch(deleteProduct(row._id));
+                                }}
+                              />
+                            </IconButton>
                           </TableCell>
                         </TableRow>
                       );
