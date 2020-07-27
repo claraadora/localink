@@ -1,59 +1,64 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import SellerLandingPage from "./pages/seller/LandingPage";
-import SellerLogInPage from "./pages/seller/LogInPage";
-import SellerSignUpPage from "./pages/seller/SignUpPage";
-import SellerDashboardPage from "./pages/seller/DashboardPage";
-import SellerNavBar from "./components/navbar/SellerNavBar";
-import LocalinkAlert from "./components/Alert";
-import { Route } from "react-router-dom";
-import { Grid, makeStyles } from "@material-ui/core";
-import ProductTable from "./components/table/ProductTable";
-import UserTable from "./components/table/UserTable";
-import ProductForm from "./components/form/ProductForm";
-import ProfileForm from "./components/form/ProfileForm";
-import UserForm from "./components/form/UserForm";
-import AccountSettings from "./components/tabs/AccountSettings";
-import { themeSeller } from "./themeSeller";
-import { ThemeProvider } from "@material-ui/core/styles";
-import ReviewTable from "./components/table/ReviewTable";
-import { updateIsShopper } from "./actions/pageActions";
-import LandingPage from "./pages/seller/LandingPage";
-import { LocalinkDrawer } from "./components/drawer/Drawer";
-import { ChatPage } from "./pages/ChatPage";
-import ForgotPasswordPage from "./pages/ForgotPasswordPage";
-import ResetPasswordPage from "./pages/ResetPasswordPage";
-import { useLocation } from "react-router-dom";
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import SellerLandingPage from './pages/seller/LandingPage';
+import SellerLogInPage from './pages/seller/LogInPage';
+import SellerSignUpPage from './pages/seller/SignUpPage';
+import SellerDashboardPage from './pages/seller/DashboardPage';
+import SellerNavBar from './components/navbar/SellerNavBar';
+import LocalinkAlert from './components/Alert';
+import { Route } from 'react-router-dom';
+import { Grid, makeStyles } from '@material-ui/core';
+import ProductTable from './components/table/ProductTable';
+import UserTable from './components/table/UserTable';
+import ProductForm from './components/form/ProductForm';
+import ProfileForm from './components/form/ProfileForm';
+import UserForm from './components/form/UserForm';
+import AccountSettings from './components/tabs/AccountSettings';
+import { themeSeller } from './themeSeller';
+import { ThemeProvider } from '@material-ui/core/styles';
+import ReviewTable from './components/table/ReviewTable';
+import { updateIsShopper } from './actions/pageActions';
+import LandingPage from './pages/seller/LandingPage';
+import { LocalinkDrawer } from './components/drawer/Drawer';
+import { ChatPage } from './pages/ChatPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
+import { useLocation } from 'react-router-dom';
 
 const useStyles = makeStyles({
   main: {
-    display: "flex",
-    flexDirection: "column",
-    height: "100vh",
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100vh'
   },
   content: {
     flexGrow: 1,
-    width: "100%",
-    display: "flex",
-    flexDirection: "column",
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column'
   },
   navBar: {
-    width: "100%",
+    width: '100%'
   },
   alert: {
-    position: "absolute",
-    top: "100px",
-    width: "100%",
-  },
+    position: 'absolute',
+    top: '100px',
+    width: '100%'
+  }
 });
 
+<<<<<<< HEAD
+const getLastTwo = str => {
+  const arr = str.split('/');
+=======
 const getLastTwo = (str) => {
   const arr = str.split("/");
+>>>>>>> 0473c3bc005d56d88e70b70859f0bf2c88ab15db
   return `${arr[3]}/${arr[4]}`;
 };
 
 function AppSeller() {
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
   const dispatch = useDispatch();
   let location = useLocation();
 
@@ -73,41 +78,41 @@ function AppSeller() {
         </div>
         <div className={classes.content}>
           {isAuthenticated && <LocalinkDrawer />}
-          <Route exact path="/business/login" component={SellerLogInPage} />
-          <Route exact path="/business/signup" component={SellerSignUpPage} />
-          <Route exact path="/business/" component={SellerLandingPage} />
+          <Route exact path='/business/login' component={SellerLogInPage} />
+          <Route exact path='/business/signup' component={SellerSignUpPage} />
+          <Route exact path='/business/' component={SellerLandingPage} />
           <Route
             exact
-            path="/business/dashboard"
+            path='/business/dashboard'
             component={SellerDashboardPage}
           />
           <Route
             exact
-            path="/business/product/manage"
+            path='/business/product/manage'
             component={ProductTable}
           />
-          <Route exact path="/business/users/manage" component={UserTable} />
+          <Route exact path='/business/users/manage' component={UserTable} />
           <Route
             exact
-            path="/business/account/profile"
+            path='/business/account/profile'
             component={ProfileForm}
           />
-          <Route exact path="/business/users/add" component={UserForm} />
+          <Route exact path='/business/users/add' component={UserForm} />
           <Route
             exact
-            path="/business/account/settings"
+            path='/business/account/settings'
             component={AccountSettings}
           />
-          <Route exact path="/business/product/add" component={ProductForm} />
-          <Route exact path="/business/review" component={ReviewTable} />
-          <Route exact path="/business/chat" component={ChatPage} />
+          <Route exact path='/business/product/add' component={ProductForm} />
+          <Route exact path='/business/review' component={ReviewTable} />
+          <Route exact path='/business/chat' component={ChatPage} />
           <Route
             exact
-            path="/business/forgot-password"
+            path='/business/forgot-password'
             component={ForgotPasswordPage}
           />
           <Route
-            path="/business/reset-password"
+            path='/business/reset-password'
             render={() => (
               <ResetPasswordPage segment={getLastTwo(location.pathname)} />
             )}
