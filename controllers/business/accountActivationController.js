@@ -11,7 +11,7 @@ async function activateAccount(req, res) {
   }
   user.isAccountActive = true;
   await user.save();
-  res.status(200).json({ msg: 'Activated account successfully' });
+  res.status(200).send('Activated account successfully');
 }
 
 module.exports = { activateAccount };

@@ -15,7 +15,7 @@ router.post('/upload-image/:shop_id', reviewController.uploadReviewImage);
 // @access   Private
 // @user     Shopper -> middleware to check that user is not business
 router.post(
-  '/',
+  '/:shop_id',
   [
     authShopper,
     [
