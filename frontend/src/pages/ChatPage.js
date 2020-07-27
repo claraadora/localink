@@ -71,9 +71,24 @@ export const ChatPage = (props) => {
     );
   }
 
+  const styleShopper = {
+    height: "92vh",
+  };
+
+  const styleSeller = {
+    height: "92vh",
+    width: "calc(100vw - 200px)",
+    marginLeft: "200px",
+    paddingTop: "8vh",
+  };
+
   return (
     <ThemeProvider theme={themeChat}>
-      <Grid container direction="row" style={{ height: "92vh" }}>
+      <Grid
+        container
+        direction="row"
+        style={isShopper ? styleShopper : styleSeller}
+      >
         <Grid item md={3}>
           <LocalinkChatList isShopper={isShopper} />
         </Grid>
