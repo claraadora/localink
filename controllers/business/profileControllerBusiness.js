@@ -68,7 +68,8 @@ async function createOrUpdateProfile(req, res) {
     promotions,
     openingHours,
     contactDetails,
-    delivery
+    delivery,
+    image
   } = req.body;
 
   try {
@@ -91,7 +92,8 @@ async function createOrUpdateProfile(req, res) {
       delivery,
       address,
       latLng,
-      distance
+      distance,
+      avatar: image
     };
 
     // Using upsert option (creates new doc if no match is found):
@@ -129,7 +131,8 @@ async function uploadAvatar(req, res) {
     const url = `data:image/${image.contentType};base64,${image.data.toString(
       'base64'
     )}`;
-    const shop = await Shop.findOne({ owner: req.user.id });
+    const business = await Business.findById(req.user.id);
+    const shop = await Shop.findOne({ owner: business.id });
     shop.avatar = url;
     await shop.save();
     return res.json({ success: true, url });
