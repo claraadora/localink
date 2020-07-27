@@ -27,20 +27,20 @@ router.post('/start-location/:shopper_id', async (req, res) => {
     const allShops = await Shop.find();
     allShops.forEach(async s => {
       let shop = s;
-      shop.distance = [];
-      // const dist = await getDistance(location, shop.latLng);
+      //shop.distance = [];
+      const dist = await getDistance(location.latLng, shop.latLng);
 
-      // shop.distance = shop.distance
-      //   ? await shop.distance.filter(obj => {
-      //       return obj && !obj[shopper_id];
-      //     })
-      //   : [];
+      shop.distance = shop.distance
+        ? await shop.distance.filter(obj => {
+            return obj && !obj[shopper_id];
+          })
+        : [];
 
-      // const distObj = {
-      //   [shopper_id]: dist
-      // };
+      const distObj = {
+        [shopper_id]: dist
+      };
 
-      // await shop.distance.push(distObj);
+      await shop.distance.push(distObj);
 
       await shop.save();
       // console.log('1');
