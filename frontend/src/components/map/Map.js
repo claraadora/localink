@@ -16,6 +16,7 @@ import {
   updateStops,
   updateDirectionSteps,
 } from "../../actions/shopper/searchActions";
+import pin from "../../utils/pin.png";
 
 function createKey(location) {
   return location.lat + location.lng;
@@ -114,8 +115,7 @@ function Map() {
           key="userlocation"
           position={userLocation}
           icon={{
-            url:
-              "https://www.imgonline.com.ua/result_img/imgonline-com-ua-resize-kkWlVdSjk0.png",
+            url: pin,
           }}
         />
       )}
