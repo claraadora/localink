@@ -13,6 +13,7 @@ import {
   Grid,
   Avatar,
   IconButton,
+  CircularProgress,
 } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import Axios from "axios";
@@ -40,7 +41,9 @@ const ProfileForm = () => {
   const profile = useSelector((state) => state.profile.profile);
   const user = useSelector((state) => state.auth.user);
   const loading = useSelector((state) => state.profile.loading);
+  const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
+
   const classes = useStyles();
   const initialState = {
     shopName: "",
@@ -48,6 +51,12 @@ const ProfileForm = () => {
     avatar: "",
     address: "",
   };
+
+  useEffect(() => {
+    if (isLoading && !loading) {
+      setIsLoading(false);
+    }
+  }, [loading]);
 
   const [formData, setFormData] = useState(initialState);
   const { shopName, description, avatar, address } = formData;
@@ -111,6 +120,7 @@ const ProfileForm = () => {
       }
     );
   };
+
   return (
     <Grid
       container
@@ -125,6 +135,7 @@ const ProfileForm = () => {
           <Typography variant="h5" gutterBottom>
             Profile
           </Typography>
+          {isLoading && <CircularProgress />}
           <form className={classes.form} onSubmit={onSubmit}>
             <Grid
               container
@@ -228,22 +239,4 @@ const ProfileForm = () => {
   );
 };
 
-{
-  /* <TextField
-required
-id="avatar"
-name="avatar"
-label={"Profile Picture"}
-accept="image/png, image/jpeg"
-type="file"
-fullWidth
-onChange={onChange}
-value={avatar}
-autoComplete="avatar"
-helperText="Upload .jpeg or .png file"
-margin={"normal"}
-InputLabelProps={{ shrink: true, classes: inputLabelStyles }}
-InputProps={{ classes: inputBaseStyles, disableUnderline: true }}
-/> */
-}
 export default ProfileForm;
