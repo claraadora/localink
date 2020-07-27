@@ -249,7 +249,7 @@ export default function ProductTable() {
                           </TableCell>
                           <TableCell align="center">${row.price}</TableCell>
                           <TableCell align="center">
-                            <Grid
+                            {/* <Grid
                               container
                               direction="row"
                               justify="center"
@@ -260,16 +260,16 @@ export default function ProductTable() {
                                   <EditIcon />
                                 </IconButton>
                               </Grid>
-                              <Grid item md={6}>
-                                <IconButton>
-                                  <DeleteIcon
-                                    onClick={() => {
-                                      dispatch(deleteProduct(row._id));
-                                    }}
-                                  />
-                                </IconButton>
-                              </Grid>
-                            </Grid>
+                              <Grid item md={6}> */}
+                            <IconButton>
+                              <DeleteIcon
+                                onClick={() => {
+                                  dispatch(deleteProduct(row._id));
+                                }}
+                              />
+                            </IconButton>
+                            {/* </Grid>
+                            </Grid> */}
                           </TableCell>
                         </TableRow>
                       );
