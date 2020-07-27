@@ -72,7 +72,7 @@ async function createOrUpdateProfile(req, res) {
   } = req.body;
 
   try {
-    const coordinates = await geocode(address);
+    const coordinates = (await geocode(address)).latLng;
     const latLng = {
       lat: coordinates.lat,
       lng: coordinates.lng
