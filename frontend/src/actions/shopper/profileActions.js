@@ -20,6 +20,7 @@ export const getCurrentProfile = () => async (dispatch) => {
       },
     });
   }
+  dispatch(setBackLoading());
 };
 
 export const createProfile = (formData, history, edit = false) => async (
@@ -55,4 +56,11 @@ export const createProfile = (formData, history, edit = false) => async (
       },
     });
   }
+  dispatch(setBackLoading());
+};
+
+export const setBackLoading = () => (dispatch) => {
+  dispatch({
+    type: "SET_BACK_LOADING",
+  });
 };

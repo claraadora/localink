@@ -35,6 +35,11 @@ export default function (state = initialState, action) {
       return {
         ...state,
       };
+    case "SET_BACK_LOADING":
+      return {
+        ...state,
+        loading: true,
+      };
     default:
       return state;
   }

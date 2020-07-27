@@ -20,6 +20,7 @@ export const getCurrentProfile = () => async (dispatch) => {
       },
     });
   }
+  dispatch(setBackLoading());
 };
 
 export const createProfile = (formData, edit = false) => async (dispatch) => {
@@ -58,6 +59,7 @@ export const createProfile = (formData, edit = false) => async (dispatch) => {
       },
     });
   }
+  dispatch(setBackLoading());
 };
 
 export const addProduct = (formData) => async (dispatch) => {
@@ -91,6 +93,7 @@ export const addProduct = (formData) => async (dispatch) => {
       },
     });
   }
+  dispatch(setBackLoading());
 };
 
 export const deleteProduct = (id) => async (dispatch) => {
@@ -124,6 +127,7 @@ export const deleteProduct = (id) => async (dispatch) => {
       },
     });
   }
+  dispatch(setBackLoading());
 };
 
 export const addUser = (data) => async (dispatch) => {
@@ -154,4 +158,11 @@ export const addUser = (data) => async (dispatch) => {
       type: profileConstants.ADD_USER_ERROR,
     });
   }
+  dispatch(setBackLoading());
+};
+
+export const setBackLoading = () => (dispatch) => {
+  dispatch({
+    type: "SET_BACK_LOADING",
+  });
 };
