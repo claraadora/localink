@@ -5,6 +5,11 @@ const authShopper = require('../../../middleware/shopper/authShopper');
 
 const reviewController = require('../../../controllers/shopper/reviewController');
 
+// @route    POST /review/upload-image/:shop_id
+// @desc     Upload review image
+// @access   Private
+router.post('/upload-image/:shop_id', reviewController.uploadReviewImage);
+
 // @route    POST /review
 // @desc     Create a review
 // @access   Private
