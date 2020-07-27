@@ -110,7 +110,7 @@ function Map() {
       ref={mapRef}
     >
       {/**RENDER USER CURRENT LOCATION */}
-      {userLocation !== "" && (
+      {!renderRoute && userLocation !== null && (
         <Marker
           key="userlocation"
           position={userLocation}
@@ -126,7 +126,7 @@ function Map() {
           return <Marker key={index} position={product.shop_docs[0].latLng} />;
         })}
       {/**RENDER ROUTE*/}
-      {renderRoute && stops && directions && (
+      {renderRoute && stops.length > 1 && directions && (
         <DirectionsRenderer directions={directions} />
       )}
     </GoogleMap>
