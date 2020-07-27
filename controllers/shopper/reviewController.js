@@ -6,6 +6,9 @@ const Shopper = require("../../models/Shopper");
 const Product = require("../../models/Product");
 const Review = require("../../models/Review");
 
+const multer = require('multer');
+const path = require('path');
+
 async function uploadReviewImage(req, res) {
   const storage = multer.memoryStorage();
   const upload = multer({ storage: storage }).single("file");
@@ -33,9 +36,10 @@ async function createReview(req, res) {
   }
 
   try {
+    const shopper = await Shopper.findByID(req.user._id);
     let shop = await Shop.findById(req.params.shop_id);
     const newReview = new Review({
-      author: req.user._id,
+      author: shopper,
       shop: shop,
       image: req.body.image,
       description: req.body.description,
