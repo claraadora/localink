@@ -54,9 +54,8 @@ export const login = ({ email, password }) => async (dispatch) => {
     dispatch({
       type: authConstants.LOGIN_FAILURE,
     });
-
-    dispatch(setBackLoading());
   }
+  dispatch(setBackLoading());
 };
 
 //Register user
