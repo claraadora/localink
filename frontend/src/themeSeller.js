@@ -42,6 +42,14 @@ export const themeSeller = createMuiTheme({
     body1: {
       fontFamily: '"Metropolis", sans-serif',
       fontWeight: "normal",
+      fontSize: "0.8125rem",
+      lineHeight: 1.38,
+      letterSpacing: "normal",
+      color: grey[900],
+    },
+    bodyChat: {
+      fontFamily: '"Metropolis", sans-serif',
+      fontWeight: "normal",
       fontSize: "0.9375rem",
       lineHeight: 1.38,
       letterSpacing: "normal",

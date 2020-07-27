@@ -41,14 +41,12 @@ export default function ShopperNavBar({ isSearchPage }) {
           <Grid item md={5} xs={0} />
           {isAuthenticated ? (
             <Grid item container md={4} xs={4} justify="space-evenly">
-              <Grid
-                item
-                container
-                xs={4}
-                direction="row"
-                justify="flex-end"
-                alignItems="center"
-              >
+              <Grid item>
+                <Button component={Link} to="/chat">
+                  Chat
+                </Button>
+              </Grid>
+              <Grid item>
                 <Button
                   color="inherit"
                   component={Link}
@@ -56,10 +54,7 @@ export default function ShopperNavBar({ isSearchPage }) {
                   disableRipple={true}
                   onClick={() => dispatch(logout())}
                 >
-                  Log out
-                </Button>
-                <Button component={Link} to="/chat">
-                  Chat
+                  Log Out
                 </Button>
               </Grid>
             </Grid>

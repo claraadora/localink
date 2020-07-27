@@ -30,7 +30,7 @@ export const LocalinkChatListItem = (props) => {
         <Grid item container direction="column" md={10} justify="space-evenly">
           <Grid item container direction="row" justify="space-between">
             <Grid item md={8}>
-              <Typography variant="body1" noWrap>
+              <Typography variant="bodyChat" noWrap>
                 {props.name}
               </Typography>
             </Grid>

@@ -32,7 +32,7 @@ const ProductCard = (props) => {
     <Card>
       <CardMedia className={classes.media} image={image} />
       <CardContent>
-        <Typography noWrap gutterBottom variant="body1" component="h2">
+        <Typography noWrap gutterBottom variant="body2" component="h2">
           {name}
         </Typography>
         <Typography
