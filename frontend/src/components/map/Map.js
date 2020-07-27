@@ -110,7 +110,14 @@ function Map() {
     >
       {/**RENDER USER CURRENT LOCATION */}
       {userLocation !== "" && (
-        <Marker key="userlocation" position={userLocation} />
+        <Marker
+          key="userlocation"
+          position={userLocation}
+          icon={{
+            url:
+              "https://www.imgonline.com.ua/result_img/imgonline-com-ua-resize-kkWlVdSjk0.png",
+          }}
+        />
       )}
       {/**RENDER ALL PRODUCT MARKERS*/}
       {!renderRoute &&
