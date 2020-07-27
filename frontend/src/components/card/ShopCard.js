@@ -39,7 +39,7 @@ export const ShopCard = (props) => {
             <Typography variant="h6">{trimString(data.name, 25)}</Typography>
           </Grid>
           <Grid item>
-            <Typography variant="body2">
+            <Typography variant="body1">
               {data.shop_docs[0].shopName}
             </Typography>
           </Grid>

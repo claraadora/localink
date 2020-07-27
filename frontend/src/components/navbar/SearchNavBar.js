@@ -3,7 +3,7 @@ import { Grid, Paper, makeStyles } from "@material-ui/core";
 import { SearchInput } from "../input/SearchInput";
 import { OptionSelect } from "../select/OptionSelect";
 import { TravelSelect } from "../select/TravelSelect";
-import { LocationDialog } from "../dialog/LocationDialog";
+import { ManualLocationDialog } from "../dialog/ManualLocationDialog";
 
 const useStyles = makeStyles({
   paper: {
@@ -35,7 +35,7 @@ export const SearchNavBar = () => {
             <TravelSelect />
           </Grid>
           <Grid item md={1}>
-            <LocationDialog />
+            <ManualLocationDialog />
           </Grid>
           <Grid item md={1} />
         </Grid>

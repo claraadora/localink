@@ -13,7 +13,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import PhoneAndroidIcon from "@material-ui/icons/PhoneAndroid";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUserLocation } from "../../actions/shopper/searchActions";
-import { yellow, green } from "@material-ui/core/colors";
+import { yellow, green, cyan } from "@material-ui/core/colors";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import {
   createNavLink,
@@ -24,21 +24,18 @@ import { CircularProgress } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   button: {
-    backgroundColor: green[400],
+    backgroundColor: green[300],
     "&:hover": {
-      backgroundColor: green[300],
+      backgroundColor: green[400],
     },
-    border: 0,
-    borderRadius: 3,
     color: "white",
-    height: 35,
-    width: 403,
-    padding: "0 30px",
     justifyContent: "center",
-    fontSize: "14px",
   },
   text: {
     fontSize: "14px",
+  },
+  phoneButton: {
+    color: cyan[600],
   },
 }));
 

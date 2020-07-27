@@ -99,12 +99,36 @@ export const updateUserLocation = (
       currentLocation: currentLocation,
       startLocation: startLocation,
     });
-    console.log(body);
+
     const res = await axios.post(`/start-location/${shopperId}`, body, config);
+
+    console.log(res);
+    if (res.data.latLng === "") {
+      dispatch(setAlert("Address not found. Please try again.", "error"));
+      dispatch({
+        type: searchConstants.UPDATE_USER_LOCATION,
+        payload: null,
+      });
+      return;
+    }
+
+    if (res.data.country !== "Singapore") {
+      dispatch(
+        setAlert(
+          "Address out of bounds. Must be local 😉. Please try again.",
+          "error"
+        )
+      );
+      dispatch({
+        type: searchConstants.UPDATE_USER_LOCATION,
+        payload: null,
+      });
+      return;
+    }
 
     dispatch({
       type: searchConstants.UPDATE_USER_LOCATION,
-      payload: res.data,
+      payload: res.data.latLng,
     });
   } catch (err) {
     console.log(err);

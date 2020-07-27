@@ -1,40 +1,50 @@
 import React from "react";
-import {
-  ChatListItem,
-  Avatar,
-  Column,
-  Row,
-  Subtitle,
-  Title,
-} from "@livechat/ui-kit";
+import { ChatListItem, Column, Row, Subtitle, Title } from "@livechat/ui-kit";
 import { useDispatch } from "react-redux";
 import { setCurrActive } from "../../actions/chatActions";
-import { Grid } from "@material-ui/core";
+import { Grid, Typography, Avatar, makeStyles } from "@material-ui/core";
+
+const useStyles = makeStyles((theme) => ({
+  large: {
+    width: theme.spacing(7),
+    height: theme.spacing(7),
+  },
+}));
 
 export const LocalinkChatListItem = (props) => {
   const dispatch = useDispatch();
-
+  const classes = useStyles();
   return (
     <ChatListItem
       active={props.isActive}
       onClick={() => dispatch(setCurrActive(props._id))}
     >
-      <Avatar imgUrl={props.avatar} letter={props.name[0]} />
-      <Column fill>
-        <Row>
-          <Grid container direction="row">
-            <Grid item md={9}>
-              <Title ellipsis>{props.name}</Title>
+      <Grid container direction="row" style={{ height: "100%" }}>
+        <Grid item md={2}>
+          <Avatar
+            alt={props.name}
+            src={props.avatar}
+            className={classes.large}
+          />
+        </Grid>
+        <Grid item container direction="column" md={10} justify="space-evenly">
+          <Grid item container direction="row" justify="space-between">
+            <Grid item md={8}>
+              <Typography variant="bodyChat" noWrap>
+                {props.name}
+              </Typography>
             </Grid>
-            <Grid item md={1} />
-            <Grid item md={2}>
-              <Subtitle nowrap>{"12:45 PM"}</Subtitle>
+            <Grid item>
+              <Typography variant="body2">{props.timestamp}</Typography>
             </Grid>
           </Grid>
-        </Row>
-
-        <Subtitle ellipsis>{props.message}</Subtitle>
-      </Column>
+          <Grid item>
+            <Typography variant="body2" noWrap>
+              {props.message}
+            </Typography>
+          </Grid>
+        </Grid>
+      </Grid>
     </ChatListItem>
   );
 };

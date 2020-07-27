@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { ChatList } from "@livechat/ui-kit";
 import { useSelector } from "react-redux";
 import { LocalinkChatListItem } from "./ChatListItem";
+import { compareMoment } from "../../utils/chat";
 
 export const LocalinkChatList = (props) => {
   const chat = useSelector((state) => state.chat);
@@ -28,13 +29,20 @@ export const LocalinkChatList = (props) => {
             ];
             const avatar = isShopper ? chatItem.shopAvatar : null;
             const len = message_list.length;
+            const timestampSelector =
+              len > 0
+                ? compareMoment(message_list[len - 1].time.unformatted)
+                : null;
+
             return (
               <LocalinkChatListItem
                 isActive={activeChat === _id}
                 _id={_id}
                 key={_id}
                 name={name}
-                timestamp={len > 0 ? message_list[len - 1].date : null}
+                timestamp={
+                  len > 0 ? message_list[len - 1].time[timestampSelector] : null
+                }
                 message={len > 0 ? message_list[len - 1].message : null}
                 avatar={avatar}
               />

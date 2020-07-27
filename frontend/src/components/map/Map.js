@@ -16,6 +16,7 @@ import {
   updateStops,
   updateDirectionSteps,
 } from "../../actions/shopper/searchActions";
+import pin from "../../utils/pin.png";
 
 function createKey(location) {
   return location.lat + location.lng;
@@ -109,8 +110,14 @@ function Map() {
       ref={mapRef}
     >
       {/**RENDER USER CURRENT LOCATION */}
-      {userLocation !== "" && (
-        <Marker key="userlocation" position={userLocation} />
+      {!renderRoute && userLocation !== null && (
+        <Marker
+          key="userlocation"
+          position={userLocation}
+          icon={{
+            url: pin,
+          }}
+        />
       )}
       {/**RENDER ALL PRODUCT MARKERS*/}
       {!renderRoute &&
@@ -119,7 +126,7 @@ function Map() {
           return <Marker key={index} position={product.shop_docs[0].latLng} />;
         })}
       {/**RENDER ROUTE*/}
-      {renderRoute && stops && directions && (
+      {renderRoute && stops.length > 1 && directions && (
         <DirectionsRenderer directions={directions} />
       )}
     </GoogleMap>

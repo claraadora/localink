@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Paper, Typography, IconButton, Grid, Avatar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { teal } from "@material-ui/core/colors";
+import { lightGreen } from "@material-ui/core/colors";
 import { loadRoute } from "../../actions/shopper/searchActions";
 import NavigationIcon from "@material-ui/icons/Navigation";
 
@@ -9,7 +9,8 @@ const useStyles = makeStyles((theme) => ({
   header: {
     width: "100%",
     display: "flex",
-    padding: "0.5% 0.5% 0.5% 0.5%",
+    padding: "1% 0.5% 0.5% 0.5%",
+    backgroundColor: lightGreen[50],
   },
   avatar: {
     width: theme.spacing(12),

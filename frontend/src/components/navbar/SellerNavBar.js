@@ -185,53 +185,20 @@ export default function SellerNavBar() {
             </Grid>
             <Grid item md={5} xs={0} />
             {isAuthenticated ? (
-              <Grid item container md={4} xs={4} justify="space-evenly">
-                <Grid
-                  item
-                  container
-                  xs={4}
-                  direction="row"
-                  justify="flex-end"
-                  alignItems="center"
-                >
-                  <IconButton
-                    edge="end"
+              <>
+                <Grid item md={3} />
+                <Grid item>
+                  <Button
                     color="inherit"
-                    aria-label="open drawer"
-                    onClick={handleMenu}
+                    component={Link}
+                    to="/"
+                    disableRipple={true}
+                    onClick={() => dispatch(logout())}
                   >
-                    <AccountCircle />
-                  </IconButton>
+                    Log out
+                  </Button>
                 </Grid>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  open={open}
-                  onClose={handleClose}
-                >
-                  <MenuItem onClick={handleClose}>
-                    <Button
-                      color="inherit"
-                      component={Link}
-                      to="/"
-                      disableRipple={true}
-                      onClick={() => dispatch(logout())}
-                    >
-                      Log out
-                    </Button>
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>My account</MenuItem>
-                </Menu>
-              </Grid>
+              </>
             ) : (
               <Grid item container md={4} xs={8} justify="space-around">
                 <Grid item>

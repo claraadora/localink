@@ -63,8 +63,8 @@ export const LocalinkMessageList = (props) => {
     let username = isShopperState ? user.name : user.shopName;
     let userId = isShopperState ? user._id : profile._id;
     let time = {
-      sameDay: momentObj.format("h:mm a"),
-      sameElse: momentObj.format("Do MMMM YYYY h:mm a"),
+      sameDay: momentObj.format("hh:mm A"),
+      sameElse: momentObj.format("ll hh:mm A"),
       unformatted: momentObj,
     };
     let type = "text";
@@ -117,8 +117,8 @@ export const LocalinkMessageList = (props) => {
         let username = isShopperState ? user.name : user.shopName;
         let message = response.data.url;
         let time = {
-          sameDay: momentObj.format("h:mm a"),
-          sameElse: momentObj.format("Do MMMM YYYY h:mm a"),
+          sameDay: momentObj.format("hh:mm A"),
+          sameElse: momentObj.format("ll hh:mm A"),
           unformatted: momentObj,
         };
         let type = "image";
