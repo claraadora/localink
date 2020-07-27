@@ -1,10 +1,10 @@
-// require('./business/indexTest');
-// require('./business/authTest');
-// require('./business/forgotPasswordEmailTest');
-// require('./business/userTest');
-// require('./business/profileTest');
-// require('./business/productTest');
-// require('./business/reviewReplyTest');
+require('./business/indexTest');
+require('./business/authTest');
+require('./business/forgotPasswordEmailTest');
+require('./business/userTest');
+require('./business/profileTest');
+require('./business/productTest');
+require('./business/reviewReplyTest');
 
 require('./shopper/indexTest');
 require('./shopper/authTest');

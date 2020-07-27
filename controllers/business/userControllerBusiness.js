@@ -20,11 +20,7 @@ async function addUserToBusiness(req, res) {
   try {
     const business = await Business.findById(req.user.id);
     let user = await User.findOne({ email });
-    if (user && user.isAccountnActive) {
-      return res
-        .status(400)
-        .json({ errors: [{ msg: 'User with that email already exists' }] });
-    } else if (user && !user.isAccountActive) {
+    if (user && !user.isAccountActive) {
       const arr = business.users.filter(u => u._id == user._id);
       console.log(arr);
       if (arr.length == 0) {
@@ -37,26 +33,30 @@ async function addUserToBusiness(req, res) {
           .status(400)
           .json({ errors: [{ msg: 'User has not activated account' }] });
       }
+    } else if (user && user.isAccountActive) {
+      return res
+        .status(400)
+        .json({ errors: [{ msg: 'User with that email already exists' }] });
+    } else {
+      user = new User({
+        name,
+        email,
+        role,
+        activated: true
+      });
+
+      user.isAccountActive = true;
+
+      await user.save();
+
+      business.users.push(user);
+
+      await business.save();
+
+      const token = usePasswordHashToMakeToken(business, user);
+      const url = getPasswordResetURL(false, user, token);
+      await sendActivationEmailUser(business, user, url, res);
     }
-
-    user = new User({
-      name,
-      email,
-      role,
-      activated: true
-    });
-
-    user.isAccountActive = true;
-
-    await user.save();
-
-    business.users.push(user);
-
-    await business.save();
-
-    const token = usePasswordHashToMakeToken(business, user);
-    const url = getPasswordResetURL(false, user, token);
-    await sendActivationEmailUser(business, user, url, res);
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ errors: [{ msg: 'Server error' }] });

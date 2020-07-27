@@ -70,6 +70,14 @@ router.get('/:shopper_id', async (req, res) => {
           }
         },
         {
+          $lookup: {
+            from: 'shops',
+            localField: 'shop',
+            foreignField: '_id',
+            as: 'shopAvatar'
+          }
+        },
+        {
           $unset: ['messageList']
         }
       ])
@@ -77,6 +85,7 @@ router.get('/:shopper_id', async (req, res) => {
         if (chat) {
           chat.shopperName = chat.shopperName[0].name;
           chat.shopName = chat.shopName[0].shopName;
+          chat.shopAvatar = chat.shopAvatar[0].avatar;
           chatList.unshift(chat);
         } else {
           res.status(200).json(chatList);

@@ -20,6 +20,7 @@ async function getPasswordResetLinkInEmail(email) {
     }
 
     user = specificUser;
+    console.log('b1 done');
   } catch (error) {
     console.log('No user with that email');
   }
@@ -28,6 +29,7 @@ async function getPasswordResetLinkInEmail(email) {
 
   let substring = url.substr(45);
   substring = substring.replace('-', '_');
+  console.log('b2');
   return substring;
 }
 
