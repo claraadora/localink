@@ -21,7 +21,7 @@ router.post('/start-location/:shopper_id', async (req, res) => {
   if (currentLocation === true) {
     location = await getCurrentLocation();
   } else {
-    location = await geocode(startLocation);
+    location = await geocodeCountry(startLocation);
   }
   try {
     const allShops = await Shop.find();
