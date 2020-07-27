@@ -140,7 +140,6 @@ const receivedNewPassword = async (req, res) => {
     }
 
     if (!specificUser.password) {
-      console.log('adding a user not res');
       specificUser.isAccountActive = true;
       await specificUser.save();
     }
