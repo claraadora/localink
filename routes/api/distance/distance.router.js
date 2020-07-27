@@ -3,7 +3,7 @@ const router = express.Router();
 const authShopper = require('../../../middleware/shopper/authShopper');
 
 const getCurrentLocation = require('./geolocation');
-const geocode = require('./geocode');
+const geocodeCountry = require('./geocode');
 const getDistance = require('../distance/distance');
 
 const { profileId } = require('../../../test/business/seed/seedProfile');
