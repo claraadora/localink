@@ -45,8 +45,6 @@ async function addUserToBusiness(req, res) {
         activated: true
       });
 
-      user.isAccountActive = true;
-
       await user.save();
 
       business.users.push(user);

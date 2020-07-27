@@ -27,11 +27,11 @@ const connectClient = async () => {
       //   { $multi: true }
       // );
       // db.collection('users').remove(
-      //   { name: 'test user owner' },
+      //   { email: 'oliviajjohansen@gmail.com' },
       //   { $multi: true }
       // );
       // db.collection('users').remove(
-      //   { name: 'test user staff' },
+      //   { email: 'oliviajjohansen@yahoo.com' },
       //   { $multi: true }
       // );
       // db.collection('businesses').remove(
