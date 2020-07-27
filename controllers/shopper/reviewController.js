@@ -5,6 +5,26 @@ const Shopper = require('../../models/Shopper');
 const Product = require('../../models/Product');
 const Review = require('../../models/Review');
 
+async function uploadReviewImage(req, res) {
+  const storage = multer.memoryStorage();
+  const upload = multer({ storage: storage }).single('file');
+
+  upload(req, res, async err => {
+    if (err) {
+      return res.json({ success: false, err });
+    }
+    const image = {
+      contentType: path.extname(req.file.originalname),
+      data: req.file.buffer
+    };
+    const url = `data:image/${image.contentType};base64,${image.data.toString(
+      'base64'
+    )}`;
+
+    return res.json({ success: true, url });
+  });
+}
+
 async function createReview(req, res) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -12,13 +32,10 @@ async function createReview(req, res) {
   }
 
   try {
-    const shopper = await Shopper.findById(req.user.id);
-    const product = await Product.findById(req.body.product_id);
-    let shop = await Shop.findById(product.shop);
+    let shop = await Shop.findById(req.params.shop_id);
     const newReview = new Review({
-      author: shopper.id,
-      shop: product.shop,
-      product: product,
+      author: req.user._id,
+      shop: shop,
       image: req.body.image,
       description: req.body.description,
       rating: req.body.rating
@@ -58,4 +75,4 @@ async function getBusinessReviews(req, res) {
   }
 }
 
-module.exports = { createReview, getBusinessReviews };
+module.exports = { createReview, getBusinessReviews, uploadReviewImage };
