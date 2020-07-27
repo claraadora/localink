@@ -152,7 +152,7 @@ const CataloguePage = (props) => {
                 alignItems="center"
                 justify="center"
               >
-                <ReviewForm />
+                <ReviewForm shopId={props.shopId} />
               </Grid>
               <Grid item md={2} />
             </Grid>

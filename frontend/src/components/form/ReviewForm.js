@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ReviewForm() {
+export default function ReviewForm(props) {
   const classes = useStyles();
   const [image, setImage] = useState("");
   const [description, setDescription] = useState("");
@@ -49,7 +49,7 @@ export default function ReviewForm() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    dispatch(addReview({ image, description, rating }));
+    dispatch(addReview(description, image, rating, props.shopId));
   };
 
   const handleSlide = (event, newValue) => {
@@ -64,11 +64,14 @@ export default function ReviewForm() {
     };
     formData.append("file", file);
 
-    Axios.post("/product/upload-image", formData, config).then((response) => {
-      if (response.data.success) {
-        setImage(response.data.url);
+    Axios.post(`/review/upload-image/${props.shopId}`, formData, config).then(
+      (response) => {
+        console.log(response);
+        if (response.data.success) {
+          setImage(response.data.url);
+        }
       }
-    });
+    );
   };
 
   return (
@@ -153,7 +156,6 @@ export default function ReviewForm() {
                 variant="contained"
                 color="primary"
                 className={classes.submit}
-                onSubmit={onSubmit}
               >
                 Add Review
               </Button>
