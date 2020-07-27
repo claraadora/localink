@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const getChatById = (id, isShopper, chatList) => {
   let check;
 
@@ -12,4 +14,9 @@ export const getChatById = (id, isShopper, chatList) => {
       return chatList[i];
     }
   }
+};
+
+export const compareMoment = (unformatted) => {
+  const now = new moment();
+  return now.diff(unformatted, "days") >= 1 ? "sameElse" : "sameDay";
 };

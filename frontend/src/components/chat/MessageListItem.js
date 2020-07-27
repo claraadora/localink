@@ -7,6 +7,7 @@ import {
   MessageText,
   Bubble,
 } from "@livechat/ui-kit";
+import { compareMoment } from "../../utils/chat";
 
 export const LocalinkMessageListItem = (props) => {
   const isShopper = useSelector((state) => state.page.isShopper);
@@ -39,10 +40,13 @@ export const LocalinkMessageListItem = (props) => {
       content = <MessageText>Message type is not supported</MessageText>;
   }
 
+  const time = props.data.time.unformatted;
+  const timestampSelector = compareMoment(time);
+
   return (
     <MessageGroup onlyFirstWithMeta>
       <Message
-        date={props.data.time.sameDay}
+        date={props.data.time[timestampSelector]}
         isOwn={props.data.userId === id}
         authorName={""}
       >
