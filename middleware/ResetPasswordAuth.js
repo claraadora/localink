@@ -37,7 +37,8 @@ module.exports = async function (req, res, next) {
       password = businessUser.password;
     }
 
-    const secret = password + '-' + user.createdAt;
+    const pw = password ? password : 'oldpw';
+    const secret = pw + '-' + user.createdAt;
     jwt.verify(token, secret, async (error, decoded) => {
       if (error) {
         return res.status(401).json({ errors: [{ msg: 'Link is not valid' }] });

@@ -31,7 +31,9 @@ const usePasswordHashToMakeToken = (user, specificUser) => {
       }
     };
   }
-  const secret = password + '-' + user.createdAt;
+  const pw = password ? password : 'oldpw';
+  console.log(pw);
+  const secret = pw + '-' + user.createdAt;
 
   const token = jwt.sign(payload, secret, {
     expiresIn: 3600
@@ -135,6 +137,11 @@ const receivedNewPassword = async (req, res) => {
         users: mongoose.Types.ObjectId(specificUser.id)
       });
       collection = User;
+    }
+
+    if (!specificUser.password) {
+      specificUser.isAccountActive = true;
+      await specificUser.save();
     }
 
     const salt = await bcrypt.genSalt(10);
