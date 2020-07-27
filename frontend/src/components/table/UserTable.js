@@ -179,40 +179,23 @@ export default function UserTable() {
       setIsLoading(false);
     }
     setUsers(user.users);
-    console.log(user.users);
     if (user && user.users !== undefined) {
       const updatedRows = [];
-      user.users.map((user) =>
-        updatedRows.push({
-          name: user.name,
-          email: user.email,
-          role: user.role,
-          status: user.isAccountActive,
-          _id: user._id,
-        })
-      );
+      users.map((user) => {
+        if (user.isAccountActive) {
+          updatedRows.push({
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            status: user.activated,
+            _id: user._id,
+          });
+        }
+      });
       setRows(updatedRows);
-      console.log("here");
+      setRole("owner");
     }
-  }, [loading]);
-
-  useEffect(() => {
-    setUsers(user.users);
-    if (user && user.users !== undefined) {
-      const updatedRows = [];
-      user.users.map((user) =>
-        updatedRows.push({
-          name: user.name,
-          email: user.email,
-          role: user.role,
-          status: user.isAccountActive,
-          _id: user._id,
-        })
-      );
-      setRows(updatedRows);
-      setRole(user.users[0].role);
-    }
-  }, [dispatch, loading, users, user]);
+  }, [dispatch, loading, user]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -238,7 +221,7 @@ export default function UserTable() {
       container
       direction="column"
       justify="center"
-      style={{ height: "100%" }}
+      style={{ minHeight: "100%" }}
       spacing={5}
       alignItems="center"
     >
@@ -250,101 +233,98 @@ export default function UserTable() {
       </Grid>
       {isLoading && <CircularProgress />}
       <Grid item>
-        <Paper>
-          <TableContainer>
-            <Table
-              className={classes.table}
-              aria-labelledby="tableTitle"
-              size={dense ? "small" : "medium"}
-              aria-label="enhanced table"
-            >
-              <EnhancedTableHead
-                classes={classes}
-                order={order}
-                orderBy={orderBy}
-                onRequestSort={handleRequestSort}
-                rowCount={rows.length}
-              />
-              <TableBody>
-                {stableSort(rows, getComparator(order, orderBy))
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row, index) => {
-                    const labelId = `enhanced-table-checkbox-${index}`;
+        <div>
+          <Paper>
+            <TableContainer>
+              <Table
+                className={classes.table}
+                aria-labelledby="tableTitle"
+                size="small"
+              >
+                <EnhancedTableHead
+                  classes={classes}
+                  order={order}
+                  orderBy={orderBy}
+                  onRequestSort={handleRequestSort}
+                  rowCount={rows.length}
+                />
+                <TableBody>
+                  {stableSort(rows, getComparator(order, orderBy))
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row, index) => {
+                      const labelId = `enhanced-table-checkbox-${index}`;
 
-                    return (
-                      <TableRow tabIndex={-1} key={row.name}>
-                        <TableCell
-                          component="th"
-                          id={labelId}
-                          scope="row"
-                          padding="none"
-                          align="center"
-                        >
-                          {index === 0 ? "A" : "B"}
-                        </TableCell>
-                        <TableCell align="center">{row.email}</TableCell>
-                        <TableCell align="center">{row.role}</TableCell>
-                        <TableCell align="center">
-                          {row.status ? "Active" : "Non-active"}
-                        </TableCell>
-                        <TableCell align="center">
-                          {role === "owner" ? (
-                            <div>
-                              <IconButton>
-                                <EditIcon />
-                              </IconButton>
-                              <IconButton>
-                                <DeleteIcon
-                                  onClick={() => {
-                                    setIsLoading(true);
-                                    dispatch(deleteUser(row._id));
-                                  }}
-                                />
-                              </IconButton>
-                              <IconButton
-                                onClick={() => {
-                                  setIsLoading(true);
-                                  dispatch(changeActiveStatus(row._id));
-                                }}
-                              >
-                                {row.status ? (
-                                  <BlockIcon
-                                    className={classes.block}
-                                    disabled={index === 0}
-                                  />
-                                ) : (
-                                  <CheckIcon
-                                    className={classes.allow}
-                                    disabled={index === 0}
-                                  />
-                                )}
-                              </IconButton>
-                            </div>
-                          ) : (
-                            "Not Permitted"
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                {emptyRows > 0 && (
-                  <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
-                    <TableCell colSpan={6} />
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={rows.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onChangePage={handleChangePage}
-            onChangeRowsPerPage={handleChangeRowsPerPage}
-          />
-        </Paper>
+                      return (
+                        <TableRow tabIndex={-1} key={row.name}>
+                          <TableCell
+                            component="th"
+                            id={labelId}
+                            scope="row"
+                            padding="none"
+                            align="center"
+                          >
+                            {row.name}
+                          </TableCell>
+                          <TableCell align="center">{row.email}</TableCell>
+                          <TableCell align="center">{row.role}</TableCell>
+                          <TableCell align="center">
+                            {row.status ? "Active" : "Non-active"}
+                          </TableCell>
+                          <TableCell align="center">
+                            {role === ("owner" || "Owner") ? (
+                              index === 0 ? null : (
+                                <div>
+                                  {/* <IconButton>
+                                  <EditIcon />
+                                </IconButton> */}
+                                  <IconButton>
+                                    <DeleteIcon
+                                      onClick={() => {
+                                        setIsLoading(true);
+                                        dispatch(deleteUser(row._id));
+                                      }}
+                                    />
+                                  </IconButton>
+                                  <IconButton
+                                    onClick={() => {
+                                      setIsLoading(true);
+                                      dispatch(changeActiveStatus(row._id));
+                                    }}
+                                  >
+                                    {row.status ? (
+                                      <BlockIcon className={classes.block} />
+                                    ) : (
+                                      <CheckIcon className={classes.allow} />
+                                    )}
+                                  </IconButton>
+                                </div>
+                              )
+                            ) : (
+                              "Not Permitted"
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  {emptyRows > 0 && (
+                    <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
+                      <TableCell colSpan={6} />
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <TablePagination
+              rowsPerPageOptions={[5, 10]}
+              component="div"
+              count={rows.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onChangePage={handleChangePage}
+              onChangeRowsPerPage={handleChangeRowsPerPage}
+            />
+          </Paper>
+        </div>
       </Grid>
     </Grid>
   );
