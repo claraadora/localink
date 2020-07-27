@@ -73,6 +73,7 @@ export const ChatPage = (props) => {
 
   const styleShopper = {
     height: "92vh",
+    paddingTop: "8vh",
   };
 
   const styleSeller = {

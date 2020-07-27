@@ -26,6 +26,7 @@ export const LocalinkChatList = (props) => {
               isShopper ? chatItem.shopName : chatItem.shopperName,
               chatItem.message_list,
             ];
+            const avatar = isShopper ? chatItem.shopAvatar : null;
             const len = message_list.length;
             return (
               <LocalinkChatListItem
@@ -35,6 +36,7 @@ export const LocalinkChatList = (props) => {
                 name={name}
                 timestamp={len > 0 ? message_list[len - 1].date : null}
                 message={len > 0 ? message_list[len - 1].message : null}
+                avatar={avatar}
               />
             );
           })}

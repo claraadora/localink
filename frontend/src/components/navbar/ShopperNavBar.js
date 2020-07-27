@@ -49,46 +49,19 @@ export default function ShopperNavBar({ isSearchPage }) {
                 justify="flex-end"
                 alignItems="center"
               >
-                <IconButton
-                  edge="end"
+                <Button
                   color="inherit"
-                  aria-label="open drawer"
-                  onClick={handleMenu}
+                  component={Link}
+                  to="/"
+                  disableRipple={true}
+                  onClick={() => dispatch(logout())}
                 >
-                  <AccountCircle />
-                </IconButton>
+                  Log out
+                </Button>
                 <Button component={Link} to="/chat">
                   Chat
                 </Button>
               </Grid>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={open}
-                onClose={handleClose}
-              >
-                <MenuItem onClick={handleClose}>
-                  <Button
-                    color="inherit"
-                    component={Link}
-                    to="/"
-                    disableRipple={true}
-                    onClick={() => dispatch(logout())}
-                  >
-                    Log out
-                  </Button>
-                </MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
-              </Menu>
             </Grid>
           ) : (
             <Grid item container md={4} xs={8} justify="space-around">

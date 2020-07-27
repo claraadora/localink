@@ -37,7 +37,7 @@ export const chat = (state = initialState, action) => {
         activeChat: payload,
       };
     case chatConstants.ADD_CHAT_ITEM:
-      return { state };
+      return state;
     case chatConstants.RENDER_CHAT:
       return {
         ...state,

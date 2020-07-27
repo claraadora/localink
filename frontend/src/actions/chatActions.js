@@ -50,7 +50,7 @@ export const addChatItem = (shopId, shopperId, isShopper) => async (
       payload: res,
     });
     dispatch(setCurrActive(isShopper ? shopId : shopperId));
-    dispatch(getChatList(isShopper ? shopId : shopperId, isShopper));
+    // dispatch(getChatList(isShopper ? shopId : shopperId, isShopper));
 
     console.log(body);
   } catch (err) {

@@ -155,11 +155,12 @@ export const ItemCard = (props) => {
                 size="small"
                 variant="contained"
                 className={classes.button}
-                onClick={() =>
+                onClick={() => {
                   dispatch(
                     addChatItem(data.shop_docs[0]._id, auth.user._id, true)
-                  )
-                }
+                  );
+                  history.push(`/chat`);
+                }}
               >
                 Ask Seller
               </Button>

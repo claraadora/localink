@@ -19,7 +19,7 @@ export const LocalinkChatListItem = (props) => {
       active={props.isActive}
       onClick={() => dispatch(setCurrActive(props._id))}
     >
-      <Avatar letter={props.name[0]} />
+      <Avatar imgUrl={props.avatar} letter={props.name[0]} />
       <Column fill>
         <Row>
           <Grid container direction="row">
