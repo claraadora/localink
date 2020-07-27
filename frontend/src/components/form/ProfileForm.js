@@ -41,7 +41,7 @@ const ProfileForm = () => {
   const profile = useSelector((state) => state.profile.profile);
   const user = useSelector((state) => state.auth.user);
   const loading = useSelector((state) => state.profile.loading);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
 
   const classes = useStyles();

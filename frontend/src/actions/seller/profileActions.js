@@ -146,7 +146,7 @@ export const addUser = (data) => async (dispatch) => {
       payload: res,
     });
 
-    dispatch(setAlert("User added.", "success"));
+    dispatch(setAlert("", "success"));
   } catch (err) {
     const errors = err.response.data.errors;
     if (errors) {

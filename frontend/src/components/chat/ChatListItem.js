@@ -5,9 +5,9 @@ import { setCurrActive } from "../../actions/chatActions";
 import { Grid, Typography, Avatar, makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
-  large: {
-    width: theme.spacing(7),
-    height: theme.spacing(7),
+  avatar: {
+    width: theme.spacing(4),
+    height: theme.spacing(4),
   },
 }));
 
@@ -24,7 +24,7 @@ export const LocalinkChatListItem = (props) => {
           <Avatar
             alt={props.name}
             src={props.avatar}
-            className={classes.large}
+            className={classes.avatar}
           />
         </Grid>
         <Grid item container direction="column" md={10} justify="space-evenly">

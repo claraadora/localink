@@ -42,11 +42,16 @@ export const ChatPage = (props) => {
   const loading = useSelector((state) => state.chat.loading);
   const chat = useSelector((state) => state.chat);
   const classes = useStyles();
+
   useEffect(() => {
     socket.on("Output Chat Message", (messageFromBackEnd) => {
       if (messageFromBackEnd.userId !== (isShopper ? user._id : profile._id)) {
         console.log("listening");
-        dispatch(afterPostMessage({ messageFromBackEnd, isShopper }));
+        if (
+          messageFromBackEnd.receiverId === (isShopper ? user._id : profile._id)
+        ) {
+          dispatch(afterPostMessage({ messageFromBackEnd, isShopper }));
+        }
       }
     });
     return () => socket.disconnect();
