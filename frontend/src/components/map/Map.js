@@ -48,6 +48,7 @@ function Map() {
   useEffect(() => {
     setMarkerKeys([]);
   }, [products]);
+
   useEffect(() => {
     const latLng = itineraryStops.map((product) => product.shop_docs[0].latLng);
     if (userLocation !== null) {
@@ -68,17 +69,15 @@ function Map() {
       });
       setWaypoints(temp);
     }
-  }, [itineraryStops, userLocation]);
 
-  useEffect(() => {
     const DirectionsService = new window.google.maps.DirectionsService();
 
-    if (stops && stops.length > 1) {
-      const len = stops.length;
+    if (latLng !== null && latLng.length > 1) {
+      const len = latLng.length;
       DirectionsService.route(
         {
-          origin: stops[0],
-          destination: stops[len - 1],
+          origin: latLng[0],
+          destination: latLng[len - 1],
           waypoints: waypoints,
           travelMode: travelMode,
         },
@@ -92,14 +91,7 @@ function Map() {
         }
       );
     }
-  }, [stops, waypoints, travelMode]);
-
-  // useEffect(() => {
-  //   if (renderRoute) {
-  //     console.log(directions.routes[0].legs[0]);
-  //     dispatch(loadDirectionSteps(directions.routes[0].legs[0]));
-  //   }
-  // }, [renderRoute, directions, travelMode]);
+  }, [itineraryStops, userLocation]);
 
   return (
     <GoogleMap
@@ -126,7 +118,7 @@ function Map() {
           return <Marker key={index} position={product.shop_docs[0].latLng} />;
         })}
       {/**RENDER ROUTE*/}
-      {renderRoute && stops.length > 1 && directions && (
+      {renderRoute && stops && stops.length > 1 && directions && (
         <DirectionsRenderer directions={directions} />
       )}
     </GoogleMap>

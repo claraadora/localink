@@ -58,7 +58,7 @@ export const ItineraryHeader = () => {
               <Grid item>
                 <IconButton onClick={() => dispatch(loadRoute())}>
                   <NavigationIcon
-                    fontSize="medium"
+                    fontSize="small"
                     className={classes.navButton}
                   />
                 </IconButton>
