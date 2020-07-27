@@ -181,7 +181,7 @@ export default function UserTable() {
     setUsers(user.users);
     if (user && user.users !== undefined) {
       const updatedRows = [];
-      users.map((user) => {
+      user.users.map((user) => {
         if (user.isAccountActive) {
           updatedRows.push({
             name: user.name,

@@ -87,13 +87,9 @@ export const auth = (state = initialState, action) => {
         },
       };
     case authConstants.ADD_USER:
-      const temp = state.user.users.push(payload);
       return {
         ...state,
         loading: false,
-        user: {
-          users: temp,
-        },
       };
     case authConstants.DELETE_USER:
       return {
