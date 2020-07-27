@@ -76,7 +76,7 @@ export default function ForgetPasswordPage(props) {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Reset your Password
+            Set your Password
           </Typography>
           <Typography component="h6">Please provide a new password</Typography>
           <form className={classes.form} onSubmit={onSubmit}>

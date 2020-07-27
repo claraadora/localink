@@ -33,6 +33,7 @@ export const loadSearch = (search, service) => async (dispatch) => {
       },
     });
   }
+  // dispatch(setBackLoading());
 };
 
 export const loadRoute = () => (dispatch) => {
@@ -45,6 +46,7 @@ export const loadRoute = () => (dispatch) => {
   dispatch({
     type: searchConstants.LOAD_ROUTE,
   });
+  // dispatch(setBackLoading());
 };
 
 export const loadDirectionSteps = (directionSteps) => (dispatch) => {
@@ -52,6 +54,7 @@ export const loadDirectionSteps = (directionSteps) => (dispatch) => {
     type: searchConstants.LOAD_DIRECTION_STEPS,
     payload: directionSteps,
   });
+  // dispatch(setBackLoading());
 };
 
 export const updateDirectionSteps = (directionStep) => (dispatch) => {
@@ -59,6 +62,7 @@ export const updateDirectionSteps = (directionStep) => (dispatch) => {
     type: searchConstants.UPDATE_DIRECTION_STEPS,
     payload: directionStep,
   });
+  // dispatch(setBackLoading());
 };
 
 export const reorderSearch = (sortBy, order, items, id) => (dispatch) => {
@@ -70,12 +74,14 @@ export const reorderSearch = (sortBy, order, items, id) => (dispatch) => {
       sortedBy: sortBy,
     },
   });
+  // dispatch(setBackLoading());
 };
 
 export const clearSearch = () => (dispatch) => {
   dispatch({
     type: searchConstants.CLEAR_SEARCH,
   });
+  // dispatch(setBackLoading());
 };
 
 export const updateUserLocation = (
@@ -115,6 +121,7 @@ export const updateUserLocation = (
       },
     });
   }
+  // dispatch(setBackLoading());
 };
 
 export const setTravelMode = (travelMode) => (dispatch) => {
@@ -122,18 +129,21 @@ export const setTravelMode = (travelMode) => (dispatch) => {
     type: searchConstants.SET_TRAVEL_MODE,
     payload: travelMode,
   });
+  // dispatch(setBackLoading());
 };
 
 export const setRenderRoute = () => (dispatch) => {
   dispatch({
     type: searchConstants.SET_RENDER_ROUTE,
   });
+  // dispatch(setBackLoading());
 };
 
 export const setRenderLocation = () => (dispatch) => {
   dispatch({
     type: searchConstants.SET_RENDER_LOCATION,
   });
+  // dispatch(setBackLoading());
 };
 
 export const updateStops = (stops) => (dispatch) => {
@@ -141,6 +151,7 @@ export const updateStops = (stops) => (dispatch) => {
     type: searchConstants.UPDATE_STOPS,
     payload: stops,
   });
+  // dispatch(setBackLoading());
 };
 
 export const createNavLink = (stops, travelMode) => (dispatch) => {
@@ -168,6 +179,7 @@ export const createNavLink = (stops, travelMode) => (dispatch) => {
     type: searchConstants.UPDATE_NAV_LINK,
     payload: finalURI,
   });
+  // dispatch(setBackLoading());
 };
 
 export const sendNavLink = (link) => async (dispatch) => {
@@ -204,4 +216,17 @@ export const sendNavLink = (link) => async (dispatch) => {
       },
     });
   }
+  dispatch(setBackLoadingNavLink());
+};
+
+export const setBackLoading = () => (dispatch) => {
+  dispatch({
+    type: "SET_BACK_LOADING",
+  });
+};
+
+export const setBackLoadingNavLink = () => (dispatch) => {
+  dispatch({
+    type: "SET_BACK_LOADING_NAV_LINK",
+  });
 };
