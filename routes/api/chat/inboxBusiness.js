@@ -75,10 +75,7 @@ router.get('/:shop_id', async (req, res) => {
       ])
       .each(async function (error, chat) {
         if (chat) {
-          console.log(chat);
-          chat.shopperName = chat.shopperName[0].name
-            ? chat.shopperName[0].name
-            : null;
+          chat.shopperName = chat.shopperName[0].name;
           chat.shopName = chat.shopName[0].shopName;
           chatList.unshift(chat);
         } else {
