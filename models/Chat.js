@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
 
 const ChatSchema = new mongoose.Schema({
-  shopper: {
+  shopperId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Shopper',
     required: true
   },
-  shop: {
+  shopId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Shop',
     required: true
