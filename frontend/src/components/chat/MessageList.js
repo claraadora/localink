@@ -78,6 +78,8 @@ export const LocalinkMessageList = (props) => {
         message: message,
         time: time,
         type: type,
+        userId: userId,
+        username: username,
       },
     };
 
@@ -144,6 +146,8 @@ export const LocalinkMessageList = (props) => {
             message: message,
             time: time,
             type: type,
+            userId: userId,
+            username: username,
           },
         };
         dispatch(
