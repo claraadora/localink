@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
 export const LocalinkChatListItem = (props) => {
   const dispatch = useDispatch();
   const classes = useStyles();
+  console.log(props);
   return (
     <ChatListItem
       active={props.isActive}
@@ -40,7 +41,9 @@ export const LocalinkChatListItem = (props) => {
           </Grid>
           <Grid item>
             <Typography variant="body2" noWrap>
-              {props.message.includes("data:image/") ? "Photo" : props.message}
+              {props.message && props.message.includes("data:image/")
+                ? "Photo"
+                : props.message}
             </Typography>
           </Grid>
         </Grid>
