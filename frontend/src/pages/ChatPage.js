@@ -55,6 +55,7 @@ export const ChatPage = (props) => {
         console.log("yay, message is not from me. Is it for me tho?");
         console.log(messageFromBackEnd);
         if (messageFromBackEnd[selectReceiverId] === myId) {
+          console.log("its mine!");
           dispatch(afterPostMessage({ messageFromBackEnd, isShopper }));
         }
       }
