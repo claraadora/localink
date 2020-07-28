@@ -50,7 +50,7 @@ module.exports = io => {
 
         await chat.save();
 
-        return io.emit('Output Chat Message', newMessage);
+        return io.emit('Output Chat Message', chat);
       } catch (error) {
         console.log(error);
         return error;
