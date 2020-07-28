@@ -40,7 +40,7 @@ export const LocalinkChatListItem = (props) => {
           </Grid>
           <Grid item>
             <Typography variant="body2" noWrap>
-              {props.message}
+              {props.message.includes("data:image/") ? "Photo" : props.message}
             </Typography>
           </Grid>
         </Grid>

@@ -45,11 +45,16 @@ export const ChatPage = (props) => {
 
   useEffect(() => {
     socket.on("Output Chat Message", (messageFromBackEnd) => {
-      if (messageFromBackEnd.userId !== (isShopper ? user._id : profile._id)) {
-        console.log("listening");
-        if (
-          messageFromBackEnd.receiverId === (isShopper ? user._id : profile._id)
-        ) {
+      let myId = isShopper ? user._id : profile._id;
+      let selectSenderId = isShopper ? "shop" : "shopper";
+      let selectReceiverId = isShopper ? "shopper" : "shop";
+
+      console.log("myId" + myId);
+
+      if (messageFromBackEnd[selectSenderId] !== myId) {
+        console.log("yay, message is not from me. Is it for me tho?");
+        console.log(messageFromBackEnd);
+        if (messageFromBackEnd[selectReceiverId] === myId) {
           dispatch(afterPostMessage({ messageFromBackEnd, isShopper }));
         }
       }

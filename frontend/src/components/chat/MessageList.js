@@ -14,7 +14,6 @@ import { Paper, Grid, makeStyles, Typography, iCon } from "@material-ui/core";
 import moment from "moment";
 import { getChatById } from "../../utils/chat";
 import { afterPostMessage } from "../../actions/chatActions";
-import Dropzone from "react-dropzone";
 import AttachFileIcon from "@material-ui/icons/AttachFile";
 import Axios from "axios";
 const useStyles = makeStyles({
@@ -64,7 +63,7 @@ export const LocalinkMessageList = (props) => {
     let userId = isShopperState ? user._id : profile._id;
     let time = {
       sameDay: momentObj.format("hh:mm A"),
-      sameElse: momentObj.format("ll hh:mm A"),
+      sameElse: momentObj.format("lll"),
       unformatted: momentObj,
     };
     let type = "text";
@@ -73,11 +72,13 @@ export const LocalinkMessageList = (props) => {
     let message = textInput;
 
     const obj = {
-      userId: userId,
-      username: username,
-      message: message,
-      time: time,
-      type: type,
+      shopper: isShopperState ? userId : receiverId,
+      shop: isShopperState ? receiverId : userId,
+      message: {
+        message: message,
+        time: time,
+        type: type,
+      },
     };
 
     props.socket.emit("Input Chat Message", {
@@ -118,7 +119,7 @@ export const LocalinkMessageList = (props) => {
         let message = response.data.url;
         let time = {
           sameDay: momentObj.format("hh:mm A"),
-          sameElse: momentObj.format("ll hh:mm A"),
+          sameElse: momentObj.format("lll"),
           unformatted: momentObj,
         };
         let type = "image";
@@ -137,11 +138,13 @@ export const LocalinkMessageList = (props) => {
         });
 
         const obj = {
-          userId: userId,
-          username: username,
-          message: message,
-          time: time,
-          type: type,
+          shopper: isShopperState ? userId : receiverId,
+          shop: isShopperState ? receiverId : userId,
+          message: {
+            message: message,
+            time: time,
+            type: type,
+          },
         };
         dispatch(
           afterPostMessage({

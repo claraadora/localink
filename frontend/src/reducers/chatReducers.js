@@ -24,9 +24,12 @@ export const chat = (state = initialState, action) => {
       return {
         ...state,
         chatList: state.chatList.map((chatItem) => {
-          const select = payload.isShopper ? "shop" : "shopper";
-          if (chatItem[select] === state.activeChat) {
-            chatItem.message_list.push(payload.messageFromBackEnd);
+          const selectSenderId = payload.isShopper ? "shop" : "shopper";
+          if (
+            chatItem[selectSenderId] ===
+            payload.messageFromBackEnd[selectSenderId]
+          ) {
+            chatItem.message_list.push(payload.messageFromBackEnd.message);
           }
           return chatItem;
         }),
