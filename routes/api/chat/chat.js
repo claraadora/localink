@@ -11,7 +11,7 @@ module.exports = io => {
   io.on('connection', socket => {
     socket.on('Input Chat Message', async msg => {
       // // connectDB().then(async db => {
-      console.log('inside scoket');
+
       try {
         const {
           userId,
@@ -22,7 +22,7 @@ module.exports = io => {
           receiverId,
           isShopper
         } = msg;
-        console.log(message);
+
         let shopper_id = receiverId;
         let shop_id = userId;
         // let isShopperSender = 'false';
@@ -38,7 +38,7 @@ module.exports = io => {
           time,
           type
         });
-        console.log(newMessage);
+
         await newMessage.save();
         let chat = new Chat({
           shopper: shopper_id,
@@ -46,9 +46,9 @@ module.exports = io => {
           message: newMessage
           // isShopper: isShopperSender
         });
-        console.log(chat);
+
         await chat.save();
-        console.log(chat);
+
         return io.emit('Output Chat Message', chat);
       } catch (error) {
         console.log(error);
